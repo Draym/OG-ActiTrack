@@ -22,7 +22,7 @@ public class TJson {
     }
 
     public static String toString(Object object){
-       return toString(object, true);
+       return toString(object, false);
     }
 
     public static <T> T toObject(String json, Class<T> classValue) throws IOException {

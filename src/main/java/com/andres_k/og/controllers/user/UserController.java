@@ -1,6 +1,7 @@
 package com.andres_k.og.controllers.user;
 
 import com.andres_k.og.config.HttpResponse;
+import com.andres_k.og.config.Restricted;
 import com.andres_k.og.models.auth.Token;
 import com.andres_k.og.models.auth.User;
 import com.andres_k.og.services.TokenService;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+@Restricted
 @Controller
 public class UserController {
     @Autowired
@@ -19,11 +21,11 @@ public class UserController {
 
     @RequestMapping(value = "/user/delete", method = RequestMethod.DELETE)
     @ResponseBody
-    public String deleteUser(@RequestParam String token, @RequestBody Long userId) {
+    public String deleteUser(@RequestHeader String Authorization, @RequestBody Long userId) {
         HttpResponse response = new HttpResponse();
 
         try {
-            Token tokenValue = this.tokenService.getToken(token);
+            Token tokenValue = this.tokenService.getToken(Authorization);
             this.userService.deleteUser(userId, tokenValue);
             response.addResult(true);
         } catch (Exception ex) {
@@ -34,11 +36,11 @@ public class UserController {
 
     @RequestMapping(value = "/user/update", method = RequestMethod.PUT)
     @ResponseBody
-    public String update(@RequestParam String token, @RequestBody User user) {
+    public String update(@RequestHeader String Authorization, @RequestBody User user) {
         HttpResponse response = new HttpResponse();
 
         try {
-            Token tokenValue = this.tokenService.getToken(token);
+            Token tokenValue = this.tokenService.getToken(Authorization);
             User newUser = this.userService.updateUser(user, tokenValue);
             response.addResult(newUser);
         } catch (Exception ex) {

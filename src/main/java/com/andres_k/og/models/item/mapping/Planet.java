@@ -1,9 +1,7 @@
-package com.andres_k.og.models.item;
+package com.andres_k.og.models.item.mapping;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity(name = "Planet")
 @Table(name = "planet")
@@ -25,9 +23,8 @@ public class Planet {
     @Column(name="moon")
     private boolean moon;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "planet_id")
-    private List<ActivityLog> activityLogs = new ArrayList<>();
+    public Planet(){
+    }
 
     public String getPlanetPos() {
         return planetPos;
@@ -68,13 +65,5 @@ public class Planet {
 
     public void setPlayerId(Long playerId) {
         this.playerId = playerId;
-    }
-
-    public List<ActivityLog> getActivityLogs() {
-        return activityLogs;
-    }
-
-    public void setActivityLogs(List<ActivityLog> activityLogs) {
-        this.activityLogs = activityLogs;
     }
 }

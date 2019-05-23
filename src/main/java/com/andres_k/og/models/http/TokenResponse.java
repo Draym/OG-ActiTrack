@@ -1,4 +1,4 @@
-package com.andres_k.og.models.auth.custom;
+package com.andres_k.og.models.http;
 
 import com.andres_k.og.models.auth.Token;
 import com.andres_k.og.models.auth.User;

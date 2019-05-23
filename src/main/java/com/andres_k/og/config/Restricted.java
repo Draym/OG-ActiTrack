@@ -10,6 +10,6 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
 public @interface Restricted {
-    public boolean tokenRequired() default true;
+    boolean tokenRequired() default true;
     ERoles[] roles() default ERoles.USER;
 }

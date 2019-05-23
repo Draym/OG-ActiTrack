@@ -1,4 +1,4 @@
-package com.andres_k.og.models.item;
+package com.andres_k.og.models.item.activity;
 
 
 import javax.persistence.*;
@@ -13,17 +13,26 @@ public class ActivityLog {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     @NotNull
-    @Column(name="planet_id")
-    private Long planetId;
+    @Column(name="planetPos")
+    private String planetPos;
     @NotNull
-    @Column(name="user_ac_id")
-    private Long userAcId;
+    @Column(name="playerName")
+    private String playerName;
+    @NotNull
+    @Column(name="server")
+    private String server;
+    @NotNull
+    @Column(name="user_id")
+    private Long userId;
     @NotNull
     @Column(name="activity")
     private String activity;
     @NotNull
     @Column(name="creation_date")
     private LocalDateTime creationDate;
+
+    public ActivityLog(){
+    }
 
     public Long getId() {
         return this.id;
@@ -40,14 +49,6 @@ public class ActivityLog {
         this.activity = activity;
     }
 
-    public Long getPlanetId() {
-        return planetId;
-    }
-
-    public void setPlanetId(Long planetId) {
-        this.planetId = planetId;
-    }
-
     public LocalDateTime getCreationDate() {
         return creationDate;
     }
@@ -56,11 +57,35 @@ public class ActivityLog {
         this.creationDate = creationDate;
     }
 
-    public Long getUserAcId() {
-        return userAcId;
+    public String getPlayerName() {
+        return playerName;
     }
 
-    public void setUserAcId(Long userAcId) {
-        this.userAcId = userAcId;
+    public void setPlayerName(String playerName) {
+        this.playerName = playerName;
+    }
+
+    public String getServer() {
+        return server;
+    }
+
+    public void setServer(String server) {
+        this.server = server;
+    }
+
+    public String getPlanetPos() {
+        return planetPos;
+    }
+
+    public void setPlanetPos(String planetPos) {
+        this.planetPos = planetPos;
+    }
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 }

@@ -2,8 +2,8 @@ package com.andres_k.og.controllers;
 
 import com.andres_k.og.config.HttpResponse;
 import com.andres_k.og.models.auth.User;
-import com.andres_k.og.models.auth.custom.AuthHandler;
-import com.andres_k.og.models.auth.custom.TokenResponse;
+import com.andres_k.og.models.http.AuthHandler;
+import com.andres_k.og.models.http.TokenResponse;
 import com.andres_k.og.services.AuthService;
 import com.andres_k.og.services.TokenService;
 import com.andres_k.og.services.UserService;
@@ -66,11 +66,11 @@ public class AuthController {
 
     @RequestMapping(value = "/auth/token/login", method = RequestMethod.GET)
     @ResponseBody
-    public String loginByToken(@RequestParam String token) {
+    public String loginByToken(@RequestHeader String Authorization) {
         HttpResponse response = new HttpResponse();
 
         try {
-            TokenResponse result = this.authService.loginByToken(token);
+            TokenResponse result = this.authService.loginByToken(Authorization);
             response.addResult(result);
         } catch (Exception ex) {
             response.addError("Error validating the account:" + ex.toString());

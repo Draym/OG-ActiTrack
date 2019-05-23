@@ -1,9 +1,7 @@
-package com.andres_k.og.models.item;
+package com.andres_k.og.models.item.mapping;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity(name = "Player")
 @Table(name = "player")
@@ -16,18 +14,14 @@ public class Player {
     @Column(name="player_name")
     private String playerName;
     @NotNull
-    @Column(name="player_rank")
-    private String playerRank;
-    @NotNull
     @Column(name="player_ally")
     private String playerAlly;
     @NotNull
     @Column(name="server")
     private String server;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "player_id")
-    private List<Planet> planets = new ArrayList<>();
+    public Player(){
+    }
 
     public Long getId() {
         return id;
@@ -35,14 +29,6 @@ public class Player {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public String getPlayerRank() {
-        return playerRank;
-    }
-
-    public void setPlayerRank(String playerRank) {
-        this.playerRank = playerRank;
     }
 
     public String getPlayerAlly() {
@@ -67,13 +53,5 @@ public class Player {
 
     public void setServer(String server) {
         this.server = server;
-    }
-
-    public List<Planet> getPlanets() {
-        return planets;
-    }
-
-    public void setPlanets(List<Planet> planets) {
-        this.planets = planets;
     }
 }

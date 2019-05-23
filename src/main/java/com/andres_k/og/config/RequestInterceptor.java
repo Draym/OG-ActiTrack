@@ -28,22 +28,22 @@ public class RequestInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        Map<String, String[]> parameters = request.getParameterMap();
+
+        String token = request.getHeader("Authorization");
         String method = request.getMethod();
         String endpoint = request.getRequestURI();
 
         Console.log("api requested: " + endpoint);
         Console.log("method: " + method);
-        Console.log("params: " + TJson.toString(parameters, false));
+        Console.log("auth: " + token);
 
         Restricted restriction = EndpointManager.getRestriction(endpoint);
 
         if (restriction == null || !restriction.tokenRequired())
             return true;
-        if (!parameters.containsKey("token") || !(parameters.get("token").length > 0))
+        if (token == null || token.length() == 0)
             return false;
 
-        String token = parameters.get("token")[0];
         if (!this.tokenService.verifyValidity(token))
             return false;
 

@@ -1,12 +1,16 @@
 package com.andres_k.og.services;
 
-import com.andres_k.og.models.auth.custom.PlayerActivityHandler;
-import com.andres_k.og.models.item.*;
+import com.andres_k.og.models.http.PlayerActivityHandler;
+import com.andres_k.og.models.item.activity.ActivityLog;
+import com.andres_k.og.models.item.activity.ActivityLogRepository;
+import com.andres_k.og.models.item.mapping.Planet;
+import com.andres_k.og.models.item.mapping.PlanetRepository;
+import com.andres_k.og.models.item.mapping.Player;
+import com.andres_k.og.models.item.mapping.PlayerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -18,8 +22,6 @@ public class PlayerActivityService {
     PlayerRepository playerRepository;
     @Autowired
     PlanetRepository planetRepository;
-    @Autowired
-    UserActivitiesRepository userActivitiesRepository;
 
     public void saveActivity(Long userId, PlayerActivityHandler playerActivity) {
         // GET PLAYER
@@ -27,25 +29,25 @@ public class PlayerActivityService {
         if (player == null) {
             player = new Player();
             player.setPlayerName(playerActivity.getPlayerName());
+            player.setServer(playerActivity.getServer());
             player.setPlayerAlly(playerActivity.getAllyTag());
-            player.setPlayerRank(playerActivity.getPlayerRank());
-            player.setPlanets(new ArrayList<>());
             player = this.playerRepository.save(player);
         }
 
         // GET PLANET
-        Planet planet = this.planetRepository.findByPlanetPosAndPlayerId(playerActivity.getPlanetPos(), player.getId());
+        Planet planet = this.planetRepository.findByPlanetPos(playerActivity.getPlanetPos());
+        if (planet != null && !planet.getPlayerId().equals(player.getId()))
+        {
+            this.planetRepository.delete(planet);
+            planet = null;
+        }
         if (planet == null) {
             planet = new Planet();
             planet.setMoon((playerActivity.getMoon().equals("true")));
             planet.setPlanetPos(playerActivity.getPlanetPos());
             planet.setServer(playerActivity.getServer());
             planet.setPlayerId(player.getId());
-            planet.setActivityLogs(new ArrayList<>());
             planet = this.planetRepository.save(planet);
-
-            player.getPlanets().add(planet);
-            this.playerRepository.save(player);
         } else {
             planet.setMoon((playerActivity.getMoon().equals("true")));
             planet = this.planetRepository.save(planet);
@@ -54,29 +56,36 @@ public class PlayerActivityService {
 
         LocalDateTime currentDate = LocalDateTime.now();
 
-        ActivityLog activityLog = this.activityLogRepository.findByPlanetIdAndCreationDateIsGreaterThan(planet.getId(), currentDate.plusMinutes(5));
+        ActivityLog activityLog = this.activityLogRepository.findByPlanetPosAndServerAndCreationDateAfter(playerActivity.getPlanetPos(), playerActivity.getServer(), currentDate.minusMinutes(15));
         if (activityLog == null) {
             // CREATE ACTIVITY
             activityLog = new ActivityLog();
+            activityLog.setUserId(userId);
             activityLog.setCreationDate(currentDate);
             activityLog.setActivity(playerActivity.getActivity());
-            planet.getActivityLogs().add(activityLog);
-            this.planetRepository.save(planet);
+            activityLog.setPlanetPos(playerActivity.getPlanetPos());
+            activityLog.setPlayerName(playerActivity.getPlayerName());
+            activityLog.setServer(playerActivity.getServer());
+            activityLog = this.activityLogRepository.save(activityLog);
         }
-
-        UserActivities userActivities = this.userActivitiesRepository.findByUserId(userId);
-        if (userActivities == null) {
-            userActivities = new UserActivities();
-            userActivities.setUserId(userId);
-            List<ActivityLog> values = new ArrayList<>();
-            values.add(activityLog);
-            userActivities.setActivities(values);
-        } else {
-            userActivities.getActivities().add(activityLog);
-        }
-
-        this.userActivitiesRepository.save(userActivities);
     }
 
-
+    public List<ActivityLog> getSelfPlayerActivity(Long userId, String playerName) {
+        return this.activityLogRepository.findAllByUserIdAndPlayerName(userId, playerName);
+    }
+    public List<ActivityLog> getGlobalPlayerActivity(String playerName) {
+        return this.activityLogRepository.findAllByPlayerName(playerName);
+    }
+    public List<ActivityLog> getSelfActivity(Long userId) {
+        return this.activityLogRepository.findAllByUserId(userId);
+    }
+    public List<ActivityLog> getGlobalActivity() {
+        return this.activityLogRepository.findAll();
+    }
+    public List<ActivityLog> getSelfGalaxyActivity(Long userId, String galaxy) {
+        return this.activityLogRepository.findAllByUserIdAndPlanetPosStartingWith(userId, galaxy);
+    }
+    public List<ActivityLog> getGlobalGalaxyActivity(String galaxy) {
+        return this.activityLogRepository.findAllByPlanetPosStartingWith(galaxy);
+    }
 }

@@ -3,7 +3,7 @@ package com.andres_k.og.services;
 import com.andres_k.og.models.auth.Token;
 import com.andres_k.og.models.auth.TokenRepository;
 import com.andres_k.og.models.auth.User;
-import com.andres_k.og.models.auth.custom.TokenResponse;
+import com.andres_k.og.models.http.TokenResponse;
 import com.andres_k.og.utils.managers.TokenManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

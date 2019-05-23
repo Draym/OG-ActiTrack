@@ -1,4 +1,4 @@
-package com.andres_k.og.models.auth.custom;
+package com.andres_k.og.models.http;
 
 public class PlayerActivityHandler {
     private String planetPos;
