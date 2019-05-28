@@ -1,7 +1,6 @@
-import React, { Component, lazy, Suspense } from 'react';
+import React, { Component, lazy } from 'react';
 import { Bar, Line } from 'react-chartjs-2';
 import {
-  Badge,
   Button,
   ButtonDropdown,
   ButtonGroup,
@@ -9,7 +8,6 @@ import {
   Card,
   CardBody,
   CardFooter,
-  CardHeader,
   CardTitle,
   Col,
   Dropdown,
@@ -18,7 +16,6 @@ import {
   DropdownToggle,
   Progress,
   Row,
-  Table,
 } from 'reactstrap';
 import { CustomTooltips } from '@coreui/coreui-plugin-chartjs-custom-tooltips';
 import { getStyle, hexToRgba } from '@coreui/coreui/dist/js/coreui-utilities'

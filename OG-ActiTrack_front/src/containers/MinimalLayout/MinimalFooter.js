@@ -7,7 +7,7 @@ const propTypes = {
 
 const defaultProps = {};
 
-class DefaultFooter extends Component {
+class MinimalFooter extends Component {
   render() {
     return (
       <React.Fragment>
@@ -17,7 +17,7 @@ class DefaultFooter extends Component {
   }
 }
 
-DefaultFooter.propTypes = propTypes;
-DefaultFooter.defaultProps = defaultProps;
+MinimalFooter.propTypes = propTypes;
+MinimalFooter.defaultProps = defaultProps;
 
-export default DefaultFooter;
+export default MinimalFooter;
