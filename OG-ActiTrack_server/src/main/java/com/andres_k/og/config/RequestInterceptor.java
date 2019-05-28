@@ -37,6 +37,8 @@ public class RequestInterceptor implements HandlerInterceptor {
         Console.log("method: " + method);
         Console.log("auth: " + token);
 
+        if (endpoint.contains("/api/error"))
+            return true;
         Restricted restriction = EndpointManager.getRestriction(endpoint);
 
         if (restriction == null || !restriction.tokenRequired())
