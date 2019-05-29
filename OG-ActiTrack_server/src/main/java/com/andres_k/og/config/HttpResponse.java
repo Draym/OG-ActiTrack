@@ -1,5 +1,6 @@
 package com.andres_k.og.config;
 
+@Deprecated
 public class HttpResponse {
     public boolean hasError;
     public Object result;

@@ -1,18 +1,19 @@
 package com.andres_k.og.controllers;
 
-import com.andres_k.og.config.HttpResponse;
 import com.andres_k.og.models.auth.User;
 import com.andres_k.og.models.http.AuthHandler;
 import com.andres_k.og.models.http.TokenResponse;
 import com.andres_k.og.services.AuthService;
 import com.andres_k.og.services.TokenService;
 import com.andres_k.og.services.UserService;
-import com.andres_k.og.utils.tools.TJson;
+import com.andres_k.og.utils.tools.Console;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+
+import javax.persistence.EntityNotFoundException;
 
 @Controller
 public class AuthController {
@@ -26,57 +27,68 @@ public class AuthController {
     @RequestMapping(value = "/auth/login", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<?> login(@RequestBody AuthHandler auth) {
-        HttpResponse response = new HttpResponse();
 
         try {
             User user = this.authService.login(auth.getEmail(), auth.getPassword());
-            response.addResult(this.tokenService.createToken(user, auth.getOrigin()));
-        } catch (Exception ex) {
-            response.addError("Error creating the user:" + ex.toString());
+            TokenResponse result = this.tokenService.createToken(user, auth.getOrigin());
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        } catch (SecurityException ex) {
+            Console.log("[Auth/login]: " + ex.toString());
+            return new ResponseEntity<>("The password is invalid.", HttpStatus.UNAUTHORIZED);
+        } catch (EntityNotFoundException ex) {
+            Console.log("[Auth/login]: " + ex.toString());
+            return new ResponseEntity<>("The email is invalid.", HttpStatus.UNAUTHORIZED);
         }
-        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/auth/register", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<?> register(@RequestBody User user) {
-        HttpResponse response = new HttpResponse();
-
         try {
             this.userService.createUser(user);
-            response.addResult(true);
+            return new ResponseEntity<>(true, HttpStatus.OK);
+        } catch (EntityNotFoundException ex) {
+            Console.log("[Auth/register]: " + ex.toString());
+            return new ResponseEntity<>("An error happened with the user role.", HttpStatus.NOT_FOUND);
         } catch (Exception ex) {
-            response.addError("Error creating the user:" + ex.toString());
-            ex.printStackTrace();
+            Console.log("[Auth/register]: " + ex.toString());
+            return new ResponseEntity<>("The email/pseudo is already used.", HttpStatus.FORBIDDEN);
         }
-        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/auth/validate", method = RequestMethod.GET)
     @ResponseBody
     public ResponseEntity<?> validate(@RequestParam String identifier) {
-        HttpResponse response = new HttpResponse();
-
         try {
             this.authService.validateAccount(identifier);
-            response.addResult(true);
-        } catch (Exception ex) {
-            response.addError("Error validating the account:" + ex.toString());
+            return new ResponseEntity<>(true, HttpStatus.OK);
+        } catch (EntityNotFoundException ex) {
+            Console.log("[Auth/validate]: " + ex.toString());
+            return new ResponseEntity<>("The link is invalid.", HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/auth/token/login", method = RequestMethod.GET)
     @ResponseBody
     public ResponseEntity<?> loginByToken(@RequestHeader String Authorization) {
-        HttpResponse response = new HttpResponse();
-
         try {
             TokenResponse result = this.authService.loginByToken(Authorization);
-            response.addResult(result);
-        } catch (Exception ex) {
-            response.addError("Error validating the account:" + ex.toString());
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        } catch (EntityNotFoundException ex) {
+            Console.log("[Auth/token/login]: " + ex.toString());
+            return new ResponseEntity<>("The token is invalid.", HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/auth/refresh", method = RequestMethod.GET)
+    @ResponseBody
+    public ResponseEntity<?> refresh(@RequestHeader String Authorization) {
+        try {
+            TokenResponse result = this.authService.refreshToken(Authorization);
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        } catch (EntityNotFoundException ex) {
+            Console.log("[Auth/refresh]: " + ex.toString());
+            return new ResponseEntity<>("The token is invalid.", HttpStatus.NOT_FOUND);
+        }
     }
 }

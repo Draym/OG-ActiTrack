@@ -34,4 +34,8 @@ public class AuthorizationService {
 
         return this.userRoleService.isUserAllowed(user, role);
     }
+
+    public boolean isAuthorized(String token) {
+        return this.tokenService.verifyValidity(token);
+    }
 }

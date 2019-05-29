@@ -15,14 +15,20 @@ public class Token {
     @Column(name = "user_id")
     private Long userId;
     @NotNull
-    @Column(name = "expired")
-    private boolean expired;
+    @Column(name = "valid")
+    private boolean valid;
     @NotNull
-    @Column(name = "value")
-    private String value;
+    @Column(name = "token")
+    private String token;
+    @NotNull
+    @Column(name = "tokenBackup")
+    private String tokenBackup;
     @NotNull
     @Column(name = "creation_date")
-    private Date date;
+    private Date creationDate;
+    @NotNull
+    @Column(name = "expiration_date")
+    private Date expirationDate;
     @NotNull
     @Column(name = "origin")
     private String origin;
@@ -35,16 +41,16 @@ public class Token {
         return this.userId;
     }
 
-    public boolean isExpired() {
-        return this.expired;
+    public boolean isValid() {
+        return this.valid;
     }
 
-    public String getValue() {
-        return value;
+    public String getToken() {
+        return token;
     }
 
-    public Date getDate() {
-        return this.date;
+    public Date getCreationDate() {
+        return this.creationDate;
     }
 
     public String getOrigin() {
@@ -59,20 +65,36 @@ public class Token {
         this.userId = userId;
     }
 
-    public void setExpired(boolean expired) {
-        this.expired = expired;
+    public void setValid(boolean valid) {
+        this.valid = valid;
     }
 
-    public void setValue(String value) {
-        this.value = value;
+    public void setToken(String token) {
+        this.token = token;
     }
 
 
-    public void setDate(Date date) {
-        this.date = date;
+    public void setCreationDate(Date creationDate) {
+        this.creationDate = creationDate;
     }
 
     public void setOrigin(String origin) {
         this.origin = origin;
+    }
+
+    public Date getExpirationDate() {
+        return expirationDate;
+    }
+
+    public void setExpirationDate(Date expirationDate) {
+        this.expirationDate = expirationDate;
+    }
+
+    public String getTokenBackup() {
+        return tokenBackup;
+    }
+
+    public void setTokenBackup(String tokenBackup) {
+        this.tokenBackup = tokenBackup;
     }
 }

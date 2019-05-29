@@ -19,21 +19,31 @@ public class TokenService {
     @Autowired
     private TokenRepository tokenRepository;
 
-    private void expirePreviousTokens(User user, String origin) {
-        List<Token> oldTokens = this.tokenRepository.getAllByUserIdAndExpiredIsFalseAndOriginEquals(user.getId(), origin);
-        oldTokens.forEach(item -> item.setExpired(true));
+    public void expirePreviousTokens(User user, String origin) {
+        List<Token> oldTokens = this.tokenRepository.getAllByUserIdAndValidIsTrueAndOriginEquals(user.getId(), origin);
+        oldTokens.forEach(item -> item.setValid(false));
         this.tokenRepository.saveAll(oldTokens);
     }
 
     public TokenResponse createToken(User user, String origin) {
+        return this.createToken(user, origin, TokenManager.generate());
+    }
+
+    public TokenResponse createToken(User user, String origin, String tokenBackup) {
 
         this.expirePreviousTokens(user, origin);
 
         Token token = new Token();
-        token.setExpired(false);
-        token.setValue(TokenManager.generate());
+        token.setValid(true);
+        token.setToken(TokenManager.generate());
+        token.setTokenBackup(tokenBackup);
         token.setUserId(user.getId());
-        token.setDate(new Date());
+        token.setCreationDate(new Date());
+
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.MONTH, 1);
+        token.setExpirationDate(cal.getTime());
+
         token.setOrigin(origin);
         this.tokenRepository.save(token);
 
@@ -46,13 +56,8 @@ public class TokenService {
 
     public boolean verifyValidity(String value) {
         Token token = this.getToken(value);
-
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(token.getDate());
-        cal.add(Calendar.MONTH, 1);
-
-        if (new Date().compareTo(cal.getTime()) > 0) {
-            token.setExpired(true);
+        if (new Date().compareTo(token.getExpirationDate()) > 0) {
+            token.setValid(false);
             this.tokenRepository.save(token);
             throw new SecurityException("The token {" + value + "} has expired.");
         }
@@ -60,11 +65,11 @@ public class TokenService {
     }
 
     public Token getToken(String value) {
-        Optional<Token> optToken = this.tokenRepository.findByValue(value);
+        Optional<Token> optToken = this.tokenRepository.findByToken(value);
 
         if (!optToken.isPresent())
             throw new EntityNotFoundException("The token {" + value + "} doesn't exist.");
-        if (optToken.get().isExpired())
+        if (!optToken.get().isValid())
             throw new NullPointerException("The token {" + value + "} has expired.");
         return optToken.get();
     }

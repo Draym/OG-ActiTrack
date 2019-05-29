@@ -8,7 +8,8 @@ import java.util.Optional;
 
 @Repository
 public interface TokenRepository extends JpaRepository<Token, Long> {
-    List<Token> getAllByUserIdAndExpiredIsFalse(Long userId);
-    List<Token> getAllByUserIdAndExpiredIsFalseAndOriginEquals(Long userId, String origin);
-    Optional<Token> findByValue(String value);
+    List<Token> getAllByUserIdAndValidIsTrue(Long userId);
+    List<Token> getAllByUserIdAndValidIsTrueAndOriginEquals(Long userId, String origin);
+    Optional<Token> findByToken(String token);
+    Optional<Token> findByTokenBackup(String tokenBackup);
 }

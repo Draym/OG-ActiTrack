@@ -7,8 +7,12 @@ public class PasswordManager {
         return THashString.createHash(password);
     }
 
-    public static void verifyPassword(String password, String correct) throws Exception {
-        if (!THashString.compare(password, correct))
+    public static void verifyPassword(String password, String correct) throws SecurityException{
+        try {
+            if (!THashString.compare(password, correct))
+                throw new SecurityException("The password is incorrect");
+        } catch (THashString.InvalidHashException | THashString.CannotPerformOperationException e){
             throw new SecurityException("The password is incorrect");
+        }
     }
 }

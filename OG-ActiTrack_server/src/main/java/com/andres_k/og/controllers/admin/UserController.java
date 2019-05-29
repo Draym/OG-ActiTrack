@@ -5,6 +5,7 @@ import com.andres_k.og.models.auth.ERoles;
 import com.andres_k.og.models.auth.User;
 import com.andres_k.og.services.AuthorizationService;
 import com.andres_k.og.services.UserService;
+import com.andres_k.og.utils.tools.Console;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,32 +23,28 @@ public class UserController {
     @RequestMapping(value = "/user/delete", method = RequestMethod.DELETE)
     @ResponseBody
     public ResponseEntity<?> deleteUser(@RequestHeader String Authorization, @RequestBody Long userId) {
-        HttpResponse response = new HttpResponse();
-
         try {
             if (!this.authorizationService.isAuthorized(ERoles.ADMIN, Authorization))
                 return new ResponseEntity<>("Unauthorized", HttpStatus.UNAUTHORIZED);
             this.userService.deleteUser(userId);
-            response.addResult(true);
+            return new ResponseEntity<>(true, HttpStatus.OK);
         } catch (Exception ex) {
-            response.addError("Error deleting the user:" + ex.toString());
+            Console.log("[User/admin/delete]: " + ex.toString());
+            return new ResponseEntity<>("Error deleting the user:" + ex.toString(), HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/user/update", method = RequestMethod.PUT)
     @ResponseBody
     public ResponseEntity<?> update(@RequestHeader String Authorization, @RequestBody User user) {
-        HttpResponse response = new HttpResponse();
-
         try {
             if (!this.authorizationService.isAuthorized(ERoles.ADMIN, Authorization))
                 return new ResponseEntity<>("Unauthorized", HttpStatus.UNAUTHORIZED);
             User newUser = this.userService.updateUser(user);
-            response.addResult(newUser);
+            return new ResponseEntity<>(newUser, HttpStatus.OK);
         } catch (Exception ex) {
-            response.addError("Error updating the user:" + ex.toString());
+            Console.log("[User/admin/update]: " + ex.toString());
+            return new ResponseEntity<>("Error updating the user:" + ex.toString(), HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }

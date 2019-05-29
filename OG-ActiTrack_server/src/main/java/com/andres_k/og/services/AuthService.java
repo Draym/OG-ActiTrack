@@ -3,6 +3,7 @@ package com.andres_k.og.services;
 import com.andres_k.og.models.auth.*;
 import com.andres_k.og.models.http.TokenResponse;
 import com.andres_k.og.utils.managers.PasswordManager;
+import com.andres_k.og.utils.tools.THashString;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,8 +18,10 @@ public class AuthService {
     private UserActivationRepository userActivationRepository;
     @Autowired
     private TokenRepository tokenRepository;
+    @Autowired
+    private TokenService tokenService;
 
-    public User login(String email, String password) throws Exception {
+    public User login(String email, String password) throws SecurityException{
         User user = this.userRepository.findByEmail(email);
 
         if (user == null)
@@ -31,10 +34,10 @@ public class AuthService {
         return user;
     }
 
-    public TokenResponse loginByToken(String token) throws Exception {
+    public TokenResponse loginByToken(String token) {
         TokenResponse result = new TokenResponse();
 
-        Optional<Token> optToken = this.tokenRepository.findByValue(token);
+        Optional<Token> optToken = this.tokenRepository.findByToken(token);
 
         if (!optToken.isPresent())
             throw new EntityNotFoundException("The token {" + token + "} has not been found.");
@@ -44,6 +47,20 @@ public class AuthService {
         result.setUser(optUser.get());
         result.setToken(optToken.get());
         return result;
+    }
+
+    public TokenResponse refreshToken(String tokenBackup) {
+        Optional<Token> optToken = this.tokenRepository.findByTokenBackup(tokenBackup);
+
+        if (!optToken.isPresent())
+            throw new EntityNotFoundException("The backup token {" + tokenBackup + "} has not been found.");
+        Optional<User> optUser = this.userRepository.findById(optToken.get().getUserId());
+        if (!optUser.isPresent())
+            throw new EntityNotFoundException("The user {" + optToken.get().getUserId() + "} has not been found.");
+
+        this.tokenService.expirePreviousTokens(optUser.get(), optToken.get().getOrigin());
+
+        return this.tokenService.createToken(optUser.get(), optToken.get().getOrigin(), optToken.get().getTokenBackup());
     }
 
     public void validateAccount(String identifier) {

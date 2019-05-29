@@ -1,9 +1,9 @@
 package com.andres_k.og.controllers.admin;
 
-import com.andres_k.og.config.HttpResponse;
 import com.andres_k.og.models.auth.ERoles;
 import com.andres_k.og.services.AuthorizationService;
 import com.andres_k.og.services.UserService;
+import com.andres_k.og.utils.tools.Console;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,16 +21,14 @@ public class UserRoleController {
     @RequestMapping(value = "/user/role/delete", method = RequestMethod.DELETE)
     @ResponseBody
     public ResponseEntity<?> deleteUserRole(@RequestHeader String Authorization, @RequestParam Long userId, @RequestParam Long roleId) {
-        HttpResponse response = new HttpResponse();
-
         try {
             if (!this.authorizationService.isAuthorized(ERoles.ADMIN, Authorization))
                 return new ResponseEntity<>("Unauthorized", HttpStatus.UNAUTHORIZED);
             this.userService.deleteRole(userId, roleId);
-            response.addResult(true);
+            return new ResponseEntity<>(true, HttpStatus.OK);
         } catch (Exception ex) {
-            response.addError("Error deleting the user:" + ex.toString());
+            Console.log("[UserRole/delete]: " + ex.toString());
+            return new ResponseEntity<>("Error deleting the user role:" + ex.toString(), HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }
