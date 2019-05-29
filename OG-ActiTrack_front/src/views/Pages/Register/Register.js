@@ -13,8 +13,8 @@ import {
   Row
 } from 'reactstrap';
 import {AppFooter, AppHeader} from "@coreui/react";
-import MinimalHeader from '../../../containers/MinimalLayout/MinimalHeader';
-import MinimalFooter from '../../../containers/MinimalLayout/MinimalFooter';
+import MinimalHeader from '../../Containers/MinimalLayout/MinimalHeader';
+import MinimalFooter from '../../Containers/MinimalLayout/MinimalFooter';
 
 class Register extends Component {
   url = 'localhost:9090/api/';

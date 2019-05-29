@@ -19,8 +19,8 @@ import {
   AppHeader
 } from "@coreui/react";
 import './login.css';
-import MinimalHeader from '../../../containers/MinimalLayout/MinimalHeader';
-import MinimalFooter from '../../../containers/MinimalLayout/MinimalFooter';
+import MinimalHeader from '../../Containers/MinimalLayout/MinimalHeader';
+import MinimalFooter from '../../Containers/MinimalLayout/MinimalFooter';
 
 class Login extends Component {
   url = 'http://localhost:9090/api/';

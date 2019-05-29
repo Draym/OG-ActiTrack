@@ -1,7 +1,7 @@
 import React, {Component, Suspense} from 'react';
 import {Button, Col, Container, Input, InputGroup, InputGroupAddon, InputGroupText, Row} from 'reactstrap';
-import MinimalHeader from '../../../containers/MinimalLayout/MinimalHeader';
-import MinimalFooter from '../../../containers/MinimalLayout/MinimalFooter';
+import MinimalHeader from '../../Containers/MinimalLayout/MinimalHeader';
+import MinimalFooter from '../../Containers/MinimalLayout/MinimalFooter';
 import {AppFooter, AppHeader} from "@coreui/react";
 
 class Page500 extends Component {

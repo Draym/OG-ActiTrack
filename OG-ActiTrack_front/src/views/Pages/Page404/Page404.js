@@ -1,7 +1,7 @@
 import React, {Component, Suspense} from 'react';
 import {Col, Container, Row} from 'reactstrap';
-import MinimalHeader from '../../../containers/MinimalLayout/MinimalHeader';
-import MinimalFooter from '../../../containers/MinimalLayout/MinimalFooter';
+import MinimalHeader from '../../Containers/MinimalLayout/MinimalHeader';
+import MinimalFooter from '../../Containers/MinimalLayout/MinimalFooter';
 import {AppFooter, AppHeader} from "@coreui/react";
 
 import errorImg from '../../../assets/img/404.png'
@@ -32,8 +32,8 @@ class Page404 extends Component {
                   <Col md="6">
                     <div className="clearfix">
                       <img src={errorImg} alt={imageNotFound()} className="img-center"/>
-                        </div>
-                      {/*
+                    </div>
+                    {/*
                     <InputGroup className="input-prepend">
                       <InputGroupAddon addonType="prepend">
                         <InputGroupText>
@@ -45,20 +45,20 @@ class Page404 extends Component {
                         <Button color="info">Search</Button>
                       </InputGroupAddon>
                     </InputGroup>*/}
-                        </Col>
-                        </Row>
-                        </Container>
-                        </div>
-                        </main>
-                        </div>
-                        <AppFooter>
-                        <Suspense fallback={this.loading()}>
-                        <MinimalFooter/>
-                        </Suspense>
-                        </AppFooter>
-                        </div>
-                        );
-                      }
-                      }
+                  </Col>
+                </Row>
+              </Container>
+            </div>
+          </main>
+        </div>
+        <AppFooter>
+          <Suspense fallback={this.loading()}>
+            <MinimalFooter/>
+          </Suspense>
+        </AppFooter>
+      </div>
+    );
+  }
+}
 
-                      export default Page404;
+export default Page404;

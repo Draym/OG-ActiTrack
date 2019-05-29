@@ -1,7 +1,7 @@
-import React, { Component, Suspense } from 'react';
-import { Route, Switch } from 'react-router-dom';
+import React, {Component, Suspense} from 'react';
+import {Route, Switch} from 'react-router-dom';
 import * as router from 'react-router-dom';
-import { Container } from 'reactstrap';
+import {Container} from 'reactstrap';
 
 import {
   AppAside,
@@ -15,14 +15,14 @@ import {
   AppSidebarNav2 as AppSidebarNav,
 } from '@coreui/react';
 // sidebar nav config
-import navigation from '../../_nav';
+import navigation from '../../../_nav';
 // routes config
-import routes from '../../routes';
+import routes from '../../../routes';
 
-const DefaultFooter = React.lazy(() => import('../DefaultLayout/DefaultFooter'));
-const MinimalHeader = React.lazy(() => import('./MinimalHeader'));
+const DefaultFooter = React.lazy(() => import('./DefaultFooter'));
+const DefaultHeader = React.lazy(() => import('./DefaultHeader'));
 
-class MinimalLayout extends Component {
+class DefaultLayout extends Component {
 
   loading = () => <div className="animated fadeIn pt-1 text-center">Loading...</div>
 
@@ -30,18 +30,18 @@ class MinimalLayout extends Component {
     return (
       <div className="app">
         <AppHeader fixed>
-          <Suspense  fallback={this.loading()}>
-            <MinimalHeader/>
+          <Suspense fallback={this.loading()}>
+            <DefaultHeader {...this.props}/>
           </Suspense>
         </AppHeader>
         <div className="app-body">
           <AppSidebar fixed display="lg">
-            <AppSidebarHeader />
-            <AppSidebarForm />
+            <AppSidebarHeader/>
+            <AppSidebarForm/>
             <Suspense>
               <AppSidebarNav navConfig={navigation} {...this.props} router={router}/>
             </Suspense>
-            <AppSidebarFooter />
+            <AppSidebarFooter/>
           </AppSidebar>
           <main className="main">
             <AppBreadcrumb appRoutes={routes} router={router}/>
@@ -57,23 +57,17 @@ class MinimalLayout extends Component {
                         name={route.name}
                         render={props => (
                           <route.component {...props} />
-                        )} />
+                        )}/>
                     ) : (null);
                   })}
-                  {/*<Redirect from="/" to="/dashboard" /> */}
                 </Switch>
               </Suspense>
             </Container>
           </main>
-          <AppAside fixed>
-            <Suspense fallback={this.loading()}>
-              <DefaultAside />
-            </Suspense>
-          </AppAside>
         </div>
         <AppFooter>
           <Suspense fallback={this.loading()}>
-            <DefaultFooter />
+            <DefaultFooter/>
           </Suspense>
         </AppFooter>
       </div>
@@ -81,4 +75,4 @@ class MinimalLayout extends Component {
   }
 }
 
-export default MinimalLayout;
+export default DefaultLayout;

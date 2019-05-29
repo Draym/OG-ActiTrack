@@ -1,4 +1,4 @@
-import DefaultLayout from './DefaultLayout';
+import DefaultLayout from './DefaultLayout/DefaultLayout';
 import BaseLayout from './MinimalLayout';
 
 export { DefaultLayout, BaseLayout };
