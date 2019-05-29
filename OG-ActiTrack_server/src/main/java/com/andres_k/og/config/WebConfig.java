@@ -20,9 +20,9 @@ public class WebConfig implements WebMvcConfigurer {
     }
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(pagePopulationInterceptor());
+        //registry.addInterceptor(pagePopulationInterceptor());
     }
-/*
+
     @Bean
     public CorsFilter corsFilter() {
         final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
@@ -33,5 +33,5 @@ public class WebConfig implements WebMvcConfigurer {
         config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "OPTIONS", "DELETE", "PATCH"));
         source.registerCorsConfiguration("/**", config);
         return new CorsFilter(source);
-    }*/
+    }
 }

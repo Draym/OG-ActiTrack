@@ -9,6 +9,8 @@ import com.andres_k.og.services.PlayerActivityService;
 import com.andres_k.og.services.UserService;
 import com.andres_k.og.utils.tools.TJson;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,7 +26,7 @@ public class ActivityController {
 
     @RequestMapping(value = "/activity", method = RequestMethod.POST)
     @ResponseBody
-    public String saveActivity(@RequestHeader String Authorization, @RequestBody List<PlayerActivityHandler> playerActivities) {
+    public ResponseEntity<?> saveActivity(@RequestHeader String Authorization, @RequestBody List<PlayerActivityHandler> playerActivities) {
         HttpResponse response = new HttpResponse();
 
         try {
@@ -36,7 +38,7 @@ public class ActivityController {
         } catch (Exception ex) {
             response.addError("Error updating the user:" + ex.toString());
         }
-        return TJson.toString(response);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     /**
@@ -44,7 +46,7 @@ public class ActivityController {
      */
     @RequestMapping(value = "/activity/self", method = RequestMethod.GET)
     @ResponseBody
-    public String getSelfActivity(@RequestHeader String Authorization) {
+    public ResponseEntity<?> getSelfActivity(@RequestHeader String Authorization) {
         HttpResponse response = new HttpResponse();
 
         try {
@@ -54,11 +56,11 @@ public class ActivityController {
         } catch (Exception ex) {
             response.addError("Error updating the user:" + ex.toString());
         }
-        return TJson.toString(response);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
     @RequestMapping(value = "/activity/self/player", method = RequestMethod.GET)
     @ResponseBody
-    public String getSelfPlayerActivity(@RequestHeader String Authorization, @RequestParam String playerName) {
+    public ResponseEntity<?> getSelfPlayerActivity(@RequestHeader String Authorization, @RequestParam String playerName) {
         HttpResponse response = new HttpResponse();
 
         try {
@@ -68,11 +70,11 @@ public class ActivityController {
         } catch (Exception ex) {
             response.addError("Error updating the user:" + ex.toString());
         }
-        return TJson.toString(response);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
     @RequestMapping(value = "/activity/self/galaxy", method = RequestMethod.GET)
     @ResponseBody
-    public String getSelfGalaxyActivity(@RequestHeader String Authorization, @RequestParam String galaxy) {
+    public ResponseEntity<?> getSelfGalaxyActivity(@RequestHeader String Authorization, @RequestParam String galaxy) {
         HttpResponse response = new HttpResponse();
 
         try {
@@ -82,7 +84,7 @@ public class ActivityController {
         } catch (Exception ex) {
             response.addError("Error updating the user:" + ex.toString());
         }
-        return TJson.toString(response);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     /**
@@ -90,7 +92,7 @@ public class ActivityController {
      */
     @RequestMapping(value = "/activity/global", method = RequestMethod.GET)
     @ResponseBody
-    public String getGlobalActivity(@RequestHeader String Authorization) {
+    public ResponseEntity<?> getGlobalActivity(@RequestHeader String Authorization) {
         HttpResponse response = new HttpResponse();
 
         try {
@@ -100,11 +102,11 @@ public class ActivityController {
         } catch (Exception ex) {
             response.addError("Error updating the user:" + ex.toString());
         }
-        return TJson.toString(response);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
     @RequestMapping(value = "/activity/global/player", method = RequestMethod.GET)
     @ResponseBody
-    public String getGlobalPlayerActivity(@RequestHeader String Authorization, @RequestParam String playerName) {
+    public ResponseEntity<?> getGlobalPlayerActivity(@RequestHeader String Authorization, @RequestParam String playerName) {
         HttpResponse response = new HttpResponse();
 
         try {
@@ -114,11 +116,11 @@ public class ActivityController {
         } catch (Exception ex) {
             response.addError("Error updating the user:" + ex.toString());
         }
-        return TJson.toString(response);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
     @RequestMapping(value = "/activity/global/galaxy", method = RequestMethod.GET)
     @ResponseBody
-    public String getGlobalGalaxyActivity(@RequestHeader String Authorization, @RequestParam String galaxy) {
+    public ResponseEntity<?> getGlobalGalaxyActivity(@RequestHeader String Authorization, @RequestParam String galaxy) {
         HttpResponse response = new HttpResponse();
 
         try {
@@ -128,6 +130,6 @@ public class ActivityController {
         } catch (Exception ex) {
             response.addError("Error updating the user:" + ex.toString());
         }
-        return TJson.toString(response);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }

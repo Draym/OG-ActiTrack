@@ -8,6 +8,8 @@ import com.andres_k.og.services.TokenService;
 import com.andres_k.og.services.UserService;
 import com.andres_k.og.utils.tools.TJson;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,7 +23,7 @@ public class UserController {
 
     @RequestMapping(value = "/user/delete", method = RequestMethod.DELETE)
     @ResponseBody
-    public String deleteUser(@RequestHeader String Authorization, @RequestBody Long userId) {
+    public ResponseEntity<?> deleteUser(@RequestHeader String Authorization, @RequestBody Long userId) {
         HttpResponse response = new HttpResponse();
 
         try {
@@ -31,12 +33,12 @@ public class UserController {
         } catch (Exception ex) {
             response.addError("Error deleting the user:" + ex.toString());
         }
-        return TJson.toString(response);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/user/update", method = RequestMethod.PUT)
     @ResponseBody
-    public String update(@RequestHeader String Authorization, @RequestBody User user) {
+    public ResponseEntity<?> update(@RequestHeader String Authorization, @RequestBody User user) {
         HttpResponse response = new HttpResponse();
 
         try {
@@ -46,6 +48,6 @@ public class UserController {
         } catch (Exception ex) {
             response.addError("Error updating the user:" + ex.toString());
         }
-        return TJson.toString(response);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }

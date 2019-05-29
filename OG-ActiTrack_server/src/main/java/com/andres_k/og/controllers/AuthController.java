@@ -9,6 +9,8 @@ import com.andres_k.og.services.TokenService;
 import com.andres_k.og.services.UserService;
 import com.andres_k.og.utils.tools.TJson;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,7 +25,7 @@ public class AuthController {
 
     @RequestMapping(value = "/auth/login", method = RequestMethod.POST)
     @ResponseBody
-    public String login(@RequestBody AuthHandler auth) {
+    public ResponseEntity<?> login(@RequestBody AuthHandler auth) {
         HttpResponse response = new HttpResponse();
 
         try {
@@ -32,12 +34,12 @@ public class AuthController {
         } catch (Exception ex) {
             response.addError("Error creating the user:" + ex.toString());
         }
-        return TJson.toString(response);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/auth/register", method = RequestMethod.POST)
     @ResponseBody
-    public String register(@RequestBody User user) {
+    public ResponseEntity<?> register(@RequestBody User user) {
         HttpResponse response = new HttpResponse();
 
         try {
@@ -47,12 +49,12 @@ public class AuthController {
             response.addError("Error creating the user:" + ex.toString());
             ex.printStackTrace();
         }
-        return TJson.toString(response);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/auth/validate", method = RequestMethod.GET)
     @ResponseBody
-    public String validate(@RequestParam String identifier) {
+    public ResponseEntity<?> validate(@RequestParam String identifier) {
         HttpResponse response = new HttpResponse();
 
         try {
@@ -61,12 +63,12 @@ public class AuthController {
         } catch (Exception ex) {
             response.addError("Error validating the account:" + ex.toString());
         }
-        return TJson.toString(response);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/auth/token/login", method = RequestMethod.GET)
     @ResponseBody
-    public String loginByToken(@RequestHeader String Authorization) {
+    public ResponseEntity<?> loginByToken(@RequestHeader String Authorization) {
         HttpResponse response = new HttpResponse();
 
         try {
@@ -75,6 +77,6 @@ public class AuthController {
         } catch (Exception ex) {
             response.addError("Error validating the account:" + ex.toString());
         }
-        return TJson.toString(response);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }

@@ -15,7 +15,6 @@ public class UserRoleService {
     UserRoleRepository userRoleRepository;
 
     public boolean isUserAllowed(User user, List<ERoles> allowed) {
-
         List<UserRole> userRoles = this.userRoleRepository.getAllByUserId(user.getId());
 
         for (ERoles role : allowed) {
@@ -23,6 +22,16 @@ public class UserRoleService {
                 if (role.isEquals(userRole.getRole()))
                     return true;
             }
+        }
+        return false;
+    }
+
+    public boolean isUserAllowed(User user, ERoles required) {
+        List<UserRole> userRoles = this.userRoleRepository.getAllByUserId(user.getId());
+
+        for (UserRole userRole : userRoles) {
+            if (required.isEquals(userRole.getRole()))
+                return true;
         }
         return false;
     }
