@@ -1,10 +1,9 @@
 import React, {Component, Suspense} from 'react';
-import {Route, Switch} from 'react-router-dom';
+import {Route, Switch, Redirect} from 'react-router-dom';
 import * as router from 'react-router-dom';
 import {Container} from 'reactstrap';
 
 import {
-  AppAside,
   AppFooter,
   AppHeader,
   AppSidebar,
@@ -21,6 +20,8 @@ import routes from '../../../routes';
 
 const DefaultFooter = React.lazy(() => import('./DefaultFooter'));
 const DefaultHeader = React.lazy(() => import('./DefaultHeader'));
+
+const Page404 = React.lazy(() => import('../../Pages/Page404'));
 
 class DefaultLayout extends Component {
 
@@ -60,6 +61,7 @@ class DefaultLayout extends Component {
                         )}/>
                     ) : (null);
                   })}
+                  <Redirect path="*" to="/404" />
                 </Switch>
               </Suspense>
             </Container>

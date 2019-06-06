@@ -2,16 +2,16 @@ import React, { Component } from 'react';
 import { Card, CardBody, CardHeader, Col, Row, Table } from 'reactstrap';
 
 
-class Profile extends Component {
+class Home extends Component {
 
   render() {
 
     return (
       <div className="animated fadeIn">
-profile
+home
       </div>
     )
   }
 }
 
-export default Profile;
+export default Home;

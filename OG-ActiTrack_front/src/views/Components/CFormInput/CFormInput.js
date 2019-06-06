@@ -9,9 +9,6 @@ import {
 import TString from "../../../Utils/TString";
 
 class CFormInput extends Component {
-  constructor(props) {
-    super(props);
-  }
 
   render() {
     let renderInput = function (icon, type, placeHolder, autoComplete, value, onChange, error) {
@@ -41,7 +38,7 @@ class CFormInput extends Component {
           </InputGroup>
         );
       }
-    }.bind(this);
+    }
     return (
       <div>
         {renderInput(this.props.icon, this.props.type, this.props.placeHolder, this.props.autoComplete, this.props.value, this.props.onChange, this.props.error)}

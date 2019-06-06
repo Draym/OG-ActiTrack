@@ -15,7 +15,6 @@ const ValidateAccount = React.lazy(() => import('./views/Pages/ValidateAccount')
 const ForgotPassword = React.lazy(() => import('./views/Pages/ForgotPassword'));
 const ResetPassword = React.lazy(() => import('./views/Pages/ResetPassword'));
 const Page404 = React.lazy(() => import('./views/Pages/Page404'));
-const Page500 = React.lazy(() => import('./views/Pages/Page500'));
 
 class App extends Component {
 
@@ -30,7 +29,6 @@ class App extends Component {
               <Route exact path="/auth/forgot-password" name="Forgot Password" render={props => <ForgotPassword {...props}/>} />
               <Route exact path="/auth/reset-password/:token" name="Reset Password" render={props => <ResetPassword {...props}/>} />
               <Route exact path="/404" name="Page 404" render={props => <Page404 {...props}/>} />
-              <Route exact path="/500" name="Page 500" render={props => <Page500 {...props}/>} />
               <Route path="/" name="Home" render={props => <DefaultLayout {...props}/>} />
             </Switch>
           </React.Suspense>

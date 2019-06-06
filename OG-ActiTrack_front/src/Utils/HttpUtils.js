@@ -17,8 +17,6 @@ let HttpUtils = function() {
       response.json().then(function (data) {
         cbSuccess(data);
       });
-    } else if (response.status === 500) {
-      window.location.pathname = "/500";
     } else if (response.status === 404) {
       window.location.pathname = "/404";
     } else {

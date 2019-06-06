@@ -8,7 +8,7 @@ class Premium extends Component {
 
     return (
       <div className="animated fadeIn">
-
+premium
       </div>
     )
   }

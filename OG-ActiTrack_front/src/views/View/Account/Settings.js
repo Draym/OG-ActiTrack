@@ -8,7 +8,7 @@ class Settings extends Component {
 
     return (
       <div className="animated fadeIn">
-
+settings
       </div>
     )
   }

@@ -1,6 +1,6 @@
 {
-  "name": "Profile",
+  "name": "Home",
   "version": "0.0.0",
   "private": true,
-  "main": ""
+  "main": "Home.js"
 }
