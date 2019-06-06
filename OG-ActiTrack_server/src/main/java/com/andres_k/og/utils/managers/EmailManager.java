@@ -18,6 +18,23 @@ public class EmailManager {
     private final Properties properties;
     private final Session session;
 
+    private void addFooter(StringBuilder body) {
+        body.append("<br/>");
+        body.append("You can contact us, by replying this email.");
+        body.append("<br/>");
+        body.append("<br/>");
+        body.append("Regards, Draymlab.fr");
+    }
+
+    private void addVerificationLink(StringBuilder body, String verificationLink) {
+        body.append("<br/>");
+        body.append("<a target=\"_blank\" rel=\"noopener noreferrer\" href=\"");
+        body.append(verificationLink);
+        body.append("\">");
+        body.append(verificationLink);
+        body.append("</a>");
+    }
+
     public void sendVerification(User user, String verification) throws MessagingException {
         String subject = "Verification email for " + Configs.get().value("website_name");
         String verificationLink = Configs.get().value("verification_url") + verification;
@@ -29,12 +46,26 @@ public class EmailManager {
         body.append("<br/>");
         body.append("<br/>");
         body.append("Please click on this link in order to validate your account:");
+        this.addVerificationLink(body, verificationLink);
+        this.addFooter(body);
+        this.send(user.getEmail(), subject, body.toString());
+    }
+
+    public void sendPasswordForget(User user, String verification) throws MessagingException {
+        String subject = "Password reset for " + Configs.get().value("website_name");
+        String verificationLink = Configs.get().value("password_forget_url") + verification;
+
+        StringBuilder body = new StringBuilder();
+        body.append(user.getPseudo());
+        body.append(", we have received a password reset request on ");
+        body.append(this.properties.getProperty("website"));
         body.append("<br/>");
-        body.append("<a target=\"_blank\" rel=\"noopener noreferrer\" href=\"");
-        body.append(verificationLink);
-        body.append("\">");
-        body.append(verificationLink);
-        body.append("</a>");
+        body.append("<br/>");
+        body.append("Please click on this link in order to reset your password:");
+        this.addVerificationLink(body, verificationLink);
+        body.append("<br/>");
+        body.append("If the request has not been made by yourself, do not worry, your password has not been compromise.");
+        this.addFooter(body);
 
         this.send(user.getEmail(), subject, body.toString());
     }

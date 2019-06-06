@@ -1,12 +1,12 @@
-package com.andres_k.og.models.auth;
+package com.andres_k.og.models.auth.link;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
 
-@Entity(name = "UserActivation")
-@Table(name = "user_activation")
-public class UserActivation {
+@Entity(name = "PasswordSecurityLink")
+@Table(name = "password_security_link")
+public class PasswordSecurityLink {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -17,6 +17,8 @@ public class UserActivation {
     @NotNull
     @Column(name = "key_identifier")
     private String identifier;
+    @Column(name = "valid")
+    private boolean valid;
     @Column(name = "activation_date")
     private Date date;
 
@@ -33,9 +35,6 @@ public class UserActivation {
         return this.identifier;
     }
 
-    public Date getDate() {
-        return this.date;
-    }
 
     public void setId(Long id) {
         this.id = id;
@@ -47,6 +46,18 @@ public class UserActivation {
 
     public void setIdentifier(String identifier) {
         this.identifier = identifier;
+    }
+
+    public boolean isValid() {
+        return valid;
+    }
+
+    public void setValid(boolean valid) {
+        this.valid = valid;
+    }
+
+    public Date getDate() {
+        return date;
     }
 
     public void setDate(Date date) {

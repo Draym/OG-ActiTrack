@@ -30,7 +30,7 @@ public class UserController {
             return new ResponseEntity<>(true, HttpStatus.OK);
         } catch (Exception ex) {
             Console.log("[User/admin/delete]: " + ex.toString());
-            return new ResponseEntity<>("Error deleting the user:" + ex.toString(), HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(ex.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
         }
     }
 
@@ -44,7 +44,7 @@ public class UserController {
             return new ResponseEntity<>(newUser, HttpStatus.OK);
         } catch (Exception ex) {
             Console.log("[User/admin/update]: " + ex.toString());
-            return new ResponseEntity<>("Error updating the user:" + ex.toString(), HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(ex.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
         }
     }
 }

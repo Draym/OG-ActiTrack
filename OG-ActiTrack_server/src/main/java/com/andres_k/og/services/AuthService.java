@@ -1,13 +1,23 @@
 package com.andres_k.og.services;
 
 import com.andres_k.og.models.auth.*;
+import com.andres_k.og.models.auth.link.PasswordSecurityLink;
+import com.andres_k.og.models.auth.link.PasswordSecurityLinkRepository;
+import com.andres_k.og.models.auth.link.UserActivationLink;
+import com.andres_k.og.models.auth.link.UserActivationLinkRepository;
+import com.andres_k.og.models.http.PasswordHandler;
 import com.andres_k.og.models.http.TokenResponse;
+import com.andres_k.og.utils.managers.EmailManager;
 import com.andres_k.og.utils.managers.PasswordManager;
+import com.andres_k.og.utils.managers.TokenManager;
 import com.andres_k.og.utils.tools.THashString;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.mail.MessagingException;
 import javax.persistence.EntityNotFoundException;
+import java.io.IOException;
+import java.util.Date;
 import java.util.Optional;
 
 @Service
@@ -15,17 +25,23 @@ public class AuthService {
     @Autowired
     private UserRepository userRepository;
     @Autowired
-    private UserActivationRepository userActivationRepository;
+    private UserActivationLinkRepository userActivationLinkRepository;
     @Autowired
     private TokenRepository tokenRepository;
     @Autowired
+    private PasswordSecurityLinkRepository passwordSecurityLinkRepository;
+    @Autowired
+    private SecurityLinkService securityLinkService;
+    @Autowired
     private TokenService tokenService;
 
-    public User login(String email, String password) throws SecurityException{
-        User user = this.userRepository.findByEmail(email);
+    public User login(String email, String password) throws SecurityException, InternalError {
+        Optional<User> optUser = this.userRepository.findByEmail(email);
 
-        if (user == null)
-            throw new EntityNotFoundException("Cannot find user [email=" + email + "]");
+        if (!optUser.isPresent())
+            throw new EntityNotFoundException("No user found for the given email.");
+        User user = optUser.get();
+
         PasswordManager.verifyPassword(password, user.getPassword());
         if (user.getEnabled() == 0)
             throw new SecurityException("Please verify your email address.");
@@ -64,7 +80,7 @@ public class AuthService {
     }
 
     public void validateAccount(String identifier) {
-        Optional<UserActivation> optUserActivation = this.userActivationRepository.findByIdentifier(identifier);
+        Optional<UserActivationLink> optUserActivation = this.userActivationLinkRepository.findByIdentifier(identifier);
 
         if (!optUserActivation.isPresent())
             throw new EntityNotFoundException("The identifier link {" + identifier + "} is invalid.");
@@ -76,5 +92,39 @@ public class AuthService {
 
         optUser.get().setEnabled(1);
         this.userRepository.save(optUser.get());
+    }
+
+
+    public void resetPassword(PasswordHandler password) {
+        PasswordSecurityLink passwordSecurityLink = this.securityLinkService.getPasswordSecurityLink(password.getResetToken());
+        Optional<User> optUser = this.userRepository.findById(passwordSecurityLink.getUserId());
+
+        if (!optUser.isPresent())
+            throw new EntityNotFoundException("No user found for the given id.");
+
+        User user = optUser.get();
+        user.setPassword(PasswordManager.hashPassword(password.getPassword()));
+        this.userRepository.save(user);
+
+        passwordSecurityLink.setValid(false);
+        this.passwordSecurityLinkRepository.save(passwordSecurityLink);
+    }
+
+    public void forgetPassword(String email) throws IOException, MessagingException {
+        Optional<User> optUser = this.userRepository.findByEmail(email);
+
+        if (!optUser.isPresent())
+            throw new EntityNotFoundException("No user found for the given email.");
+
+        User user = optUser.get();
+
+        PasswordSecurityLink passwordSecurityLink = new PasswordSecurityLink();
+        passwordSecurityLink.setDate(new Date());
+        passwordSecurityLink.setUserId(user.getId());
+        passwordSecurityLink.setIdentifier(TokenManager.generate());
+        passwordSecurityLink.setValid(true);
+        this.passwordSecurityLinkRepository.save(passwordSecurityLink);
+
+        EmailManager.get().sendPasswordForget(user, passwordSecurityLink.getIdentifier());
     }
 }

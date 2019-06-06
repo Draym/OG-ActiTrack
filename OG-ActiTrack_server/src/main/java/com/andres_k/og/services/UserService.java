@@ -2,8 +2,14 @@ package com.andres_k.og.services;
 
 import com.andres_k.og.models.auth.User;
 import com.andres_k.og.models.auth.*;
+import com.andres_k.og.models.auth.link.UserActivationLink;
+import com.andres_k.og.models.auth.link.UserActivationLinkRepository;
+import com.andres_k.og.models.auth.user.UserRole;
+import com.andres_k.og.models.auth.user.UserRoleRepository;
+import com.andres_k.og.models.http.RegisterHandler;
 import com.andres_k.og.utils.managers.EmailManager;
 import com.andres_k.og.utils.managers.PasswordManager;
+import com.andres_k.og.utils.tools.THashString;
 import com.andres_k.og.utils.tools.TRandomString;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,7 +25,7 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
     @Autowired
-    private UserActivationRepository userActivationRepository;
+    private UserActivationLinkRepository userActivationLinkRepository;
     @Autowired
     private UserRoleRepository userRoleRepository;
     @Autowired
@@ -27,16 +33,20 @@ public class UserService {
     @Autowired
     private TokenService tokenService;
 
-    public User createUser(User user) throws Exception {
-        if (this.userRepository.existsUserByEmail(user.getEmail()))
-            throw new Exception("The email '" + user.getEmail() + "' is already used.");
-        else if (this.userRepository.existsUserByPseudo(user.getPseudo()))
-            throw new Exception("The pseudo '" + user.getPseudo() + "' is already used.");
+    public User createUser(RegisterHandler auth) throws InternalError, SecurityException, IOException, MessagingException {
+        if (this.userRepository.existsUserByEmail(auth.getEmail()))
+            throw new SecurityException("The email '" + auth.getEmail() + "' is already used.");
+        else if (this.userRepository.existsUserByPseudo(auth.getPseudo()))
+            throw new SecurityException("The pseudo '" + auth.getPseudo() + "' is already used.");
         else {
             // update user
-            user.setPassword(PasswordManager.hashPassword(user.getPassword()));
+            User user = new User();
+            user.setEmail(auth.getEmail());
+            user.setPseudo(auth.getPseudo());
+            user.setPassword(PasswordManager.hashPassword(auth.getPassword()));
             user.setEnabled(0);
             user.setDate(new Date());
+            user.setPremium(false);
 
             // createToken user role USER
             UserRole userRole = new UserRole();
@@ -95,7 +105,7 @@ public class UserService {
             throw new EntityNotFoundException("Cannot find user [id=" + id + "]");
         this.userRepository.delete(optUser.get());
         this.userRoleRepository.deleteAllByUserId(id);
-        this.userActivationRepository.deleteAllByUserId(id);
+        this.userActivationLinkRepository.deleteAllByUserId(id);
     }
 
     public void deleteRole(Long userId, Long roleId) {
@@ -109,14 +119,14 @@ public class UserService {
     }
 
     private void sendVerificationUserEmail(User user) throws IOException, MessagingException {
-        // createToken UserActivation
-        UserActivation userActivation = new UserActivation();
-        userActivation.setDate(new Date());
-        userActivation.setUserId(user.getId());
-        userActivation.setIdentifier(TRandomString.get().generate());
-        this.userActivationRepository.save(userActivation);
+        // createToken UserActivationLink
+        UserActivationLink userActivationLink = new UserActivationLink();
+        userActivationLink.setDate(new Date());
+        userActivationLink.setUserId(user.getId());
+        userActivationLink.setIdentifier(TRandomString.get().generate());
+        this.userActivationLinkRepository.save(userActivationLink);
 
         // send verification email
-        EmailManager.get().sendVerification(user, userActivation.getIdentifier());
+        EmailManager.get().sendVerification(user, userActivationLink.getIdentifier());
     }
 }

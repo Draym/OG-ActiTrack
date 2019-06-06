@@ -1,4 +1,6 @@
-package com.andres_k.og.models.auth;
+package com.andres_k.og.models.auth.user;
+
+import com.andres_k.og.models.auth.Role;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;

@@ -5,6 +5,7 @@ import com.andres_k.og.config.Restricted;
 import com.andres_k.og.models.auth.ERoles;
 import com.andres_k.og.models.auth.Token;
 import com.andres_k.og.models.auth.User;
+import com.andres_k.og.models.http.PasswordHandler;
 import com.andres_k.og.services.AuthorizationService;
 import com.andres_k.og.services.TokenService;
 import com.andres_k.og.services.UserService;
@@ -38,7 +39,7 @@ public class UserController {
             return new ResponseEntity<>(true, HttpStatus.OK);
         } catch (Exception ex) {
             Console.log("[User/delete]: " + ex.toString());
-            return new ResponseEntity<>("Error deleting the user:" + ex.toString(), HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(ex.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
         }
     }
 
@@ -51,9 +52,12 @@ public class UserController {
             Token tokenValue = this.tokenService.getToken(Authorization);
             User newUser = this.userService.updateUser(user, tokenValue);
             return new ResponseEntity<>(newUser, HttpStatus.OK);
+        } catch (SecurityException ex) {
+            Console.log("[User/update]: " + ex.toString());
+            return new ResponseEntity<>(ex.getMessage(), HttpStatus.UNAUTHORIZED);
         } catch (Exception ex) {
             Console.log("[User/update]: " + ex.toString());
-            return new ResponseEntity<>("Error updating the user:" + ex.toString(), HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(ex.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
         }
     }
 }

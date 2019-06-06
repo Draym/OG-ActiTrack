@@ -29,6 +29,9 @@ public class User {
     @NotNull
     @Column(name = "created_date")
     private Date date;
+    @NotNull
+    @Column(name = "premium")
+    private boolean premium;
 
     public void copy(User user) throws THashString.CannotPerformOperationException {
         if (user.password != null)
@@ -85,5 +88,13 @@ public class User {
 
     public void setDate(Date date) {
         this.date = date;
+    }
+
+    public boolean isPremium() {
+        return premium;
+    }
+
+    public void setPremium(boolean premium) {
+        this.premium = premium;
     }
 }

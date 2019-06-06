@@ -28,7 +28,7 @@ public class UserRoleController {
             return new ResponseEntity<>(true, HttpStatus.OK);
         } catch (Exception ex) {
             Console.log("[UserRole/delete]: " + ex.toString());
-            return new ResponseEntity<>("Error deleting the user role:" + ex.toString(), HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(ex.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
         }
     }
 }
