@@ -4,3 +4,17 @@
   margin-left: auto;
   margin-right: auto;
 }
+
+.minimalFooter {
+  margin-left: 0 !important;
+}
+
+.card-empty-background {
+  background-color: #fff !important;
+}
+
+.card-border-full {
+  border-width: 1.5px !important;
+  border-style: solid;
+}
+

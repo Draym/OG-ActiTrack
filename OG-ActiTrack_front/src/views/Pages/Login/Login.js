@@ -8,28 +8,29 @@ import {
   Col,
   Container,
   Form,
-  Input,
-  InputGroup,
-  InputGroupAddon,
-  InputGroupText,
   Row
 } from 'reactstrap';
 import {
   AppFooter,
   AppHeader
 } from "@coreui/react";
-import './login.css';
 import MinimalHeader from '../../Containers/MinimalLayout/MinimalHeader';
 import MinimalFooter from '../../Containers/MinimalLayout/MinimalFooter';
+import HttpUtils from "../../../Utils/HttpUtils";
+import TString from "../../../Utils/TString";
+import CFormInput from "../../Components/CFormInput/CFormInput";
+import UserSession from "../../../Utils/UserSession";
+import '../custom.css';
+import './login.css';
 
 class Login extends Component {
-  url = 'http://localhost:9090/api/';
-
   constructor(props) {
     super(props);
     this.state = {
       email: '',
-      password: ''
+      password: '',
+      errorEmail: '',
+      errorPassword: ''
     };
     this.triggerLogin = this.triggerLogin.bind(this);
     this.triggerForgotPassword = this.triggerForgotPassword.bind(this);
@@ -38,54 +39,49 @@ class Login extends Component {
   }
 
 
-  loading = () => <div className="animated fadeIn pt-1 text-center">Loading...</div>
+  loading = () => <div className="animated fadeIn pt-1 text-center">Loading...</div>;
 
   triggerLogin(event) {
     event.preventDefault();
     console.log("Login", this.state);
-    if (!this.state.password || !this.state.email)
+    if (TString.isNull(this.state.password) || TString.isNull(this.state.email)) {
+      this.setState({
+        errorEmail: (TString.isNull(this.state.email) ? 'Please enter an email.' : ''),
+        errorPassword: (TString.isNull(this.state.password) ? 'Please enter a password.' : '')
+      });
       return;
+    }
     console.log("fetch");
     let auth = {
       'email': this.state.email,
       'password': this.state.password,
       'origin': 'OG-ActiTrack_front'
     };
-    fetch(this.url + 'auth/login', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(auth)
-    }).then(response => {
-      console.log(response);
-      if (response.status === 200) {
-        response.json().then(function (data) {
-          if (!data.hasError) {
-            console.log(data.result);
-          } else {
-            console.log(data.error);
-          }
-        });
-      } else {
-
+    HttpUtils().POST(process.env.REACT_APP_SERVER_URL, '/auth/login', auth, function (data) {
+      console.log(data);
+      if (data) {
+        UserSession.storeSession(data);
+        this.props.history.push("/");
       }
-    }).catch(error => {
+    }.bind(this), function (errorStatus, error) {
       console.log(error);
-    });
-    return false;
+      this.setState({
+        errorEmail: (error.indexOf("password") === -1 ? error : ''),
+        errorPassword: (error.indexOf("password") !== -1 ? error : '')
+      });
+    }.bind(this));
   }
 
   triggerForgotPassword() {
-
+    this.props.history.push("/auth/forgot-password");
   }
 
   handleEmailChange(event) {
-    this.setState({email: event.target.value});
+    this.setState({email: event.target.value, errorEmail: ''});
   }
 
   handlePasswordChange(event) {
-    this.setState({password: event.target.value});
+    this.setState({password: event.target.value, errorPassword: ''});
   }
 
   render() {
@@ -108,24 +104,12 @@ class Login extends Component {
                           <Form>
                             <h1>Login</h1>
                             <p className="text-muted">Sign In to your account</p>
-                            <InputGroup className="mb-3">
-                              <InputGroupAddon addonType="prepend">
-                                <InputGroupText>
-                                  <i className="icon-user"></i>
-                                </InputGroupText>
-                              </InputGroupAddon>
-                              <Input type="text" placeholder="Email" autoComplete="email" value={this.state.email}
-                                     onChange={this.handleEmailChange}/>
-                            </InputGroup>
-                            <InputGroup className="mb-4">
-                              <InputGroupAddon addonType="prepend">
-                                <InputGroupText>
-                                  <i className="icon-lock"></i>
-                                </InputGroupText>
-                              </InputGroupAddon>
-                              <Input type="password" placeholder="Password" autoComplete="current-password"
-                                     value={this.state.password} onChange={this.handlePasswordChange}/>
-                            </InputGroup>
+                            <CFormInput icon={"fa fa-at"} type={"text"} placeHolder={"Email"} autoComplete={"email"}
+                                        value={this.state.email} onChange={this.handleEmailChange}
+                                        error={this.state.errorEmail}/>
+                            <CFormInput icon={"icon-lock"} type={"password"} placeHolder={"Password"}
+                                        autoComplete={"current-password"} value={this.state.password}
+                                        onChange={this.handlePasswordChange} error={this.state.errorPassword}/>
                             <Row>
                               <Col xs="6">
                                 <Button color="primary" className="px-4" type="submit"
@@ -157,7 +141,7 @@ class Login extends Component {
             </div>
           </main>
         </div>
-        <AppFooter>
+        <AppFooter className="minimalFooter">
           <Suspense fallback={this.loading()}>
             <MinimalFooter/>
           </Suspense>

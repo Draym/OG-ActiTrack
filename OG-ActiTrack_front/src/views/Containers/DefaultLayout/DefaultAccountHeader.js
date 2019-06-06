@@ -33,12 +33,12 @@ class DefaultAccountHeader extends Component {
   }
   goProfile(e) {
     e.preventDefault();
-    this.props.history.push('/account' + UserSession.getPseudo());
+    this.props.history.push('/account/' + UserSession.getPseudo());
   }
 
   goPremium(e) {
     e.preventDefault();
-    this.props.history.push('/account' + UserSession.getPseudo() + '/premium');
+    this.props.history.push('/account/' + UserSession.getPseudo() + '/premium');
   }
 
   goSettings(e) {

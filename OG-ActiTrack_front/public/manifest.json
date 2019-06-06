@@ -3,7 +3,7 @@
   "name": "Activity Tracker",
   "icons": [
     {
-      "src": "./assets/img/favicon.png",
+      "src": "./assets/img/brand/logo-i.png",
       "sizes": "100x100",
       "type": "image/png"
     }

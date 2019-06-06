@@ -1,0 +1,21 @@
+
+.validate-bloc button {
+  margin-top: 2rem;
+}
+
+.validate-bloc h4,.validate-bloc h6 {
+  margin-bottom: 15px;
+}
+
+.validate-bloc {
+  padding-bottom: 1.5rem !important;
+}
+
+.p-5{
+  padding-bottom: 2rem !important;
+  padding-top: 1.2rem !important;
+}
+
+.p-5 h1, .p-5 h2 {
+  margin-bottom: 1rem;
+}

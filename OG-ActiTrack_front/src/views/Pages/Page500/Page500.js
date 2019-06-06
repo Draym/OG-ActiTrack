@@ -42,7 +42,7 @@ class Page500 extends Component {
             </div>
           </main>
         </div>
-        <AppFooter>
+        <AppFooter className="minimalFooter">
           <Suspense fallback={this.loading()}>
             <MinimalFooter/>
           </Suspense>

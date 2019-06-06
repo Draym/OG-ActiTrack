@@ -23,7 +23,7 @@ class UserSession {
   static clearSession() {
     localStorage.removeItem(this.sessionKey());
   }
-  static loadSession(data) {
+  static storeSession(data) {
     localStorage.setItem(this.sessionKey(), JSON.stringify(data));
   }
 
