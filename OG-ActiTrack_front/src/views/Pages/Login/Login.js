@@ -20,6 +20,7 @@ import HttpUtils from "../../../Utils/HttpUtils";
 import TString from "../../../Utils/TString";
 import CFormInput from "../../Components/CFormInput/CFormInput";
 import UserSession from "../../../Utils/UserSession";
+import { withTranslation } from 'react-i18next';
 import '../custom.css';
 import './login.css';
 
@@ -85,6 +86,7 @@ class Login extends Component {
   }
 
   render() {
+    const { t, i18n } = this.props;
     return (
       <div className="app">
         <AppHeader fixed>
@@ -126,10 +128,10 @@ class Login extends Component {
                       <Card className="text-white bg-primary py-5 d-md-down-none" style={{width: '44%'}}>
                         <CardBody className="text-center">
                           <div>
-                            <h2>Sign up</h2>
-                            <p>If you do not have an account yet, please sign up. It only takes a few click.</p>
+                            <h2>{t('page.login.signUp.title')}</h2>
+                            <p>{t('page.login.signUp.txtBody')}</p>
                             <Link to="/register">
-                              <Button color="primary" className="mt-3" active tabIndex={-1}>Register Now!</Button>
+                              <Button color="primary" className="mt-3" active tabIndex={-1}>{t('page.login.signUp.btnRegister')}</Button>
                             </Link>
                           </div>
                         </CardBody>
@@ -151,4 +153,4 @@ class Login extends Component {
   }
 }
 
-export default Login;
+export default withTranslation()(Login);

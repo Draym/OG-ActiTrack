@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 
 import {AppHeaderDropdown} from '@coreui/react';
 import UserSession from "../../../Utils/UserSession";
+import { withTranslation } from 'react-i18next';
 
 const propTypes = {
   children: PropTypes.node,
@@ -47,23 +48,35 @@ class DefaultAccountHeader extends Component {
   }
 
   render() {
+
+    const { t, i18n } = this.props;
+
+    const changeLanguage = lng => {
+      i18n.changeLanguage(lng);
+    };
+
     let getProfileDropDown = function() {
       if (UserSession.hasSession()) {
         return (
           <DropdownMenu right style={{right: 'auto'}}>
-            <DropdownItem header tag="div" className="text-center"><strong>Account</strong></DropdownItem>
-            <DropdownItem onClick={this.goProfile}><i className="fa fa-user"/> Profile</DropdownItem>
+            <DropdownItem header tag="div" className="text-center"><strong>{t('header.account.title')}</strong></DropdownItem>
+            <DropdownItem onClick={this.goProfile}><i className="fa fa-user"/>{t('account.profile')}</DropdownItem>
             <DropdownItem onClick={this.goPremium}><i className="fa fa-star"
-                                                              style={{color: 'yellow'}}/> Premium</DropdownItem>
-            <DropdownItem onClick={this.goSettings}><i className="fa fa-wrench"/> Settings</DropdownItem>
+                                                              style={{color: '#ffe200'}}/> {t('header.account.premium')}</DropdownItem>
+            <DropdownItem onClick={this.goSettings}><i className="fa fa-wrench"/> {t('header.account.settings')}</DropdownItem>
             <DropdownItem divider/>
-            <DropdownItem onClick={this.signOut}><i className="fa fa-lock"/> Sign out</DropdownItem>
+            <DropdownItem onClick={this.signOut}><i className="fa fa-lock"/> {t('header.account.signOut')}</DropdownItem>
+
+            <button onClick={() => changeLanguage('fr')}>fr</button>
+            <button onClick={() => changeLanguage('en')}>en</button>
           </DropdownMenu>);
       } else {
         return (
           <DropdownMenu right style={{right: 'auto'}}>
-            <DropdownItem header tag="div" className="text-center"><strong>Account</strong></DropdownItem>
-            <DropdownItem onClick={this.signIn}><i className="fa fa-user-o"/> Sign in</DropdownItem>
+            <DropdownItem header tag="div" className="text-center"><strong>{t('header.account.title')}</strong></DropdownItem>
+            <button onClick={() => changeLanguage('fr')}>fr</button>
+            <button onClick={() => changeLanguage('en')}>en</button>
+            <DropdownItem onClick={this.signIn}><i className="fa fa-user-o"/> {t('header.account.signIn')}</DropdownItem>
           </DropdownMenu>);
       }
     }.bind(this);
@@ -84,4 +97,4 @@ class DefaultAccountHeader extends Component {
 DefaultAccountHeader.propTypes = propTypes;
 DefaultAccountHeader.defaultProps = defaultProps;
 
-export default DefaultAccountHeader;
+export default  withTranslation()(DefaultAccountHeader);

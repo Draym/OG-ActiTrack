@@ -1,0 +1,22 @@
+{
+  "header": {
+    "account": {
+      "title": "Account",
+      "profile": "Profile",
+      "premium": "Premium",
+      "settings": "Settings",
+      "signIn": "Sign in",
+      "signOut": "Sign out"
+    }
+  },
+  "page": {
+    "login": {
+      "title": "",
+      "signUp": {
+        "title": "Créer un compte",
+        "txtBody": "If you do not have an account yet, please sign up. It only takes a few click.",
+        "btnRegister": "S'enregistrer maintenant!"
+      }
+    }
+  }
+}
