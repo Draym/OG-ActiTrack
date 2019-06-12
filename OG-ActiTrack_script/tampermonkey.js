@@ -75,60 +75,69 @@
     {
         var galaxyRows = new Array();
         var rows = $('tr.row');
+        var galaxySystem = GetCurrentGalaxySystem();
 
         console.log("init:", rows, rows.length);
-        console.log(getState());
         for (var i = 0; i < rows.length; i++) {
-            var galaxyRow = new GalaxyRow();
-            var galaxySystem = GetCurrentGalaxySystem();
+            var planetItem = new GalaxyRow();
 
             var objItem = rows.eq(i).find('td.position');
             if (objItem.length == 1) {
-                galaxyRow.planetPos = galaxySystem.split(':')[0]  + ':' + galaxySystem.split(':')[1]  + ':' + objItem.html();
-            }
-            else {
+                planetItem.planetPos = galaxySystem.split(':')[0]  + ':' + galaxySystem.split(':')[1]  + ':' + objItem.html();
+            } else {
+                console.log("no planet");
                 continue;
             }
 
-            var objItem = rows.eq(i).find('td.moon a');
-            if (objItem.length == 1) {
-                galaxyRow.moon = 1;
-            }
-
-            var objItem = rows.eq(i).find('td.playername').find('a[rel*="player"]');
-            if (objItem.length == 0) // It is player himself
-            {
-                continue;/*
-				galaxyRow.playerName = myName;
-				galaxyRow.playerRank = $('#bar').find('a[href*="highscore"]').parent().text().split('(')[1].split(')')[0];*/
-            }
-            else
-            {
+            var objItem = rows.eq(i).find('td.playername');
+            if (objItem.find('a[rel*="player"]').length == 1) {
+                objItem = objItem.find('a[rel*="player"]');
                 var playerId = objItem.eq(0).attr('rel').replace('player', '');
                 if (playerId != 0) {
-                    galaxyRow.playerName = objItem.find('span').text();
-
+                    planetItem.playerName = objItem.find('span').text();
                     var link = $('a[href$="searchRelId=' + playerId + '"]');
-                    galaxyRow.playerRank = link.length == 0 ? 0 : link.eq(0).text();
+                    planetItem.playerRank = link.length == 0 ? 0 : link.eq(0).text();
                 }
+            } else if(objItem.find("span.status_abbr_active").length == 1) {
+                planetItem.playerName = objItem.find("span.status_abbr_active").text().replace(/\s/g,'');
+                planetItem.playerRank = $('#bar').find('a[href*="highscore"]').parent().text().split('(')[1].split(')')[0];
+            } else {
+                planetItem.isEmpty = true;
+                planetItem.playerName = "";
             }
 
             var objItem = rows.eq(i).find('td.allytag').find('span:first');
             if (objItem.length == 1) {
-                galaxyRow.allyTag = Trim(objItem.clone().children().remove().end().text());
+                planetItem.allyTag = Trim(objItem.clone().children().remove().end().text());
             }
 
             var objItem = rows.eq(i).find('td.allytag').find('li.rank');
             if (objItem.length == 1) {
-                galaxyRow.allyRank = objItem.find('a').text();
+                planetItem.allyRank = objItem.find('a').text();
             }
 
             var objItem = rows.eq(i).find('td.microplanet.colonized').find('div.ListImage');
             if (objItem.length == 1) {
-                galaxyRow.activity = objItem.find('div.activity').text().replace(/\D/g,'');
+                if (objItem.find('div.minute15').length == 1) {
+                    planetItem.activity = "0";
+                } else {
+                    planetItem.activity = objItem.find('div.activity').text().replace(/\D/g,'');
+                }
             }
-            galaxyRow.server = getState().server;
-            galaxyRows.push(galaxyRow);
+            planetItem.server = getState().server;
+
+            var objItem = rows.eq(i).find('td.moon');
+            if (objItem.length == 1 && objItem.find("a").length != 0) {
+                var moonItem = copyGalaxyRow(planetItem);
+                moonItem.isMoon = true;
+                if (objItem.find('div.minute15')) {
+                    moonItem.activity = "1";
+                } else if (objItem.find('div.activity')) {
+                    moonItem.activity = objItem.find('div.activity').text().replace(/\D/g,'');
+                }
+                galaxyRows.push(moonItem);
+            }
+            galaxyRows.push(planetItem);
         }
         return galaxyRows;
     }
@@ -172,10 +181,25 @@
     /* ******************** MODEL DATA ******************************/
     /* **************************************************************/
 
+    function copyGalaxyRow(row) {
+        let result = new GalaxyRow();
+        result.planetPos = row.planetPos;
+        result.isMoon = row.isMoon;
+        result.isEmpty = row.isEmpty;
+        result.playerName = row.playerName;
+        result.playerRank = row.playerRank;
+        result.allyTag = row.allyTag;
+        result.allyRank = row.allyRank;
+        result.activity = row.activity;
+        result.server = row.server;
+        return result;
+    }
+
     function GalaxyRow()
     {
         this.planetPos = '';
-        this.moon = '';
+        this.isMoon = false;
+        this.isEmpty = false;
         this.playerName = '';
         this.playerRank = '';
         this.allyTag = '';
@@ -190,7 +214,7 @@
             if (this.playerRank == '-') this.playerRank = 0;
 
             str = this.planetPos + '\t';
-            str += this.moon + '\t';
+            str += this.isMoon + '\t';
             str += this.playerName + '\t';
             str += this.playerRank + '\t';
             str += this.allyTag + '\t';
@@ -207,7 +231,7 @@
             var str;
 
             str = this.planetPos + '\t';
-            str += this.moon + '\t';
+            str += this.isMoon + '\t';
             str += this.playerName + '\t';
             str += this.server + '\t';
             str += this.allyTag;

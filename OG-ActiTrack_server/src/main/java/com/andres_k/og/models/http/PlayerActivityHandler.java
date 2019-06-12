@@ -1,8 +1,9 @@
 package com.andres_k.og.models.http;
 
 public class PlayerActivityHandler {
-    private String planetPos;
-    private String moon;
+    private String position;
+    private boolean isMoon;
+    private boolean isEmpty;
     private String playerName;
     private String playerRank;
     private String allyTag;
@@ -10,20 +11,20 @@ public class PlayerActivityHandler {
     private String activity;
     private String server;
 
-    public String getPlanetPos() {
-        return planetPos;
+    public String getPosition() {
+        return position;
     }
 
-    public void setPlanetPos(String planetPos) {
-        this.planetPos = planetPos;
+    public void setPosition(String position) {
+        this.position = position;
     }
 
-    public String getMoon() {
-        return moon;
+    public boolean getIsMoon() {
+        return isMoon;
     }
 
-    public void setMoon(String moon) {
-        this.moon = moon;
+    public void setIsMoon(boolean isMoon) {
+        this.isMoon = isMoon;
     }
 
     public String getPlayerName() {
@@ -72,5 +73,13 @@ public class PlayerActivityHandler {
 
     public void setServer(String server) {
         this.server = server;
+    }
+
+    public boolean getIsEmpty() {
+        return isEmpty;
+    }
+
+    public void setIsEmpty(boolean isEmpty) {
+        this.isEmpty = isEmpty;
     }
 }

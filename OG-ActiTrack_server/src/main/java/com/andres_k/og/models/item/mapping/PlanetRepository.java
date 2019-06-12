@@ -5,6 +5,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface PlanetRepository extends JpaRepository<Planet, Long> {
-    Planet findByPlanetPosAndPlayerId(String planetPos, Long playerId);
-    Planet findByPlanetPos(String planetPos);
+    Planet findByPositionAndPlayerId(String position, Long playerId);
+    Planet findByPosition(String position);
 }

@@ -13,8 +13,11 @@ public class ActivityLog {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     @NotNull
-    @Column(name="planetPos")
-    private String planetPos;
+    @Column(name="position")
+    private String position;
+    @NotNull
+    @Column(name="isMoon")
+    private boolean isMoon;
     @NotNull
     @Column(name="playerName")
     private String playerName;
@@ -73,19 +76,27 @@ public class ActivityLog {
         this.server = server;
     }
 
-    public String getPlanetPos() {
-        return planetPos;
-    }
-
-    public void setPlanetPos(String planetPos) {
-        this.planetPos = planetPos;
-    }
-
     public Long getUserId() {
         return userId;
     }
 
     public void setUserId(Long userId) {
         this.userId = userId;
+    }
+
+    public String getPosition() {
+        return position;
+    }
+
+    public void setPosition(String position) {
+        this.position = position;
+    }
+
+    public boolean isMoon() {
+        return isMoon;
+    }
+
+    public void setMoon(boolean moon) {
+        isMoon = moon;
     }
 }

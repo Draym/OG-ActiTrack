@@ -9,7 +9,7 @@ import java.util.List;
 @Repository
 public interface ActivityLogRepository extends JpaRepository<ActivityLog, Long> {
 
-    ActivityLog findByPlanetPosAndServerAndCreationDateAfter(String planetPos, String server, LocalDateTime currentDate);
+    ActivityLog findByPositionAndServerAndUserIdAndCreationDateBetween(String position, String server, Long userId, LocalDateTime minDate, LocalDateTime maxDate);
 
     List<ActivityLog> findAllByUserIdAndPlayerName(Long userId, String playerName);
 
@@ -17,7 +17,7 @@ public interface ActivityLogRepository extends JpaRepository<ActivityLog, Long> 
 
     List<ActivityLog> findAllByPlayerName(String playerName);
 
-    List<ActivityLog> findAllByPlanetPosStartingWith(String galaxy);
+    List<ActivityLog> findAllByPositionStartingWith(String galaxy);
 
-    List<ActivityLog> findAllByUserIdAndPlanetPosStartingWith(Long userId, String galaxy);
+    List<ActivityLog> findAllByUserIdAndPositionStartingWith(Long userId, String galaxy);
 }
