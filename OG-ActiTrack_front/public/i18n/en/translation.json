@@ -1,4 +1,24 @@
 {
+  "nav": {
+    "activity": {
+      "title": "Activity Tracker",
+      "player": {
+        "title": "Player Activity"
+      },
+      "galaxy": {
+        "title": "Global Activity"
+      }
+    },
+    "data": {
+      "title": "Data Tools",
+      "colonial" : {
+        "title": "Colonial"
+      },
+      "military" : {
+        "title": "Military"
+      }
+    }
+  },
   "header": {
     "account": {
       "title": "Account",
