@@ -16,7 +16,7 @@ import MinimalHeader from '../../Containers/MinimalLayout/MinimalHeader';
 import MinimalFooter from '../../Containers/MinimalLayout/MinimalFooter';
 import HttpUtils from "../../../Utils/HttpUtils";
 import TString from "../../../Utils/TString";
-import CFormInput from "../../Components/CFormInput";
+import CFormInput from "../../Components/CForms/CFormInput";
 import {ClipLoader} from "react-spinners";
 import {css} from "@emotion/core";
 import '../custom.css';
@@ -140,10 +140,10 @@ class ResetPassword extends Component {
             <CardBody className="p-5">
               <Form>
                 <h2>Reset your password</h2>
-                <CFormInput icon={"icon-lock"} type={"password"} placeHolder={"Password"}
+                <CFormInput gui={{headIcon:"icon-lock"}} type={"password"} placeHolder={"Password"}
                             autoComplete={"current-password"} value={this.state.password}
                             onChange={this.handlePasswordChange} error={this.state.errorPassword}/>
-                <CFormInput icon={"icon-lock"} type={"password"} placeHolder={"Verify Password"}
+                <CFormInput gui={{headIcon:"icon-lock"}} type={"password"} placeHolder={"Verify Password"}
                             autoComplete={"new-password"} value={this.state.passwordVerify}
                             onChange={this.handlePasswordVerifyChange}
                             error={this.state.errorVerifyPassword}/>

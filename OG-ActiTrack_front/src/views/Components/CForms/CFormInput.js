@@ -38,7 +38,7 @@ class CFormInput extends Component {
           </InputGroup>
         );
       }
-    }
+    };
     return (
       <div>
         {renderInput(this.props.icon, this.props.type, this.props.placeHolder, this.props.autoComplete, this.props.value, this.props.onChange, this.props.error)}

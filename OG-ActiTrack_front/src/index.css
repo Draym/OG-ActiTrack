@@ -20,7 +20,57 @@
 
 .disabled {
   color: currentColor;
-  display: inline-block;  /* For IE11/ MS Edge bug */
+  display: inline-block; /* For IE11/ MS Edge bug */
   pointer-events: none;
   text-decoration: none;
+}
+
+.card-parameters {
+  padding-left: 15px !important;
+  padding-right: 15px !important;
+}
+
+.card-param1 {
+  padding-right: 10px !important;
+}
+.card-param2 {
+  padding-right: 5px !important;
+}
+
+.card-parameters .col, .card-parameters [class*="card-param"] {
+  padding: 0;
+}
+
+.card-parameters .card {
+  margin-bottom: 0.5rem !important;
+}
+
+.input-fill {
+  flex: 1 1 auto;
+}
+
+.input-title {
+  margin-bottom: 0.3rem;
+}
+
+.input-addon, .input-addon div {
+  border-radius: 0 4px 4px 0 !important;
+}
+
+.input-verification {
+  padding: 0 !important;
+  margin: 0 !important;
+  border: 0 !important;
+}
+
+.font-1x2 {
+  font-size: 1.2rem;
+}
+
+.input-error {
+  background-color: rgba(255, 0, 8, 0.67) !important;
+}
+
+.input-error button{
+  background-color: transparent !important;
 }

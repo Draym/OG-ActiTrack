@@ -8,13 +8,14 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-  Col, Progress,
+  Col, Form, Progress,
   Row,
   Table
 } from 'reactstrap';
 import {Line, Bar} from "react-chartjs-2";
 import ChartUtils from "../../../Utils/ChartUtils";
 import ChartCreator from "../../../Utils/ChartCreator";
+import CFormVerification from "../../Components/CForms/CFormVerification";
 
 //Random Numbers
 function random(min, max) {
@@ -112,11 +113,27 @@ class PlayerActivity extends Component {
   constructor(props) {
     super(props);
 
-    this.onRadioBtnClick = this.onRadioBtnClick.bind(this);
+    this.onDateTypeBtnClick = this.onDateTypeBtnClick.bind(this);
+    this.onGroupTypeBtnClick = this.onGroupTypeBtnClick.bind(this);
+    this.handlePlayerChange = this.handlePlayerChange.bind(this);
+    this.handleServerChange = this.handleServerChange.bind(this);
+    this.onServerSelect = this.onServerSelect.bind(this);
+    this.generateServerOptions = this.generateServerOptions.bind(this);
+    this.filterServerOptions = this.filterServerOptions.bind(this);
+    this.verifyPseudo = this.verifyPseudo.bind(this);
     this.init = this.init.bind(this);
     this.state = {
+      server: '',
+      servers: [],
+      player: '',
+      errorServer: '',
+      errorPlayer: '',
       data: flatData,
-      radioSelected: 2,
+      date: new Date(),
+      dateTypeSelected: 1,
+      groupTypeSelected: 1,
+      guiDate: false,
+      guiAdvanced: false
     };
     this.init();
   }
@@ -125,31 +142,117 @@ class PlayerActivity extends Component {
 
   }
 
-  onRadioBtnClick(radioSelected) {
+  generateServerOptions() {
+    let servers = [];
+
+    console.log("server");
+    servers.push({value: '11', label: '11'});
+    servers.push({value: '22', label: '22'});
+    servers.push({value: '33', label: '33'});
     this.setState({
-      radioSelected: radioSelected,
+      servers: servers
     });
   }
 
+  filterServerOptions(inputValue) {
+    if (this.state.servers.length === 0)
+      this.generateServerOptions();
+    return this.state.servers.filter(i =>
+      i.label.toLowerCase().includes(inputValue.toLowerCase())
+    );
+  }
 
-  loading = () => <div className="animated fadeIn pt-1 text-center">Loading...</div>
+  onDateTypeBtnClick(radioSelected) {
+    this.setState({
+      dateTypeSelected: radioSelected,
+    });
+  }
+
+  onGroupTypeBtnClick(radioSelected) {
+    this.setState({
+      groupTypeSelected: radioSelected,
+    });
+  }
+
+  verifyPseudo(callback) {
+    this.setState({
+      errorPlayer: 'tutu'
+    })
+  }
+
+  handlePlayerChange(event) {
+    this.setState({player: event.target.value, errorPlayer: ''});
+  }
+  handleServerChange = newValue => {
+    const inputValue = newValue.replace(/\W/g, '');
+    this.setState({server: inputValue, errorServer: ''});
+    return inputValue;
+  };
+  onServerSelect = selectedOption => {
+    this.setState({server: selectedOption.value, errorServer: ''});
+  };
 
   render() {
 
     return (
       <div className="animated fadeIn">
-        <Row>
-          <Col sm="7" className="d-none d-sm-inline-block">
-            <ButtonToolbar className="float-right" aria-label="Toolbar with button groups">
-              <ButtonGroup className="mr-3" aria-label="First group">
-                <Button color="outline-secondary" onClick={() => this.onRadioBtnClick(1)}
-                        active={this.state.radioSelected === 1}>Day</Button>
-                <Button color="outline-secondary" onClick={() => this.onRadioBtnClick(2)}
-                        active={this.state.radioSelected === 2}>Month</Button>
-                <Button color="outline-secondary" onClick={() => this.onRadioBtnClick(3)}
-                        active={this.state.radioSelected === 3}>Year</Button>
-              </ButtonGroup>
-            </ButtonToolbar>
+        <Row className="card-parameters">
+          <Col sm="3" className="card-param1">
+            <Card>
+              <CardBody>
+                <p className="input-title text-muted">Select the desired Ogame server :</p>
+                <CFormVerification className="input-body" gui={{headIcon: "fa fa-server"}} type={"text"}
+                                   placeHolder={"Select a server.."} autoComplete={{
+                  options: this.state.servers,
+                  handleSelectChange: this.onServerSelect,
+                  handleInputChange: this.onServerSelect,
+                  filterOptions: this.filterServerOptions
+                }}
+                                   value={this.state.server}
+                                   error={this.state.errorServer}/>
+                <p className="input-title text-muted">Enter a pseudo :</p>
+                <CFormVerification className="input-body" gui={{headIcon: "fa fa-user-o"}} type={"text"} placeHolder={"Pseudo"}
+                                   value={this.state.player} onChange={this.handlePlayerChange}
+                                   error={this.state.errorPlayer} verify={this.verifyPseudo}/>
+              </CardBody>
+            </Card>
+          </Col>
+          <Col sm="4" className="card-param2">
+            <Card>
+              <CardBody>
+                <Row>
+                  <Col>
+                    <span>Select Date Type:</span>
+                    <ButtonToolbar className="float-right" aria-label="Toolbar to select the date type">
+                      <ButtonGroup className="mr-3" aria-label="First group">
+                        <Button color="outline-primary" onClick={() => this.onDateTypeBtnClick(1)}
+                                active={this.state.dateTypeSelected === 1}>Day</Button>
+                        <Button color="outline-primary" onClick={() => this.onDateTypeBtnClick(2)}
+                                active={this.state.dateTypeSelected === 2}>Month</Button>
+                        <Button color="outline-primary" onClick={() => this.onDateTypeBtnClick(3)}
+                                active={this.state.dateTypeSelected === 3}>Year</Button>
+                      </ButtonGroup>
+                    </ButtonToolbar>
+                  </Col>
+                </Row>
+              </CardBody>
+            </Card>
+          </Col>
+          <Col sm="5" className="card-param3">
+            <Card>
+              <CardBody>
+                <Col sm="7" className="d-none d-sm-inline-block">
+                  <ButtonToolbar className="float-right" aria-label="Toolbar to select the group type">
+                    <ButtonGroup className="mr-3" aria-label="First group">
+                      <Button color="outline-primary" onClick={() => this.onGroupTypeBtnClick(1)}
+                              active={this.state.groupTypeSelected === 1}>Group</Button>
+                      <Button color="outline-primary" onClick={() => this.onGroupTypeBtnClick(2)}
+                              active={this.state.groupTypeSelected === 2}>Split</Button>
+                    </ButtonGroup>
+                  </ButtonToolbar>
+                </Col>
+              </CardBody>
+            </Card>
           </Col>
         </Row>
         <Row>

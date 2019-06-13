@@ -18,7 +18,7 @@ import MinimalHeader from '../../Containers/MinimalLayout/MinimalHeader';
 import MinimalFooter from '../../Containers/MinimalLayout/MinimalFooter';
 import HttpUtils from "../../../Utils/HttpUtils";
 import TString from "../../../Utils/TString";
-import CFormInput from "../../Components/CFormInput/CFormInput";
+import CFormInput from "../../Components/CForms/CFormInput";
 import UserSession from "../../../Utils/UserSession";
 import { withTranslation } from 'react-i18next';
 import '../custom.css';

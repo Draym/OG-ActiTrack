@@ -13,7 +13,7 @@ import MinimalHeader from '../../Containers/MinimalLayout/MinimalHeader';
 import MinimalFooter from '../../Containers/MinimalLayout/MinimalFooter';
 import HttpUtils from "../../../Utils/HttpUtils";
 import TString from "../../../Utils/TString";
-import CFormInput from "../../Components/CFormInput";
+import CFormInput from "../../Components/CForms/CFormInput";
 import CBlocError from "../../Components/CBlocError";
 import '../custom.css';
 import './register.css';
