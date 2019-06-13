@@ -24,6 +24,8 @@ public class PlayerActivityService {
     PlanetRepository planetRepository;
     @Autowired
     MoonRepository moonRepository;
+    @Autowired
+    OGServerRepository OGServerRepository;
 
     public void saveActivity(Long userId, PlayerActivityHandler playerActivity) {
         // IS EMPTY
@@ -33,6 +35,13 @@ public class PlayerActivityService {
                 this.planetRepository.delete(planet);
             }
             return;
+        }
+        // GET SERVER
+        OGServer OGServer = this.OGServerRepository.findByServer(playerActivity.getServer());
+        if (OGServer == null) {
+            OGServer = new OGServer();
+            OGServer.setServer(playerActivity.getServer());
+            this.OGServerRepository.save(OGServer);
         }
         // GET PLAYER
         Player player = this.playerRepository.findByPlayerName(playerActivity.getPlayerName());
@@ -93,11 +102,11 @@ public class PlayerActivityService {
         this.activityLogRepository.save(activityLog);
     }
 
-    public List<ActivityLog> getSelfPlayerActivity(Long userId, String playerName) {
-        return this.activityLogRepository.findAllByUserIdAndPlayerName(userId, playerName);
+    public List<ActivityLog> getSelfPlayerActivity(Long userId, String server, String playerName) {
+        return this.activityLogRepository.findAllByUserIdAndServerAndPlayerName(userId, server, playerName);
     }
-    public List<ActivityLog> getGlobalPlayerActivity(String playerName) {
-        return this.activityLogRepository.findAllByPlayerName(playerName);
+    public List<ActivityLog> getGlobalPlayerActivity(String server, String playerName) {
+        return this.activityLogRepository.findAllByServerAndPlayerName(server, playerName);
     }
     public List<ActivityLog> getSelfActivity(Long userId) {
         return this.activityLogRepository.findAllByUserId(userId);
@@ -105,10 +114,10 @@ public class PlayerActivityService {
     public List<ActivityLog> getGlobalActivity() {
         return this.activityLogRepository.findAll();
     }
-    public List<ActivityLog> getSelfGalaxyActivity(Long userId, String galaxy) {
-        return this.activityLogRepository.findAllByUserIdAndPositionStartingWith(userId, galaxy);
+    public List<ActivityLog> getSelfGalaxyActivity(Long userId, String server, String galaxy) {
+        return this.activityLogRepository.findAllByUserIdAndServerAndPositionStartingWith(userId, server, galaxy);
     }
-    public List<ActivityLog> getGlobalGalaxyActivity(String galaxy) {
-        return this.activityLogRepository.findAllByPositionStartingWith(galaxy);
+    public List<ActivityLog> getGlobalGalaxyActivity(String server, String galaxy) {
+        return this.activityLogRepository.findAllByServerAndPositionStartingWith(server, galaxy);
     }
 }

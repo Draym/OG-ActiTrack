@@ -11,13 +11,14 @@ public interface ActivityLogRepository extends JpaRepository<ActivityLog, Long> 
 
     ActivityLog findByPositionAndServerAndUserIdAndCreationDateBetween(String position, String server, Long userId, LocalDateTime minDate, LocalDateTime maxDate);
 
-    List<ActivityLog> findAllByUserIdAndPlayerName(Long userId, String playerName);
-
     List<ActivityLog> findAllByUserId(Long userId);
 
-    List<ActivityLog> findAllByPlayerName(String playerName);
+    List<ActivityLog> findAllByUserIdAndServerAndPlayerName(Long userId, String server, String playerName);
 
-    List<ActivityLog> findAllByPositionStartingWith(String galaxy);
+    List<ActivityLog> findAllByUserIdAndServerAndPositionStartingWith(Long userId, String server, String galaxy);
 
-    List<ActivityLog> findAllByUserIdAndPositionStartingWith(Long userId, String galaxy);
+    List<ActivityLog> findAllByServerAndPlayerName(String server, String playerName);
+
+    List<ActivityLog> findAllByServerAndPositionStartingWith(String server, String galaxy);
+
 }

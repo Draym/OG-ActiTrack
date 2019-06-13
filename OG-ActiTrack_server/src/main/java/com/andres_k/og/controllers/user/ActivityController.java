@@ -59,12 +59,12 @@ public class ActivityController {
 
     @RequestMapping(value = "/activity/self/player", method = RequestMethod.GET)
     @ResponseBody
-    public ResponseEntity<?> getSelfPlayerActivity(@RequestHeader String Authorization, @RequestParam String playerName) {
+    public ResponseEntity<?> getSelfPlayerActivity(@RequestHeader String Authorization, @RequestParam String server, @RequestParam String playerName) {
         try {
             if (!this.authorizationService.isAuthorized(ERoles.USER, Authorization))
                 return new ResponseEntity<>("Unauthorized", HttpStatus.UNAUTHORIZED);
             User user = this.userService.getUserByToken(Authorization);
-            List<ActivityLog> activities = this.playerActivityService.getSelfPlayerActivity(user.getId(), playerName);
+            List<ActivityLog> activities = this.playerActivityService.getSelfPlayerActivity(user.getId(), server, playerName);
             return new ResponseEntity<>(activities, HttpStatus.OK);
         } catch (Exception ex) {
             return new ResponseEntity<>(ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
@@ -72,12 +72,12 @@ public class ActivityController {
     }
     @RequestMapping(value = "/activity/self/galaxy", method = RequestMethod.GET)
     @ResponseBody
-    public ResponseEntity<?> getSelfGalaxyActivity(@RequestHeader String Authorization, @RequestParam String galaxy) {
+    public ResponseEntity<?> getSelfGalaxyActivity(@RequestHeader String Authorization, @RequestParam String server, @RequestParam String galaxy) {
         try {
             if (!this.authorizationService.isAuthorized(ERoles.USER, Authorization))
                 return new ResponseEntity<>("Unauthorized", HttpStatus.UNAUTHORIZED);
             User user = this.userService.getUserByToken(Authorization);
-            List<ActivityLog> activities = this.playerActivityService.getSelfGalaxyActivity(user.getId(), galaxy);
+            List<ActivityLog> activities = this.playerActivityService.getSelfGalaxyActivity(user.getId(), server, galaxy);
             return new ResponseEntity<>(activities, HttpStatus.OK);
         } catch (Exception ex) {
             return new ResponseEntity<>(ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
@@ -102,12 +102,12 @@ public class ActivityController {
     }
     @RequestMapping(value = "/activity/global/player", method = RequestMethod.GET)
     @ResponseBody
-    public ResponseEntity<?> getGlobalPlayerActivity(@RequestHeader String Authorization, @RequestParam String playerName) {
+    public ResponseEntity<?> getGlobalPlayerActivity(@RequestHeader String Authorization, @RequestParam String server, @RequestParam String playerName) {
         try {
             if (!this.authorizationService.isAuthorized(ERoles.USER, Authorization))
                 return new ResponseEntity<>("Unauthorized", HttpStatus.UNAUTHORIZED);
             User user = this.userService.getUserByToken(Authorization);
-            List<ActivityLog> activities = this.playerActivityService.getGlobalPlayerActivity(playerName);
+            List<ActivityLog> activities = this.playerActivityService.getGlobalPlayerActivity(server, playerName);
             return new ResponseEntity<>(activities, HttpStatus.OK);
         } catch (Exception ex) {
             return new ResponseEntity<>(ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
@@ -115,12 +115,12 @@ public class ActivityController {
     }
     @RequestMapping(value = "/activity/global/galaxy", method = RequestMethod.GET)
     @ResponseBody
-    public ResponseEntity<?> getGlobalGalaxyActivity(@RequestHeader String Authorization, @RequestParam String galaxy) {
+    public ResponseEntity<?> getGlobalGalaxyActivity(@RequestHeader String Authorization, @RequestParam String server, @RequestParam String galaxy) {
         try {
             if (!this.authorizationService.isAuthorized(ERoles.USER, Authorization))
                 return new ResponseEntity<>("Unauthorized", HttpStatus.UNAUTHORIZED);
             User user = this.userService.getUserByToken(Authorization);
-            List<ActivityLog> activities = this.playerActivityService.getGlobalGalaxyActivity(galaxy);
+            List<ActivityLog> activities = this.playerActivityService.getGlobalGalaxyActivity(server, galaxy);
             return new ResponseEntity<>(activities, HttpStatus.OK);
         } catch (Exception ex) {
             return new ResponseEntity<>(ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
