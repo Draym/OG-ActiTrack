@@ -20,7 +20,7 @@ import HttpUtils from "../../../Utils/HttpUtils";
 import TString from "../../../Utils/TString";
 import CFormInput from "../../Components/CForms/CFormInput";
 import UserSession from "../../../Utils/UserSession";
-import { withTranslation } from 'react-i18next';
+import {withTranslation} from 'react-i18next';
 import '../custom.css';
 import './login.css';
 
@@ -86,7 +86,7 @@ class Login extends Component {
   }
 
   render() {
-    const { t, i18n } = this.props;
+    const {t, i18n} = this.props;
     return (
       <div className="app">
         <AppHeader fixed>
@@ -106,12 +106,12 @@ class Login extends Component {
                           <Form>
                             <h1>Login</h1>
                             <p className="text-muted">Sign In to your account</p>
-                            <CFormInput icon={"fa fa-at"} type={"text"} placeHolder={"Email"} autoComplete={"email"}
+                            <CFormInput gui={{headIcon: "fa fa-at"}} type={"text"} placeHolder={"Email"}
                                         value={this.state.email} onChange={this.handleEmailChange}
                                         error={this.state.errorEmail}/>
-                            <CFormInput icon={"icon-lock"} type={"password"} placeHolder={"Password"}
-                                        autoComplete={"current-password"} value={this.state.password}
-                                        onChange={this.handlePasswordChange} error={this.state.errorPassword}/>
+                            <CFormInput gui={{headIcon: "icon-lock"}} type={"password"} placeHolder={"Password"}
+                                        value={this.state.password} onChange={this.handlePasswordChange}
+                                        error={this.state.errorPassword}/>
                             <Row>
                               <Col xs="6">
                                 <Button color="primary" className="px-4" type="submit"
@@ -131,7 +131,8 @@ class Login extends Component {
                             <h2>{t('page.login.signUp.title')}</h2>
                             <p>{t('page.login.signUp.txtBody')}</p>
                             <Link to="/register">
-                              <Button color="primary" className="mt-3" active tabIndex={-1}>{t('page.login.signUp.btnRegister')}</Button>
+                              <Button color="primary" className="mt-3" active
+                                      tabIndex={-1}>{t('page.login.signUp.btnRegister')}</Button>
                             </Link>
                           </div>
                         </CardBody>

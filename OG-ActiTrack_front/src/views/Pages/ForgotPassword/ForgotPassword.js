@@ -80,7 +80,7 @@ class ForgotPassword extends Component {
               <Form>
                 <h2>Did you forget your password?</h2>
                 <p className="text-muted">please enter your email</p>
-                <CFormInput icon={"icon-user"} type={"text"} placeHolder={"Email"} autoComplete={"email"}
+                <CFormInput gui={{headIcon: "icon-user"}} type={"text"} placeHolder={"Email"}
                             value={this.state.email} onChange={this.handleEmailChange}
                             error={this.state.errorEmail}/>
                 <Button color="primary" type="submit" block onClick={this.triggerForgotPassword}>Send me a

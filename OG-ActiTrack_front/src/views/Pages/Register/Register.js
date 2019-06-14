@@ -110,18 +110,17 @@ class Register extends Component {
               <Form>
                 <h1>Register</h1>
                 <p className="text-muted">Create your account</p>
-                <CFormInput icon={"icon-user"} type={"text"} placeHolder={"Username"}
-                            autoComplete={"username"} value={this.state.username}
-                            onChange={this.handleUsernameChange} error={this.state.errorUsername}/>
-                <CFormInput icon={"fa fa-at"} type={"text"} placeHolder={"Email"}
-                            autoComplete={"email"} value={this.state.email}
-                            onChange={this.handleEmailChange} error={this.state.errorEmail}/>
-                <CFormInput icon={"icon-lock"} type={"password"} placeHolder={"Password"}
-                            autoComplete={"current-password"} value={this.state.password}
-                            onChange={this.handlePasswordChange} error={this.state.errorPassword}/>
-                <CFormInput icon={"icon-lock"} type={"password"} placeHolder={"Repeat Password"}
-                            autoComplete={"new-password"} value={this.state.passwordVerify}
-                            onChange={this.handlePasswordVerifyChange} error={this.state.errorVerifyPassword}/>
+                <CFormInput gui={{headIcon: "icon-user"}} type={"text"} placeHolder={"Username"}
+                            value={this.state.username} onChange={this.handleUsernameChange}
+                            error={this.state.errorUsername}/>
+                <CFormInput gui={{headIcon: "fa fa-at"}} type={"text"} placeHolder={"Email"}
+                            value={this.state.email} onChange={this.handleEmailChange} error={this.state.errorEmail}/>
+                <CFormInput gui={{headIcon: "icon-lock"}} type={"password"} placeHolder={"Password"}
+                            value={this.state.password} onChange={this.handlePasswordChange}
+                            error={this.state.errorPassword}/>
+                <CFormInput gui={{headIcon: "icon-lock"}} type={"password"} placeHolder={"Repeat Password"}
+                            value={this.state.passwordVerify} onChange={this.handlePasswordVerifyChange}
+                            error={this.state.errorVerifyPassword}/>
                 <Button color="success" type="submit" block onClick={this.triggerRegister}>Create Account</Button>
               </Form>
             </CardBody>
