@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import {AppHeaderDropdown} from '@coreui/react';
 import UserSession from "../../../Utils/UserSession";
 import { withTranslation } from 'react-i18next';
+import CLanguageCtrl from "../../Components/CLanguageCtrl";
 
 const propTypes = {
   children: PropTypes.node,
@@ -48,12 +49,7 @@ class DefaultAccountHeader extends Component {
   }
 
   render() {
-
-    const { t, i18n } = this.props;
-
-    const changeLanguage = lng => {
-      i18n.changeLanguage(lng);
-    };
+    const {t, i18n} = this.props;
 
     let getProfileDropDown = function() {
       if (UserSession.hasSession()) {
@@ -66,16 +62,11 @@ class DefaultAccountHeader extends Component {
             <DropdownItem onClick={this.goSettings}><i className="fa fa-wrench"/> {t('header.account.settings')}</DropdownItem>
             <DropdownItem divider/>
             <DropdownItem onClick={this.signOut}><i className="fa fa-lock"/> {t('header.account.signOut')}</DropdownItem>
-
-            <button onClick={() => changeLanguage('fr')}>fr</button>
-            <button onClick={() => changeLanguage('en')}>en</button>
           </DropdownMenu>);
       } else {
         return (
           <DropdownMenu right style={{right: 'auto'}}>
             <DropdownItem header tag="div" className="text-center"><strong>{t('header.account.title')}</strong></DropdownItem>
-            <button onClick={() => changeLanguage('fr')}>fr</button>
-            <button onClick={() => changeLanguage('en')}>en</button>
             <DropdownItem onClick={this.signIn}><i className="fa fa-user-o"/> {t('header.account.signIn')}</DropdownItem>
           </DropdownMenu>);
       }

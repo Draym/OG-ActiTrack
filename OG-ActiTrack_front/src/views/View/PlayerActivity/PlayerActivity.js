@@ -15,21 +15,18 @@ import {
 import {Line, Bar} from "react-chartjs-2";
 import ChartUtils from "../../../Utils/ChartUtils";
 import ChartCreator from "../../../Utils/ChartCreator";
-import CFormInput from "../../Components/CForms/CFormInput";
+import CFormInput from "../../Components/CFormInput/CFormInput";
 import HttpUtils from "../../../Utils/HttpUtils";
 import UserSession from "../../../Utils/UserSession";
 import TString from "../../../Utils/TString";
-import DayPickerInput from 'react-day-picker/DayPickerInput';
-import 'react-day-picker/lib/style.css';
-import MomentLocaleUtils, {
-  formatDate,
-  parseDate,
-} from 'react-day-picker/moment';
 
+import moment from "moment";
 import 'moment/locale/fr';
 import 'moment/locale/en-gb';
 import i18next from 'i18next';
-import moment from "moment";
+
+import CDatePicker from "../../Components/CDatePicker";
+import {EDatePicker} from "../../Components/CDatePicker/EDatePicker";
 
 
 //Random Numbers
@@ -135,7 +132,6 @@ class PlayerActivity extends Component {
     this.generateServerOptions = this.generateServerOptions.bind(this);
     this.filterServerOptions = this.filterServerOptions.bind(this);
     this.verifyPseudo = this.verifyPseudo.bind(this);
-    this.drawAdvanced = this.drawAdvanced.bind(this);
     this.submitChart = this.submitChart.bind(this);
     this.init = this.init.bind(this);
     this.handleDayChange = this.handleDayChange.bind(this);
@@ -146,12 +142,11 @@ class PlayerActivity extends Component {
       player: '',
       errorPlayer: '',
       data: flatData,
-      dateTypeSelected: 1,
+      dateTypeSelected: EDatePicker.DayInputPicker,
       groupTypeSelected: 1,
-      guiDate: false,
-      guiAdvanced: false,
+      guiParameters: false,
       guiChart: false,
-      selectedDay: moment(),
+      selectedDays: [],
     };
     this.init();
   }
@@ -197,7 +192,7 @@ class PlayerActivity extends Component {
       server: this.state.server,
       player: this.state.player
     };
-    this.setState({guiDate: true});
+    this.setState({guiParameters: true});
     /*
     HttpUtils().GET(process.env.REACT_APP_SERVER_URL, '/data/playerExistInServer', parameters, function (data) {
       console.log(data);
@@ -220,9 +215,9 @@ class PlayerActivity extends Component {
     this.setState({player: event.target.value, errorPlayer: ''});
   }
 
-  handleDayChange(day) {
-    console.log("day:", day);
-    this.setState({selectedDay: day});
+  handleDayChange(days) {
+    console.log("day:", days);
+    this.setState({selectedDays: days});
   }
 
   onServerSelect = selectedOption => {
@@ -236,116 +231,66 @@ class PlayerActivity extends Component {
     })
   }
 
-  drawAdvanced() {
-    this.setState({
-      guiAdvanced: true
-    })
-  }
-
   render() {
-    let drawDateSelection = function () {
-      if (this.state.dateTypeSelected === 1) {
-        return (
-          <DayPickerInput
-            formatDate={formatDate}
-            parseDate={parseDate}
-            format="LL"
-            placeholder={`${formatDate(new Date(), 'LL', i18next.t('date.format'))}`}
-            dayPickerProps={{
-              locale: i18next.t('date.format'),
-              localeUtils: MomentLocaleUtils,
-            }}
-            onDayChange={this.handleDayChange}
-          />
-        );
-      } else if (this.state.dateTypeSelected === 2) {
-        return (
-          <DayPickerInput
-            formatDate={formatDate}
-            parseDate={parseDate}
-            format="LL"
-            placeholder={`${formatDate(new Date(), 'LL', i18next.t('date.format'))}`}
-            dayPickerProps={{
-              locale: i18next.t('date.format'),
-              localeUtils: MomentLocaleUtils,
-            }}
-            onDayChange={this.handleDayChange}
-          />
-        );
-      } else if (this.state.dateTypeSelected === 2) {
-        return (
-          <DayPickerInput
-            formatDate={formatDate}
-            parseDate={parseDate}
-            format="LL"
-            placeholder={`${formatDate(new Date(), 'LL', i18next.t('date.format'))}`}
-            dayPickerProps={{
-              locale: i18next.t('date.format'),
-              localeUtils: MomentLocaleUtils,
-            }}
-            onDayChange={this.handleDayChange}
-          />
-        );
-      }
-    };
-    let drawDateParameters = function () {
-      if (!this.state.guiDate) {
+    let drawPremiumParameters = function () {
+      return (
+        <Card>
+          <CardBody>
+
+          </CardBody>
+        </Card>
+      );
+    }.bind(this);
+
+    let drawParameters = function () {
+      if (!this.state.guiParameters) {
         return (
           <Card>
             <CardBody>
               <Row>
                 <Col md={5}>
-                  <span className="btn-label">Select the Range:</span>
+                  <span className="btn-label">Group the data:</span>
                 </Col>
-                <Col md={7}>
-                  <ButtonToolbar aria-label="Toolbar to select the date type">
+                <Col sm="7">
+                  <ButtonToolbar aria-label="Toolbar to select the group type">
                     <ButtonGroup className="mr-3" aria-label="First group">
-                      <Button color="outline-primary" onClick={() => this.onDateTypeBtnClick(1)}
-                              active={this.state.dateTypeSelected === 1}>Day</Button>
-                      <Button color="outline-primary" onClick={() => this.onDateTypeBtnClick(2)}
-                              active={this.state.dateTypeSelected === 2}>Month</Button>
-                      <Button color="outline-primary" onClick={() => this.onDateTypeBtnClick(3)}
-                              active={this.state.dateTypeSelected === 3}>Year</Button>
+                      <Button color="outline-primary" onClick={() => this.onGroupTypeBtnClick(1)}
+                              active={this.state.groupTypeSelected === 1}>Group</Button>
+                      <Button color="outline-primary" onClick={() => this.onGroupTypeBtnClick(2)}
+                              active={this.state.groupTypeSelected === 2}>Split</Button>
                     </ButtonGroup>
                   </ButtonToolbar>
                 </Col>
               </Row>
               <Row className="parameter-bloc">
                 <Col md={5}>
-                  <span className="btn-label">Select the Date:</span>
+                  <span className="btn-label">Select the Range:</span>
                 </Col>
                 <Col md={7}>
-                  {drawDateSelection()}
+                  <ButtonToolbar aria-label="Toolbar to select the date type">
+                    <ButtonGroup className="mr-3" aria-label="First group">
+                      <Button color="outline-primary" onClick={() => this.onDateTypeBtnClick(EDatePicker.DayInputPicker)}
+                              active={this.state.dateTypeSelected === EDatePicker.DayInputPicker}>Day</Button>
+                      <Button color="outline-primary" onClick={() => this.onDateTypeBtnClick(EDatePicker.WeekInputPicker)}
+                              active={this.state.dateTypeSelected === EDatePicker.WeekInputPicker}>Week</Button>
+                    </ButtonGroup>
+                  </ButtonToolbar>
+                </Col>
+              </Row>
+              <Row className="parameter-bloc">
+                <Col md={5}>
+                  <span>Select the Date:</span>
+                </Col>
+                <Col md={7}>
+                  <CDatePicker handleDayChange={this.handleDayChange} dateTypeSelected={this.state.dateTypeSelected}/>
                 </Col>
               </Row>
               <Row className="parameter-bloc">
                 <Col>
-                  <Button className="float-right" color="primary" disabled={!this.state.selectedDay}
+                  <Button className="float-right" color="primary" disabled={this.state.selectedDays.length === 0}
                           onClick={this.submitChart}>Generate chart</Button>
-                  <Button className="float-right" style={{marginRight: 10 + 'px'}} color="secondary"
-                          onClick={this.drawAdvanced}>Advanced parameters</Button>
                 </Col>
               </Row>
-            </CardBody>
-          </Card>
-        );
-      }
-    }.bind(this);
-    let drawAdvancedParameters = function () {
-      if (this.state.guiAdvanced) {
-        return (
-          <Card>
-            <CardBody>
-              <Col sm="7" className="d-none d-sm-inline-block">
-                <ButtonToolbar className="float-right" aria-label="Toolbar to select the group type">
-                  <ButtonGroup className="mr-3" aria-label="First group">
-                    <Button color="outline-primary" onClick={() => this.onGroupTypeBtnClick(1)}
-                            active={this.state.groupTypeSelected === 1}>Group</Button>
-                    <Button color="outline-primary" onClick={() => this.onGroupTypeBtnClick(2)}
-                            active={this.state.groupTypeSelected === 2}>Split</Button>
-                  </ButtonGroup>
-                </ButtonToolbar>
-              </Col>
             </CardBody>
           </Card>
         );
@@ -353,13 +298,16 @@ class PlayerActivity extends Component {
     }.bind(this);
     let drawChart = function () {
       if (this.state.guiChart) {
+        let dateStart = moment(this.state.selectedDays[0]).locale(i18next.t("date.format")).format("DD MMMM YYYY");
+        let dateEnd = moment(this.state.selectedDays[this.state.selectedDays.length - 1]).locale(i18next.t("date.format")).format("DD MMMM YYYY");
+        console.log(dateStart, dateEnd);
         return (
           <Card>
             <CardBody>
               <Row>
                 <Col sm="5">
-                  <CardTitle className="mb-0">Traffic</CardTitle>
-                  <div className="small text-muted">November 2015</div>
+                  <CardTitle className="mb-0">Activity of {this.state.player}:</CardTitle>
+                  <div className="small text-muted">For {dateStart} {this.state.selectedDays.length === 1 ? '' : ' to ' + dateEnd}</div>
                 </Col>
               </Row>
               <div className="chart-wrapper" style={{height: 300 + 'px', marginTop: 40 + 'px'}}>
@@ -387,7 +335,7 @@ class PlayerActivity extends Component {
     return (
       <div className="animated fadeIn">
         <Row className="card-parameters">
-          <Col sm="3" className="card-param1">
+          <Col sm="4" className="card-param1">
             <Card>
               <CardBody>
                 <p className="input-title text-muted">Select the desired Ogame server :</p>
@@ -403,11 +351,11 @@ class PlayerActivity extends Component {
               </CardBody>
             </Card>
           </Col>
-          <Col sm="4" className="card-param2">
-            {drawDateParameters()}
+          <Col sm="5" className="card-param2">
+            {drawParameters()}
           </Col>
-          <Col sm="5" className="card-param3">
-            {drawAdvancedParameters()}
+          <Col sm="3" className="card-param3">
+            {drawPremiumParameters()}
           </Col>
         </Row>
         <Row>

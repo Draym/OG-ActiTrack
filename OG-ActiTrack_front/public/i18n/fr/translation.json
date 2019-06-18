@@ -1,4 +1,14 @@
 {
+  "date": {
+    "format": "fr"
+  },
+  "language": {
+    "options": {
+      "choose": "Changer de langue"
+    },
+    "fr": "Français",
+    "gb": "Anglais"
+  },
   "nav": {
     "activity": {
       "title": "Traqueur d'Activité",

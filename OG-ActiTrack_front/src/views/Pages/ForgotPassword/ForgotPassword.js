@@ -17,7 +17,7 @@ import MinimalFooter from '../../Containers/MinimalLayout/MinimalFooter';
 import HttpUtils from "../../../Utils/HttpUtils";
 import TString from "../../../Utils/TString";
 import CBlocError from "../../Components/CBlocError";
-import CFormInput from "../../Components/CForms/CFormInput";
+import CFormInput from "../../Components/CFormInput/CFormInput";
 import '../custom.css';
 import './forgotPassword.css';
 

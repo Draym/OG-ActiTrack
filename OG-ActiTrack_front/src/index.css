@@ -33,15 +33,16 @@
 .card-param1 {
   padding-right: 10px !important;
 }
+
 .card-param2 {
   padding-right: 5px !important;
 }
 
-.card-parameters .col, .card-parameters [class*="card-param"] {
+[class*="card-param"] > [class*="col-"] {
   padding: 0;
 }
 
-.card-parameters .card {
+.card-parameters > .card {
   margin-bottom: 0.5rem !important;
 }
 
@@ -68,9 +69,18 @@
 }
 
 .input-error {
-  background-color: rgba(255, 0, 8, 0.67) !important;
+  background-color: rgba(255, 0, 8, 0.50) !important;
 }
 
-.input-error button{
+.input-error button {
   background-color: transparent !important;
+}
+
+.btn-label {
+  display: flex;
+  margin-top: 8px;
+}
+
+.parameter-bloc {
+  padding-top: 15px !important;
 }

@@ -16,7 +16,7 @@ import MinimalHeader from '../../Containers/MinimalLayout/MinimalHeader';
 import MinimalFooter from '../../Containers/MinimalLayout/MinimalFooter';
 import HttpUtils from "../../../Utils/HttpUtils";
 import TString from "../../../Utils/TString";
-import CFormInput from "../../Components/CForms/CFormInput";
+import CFormInput from "../../Components/CFormInput/CFormInput";
 import {ClipLoader} from "react-spinners";
 import {css} from "@emotion/core";
 import '../custom.css';

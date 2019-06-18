@@ -2,8 +2,13 @@ import React, {Component} from 'react';
 
 import {AppNavbarBrand, AppSidebarToggler} from '@coreui/react';
 import logo from '../../../assets/img/brand/logo.png'
+import CLanguageCtrl from "../../Components/CLanguageCtrl";
+
 
 class MinimalHeader extends Component {
+  constructor(props) {
+    super(props);
+  }
   render() {
     return (
       <React.Fragment>
@@ -12,6 +17,7 @@ class MinimalHeader extends Component {
           href="/"
           full={{src: logo, width: 150, height: 31, alt: 'ActiTrack Logo'}}
         />
+        <CLanguageCtrl className="float-right"/>
       </React.Fragment>
     );
   }
