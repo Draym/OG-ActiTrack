@@ -16,4 +16,8 @@ public class TString {
     public static String removeFirst(String value) {
         return value.substring(1);
     }
+
+    public static boolean isNull(String value) {
+        return (value == null || value.isEmpty());
+    }
 }

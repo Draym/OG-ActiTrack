@@ -7,6 +7,7 @@ import com.andres_k.og.models.item.mapping.*;
 import com.andres_k.og.utils.data.Pair;
 import com.andres_k.og.utils.tools.Console;
 import com.andres_k.og.utils.tools.TDate;
+import com.andres_k.og.utils.tools.TString;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -102,22 +103,71 @@ public class PlayerActivityService {
         this.activityLogRepository.save(activityLog);
     }
 
-    public List<ActivityLog> getSelfPlayerActivity(Long userId, String server, String playerName) {
-        return this.activityLogRepository.findAllByUserIdAndServerAndPlayerName(userId, server, playerName);
-    }
-    public List<ActivityLog> getGlobalPlayerActivity(String server, String playerName) {
-        return this.activityLogRepository.findAllByServerAndPlayerName(server, playerName);
-    }
-    public List<ActivityLog> getSelfActivity(Long userId) {
+    public List<ActivityLog> getSelfActivity(Long userId, String server, LocalDateTime start, LocalDateTime end) {
+        if (start != null && end == null)
+            end = start;
+        if (start != null) {
+            if (!TString.isNull(server))
+                return this.activityLogRepository.findAllByUserIdAndServerAndCreationDateBetween(userId, server, start, end);
+            else
+                return this.activityLogRepository.findAllByUserIdAndCreationDateBetween(userId, start, end);
+        } else if (!TString.isNull(server)) {
+            return this.activityLogRepository.findAllByUserIdAndServer(userId, server);
+        }
         return this.activityLogRepository.findAllByUserId(userId);
     }
-    public List<ActivityLog> getGlobalActivity() {
+
+    public List<ActivityLog> getSelfPlayerActivity(Long userId, String server, String playerName, LocalDateTime start, LocalDateTime end) {
+        if (start != null && end == null)
+            end = start;
+        if (start != null) {
+            return this.activityLogRepository.findAllByUserIdAndServerAndPlayerNameAndCreationDateBetween(userId, server, playerName, start, end);
+        } else {
+            return this.activityLogRepository.findAllByUserIdAndServerAndPlayerName(userId, server, playerName);
+        }
+    }
+
+    public List<ActivityLog> getSelfGalaxyActivity(Long userId, String server, String galaxy, LocalDateTime start, LocalDateTime end) {
+        if (start != null && end == null)
+            end = start;
+        if (start != null) {
+            return this.activityLogRepository.findAllByUserIdAndServerAndPositionStartingWithAndCreationDateBetween(userId, server, galaxy, start, end);
+        } else {
+            return this.activityLogRepository.findAllByUserIdAndServerAndPositionStartingWith(userId, server, galaxy);
+        }
+    }
+
+    public List<ActivityLog> getGlobalActivity(String server, LocalDateTime start, LocalDateTime end) {
+        if (start != null && end == null)
+            end = start;
+        if (start != null) {
+            if (!TString.isNull(server))
+                return this.activityLogRepository.findAllByServerAndCreationDateBetween(server, start, end);
+            else
+                return this.activityLogRepository.findAllByCreationDateBetween(start, end);
+        } else if (!TString.isNull(server)) {
+            return this.activityLogRepository.findAllByServer(server);
+        }
         return this.activityLogRepository.findAll();
     }
-    public List<ActivityLog> getSelfGalaxyActivity(Long userId, String server, String galaxy) {
-        return this.activityLogRepository.findAllByUserIdAndServerAndPositionStartingWith(userId, server, galaxy);
+
+    public List<ActivityLog> getGlobalPlayerActivity(String server, String playerName, LocalDateTime start, LocalDateTime end) {
+        if (start != null && end == null)
+            end = start;
+        if (start != null) {
+            return this.activityLogRepository.findAllByServerAndPlayerNameAndCreationDateBetween(server, playerName, start, end);
+        } else {
+            return this.activityLogRepository.findAllByServerAndPlayerName(server, playerName);
+        }
     }
-    public List<ActivityLog> getGlobalGalaxyActivity(String server, String galaxy) {
-        return this.activityLogRepository.findAllByServerAndPositionStartingWith(server, galaxy);
+
+    public List<ActivityLog> getGlobalGalaxyActivity(String server, String galaxy, LocalDateTime start, LocalDateTime end) {
+        if (start != null && end == null)
+            end = start;
+        if (start != null) {
+            return this.activityLogRepository.findAllByServerAndPositionStartingWithAndCreationDateBetween(server, galaxy, start, end);
+        } else {
+            return this.activityLogRepository.findAllByServerAndPositionStartingWith(server, galaxy);
+        }
     }
 }
