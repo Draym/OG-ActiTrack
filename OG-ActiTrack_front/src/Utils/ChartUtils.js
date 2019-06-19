@@ -1,18 +1,11 @@
-import {getStyle, hexToRgba} from "@coreui/coreui/dist/js/coreui-utilities";
 import {CustomTooltips} from "@coreui/coreui-plugin-chartjs-custom-tooltips";
-
-const brandPrimary = getStyle('--primary');
-const brandSuccess = getStyle('--success');
-const brandInfo = getStyle('--info');
-const brandWarning = getStyle('--warning');
-const brandDanger = getStyle('--danger');
 
 const defaultLineChartOpt = {
   tooltips: {
     enabled: false,
     custom: CustomTooltips,
-    intersect: true,
-    mode: 'index',
+    intersect: false,
+    mode: 'nearest',
     position: 'nearest',
     callbacks: {
       labelColor: function (tooltipItem, chart) {
@@ -29,6 +22,9 @@ const defaultLineChartOpt = {
       {
         gridLines: {
           drawOnChartArea: false,
+        },
+        ticks: {
+          maxTicksLimit: 36
         },
       }],
     yAxes: [

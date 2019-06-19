@@ -1,4 +1,34 @@
 {
+  "popinfo": {
+    "activity": {
+      "player": {
+        "param": {
+          "title": "aaa",
+          "body": "tutu"
+        },
+        "date": {
+          "title": "aaa",
+          "body": "tutu"
+        },
+        "advanced": {
+          "title": "aaa",
+          "body": "tutu"
+        },
+        "friend": {
+          "title": "aaa",
+          "body": "tutu"
+        },
+        "premium": {
+          "title": "aaa",
+          "body": "tutu"
+        }
+      }
+    }
+  },
+  "vocabulary": {
+    "yes": "yes",
+    "no": "no"
+  },
   "date": {
     "format": "en-gb"
   },
@@ -21,10 +51,10 @@
     },
     "data": {
       "title": "Data Tools",
-      "colonial" : {
+      "colonial": {
         "title": "Colonial"
       },
-      "military" : {
+      "military": {
         "title": "Military"
       }
     }

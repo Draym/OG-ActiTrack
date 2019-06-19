@@ -27,6 +27,9 @@ import i18next from 'i18next';
 
 import CDatePicker from "../../Components/CDatePicker";
 import {EDatePicker} from "../../Components/CDatePicker/EDatePicker";
+import CPopInfo from "../../Components/CPopover/CPopInfo";
+import CBoolInput from "../../Components/CBoolInput";
+import PlayerActivityChart from "./Widgets/PlayerActivityChart";
 
 
 //Random Numbers
@@ -36,83 +39,90 @@ function random(min, max) {
 
 let flatData = [
   {
-    planetPos: "1:10:2",
+    position: "1:10:2",
     playerName: "Draym",
     server: "Fenrir",
     activity: "18",
     creationDate: new Date("2019-06-12 15:00:00")
   },
   {
-    planetPos: "1:10:2",
+    position: "1:10:2",
     playerName: "Draym",
     server: "Fenrir",
     activity: "35",
     creationDate: new Date("2019-06-12 11:16:00")
   },
   {
-    planetPos: "1:10:2",
+    position: "1:10:2",
     playerName: "Draym",
     server: "Fenrir",
     activity: "15",
     creationDate: new Date("2019-06-12 15:30:00")
   },
   {
-    planetPos: "1:10:2",
+    position: "1:10:2",
     playerName: "Draym",
     server: "Fenrir",
     activity: "15",
     creationDate: new Date("2019-06-12 16:00:00")
   },
   {
-    planetPos: "1:10:2",
+    position: "1:10:2",
     playerName: "Draym",
     server: "Fenrir",
     activity: "15",
     creationDate: new Date("2019-06-12 17:08:00")
   },
   {
-    planetPos: "1:10:2",
+    position: "1:10:2",
     playerName: "Draym",
     server: "Fenrir",
     activity: "15",
     creationDate: new Date("2019-06-12 17:30:00")
   },
   {
-    planetPos: "1:10:2",
+    position: "1:10:2",
     playerName: "Draym",
     server: "Fenrir",
     activity: "15",
     creationDate: new Date("2019-06-12 18:00:00")
   },
   {
-    planetPos: "1:10:2",
+    position: "1:10:2",
     playerName: "Draym",
     server: "Fenrir",
     activity: "15",
     creationDate: new Date("2019-06-12 19:00:00")
   },
   {
-    planetPos: "1:10:2",
+    position: "1:10:2",
     playerName: "Draym",
     server: "Fenrir",
     activity: "15",
     creationDate: new Date("2019-06-12 20:00:00")
   }, {
-    planetPos: "1:10:2",
+    position: "1:10:2",
     playerName: "Draym",
     server: "Fenrir",
     activity: "15",
     creationDate: new Date("2019-06-12 23:00:00")
   },
   {
-    planetPos: "1:10:2",
+    position: "1:10:2",
     playerName: "Draym",
     server: "Fenrir",
     activity: "0",
     creationDate: new Date("2019-06-12 01:00:00")
   },
   {
-    planetPos: "1:10:2",
+    position: "1:10:2",
+    playerName: "Draym",
+    server: "Fenrir",
+    activity: "0",
+    creationDate: new Date("2019-06-12 01:05:00")
+  },
+  {
+    position: "1:10:2",
     playerName: "Draym",
     server: "Fenrir",
     activity: "0",
@@ -135,18 +145,25 @@ class PlayerActivity extends Component {
     this.submitChart = this.submitChart.bind(this);
     this.init = this.init.bind(this);
     this.handleDayChange = this.handleDayChange.bind(this);
+    this.handleFriendDataChange = this.handleFriendDataChange.bind(this);
+    this.handleGlobalDataChange = this.handleGlobalDataChange.bind(this);
     this.state = {
       servers: [],
       server: '',
       errorServer: '',
       player: '',
       errorPlayer: '',
-      data: flatData,
+      activityLogs: flatData,
+
       dateTypeSelected: EDatePicker.DayInputPicker,
       groupTypeSelected: 1,
+      selectedDays: [],
+
       guiParameters: false,
       guiChart: false,
-      selectedDays: [],
+      friendData: true,
+      globalData: false,
+      hasChange: false
     };
     this.init();
   }
@@ -157,6 +174,26 @@ class PlayerActivity extends Component {
 
   generateServerOptions() {
     let servers = [];
+    /*
+    HttpUtils().GET(process.env.REACT_APP_SERVER_URL, '/data/availableServers', null, function (data) {
+      console.log(data);
+      if (data) {
+        let servers = [];
+        for (let i in data) {
+          servers.push({value:data[i], label:data[i]});
+        }
+        this.setState({servers: servers});
+      } else {
+        this.setState({
+          errorPlayer: "There is no server registered."
+        });
+      }
+    }.bind(this), function (errorStatus, error) {
+      console.log(error);
+      this.setState({
+        errorPlayer: error,
+      });
+    }.bind(this));*/
 
     console.log("server");
     servers.push({value: '11', label: '11'});
@@ -164,26 +201,6 @@ class PlayerActivity extends Component {
     servers.push({value: '33', label: '33'});
     this.setState({
       servers: servers
-    });
-  }
-
-  filterServerOptions(inputValue) {
-    if (this.state.servers.length === 0)
-      this.generateServerOptions();
-    return this.state.servers.filter(i =>
-      i.label.toLowerCase().includes(inputValue.toLowerCase())
-    );
-  }
-
-  onDateTypeBtnClick(radioSelected) {
-    this.setState({
-      dateTypeSelected: radioSelected,
-    });
-  }
-
-  onGroupTypeBtnClick(radioSelected) {
-    this.setState({
-      groupTypeSelected: radioSelected,
     });
   }
 
@@ -211,32 +228,151 @@ class PlayerActivity extends Component {
     }.bind(this));*/
   }
 
-  handlePlayerChange(event) {
-    this.setState({player: event.target.value, errorPlayer: ''});
+  submitChart() {
+    let endpoint = '';
+
+    let parameters = {
+      server: this.state.server,
+      player: this.state.player
+    };
+    /*
+    HttpUtils().GET(process.env.REACT_APP_SERVER_URL, endpoint, parameters, function (data) {
+      console.log(data);
+      if (data) {
+        this.setState({
+          activityLogs: data,
+          guiChart: true,
+          hasChange: false
+        });
+      } else {
+        this.setState({
+          errorPlayer: "There is no data for " + parameters.player + " on " + parameters.server
+        });
+      }
+    }.bind(this), function (errorStatus, error) {
+      console.log(error);
+      this.setState({
+        errorPlayer: error,
+      });
+    }.bind(this));*/
+    this.setState({
+      guiChart: true,
+      hasChange: false
+    })
   }
 
-  handleDayChange(days) {
-    console.log("day:", days);
-    this.setState({selectedDays: days});
+  filterServerOptions(inputValue) {
+    if (this.state.servers.length === 0)
+      this.generateServerOptions();
+    return this.state.servers.filter(i =>
+      i.label.toLowerCase().includes(inputValue.toLowerCase())
+    );
+  }
+
+  onDateTypeBtnClick(radioSelected) {
+    this.setState({
+      dateTypeSelected: radioSelected,
+      hasChange: true
+    });
+  }
+
+  onGroupTypeBtnClick(radioSelected) {
+    this.setState({
+      groupTypeSelected: radioSelected,
+      hasChange: true
+    });
   }
 
   onServerSelect = selectedOption => {
     if (selectedOption.value)
-      this.setState({server: selectedOption.value, errorServer: ''});
+      this.setState({
+        server: selectedOption.value, errorServer: '', hasChange: true
+      });
   };
 
-  submitChart() {
+  handlePlayerChange(event) {
     this.setState({
-      guiChart: true
-    })
+      player: event.target.value, errorPlayer: '', hasChange: true
+    });
   }
+
+  handleDayChange(days) {
+    this.setState({
+      selectedDays: days, hasChange: true
+    });
+  }
+
+  handleFriendDataChange(value) {
+    this.setState({
+      friendData: value,
+      hasChange: true
+    })
+  };
+
+  handleGlobalDataChange(value) {
+    this.setState({
+      globalData: value,
+      hasChange: true
+    })
+  };
 
   render() {
     let drawPremiumParameters = function () {
       return (
         <Card>
-          <CardBody>
+          <CardHeader>
+            Advanced parameters:
 
+            <div className="card-header-actions">
+              <CPopInfo className="card-header-action btn" id="advancedInfo" position="bottom"
+                        title="popinfo.activity.player.advanced.title" body="popinfo.activity.player.advanced.body"/>
+            </div>
+          </CardHeader>
+          <CardBody>
+            <Row>
+              <Col md={5}>
+                <span className="btn-label">Group the data:</span>
+              </Col>
+              <Col sm="7">
+                <ButtonToolbar>
+                  <ButtonGroup className="mr-3">
+                    <Button color="outline-primary" onClick={() => this.onGroupTypeBtnClick(1)}
+                            active={this.state.groupTypeSelected === 1}>Group</Button>
+                    <Button color="outline-primary" onClick={() => this.onGroupTypeBtnClick(2)}
+                            active={this.state.groupTypeSelected === 2}>Split</Button>
+                  </ButtonGroup>
+                </ButtonToolbar>
+              </Col>
+            </Row>
+            <Row className="box-delim">
+              <Col md={5}>
+                <span className="btn-label">Use friend data:</span>
+              </Col>
+              <Col md={4}>
+                <CBoolInput handleChange={this.handleFriendDataChange} value={this.state.friendData}/>
+              </Col>
+              <Col md={2}>
+                <CPopInfo className="btn-label card-header-action btn" id="friendInfo" position="bottom"
+                          title="popinfo.activity.player.friend.title" body="popinfo.activity.player.friend.body"/>
+              </Col>
+            </Row>
+            <Row>
+              <Col md={1}>
+                <i className="btn-label fa fa-star"
+                   style={{color: '#ffe200'}}/>
+              </Col>
+              <Col className="padding-off" md={4}>
+                <span className="btn-label">Use global data:</span>
+              </Col>
+              <Col md={4}>
+                <CBoolInput handleChange={this.handleGlobalDataChange} value={this.state.globalData}
+                            disabled={!UserSession.getSession() || UserSession.getSession().premium}/>
+              </Col>
+              <Col md={2}>
+                <CPopInfo className="btn-label card-header-action btn" id="premiumInfo" position="bottom"
+                          title="popinfo.activity.player.premium.title" body="popinfo.activity.player.premium.body"/>
+              </Col>
+            </Row>
           </CardBody>
         </Card>
       );
@@ -246,32 +382,27 @@ class PlayerActivity extends Component {
       if (!this.state.guiParameters) {
         return (
           <Card>
+            <CardHeader>
+              Choose a date range:
+
+              <div className="card-header-actions">
+                <CPopInfo className="card-header-action btn" id="dateInfo" position="bottom"
+                          title="popinfo.activity.player.date.title" body="popinfo.activity.player.date.body"/>
+              </div>
+            </CardHeader>
             <CardBody>
               <Row>
-                <Col md={5}>
-                  <span className="btn-label">Group the data:</span>
-                </Col>
-                <Col sm="7">
-                  <ButtonToolbar aria-label="Toolbar to select the group type">
-                    <ButtonGroup className="mr-3" aria-label="First group">
-                      <Button color="outline-primary" onClick={() => this.onGroupTypeBtnClick(1)}
-                              active={this.state.groupTypeSelected === 1}>Group</Button>
-                      <Button color="outline-primary" onClick={() => this.onGroupTypeBtnClick(2)}
-                              active={this.state.groupTypeSelected === 2}>Split</Button>
-                    </ButtonGroup>
-                  </ButtonToolbar>
-                </Col>
-              </Row>
-              <Row className="parameter-bloc">
                 <Col md={5}>
                   <span className="btn-label">Select the Range:</span>
                 </Col>
                 <Col md={7}>
                   <ButtonToolbar aria-label="Toolbar to select the date type">
                     <ButtonGroup className="mr-3" aria-label="First group">
-                      <Button color="outline-primary" onClick={() => this.onDateTypeBtnClick(EDatePicker.DayInputPicker)}
+                      <Button color="outline-primary"
+                              onClick={() => this.onDateTypeBtnClick(EDatePicker.DayInputPicker)}
                               active={this.state.dateTypeSelected === EDatePicker.DayInputPicker}>Day</Button>
-                      <Button color="outline-primary" onClick={() => this.onDateTypeBtnClick(EDatePicker.WeekInputPicker)}
+                      <Button color="outline-primary"
+                              onClick={() => this.onDateTypeBtnClick(EDatePicker.WeekInputPicker)}
                               active={this.state.dateTypeSelected === EDatePicker.WeekInputPicker}>Week</Button>
                     </ButtonGroup>
                   </ButtonToolbar>
@@ -287,7 +418,8 @@ class PlayerActivity extends Component {
               </Row>
               <Row className="parameter-bloc">
                 <Col>
-                  <Button className="float-right" color="primary" disabled={this.state.selectedDays.length === 0}
+                  <Button className="float-right" color="primary"
+                          disabled={this.state.selectedDays.length === 0 || !this.state.hasChange}
                           onClick={this.submitChart}>Generate chart</Button>
                 </Col>
               </Row>
@@ -296,31 +428,7 @@ class PlayerActivity extends Component {
         );
       }
     }.bind(this);
-    let drawChart = function () {
-      if (this.state.guiChart) {
-        let dateStart = moment(this.state.selectedDays[0]).locale(i18next.t("date.format")).format("DD MMMM YYYY");
-        let dateEnd = moment(this.state.selectedDays[this.state.selectedDays.length - 1]).locale(i18next.t("date.format")).format("DD MMMM YYYY");
-        console.log(dateStart, dateEnd);
-        return (
-          <Card>
-            <CardBody>
-              <Row>
-                <Col sm="5">
-                  <CardTitle className="mb-0">Activity of {this.state.player}:</CardTitle>
-                  <div className="small text-muted">For {dateStart} {this.state.selectedDays.length === 1 ? '' : ' to ' + dateEnd}</div>
-                </Col>
-              </Row>
-              <div className="chart-wrapper" style={{height: 300 + 'px', marginTop: 40 + 'px'}}>
-                <Bar data={ChartCreator.GenerateDailyPlayerActivityChart(this.state.data)}
-                     options={ChartUtils.GetDefaultLineOpt()}
-                     height={300}/>
-              </div>
-            </CardBody>
-          </Card>
-        )
-      }
-    }.bind(this);
-    let drawPlayerParameter = function () {
+    let drawPlayerInput = function () {
       if (!TString.isNull(this.state.server)) {
         return (
           <div>
@@ -332,29 +440,51 @@ class PlayerActivity extends Component {
         );
       }
     }.bind(this);
+    let drawPlayerParameter = function () {
+      return (
+        <Card>
+          <CardHeader>
+            Select a server & player:
+
+            <div className="card-header-actions">
+              <CPopInfo className="card-header-action btn" id="paramInfo" position="bottom"
+                        title="popinfo.activity.player.param.title" body="popinfo.activity.player.param.body"/>
+            </div>
+          </CardHeader>
+          <CardBody>
+            <p className="input-title text-muted">Select the desired Ogame server :</p>
+            <CFormInput className="input-body" gui={{headIcon: "fa fa-server"}} type={"text"}
+                        placeHolder={"Select a server.."} value={this.state.server} error={this.state.errorServer}
+                        autoComplete={{
+                          options: this.state.servers,
+                          handleSelectChange: this.onServerSelect,
+                          handleInputChange: this.onServerSelect,
+                          filterOptions: this.filterServerOptions
+                        }}/>
+            {drawPlayerInput()}
+          </CardBody>
+        </Card>
+      );
+    }.bind(this);
+    let drawChart = function () {
+      if (this.state.guiChart) {
+        return (
+          <PlayerActivityChart selectedDays={this.state.selectedDays} data={this.state.activityLogs}
+                               player={this.state.player} isGroup={this.state.groupTypeSelected === 1}
+                               isUnique={!this.state.globalData && !this.state.friendData}/>
+        );
+      }
+    }.bind(this);
     return (
       <div className="animated fadeIn">
         <Row className="card-parameters">
           <Col sm="4" className="card-param1">
-            <Card>
-              <CardBody>
-                <p className="input-title text-muted">Select the desired Ogame server :</p>
-                <CFormInput className="input-body" gui={{headIcon: "fa fa-server"}} type={"text"}
-                            placeHolder={"Select a server.."} value={this.state.server} error={this.state.errorServer}
-                            autoComplete={{
-                              options: this.state.servers,
-                              handleSelectChange: this.onServerSelect,
-                              handleInputChange: this.onServerSelect,
-                              filterOptions: this.filterServerOptions
-                            }}/>
-                {drawPlayerParameter()}
-              </CardBody>
-            </Card>
+            {drawPlayerParameter()}
           </Col>
-          <Col sm="5" className="card-param2">
+          <Col sm="4" className="card-param2">
             {drawParameters()}
           </Col>
-          <Col sm="3" className="card-param3">
+          <Col sm="4" className="card-param3">
             {drawPremiumParameters()}
           </Col>
         </Row>

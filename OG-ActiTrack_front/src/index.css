@@ -1,3 +1,6 @@
+.breadcrumb{
+  margin-bottom: 0.60rem !important;
+}
 
 .img-center {
   display: block;
@@ -9,6 +12,28 @@
   margin-left: 0 !important;
 }
 
+
+.disabled {
+  color: currentColor;
+  display: inline-block; /* For IE11/ MS Edge bug */
+  pointer-events: none;
+  text-decoration: none;
+}
+
+/**
+** COL
+ */
+.margin-off {
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+}
+.padding-off {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+/**
+** CARD
+ */
 .card-empty-background {
   background-color: #fff !important;
 }
@@ -18,11 +43,8 @@
   border-style: solid;
 }
 
-.disabled {
-  color: currentColor;
-  display: inline-block; /* For IE11/ MS Edge bug */
-  pointer-events: none;
-  text-decoration: none;
+.card-header {
+  padding-bottom: 5px !important;
 }
 
 .card-parameters {
@@ -45,6 +67,10 @@
 .card-parameters > .card {
   margin-bottom: 0.5rem !important;
 }
+
+/**
+** INPUT
+ */
 
 .input-fill {
   flex: 1 1 auto;
@@ -76,11 +102,38 @@
   background-color: transparent !important;
 }
 
-.btn-label {
-  display: flex;
-  margin-top: 8px;
+/**
+** POPOVER
+ */
+.pop-btn:hover{
+  cursor: pointer;
+  color: #63c2de !important;
+}
+.pop-info{
+  padding: 0 !important;
 }
 
+/**
+** GENERAL
+ */
+
+.box-delim {
+  padding-top: 1.3rem;
+}
+
+.btn-label {
+  display: flex !important;
+  margin-top: 5px !important;
+}
+.btn-label:before {
+  display: flex !important;
+  margin-top: 5px !important;
+}
+.btn-label:after {
+  display: flex !important;
+  margin-top: 5px !important;
+}
 .parameter-bloc {
   padding-top: 15px !important;
 }
+

@@ -50,7 +50,7 @@ class CLanguageCtrl extends Component {
   render() {
     return (
         <ButtonDropdown style={{padding: 3 + 'px'}} isOpen={this.state.dropdownOpen} toggle={this.toggle}>
-          <DropdownToggle caret color="primary">
+          <DropdownToggle caret color="secondary">
             <span className={this.state.flag + ' flag-icon'}/>
             <span className="spLanguage">{this.state.language}</span>
           </DropdownToggle>
