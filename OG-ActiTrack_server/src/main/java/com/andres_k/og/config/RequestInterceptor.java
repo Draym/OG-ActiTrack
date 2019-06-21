@@ -29,7 +29,7 @@ public class RequestInterceptor implements HandlerInterceptor {
             return true;
         Restricted restriction = EndpointManager.getRestriction(endpoint);
 
-        if (restriction == null || !restriction.tokenRequired())
+        if (restriction == null)
             return true;
         if (token == null || token.length() == 0)
             return false;

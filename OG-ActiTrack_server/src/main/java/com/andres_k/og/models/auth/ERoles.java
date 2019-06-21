@@ -11,7 +11,7 @@ public enum ERoles {
         this.value = value;
     }
 
-    public String get(){
+    public String getValue(){
         return this.value;
     }
 

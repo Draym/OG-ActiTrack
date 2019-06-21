@@ -1,9 +1,8 @@
 package com.andres_k.og.controllers.admin;
 
-import com.andres_k.og.config.HttpResponse;
+import com.andres_k.og.config.Restricted;
 import com.andres_k.og.models.auth.ERoles;
 import com.andres_k.og.models.auth.User;
-import com.andres_k.og.services.AuthorizationService;
 import com.andres_k.og.services.UserService;
 import com.andres_k.og.utils.tools.Console;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,15 +16,12 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
     @Autowired
     private UserService userService;
-    @Autowired
-    private AuthorizationService authorizationService;
 
+    @Restricted(required = ERoles.ADMIN)
     @RequestMapping(value = "/user/delete", method = RequestMethod.DELETE)
     @ResponseBody
-    public ResponseEntity<?> deleteUser(@RequestHeader String Authorization, @RequestBody Long userId) {
+    public ResponseEntity<?> deleteUser(@RequestBody Long userId) {
         try {
-            if (!this.authorizationService.isAuthorized(ERoles.ADMIN, Authorization))
-                return new ResponseEntity<>("Unauthorized", HttpStatus.UNAUTHORIZED);
             this.userService.deleteUser(userId);
             return new ResponseEntity<>(true, HttpStatus.OK);
         } catch (Exception ex) {
@@ -34,12 +30,11 @@ public class UserController {
         }
     }
 
+    @Restricted(required = ERoles.ADMIN)
     @RequestMapping(value = "/user/update", method = RequestMethod.PUT)
     @ResponseBody
-    public ResponseEntity<?> update(@RequestHeader String Authorization, @RequestBody User user) {
+    public ResponseEntity<?> update(@RequestBody User user) {
         try {
-            if (!this.authorizationService.isAuthorized(ERoles.ADMIN, Authorization))
-                return new ResponseEntity<>("Unauthorized", HttpStatus.UNAUTHORIZED);
             User newUser = this.userService.updateUser(user);
             return new ResponseEntity<>(newUser, HttpStatus.OK);
         } catch (Exception ex) {

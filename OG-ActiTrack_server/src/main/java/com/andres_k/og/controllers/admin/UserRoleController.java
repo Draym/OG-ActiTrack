@@ -1,5 +1,6 @@
 package com.andres_k.og.controllers.admin;
 
+import com.andres_k.og.config.Restricted;
 import com.andres_k.og.models.auth.ERoles;
 import com.andres_k.og.services.AuthorizationService;
 import com.andres_k.og.services.UserService;
@@ -15,15 +16,12 @@ import org.springframework.web.bind.annotation.*;
 public class UserRoleController {
     @Autowired
     private UserService userService;
-    @Autowired
-    private AuthorizationService authorizationService;
 
+    @Restricted(required = ERoles.ADMIN)
     @RequestMapping(value = "/user/role/delete", method = RequestMethod.DELETE)
     @ResponseBody
-    public ResponseEntity<?> deleteUserRole(@RequestHeader String Authorization, @RequestParam Long userId, @RequestParam Long roleId) {
+    public ResponseEntity<?> deleteUserRole(@RequestParam Long userId, @RequestParam Long roleId) {
         try {
-            if (!this.authorizationService.isAuthorized(ERoles.ADMIN, Authorization))
-                return new ResponseEntity<>("Unauthorized", HttpStatus.UNAUTHORIZED);
             this.userService.deleteRole(userId, roleId);
             return new ResponseEntity<>(true, HttpStatus.OK);
         } catch (Exception ex) {

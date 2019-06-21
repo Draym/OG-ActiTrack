@@ -1,5 +1,6 @@
 package com.andres_k.og.controllers.user;
 
+import com.andres_k.og.config.Restricted;
 import com.andres_k.og.models.auth.ERoles;
 import com.andres_k.og.models.item.mapping.OGServer;
 import com.andres_k.og.models.item.mapping.OGServerRepository;
@@ -21,15 +22,12 @@ public class DataController {
     OGServerRepository serverRepository;
     @Autowired
     PlayerRepository playerRepository;
-    @Autowired
-    private AuthorizationService authorizationService;
 
+    @Restricted
     @RequestMapping(value = "/data/availableServers", method = RequestMethod.GET)
     @ResponseBody
     public ResponseEntity<?> getAvailableServer(@RequestHeader String Authorization) {
         try {
-            if (!this.authorizationService.isAuthorized(ERoles.USER, Authorization))
-                return new ResponseEntity<>("Unauthorized", HttpStatus.UNAUTHORIZED);
             List<OGServer> OGServers = this.serverRepository.findAll();
 
             return new ResponseEntity<>(OGServers, HttpStatus.OK);
@@ -38,12 +36,11 @@ public class DataController {
         }
     }
 
+    @Restricted
     @RequestMapping(value = "/data/playerExistInServer", method = RequestMethod.GET)
     @ResponseBody
     public ResponseEntity<?> playerExistInServer(@RequestHeader String Authorization, @RequestParam String server, @RequestParam String playerName) {
         try {
-            if (!this.authorizationService.isAuthorized(ERoles.USER, Authorization))
-                return new ResponseEntity<>("Unauthorized", HttpStatus.UNAUTHORIZED);
             Optional<Player> optPlayer = this.playerRepository.findByServerAndPlayerName(server, playerName);
             return new ResponseEntity<>(optPlayer.isPresent(), HttpStatus.OK);
         } catch (Exception ex) {

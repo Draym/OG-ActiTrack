@@ -74,7 +74,7 @@ public class AuthService {
         if (!optUser.isPresent())
             throw new EntityNotFoundException("The user {" + optToken.get().getUserId() + "} has not been found.");
 
-        this.tokenService.expirePreviousTokens(optUser.get(), optToken.get().getOrigin());
+        //this.tokenService.expirePreviousTokens(optUser.getValue(), optToken.getValue().getOrigin());
 
         return this.tokenService.createToken(optUser.get(), optToken.get().getOrigin(), optToken.get().getTokenBackup());
     }

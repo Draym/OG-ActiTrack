@@ -6,8 +6,6 @@ import com.andres_k.og.models.auth.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
-
 @Service
 public class AuthorizationService {
     @Autowired
@@ -23,7 +21,7 @@ public class AuthorizationService {
 
         User user = this.userService.getUserByToken(token);
 
-        return this.userRoleService.isUserAllowed(user, Arrays.asList(restriction.roles()));
+        return this.userRoleService.isUserAllowed(user, restriction.required());
     }
 
     public boolean isAuthorized(ERoles role, String token) {

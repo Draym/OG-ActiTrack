@@ -73,6 +73,8 @@ class Register extends Component {
         });
       }
     }.bind(this), function (errorStatus, error) {
+      if (!error)
+        return;
       this.setState({
         errorEmail: (error.indexOf("email") !== -1 ? error : ''),
         errorUsername: (error.indexOf("pseudo") !== -1 ? error : ''),

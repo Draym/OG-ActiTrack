@@ -7,10 +7,8 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-@Deprecated
 @Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.TYPE)
+@Target({ElementType.METHOD, ElementType.TYPE})
 public @interface Restricted {
-    boolean tokenRequired() default true;
-    ERoles[] roles() default ERoles.USER;
+    ERoles required() default ERoles.USER;
 }

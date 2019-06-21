@@ -9,7 +9,6 @@ import com.andres_k.og.models.auth.user.UserRoleRepository;
 import com.andres_k.og.models.http.RegisterHandler;
 import com.andres_k.og.utils.managers.EmailManager;
 import com.andres_k.og.utils.managers.PasswordManager;
-import com.andres_k.og.utils.tools.THashString;
 import com.andres_k.og.utils.tools.TRandomString;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -50,7 +49,7 @@ public class UserService {
 
             // createToken user role USER
             UserRole userRole = new UserRole();
-            Optional<Role> optRole = this.roleRepository.findByValue(ERoles.USER.get());
+            Optional<Role> optRole = this.roleRepository.findByValue(ERoles.USER.getValue());
             if (!optRole.isPresent())
                 throw new EntityNotFoundException("Cannot find the default user role.");
             User newUser = this.userRepository.save(user);
