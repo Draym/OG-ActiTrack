@@ -1,4 +1,34 @@
 {
+  "days": [
+    {
+      "abv": "Lun",
+      "full": "Lundi"
+    },
+    {
+      "abv": "Mar",
+      "full": "Mardi"
+    },
+    {
+      "abv": "Mer",
+      "full": "Mercredi"
+    },
+    {
+      "abv": "Jeu",
+      "full": "Jeudi"
+    },
+    {
+      "abv": "Ven",
+      "full": "Vendredi"
+    },
+    {
+      "abv": "Sam",
+      "full": "Samedi"
+    },
+    {
+      "abv": "Dim",
+      "full": "Dimanche"
+    }
+  ],
   "popinfo": {
     "activity": {
       "player": {
@@ -51,10 +81,10 @@
     },
     "data": {
       "title": "Outils Statistique",
-      "colonial" : {
+      "colonial": {
         "title": "Colonisation"
       },
-      "military" : {
+      "military": {
         "title": "Militaire"
       }
     }

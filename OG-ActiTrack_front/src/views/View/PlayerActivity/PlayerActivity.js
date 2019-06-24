@@ -147,6 +147,7 @@ class PlayerActivity extends Component {
     this.handleDayChange = this.handleDayChange.bind(this);
     this.handleFriendDataChange = this.handleFriendDataChange.bind(this);
     this.handleGlobalDataChange = this.handleGlobalDataChange.bind(this);
+    this.generateApiEndpointForChart = this.generateApiEndpointForChart.bind(this);
     this.state = {
       servers: [],
       server: '',
@@ -161,7 +162,7 @@ class PlayerActivity extends Component {
 
       guiParameters: false,
       guiChart: false,
-      friendData: true,
+      friendData: false,
       globalData: false,
       hasChange: false
     };
@@ -169,18 +170,17 @@ class PlayerActivity extends Component {
   }
 
   init() {
+    this.generateServerOptions();
 
   }
 
   generateServerOptions() {
-    let servers = [];
-    /*
     HttpUtils().GET(process.env.REACT_APP_SERVER_URL, '/data/availableServers', null, function (data) {
       console.log(data);
       if (data) {
         let servers = [];
         for (let i in data) {
-          servers.push({value:data[i], label:data[i]});
+          servers.push({value: data[i].server, label: data[i].server});
         }
         this.setState({servers: servers});
       } else {
@@ -193,15 +193,7 @@ class PlayerActivity extends Component {
       this.setState({
         errorPlayer: error,
       });
-    }.bind(this));*/
-
-    console.log("server");
-    servers.push({value: '11', label: '11'});
-    servers.push({value: '22', label: '22'});
-    servers.push({value: '33', label: '33'});
-    this.setState({
-      servers: servers
-    });
+    }.bind(this));
   }
 
   verifyPseudo() {
@@ -209,12 +201,10 @@ class PlayerActivity extends Component {
       server: this.state.server,
       player: this.state.player
     };
-    this.setState({guiParameters: true});
-    /*
     HttpUtils().GET(process.env.REACT_APP_SERVER_URL, '/data/playerExistInServer', parameters, function (data) {
       console.log(data);
       if (data) {
-        this.setState({guiDate: true});
+        this.setState({guiParameters: true});
       } else {
         this.setState({
           errorPlayer: "There is no data for " + parameters.player + " on " + parameters.server
@@ -225,18 +215,38 @@ class PlayerActivity extends Component {
       this.setState({
         errorPlayer: error,
       });
-    }.bind(this));*/
+    }.bind(this));
+  }
+
+  generateApiEndpointForChart() {
+    let parameters = {
+      server: this.state.server,
+      playerName: this.state.player,
+      start: new Date(this.state.selectedDays[0]).toISOString().split("T")[0] + "T00:00:00.000",
+      end: new Date(this.state.selectedDays[this.state.selectedDays.length - 1]).toISOString().split("T")[0] + "T23:59:59.999"
+    };
+    if (this.state.friendData === true) {
+      return {
+        endpoint: '/activity/friendgroup/player',
+        parameters: parameters
+      };
+    } else if (this.state.globalData === true) {
+      return {
+        endpoint: '/activity/global/player',
+        parameters: parameters
+      };
+    } else {
+      return {
+        endpoint: '/activity/self/player',
+        parameters: parameters
+      };
+    }
   }
 
   submitChart() {
-    let endpoint = '';
+    let callParameters = this.generateApiEndpointForChart();
 
-    let parameters = {
-      server: this.state.server,
-      player: this.state.player
-    };
-    /*
-    HttpUtils().GET(process.env.REACT_APP_SERVER_URL, endpoint, parameters, function (data) {
+    HttpUtils().GET(process.env.REACT_APP_SERVER_URL, callParameters.endpoint, callParameters.parameters, function (data) {
       console.log(data);
       if (data) {
         this.setState({
@@ -246,7 +256,7 @@ class PlayerActivity extends Component {
         });
       } else {
         this.setState({
-          errorPlayer: "There is no data for " + parameters.player + " on " + parameters.server
+          errorPlayer: "There is no data for " + callParameters.parameters.player + " on " + callParameters.parameters.server
         });
       }
     }.bind(this), function (errorStatus, error) {
@@ -254,11 +264,7 @@ class PlayerActivity extends Component {
       this.setState({
         errorPlayer: error,
       });
-    }.bind(this));*/
-    this.setState({
-      guiChart: true,
-      hasChange: false
-    })
+    }.bind(this));
   }
 
   filterServerOptions(inputValue) {
@@ -307,14 +313,16 @@ class PlayerActivity extends Component {
       friendData: value,
       hasChange: true
     })
-  };
+  }
+  ;
 
   handleGlobalDataChange(value) {
     this.setState({
       globalData: value,
       hasChange: true
     })
-  };
+  }
+  ;
 
   render() {
     let drawPremiumParameters = function () {
@@ -339,7 +347,7 @@ class PlayerActivity extends Component {
                     <Button color="outline-primary" onClick={() => this.onGroupTypeBtnClick(1)}
                             active={this.state.groupTypeSelected === 1}>Group</Button>
                     <Button color="outline-primary" onClick={() => this.onGroupTypeBtnClick(2)}
-                            active={this.state.groupTypeSelected === 2}>Split</Button>
+                            active={this.state.groupTypeSelected === 2}>{this.state.dateTypeSelected === EDatePicker.DayInputPicker ? "Per Position" : "Per Day"}</Button>
                   </ButtonGroup>
                 </ButtonToolbar>
               </Col>
@@ -379,7 +387,7 @@ class PlayerActivity extends Component {
     }.bind(this);
 
     let drawParameters = function () {
-      if (!this.state.guiParameters) {
+      if (this.state.guiParameters) {
         return (
           <Card>
             <CardHeader>

@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 
 import i18next from 'i18next';
 import {Card, CardBody, CardTitle, Col, Row} from "reactstrap";
-import {Bar} from "react-chartjs-2";
+import {Bar, Line} from "react-chartjs-2";
 import ChartCreator from "../../../../Utils/ChartCreator";
 import ChartUtils from "../../../../Utils/ChartUtils";
 import moment from "moment";
@@ -13,8 +13,11 @@ class PlayerActivityChart extends Component {
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-    console.log(nextProps, nextState);
-    return true;
+    if (nextProps.isGroup !== this.props.isGroup)
+      return true;
+    if (nextProps.data !== this.props.data)
+      return true;
+    return false;
   }
 
 
@@ -24,14 +27,49 @@ class PlayerActivityChart extends Component {
     let dateEnd = moment(this.props.selectedDays[this.props.selectedDays.length - 1]).locale(i18next.t("date.format")).format("DD MMMM YYYY");
 
     let renderChart = function () {
-      if (this.props.isGroup) {
-        return (
-          <Bar data={ChartCreator.GenerateDailyPlayerActivityBarChart(this.props.data, this.props.isUnique ? 15 : 5)}
-               options={ChartUtils.GetDefaultLineOpt()}
-               height={300}/>
-        );
+      if (this.props.selectedDays.length === 1) {
+        if (this.props.isGroup) {
+          let dataResults = ChartCreator.GeneratePlayerActivityPerDay(this.props.data, this.props.isUnique ? 15 : 5, ["Planet with activity", "Planet without activity"]);
+          return (
+            <Bar data={dataResults[0]}
+                 options={ChartUtils.GetDefaultChartOpt(36, 1)}
+                 height={300}/>
+          );
+        } else {
+          let dataResults = ChartCreator.GeneratePlayerActivityPerDayPerPosition(this.props.data, this.props.isUnique ? 15 : 5, ["Has activity", "No activity"]);
+          return (
+            <div>
+            {
+              dataResults.map((data, key) =>
+                <Line key={key} data={data}
+                     options={ChartUtils.GetDefaultChartOpt(14, 1)}
+                     height={150}/>)
+            }
+            </div>
+          );
+        }
       } else {
-
+        if (this.props.isGroup) {
+          let dataResults = ChartCreator.GeneratePlayerActivityPerWeek(this.props.data, this.props.isUnique ? 12 : 6, ["% d'activité"]);
+          return (
+            <Bar data={dataResults[0]}
+                 options={ChartUtils.GetDefaultChartOpt(20, 25)}
+                 height={300}/>
+          );
+        } else {
+          let dataResults = ChartCreator.GeneratePlayerActivityPerWeekSplit(this.props.data, this.props.isUnique ? 15 : 5, ["Has activity", "No activity"]);
+          console.log("dataResults: ", dataResults);
+          return (
+            <div>
+              {
+                dataResults.map((data, key) =>
+                  <Bar key={key} data={data}
+                        options={ChartUtils.GetDefaultChartOpt(36, 1)}
+                        height={150}/>)
+              }
+            </div>
+          );
+        }
       }
     }.bind(this);
     return (

@@ -10,6 +10,7 @@ let HttpUtils = function() {
         result += '&';
       result += i + '=' + parameters[i];
     }
+    result = (result === '' ? result : '?' + result);
     return result;
   }
   function httpResult(response, cbSuccess, cbError) {
@@ -34,7 +35,7 @@ let HttpUtils = function() {
       headers.Authorization = session.token.token;
     }
     let urlParameters = stringifyParameters(parameters);
-    fetch(url + api + '?' + urlParameters, {
+    fetch(url + api + urlParameters, {
       method: type,
       headers: headers
     }).then(response => {

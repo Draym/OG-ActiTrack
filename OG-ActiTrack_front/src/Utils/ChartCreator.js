@@ -1,5 +1,8 @@
 import {getStyle, hexToRgba} from "@coreui/coreui/dist/js/coreui-utilities";
 import TString from "./TString";
+import ChartIntervalCreator from "./ChartIntervalCreator";
+import DateUtils from "./DateUtils";
+import MathUtils from "./MathUtils";
 
 const brandPrimary = getStyle('--primary');
 const brandSuccess = getStyle('--success');
@@ -11,17 +14,15 @@ let ChartCreator = function () {
   function generateArray(max) {
     let array = [];
     for (let i = 0; i < max; ++i) {
-      array[i] = null;
+      array[i] = 0;
     }
     return array;
   }
 
-  function preBuildPlayerDataPerDay(data, interval) {
-    let result = {};
-
-    let addLog = function(result, index, activity, position){
-      if(!result[index])
-        result[index] = [];
+  let addActivityLog = function (result, index, activity, position, override = true) {
+    if (!result[index])
+      result[index] = [];
+    if (override) {
       for (let i = 0; i < result[index].length; ++i) {
         if (result[index][i].position === position) {
           console.log("duplicate found: ", result[index][i]);
@@ -32,59 +33,67 @@ let ChartCreator = function () {
           return;
         }
       }
-      console.log("activity pushed");
-      result[index].push({
-        activity: activity,
-        position: position
-      });
-    };
+    }
+    console.log("activity pushed");
+    result[index].push({
+      activity: activity,
+      position: position
+    });
+  };
 
+  function preBuildPlayerDataPerWeek(data, interval) {
+    let result = {};
     for (let i = 0; i < data.length; ++i) {
       let index = 0;
       if (data[i].activity !== "0") {
-        index = (((data[i].creationDate.getHours() * 60) + data[i].creationDate.getMinutes()) / interval >> 0);
-        console.log("index2: ", index);
-        addLog(result, index, false, data[i].position);
+        index = (((DateUtils.getDay(new Date(data[i].creationDate)) * 24) + new Date(data[i].creationDate).getHours()) / interval >> 0);
+        console.log("index1: ", index);
+        addActivityLog(result, index, false, data[i].position, false);
       }
       if (!TString.isNull(data[i].activity)) {
         let dt = new Date(data[i].creationDate);
-        console.log("before", dt, data[i].activity);
         dt.setMinutes(dt.getMinutes() - data[i].activity);
-        index = (((dt.getHours() * 60) + dt.getMinutes()) / interval >> 0);
-        console.log("after:", dt, index);
-        console.log("index1: ", index);
-        addLog(result, index, true, data[i].position);
+        index = (((DateUtils.getDay(dt) * 24) + dt.getHours()) / interval >> 0);
+        console.log("index2: ", index);
+        addActivityLog(result, index, true, data[i].position, false);
       }
     }
     return result;
   }
 
-  function createLineChartByDay(data, interval) {
-
-    let labels = [];
-    let max = 24 * 60 / interval;
-    let time = 0;
-    for (let i = 0; i < max; ++i) {
-      let hour = (time / 60 >> 0);
-      let minute =  time % 60;
-      labels.push((hour < 10 ? '0' : '') + hour + "h" + (minute < 10 ? '0' : '') + minute);
-      time += interval;
+  function preBuildPlayerDataPerDay(data, interval) {
+    let result = {};
+    for (let i = 0; i < data.length; ++i) {
+      let index = 0;
+      if (data[i].activity !== "0") {
+        index = (((new Date(data[i].creationDate).getHours() * 60) + new Date(data[i].creationDate).getMinutes()) / interval >> 0);
+        console.log("index1: ", index);
+        addActivityLog(result, index, false, data[i].position);
+      }
+      if (!TString.isNull(data[i].activity)) {
+        let dt = new Date(data[i].creationDate);
+        dt.setMinutes(dt.getMinutes() - data[i].activity);
+        index = (((dt.getHours() * 60) + dt.getMinutes()) / interval >> 0);
+        console.log("index2: ", index);
+        addActivityLog(result, index, true, data[i].position);
+      }
     }
+    return result;
+  }
+
+  function createActivityDataPerDay(data, interval) {
+
+    let labels = ChartIntervalCreator.CreateIntervalForDay(interval);
+    let activity = generateArray(labels.length);
+    let absence = generateArray(labels.length);
 
     console.log("data: ", data);
-
-    let activity = generateArray(max);
-    let absence = generateArray(max);
 
     let logs = preBuildPlayerDataPerDay(data, interval);
 
     console.log("Logs: ", logs);
     for (let i in logs) {
       for (let i2 = 0; i2 < logs[i].length; ++i2) {
-        if (!activity[i])
-          activity[i] = 0;
-        if (!absence[i])
-          absence[i] = 0;
         if (logs[i][i2].activity) {
           activity[i] += 1;
         } else {
@@ -93,35 +102,147 @@ let ChartCreator = function () {
       }
     }
 
-    console.log("activity:", activity);
-    return {
-      labels: labels,
+    return {labels: labels, activity: activity, absence: absence}
+  }
+
+  /**
+   *
+   * @param data
+   * @param interval
+   * @param labelNames {Array} with 2 values
+   * @returns {{datasets: {backgroundColor: *, borderColor: *, data: Array, borderWidth: number, label: *, pointHoverBackgroundColor: string}[], labels: (*|Array)}[]}
+   */
+  function createChartPerDay(data, interval, labelNames) {
+    let result = createActivityDataPerDay(data, interval);
+    return [{
+      labels: result.labels,
       datasets: [
         {
-          label: 'Planet with activity',
+          label: labelNames[0],
           backgroundColor: hexToRgba(brandDanger, 10),
           borderColor: brandDanger,
           pointHoverBackgroundColor: '#fff',
           borderWidth: 2,
-          data: activity
+          data: result.activity
         },
         {
-          label: 'Planet without activity',
+          label: labelNames[1],
           backgroundColor: hexToRgba(brandInfo, 10),
           borderColor: brandInfo,
           pointHoverBackgroundColor: '#fff',
           borderWidth: 2,
-          data: absence
+          data: result.absence
         }
       ]
-    };
+    }];
   }
 
+  /**
+   *
+   * @param data
+   * @param interval
+   * @param labelNames {Array} with 1 value
+   * @returns {Array}
+   */
+  function createChartPerDayPerPosition(data, interval, labelNames) {
+    let filteredData = {};
+
+    //filter by position
+    for (let i = 0; i < data.length; ++i) {
+      if (!filteredData[data[i].position]) {
+        filteredData[data[i].position] = [];
+      }
+      filteredData[data[i].position].push(data[i]);
+    }
+    let result = [];
+    for (let pos in filteredData) {
+      let posChart = createChartPerDay(filteredData[pos], interval, labelNames);
+      result.push(posChart[0]);
+    }
+    return result;
+  }
+
+  /**
+   *
+   * @param data
+   * @param interval
+   * @param labelNames {Array} with 1 value
+   * @returns {Array}
+   */
+  function createChartPerWeek(data, interval, labelNames) {
+    let labels = ChartIntervalCreator.CreateIntervalForWeek(interval);
+    let result = generateArray(labels.length);
+    console.log("data: ", data, labels);
+
+    let logs = preBuildPlayerDataPerWeek(data, interval);
+
+    console.log("Logs: ", logs);
+    for (let i in logs) {
+      let activity = 0;
+      let absence = 0;
+      for (let i2 = 0; i2 < logs[i].length; ++i2) {
+        if (logs[i][i2].activity) {
+          activity += 1;
+        } else {
+          absence += 1;
+        }
+      }
+      result[i] = MathUtils.round(activity * 100 / (activity + absence));
+    }
+
+    return [{
+      labels: labels,
+      datasets: [
+        {
+          label: labelNames[0],
+          backgroundColor: hexToRgba(brandWarning, 10),
+          borderColor: brandWarning,
+          pointHoverBackgroundColor: '#fff',
+          borderWidth: 2,
+          data: result
+        }
+      ]
+    }];
+  }
+
+  /**
+   *
+   * @param data
+   * @param interval
+   * @param labelNames {Array} with 1 value
+   * @returns {Array}
+   */
+  function createChartPerWeekSplit(data, interval, labelNames) {
+    let filteredData = {};
+
+    //filter by position
+    for (let i = 0; i < data.length; ++i) {
+      if (!filteredData[new Date(data[i].creationDate).getDay()]) {
+        filteredData[new Date(data[i].creationDate).getDay()] = [];
+      }
+      filteredData[new Date(data[i].creationDate).getDay()].push(data[i]);
+    }
+    let result = [];
+    for (let day in filteredData) {
+      let posChart = createChartPerDay(filteredData[day], interval, labelNames);
+      result.push(posChart[0]);
+    }
+    return result;
+  }
 
   return ({
-    GenerateDailyPlayerActivityBarChart: function (data, interval) {
-      return createLineChartByDay(data, interval);
-    }
+    GeneratePlayerActivityPerDay: function (data, interval, labelNames) {
+      return createChartPerDay(data, interval, labelNames);
+    },
+    GeneratePlayerActivityPerDayPerPosition: function (data, interval, labelNames) {
+      return createChartPerDayPerPosition(data, interval, labelNames);
+    },
+    GeneratePlayerActivityPerWeek: function (data, interval, labelNames) {
+      return createChartPerWeek(data, interval, labelNames);
+    },
+    GeneratePlayerActivityPerWeekSplit: function (data, interval, labelNames) {
+      return createChartPerWeekSplit(data, interval, labelNames);
+    },
   });
 };
 

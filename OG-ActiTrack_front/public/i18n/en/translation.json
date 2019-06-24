@@ -1,4 +1,34 @@
 {
+  "days": [
+    {
+      "abv": "Mon",
+      "full": "Monday"
+    },
+    {
+      "abv": "Tue",
+      "full": "Tuesday"
+    },
+    {
+      "abv": "Wed",
+      "full": "Wednesday"
+    },
+    {
+      "abv": "Thu",
+      "full": "Thursday"
+    },
+    {
+      "abv": "Fri",
+      "full": "Friday"
+    },
+    {
+      "abv": "Sat",
+      "full": "Saturday"
+    },
+    {
+      "abv": "Sun",
+      "full": "Sunday"
+    }
+  ],
   "popinfo": {
     "activity": {
       "player": {

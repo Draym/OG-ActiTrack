@@ -49,6 +49,11 @@ class DateUtils {
         .toDate(),
     };
   }
+
+  static getDay(date) {
+    console.log("date: ", date);
+    return (date.getDay() || 7) - 1;
+  }
 }
 
 export default DateUtils;

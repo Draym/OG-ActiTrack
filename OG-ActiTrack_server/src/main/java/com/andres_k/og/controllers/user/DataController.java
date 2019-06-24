@@ -7,6 +7,7 @@ import com.andres_k.og.models.item.mapping.OGServerRepository;
 import com.andres_k.og.models.item.mapping.Player;
 import com.andres_k.og.models.item.mapping.PlayerRepository;
 import com.andres_k.og.services.AuthorizationService;
+import com.andres_k.og.utils.tools.TJson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
 
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 @Controller
 public class DataController {
     @Autowired
@@ -26,7 +28,7 @@ public class DataController {
     @Restricted
     @RequestMapping(value = "/data/availableServers", method = RequestMethod.GET)
     @ResponseBody
-    public ResponseEntity<?> getAvailableServer(@RequestHeader String Authorization) {
+    public ResponseEntity<?> getAvailableServer() {
         try {
             List<OGServer> OGServers = this.serverRepository.findAll();
 
@@ -39,9 +41,9 @@ public class DataController {
     @Restricted
     @RequestMapping(value = "/data/playerExistInServer", method = RequestMethod.GET)
     @ResponseBody
-    public ResponseEntity<?> playerExistInServer(@RequestHeader String Authorization, @RequestParam String server, @RequestParam String playerName) {
+    public ResponseEntity<?> playerExistInServer(@RequestParam String server, @RequestParam String player) {
         try {
-            Optional<Player> optPlayer = this.playerRepository.findByServerAndPlayerName(server, playerName);
+            Optional<Player> optPlayer = this.playerRepository.findByServerAndPlayerName(server, player);
             return new ResponseEntity<>(optPlayer.isPresent(), HttpStatus.OK);
         } catch (Exception ex) {
             return new ResponseEntity<>(ex.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);

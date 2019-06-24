@@ -18,7 +18,6 @@ public class ActivityLog {
     @NotNull
     @Column(name="isMoon")
     private boolean isMoon;
-    @NotNull
     @Column(name="playerName")
     private String playerName;
     @NotNull

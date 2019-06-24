@@ -24,7 +24,7 @@ public class HttpRequestAspect {
     AuthorizationService authService;
 
     @Around("@annotation(Restricted)")
-    public void verifyAuthorization(ProceedingJoinPoint joinPoint) throws Throwable {
+    public Object verifyAuthorization(ProceedingJoinPoint joinPoint) throws Throwable {
         MethodSignature signature = (MethodSignature) joinPoint.getSignature();
         Method method = signature.getMethod();
 
@@ -48,7 +48,7 @@ public class HttpRequestAspect {
         if (errorStatus == 0) {
             try {
                 if (this.authService.isAuthorized(restriction, token))
-                    joinPoint.proceed();
+                    return joinPoint.proceed();
             } catch (SecurityException e) {
                 errorStatus = HttpStatus.UNAUTHORIZED.value();
                 errorMessage = e.getMessage();
@@ -62,5 +62,6 @@ public class HttpRequestAspect {
         }
         HttpServletResponse response = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getResponse();
         response.sendError(errorStatus, errorMessage);
+        return null;
     }
 }

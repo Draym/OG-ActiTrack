@@ -10,7 +10,6 @@ public class Planet {
     @Column(name="id")
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    @NotNull
     @Column(name="player_id")
     private Long playerId;
     @NotNull
