@@ -6,8 +6,8 @@ class ChartUtils {
       tooltips: {
         enabled: false,
         custom: CustomTooltips,
-        intersect: false,
-        mode: 'nearest',
+        intersect: true,
+        mode: 'point',
         position: 'nearest',
         callbacks: {
           labelColor: function (tooltipItem, chart) {

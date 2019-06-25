@@ -31,20 +31,24 @@ class PlayerActivityChart extends Component {
         if (this.props.isGroup) {
           let dataResults = ChartCreator.GeneratePlayerActivityPerDay(this.props.data, this.props.isUnique ? 15 : 5, ["Planet with activity", "Planet without activity"]);
           return (
-            <Bar data={dataResults[0]}
-                 options={ChartUtils.GetDefaultChartOpt(36, 1)}
-                 height={300}/>
+            <div className="chart-wrapper" style={{height: 300 + 'px', marginTop: 40 + 'px'}}>
+              <Bar data={dataResults[0]}
+                   options={ChartUtils.GetDefaultChartOpt(36, 1)}
+                   height={300}/>
+            </div>
           );
         } else {
           let dataResults = ChartCreator.GeneratePlayerActivityPerDayPerPosition(this.props.data, this.props.isUnique ? 15 : 5, ["Has activity", "No activity"]);
           return (
-            <div>
-            {
-              dataResults.map((data, key) =>
-                <Line key={key} data={data}
-                     options={ChartUtils.GetDefaultChartOpt(14, 1)}
-                     height={150}/>)
-            }
+            <div className="chart-wrapper" style={{height: (dataResults.length * 150) + 'px', marginTop: 40 + 'px'}}>
+              {
+                dataResults.map((data, key) =>
+                  <Row key={key}>
+                    <Line key={key} data={data}
+                          options={ChartUtils.GetDefaultChartOpt(14, 1)}
+                          height={150}/>
+                  </Row>)
+              }
             </div>
           );
         }
@@ -52,20 +56,24 @@ class PlayerActivityChart extends Component {
         if (this.props.isGroup) {
           let dataResults = ChartCreator.GeneratePlayerActivityPerWeek(this.props.data, this.props.isUnique ? 12 : 6, ["% d'activité"]);
           return (
-            <Bar data={dataResults[0]}
-                 options={ChartUtils.GetDefaultChartOpt(20, 25)}
-                 height={300}/>
+            <div className="chart-wrapper" style={{height: 300 + 'px', marginTop: 40 + 'px'}}>
+              <Bar data={dataResults[0]}
+                   options={ChartUtils.GetDefaultChartOpt(20, 25)}
+                   height={300}/>
+            </div>
           );
         } else {
           let dataResults = ChartCreator.GeneratePlayerActivityPerWeekSplit(this.props.data, this.props.isUnique ? 15 : 5, ["Has activity", "No activity"]);
           console.log("dataResults: ", dataResults);
           return (
-            <div>
+            <div className="chart-wrapper" style={{height: (dataResults.length * 150) + 'px', marginTop: 40 + 'px'}}>
               {
                 dataResults.map((data, key) =>
-                  <Bar key={key} data={data}
-                        options={ChartUtils.GetDefaultChartOpt(36, 1)}
-                        height={150}/>)
+                  <Row key={key}>
+                    <Bar key={key} data={data}
+                         options={ChartUtils.GetDefaultChartOpt(36, 1)}
+                         height={150}/>
+                  </Row>)
               }
             </div>
           );
@@ -82,9 +90,7 @@ class PlayerActivityChart extends Component {
                 className="small text-muted">For {dateStart} {this.props.selectedDays.length === 1 ? '' : ' to ' + dateEnd}</div>
             </Col>
           </Row>
-          <div className="chart-wrapper" style={{height: 300 + 'px', marginTop: 40 + 'px'}}>
-            {renderChart()}
-          </div>
+          {renderChart()}
         </CardBody>
       </Card>
     );
