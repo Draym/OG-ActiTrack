@@ -4,6 +4,7 @@ public class PlayerActivityHandler {
     private String position;
     private boolean isMoon;
     private boolean isEmpty;
+    private String playerRef;
     private String playerName;
     private String playerRank;
     private String allyTag;
@@ -81,5 +82,13 @@ public class PlayerActivityHandler {
 
     public void setIsEmpty(boolean isEmpty) {
         this.isEmpty = isEmpty;
+    }
+
+    public String getPlayerRef() {
+        return playerRef;
+    }
+
+    public void setPlayerRef(String playerRef) {
+        this.playerRef = playerRef;
     }
 }

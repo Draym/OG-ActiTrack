@@ -11,6 +11,9 @@ public class Player {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     @NotNull
+    @Column(name="player_ref")
+    private String playerRef;
+    @NotNull
     @Column(name="player_name")
     private String playerName;
     @NotNull
@@ -53,5 +56,13 @@ public class Player {
 
     public void setServer(String server) {
         this.server = server;
+    }
+
+    public String getPlayerRef() {
+        return playerRef;
+    }
+
+    public void setPlayerRef(String playerRef) {
+        this.playerRef = playerRef;
     }
 }

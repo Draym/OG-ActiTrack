@@ -243,6 +243,9 @@ let ChartCreator = function () {
     GeneratePlayerActivityPerWeekSplit: function (data, interval, labelNames) {
       return createChartPerWeekSplit(data, interval, labelNames);
     },
+    preBuildPlayerDataPerDay: function(data, interval) {
+      return preBuildPlayerDataPerDay(data, interval);
+    }
   });
 };
 

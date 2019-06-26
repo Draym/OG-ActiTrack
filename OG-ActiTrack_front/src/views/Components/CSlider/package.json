@@ -1,6 +1,6 @@
 {
-  "name": "Widgets",
+  "name": "CSlider",
   "version": "0.0.0",
   "private": true,
-  "main": "Widgets.js"
+  "main": "CSlider.js"
 }

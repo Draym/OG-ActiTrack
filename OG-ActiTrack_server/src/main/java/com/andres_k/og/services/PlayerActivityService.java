@@ -45,13 +45,27 @@ public class PlayerActivityService {
             this.OGServerRepository.save(OGServer);
         }
         // GET PLAYER
-        Player player = this.playerRepository.findByPlayerName(playerActivity.getPlayerName());
+        Player player = this.playerRepository.findByPlayerRef(playerActivity.getPlayerRef());
         if (player == null) {
             player = new Player();
             player.setPlayerName(playerActivity.getPlayerName());
             player.setServer(playerActivity.getServer());
             player.setPlayerAlly(playerActivity.getAllyTag());
+            player.setPlayerRef(playerActivity.getPlayerRef());
             player = this.playerRepository.save(player);
+        } else {
+            boolean hasChange = false;
+            if (!player.getPlayerAlly().equals(playerActivity.getAllyTag())) {
+                player.setPlayerAlly(playerActivity.getAllyTag());
+                hasChange = true;
+            }
+            if (!player.getPlayerName().equals(playerActivity.getPlayerName())) {
+                player.setPlayerName(playerActivity.getPlayerName());
+                hasChange = true;
+            }
+            if (hasChange) {
+                this.playerRepository.save(player);
+            }
         }
 
         // GET MOON OR PLANET
@@ -83,12 +97,12 @@ public class PlayerActivityService {
             }
         }
 
+        // CREATE ACTIVITY
         LocalDateTime currentDate = LocalDateTime.now();
         Pair<LocalDateTime, LocalDateTime> ranges = TDate.getDateRangeLimits(currentDate, 15);
         Console.log("Dates Ranges: " + ranges.v1 + " ; " + ranges.v2);
         ActivityLog activityLog = this.activityLogRepository.findByPositionAndServerAndUserIdAndCreationDateBetween(playerActivity.getPosition(), playerActivity.getServer(), userId, ranges.v1, ranges.v2);
         if (activityLog == null) {
-            // CREATE ACTIVITY
             activityLog = new ActivityLog();
             activityLog.setUserId(userId);
             activityLog.setCreationDate(currentDate);

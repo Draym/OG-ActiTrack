@@ -112,7 +112,21 @@
 .pop-info{
   padding: 0 !important;
 }
-
+/**
+** SLIDER
+ */
+.slider-labels {
+  text-align: center;
+}
+.slider-min{
+  float: left;
+}
+.slider-middle {
+  vertical-align: middle;
+}
+.slider-max {
+  float: right;
+}
 /**
 ** GENERAL
  */

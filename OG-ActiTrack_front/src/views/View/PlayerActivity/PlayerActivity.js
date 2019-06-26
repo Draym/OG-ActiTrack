@@ -29,107 +29,9 @@ import CDatePicker from "../../Components/CDatePicker";
 import {EDatePicker} from "../../Components/CDatePicker/EDatePicker";
 import CPopInfo from "../../Components/CPopover/CPopInfo";
 import CBoolInput from "../../Components/CBoolInput";
-import PlayerActivityChart from "./Widgets/PlayerActivityChart";
-
-
-//Random Numbers
-function random(min, max) {
-  return Math.floor(Math.random() * (max - min + 1) + min);
-}
-
-let flatData = [
-  {
-    position: "1:10:2",
-    playerName: "Draym",
-    server: "Fenrir",
-    activity: "18",
-    creationDate: new Date("2019-06-12 15:00:00")
-  },
-  {
-    position: "1:10:2",
-    playerName: "Draym",
-    server: "Fenrir",
-    activity: "35",
-    creationDate: new Date("2019-06-12 11:16:00")
-  },
-  {
-    position: "1:10:2",
-    playerName: "Draym",
-    server: "Fenrir",
-    activity: "15",
-    creationDate: new Date("2019-06-12 15:30:00")
-  },
-  {
-    position: "1:10:2",
-    playerName: "Draym",
-    server: "Fenrir",
-    activity: "15",
-    creationDate: new Date("2019-06-12 16:00:00")
-  },
-  {
-    position: "1:10:2",
-    playerName: "Draym",
-    server: "Fenrir",
-    activity: "15",
-    creationDate: new Date("2019-06-12 17:08:00")
-  },
-  {
-    position: "1:10:2",
-    playerName: "Draym",
-    server: "Fenrir",
-    activity: "15",
-    creationDate: new Date("2019-06-12 17:30:00")
-  },
-  {
-    position: "1:10:2",
-    playerName: "Draym",
-    server: "Fenrir",
-    activity: "15",
-    creationDate: new Date("2019-06-12 18:00:00")
-  },
-  {
-    position: "1:10:2",
-    playerName: "Draym",
-    server: "Fenrir",
-    activity: "15",
-    creationDate: new Date("2019-06-12 19:00:00")
-  },
-  {
-    position: "1:10:2",
-    playerName: "Draym",
-    server: "Fenrir",
-    activity: "15",
-    creationDate: new Date("2019-06-12 20:00:00")
-  }, {
-    position: "1:10:2",
-    playerName: "Draym",
-    server: "Fenrir",
-    activity: "15",
-    creationDate: new Date("2019-06-12 23:00:00")
-  },
-  {
-    position: "1:10:2",
-    playerName: "Draym",
-    server: "Fenrir",
-    activity: "0",
-    creationDate: new Date("2019-06-12 01:00:00")
-  },
-  {
-    position: "1:10:2",
-    playerName: "Draym",
-    server: "Fenrir",
-    activity: "0",
-    creationDate: new Date("2019-06-12 01:05:00")
-  },
-  {
-    position: "1:10:2",
-    playerName: "Draym",
-    server: "Fenrir",
-    activity: "0",
-    creationDate: new Date("2019-06-12 08:08:00")
-  }
-];
-
+import PlayerActivityChart from "./widgets/PlayerActivityChart";
+import SelectServerForm from "../../Components/Widgets/forms/SelectServerForm";
+import SelectPlayerForm from "../../Components/Widgets/forms/SelectPlayerForm";
 
 class PlayerActivity extends Component {
   constructor(props) {
@@ -138,23 +40,17 @@ class PlayerActivity extends Component {
     this.onDateTypeBtnClick = this.onDateTypeBtnClick.bind(this);
     this.onGroupTypeBtnClick = this.onGroupTypeBtnClick.bind(this);
     this.handlePlayerChange = this.handlePlayerChange.bind(this);
-    this.onServerSelect = this.onServerSelect.bind(this);
-    this.generateServerOptions = this.generateServerOptions.bind(this);
-    this.filterServerOptions = this.filterServerOptions.bind(this);
-    this.verifyPseudo = this.verifyPseudo.bind(this);
+    this.handleServerChange = this.handleServerChange.bind(this);
     this.submitChart = this.submitChart.bind(this);
-    this.init = this.init.bind(this);
+    this.onPlayerValidate= this.onPlayerValidate.bind(this);
     this.handleDayChange = this.handleDayChange.bind(this);
     this.handleFriendDataChange = this.handleFriendDataChange.bind(this);
     this.handleGlobalDataChange = this.handleGlobalDataChange.bind(this);
     this.generateApiEndpointForChart = this.generateApiEndpointForChart.bind(this);
     this.state = {
-      servers: [],
       server: '',
-      errorServer: '',
       player: '',
-      errorPlayer: '',
-      activityLogs: flatData,
+      activityLogs: [],
 
       dateTypeSelected: EDatePicker.DayInputPicker,
       groupTypeSelected: 1,
@@ -166,56 +62,6 @@ class PlayerActivity extends Component {
       globalData: false,
       hasChange: false
     };
-    this.init();
-  }
-
-  init() {
-    this.generateServerOptions();
-
-  }
-
-  generateServerOptions() {
-    HttpUtils().GET(process.env.REACT_APP_SERVER_URL, '/data/availableServers', null, function (data) {
-      console.log(data);
-      if (data) {
-        let servers = [];
-        for (let i in data) {
-          servers.push({value: data[i].server, label: data[i].server});
-        }
-        this.setState({servers: servers});
-      } else {
-        this.setState({
-          errorPlayer: "There is no server registered."
-        });
-      }
-    }.bind(this), function (errorStatus, error) {
-      console.log(error);
-      this.setState({
-        errorPlayer: error,
-      });
-    }.bind(this));
-  }
-
-  verifyPseudo() {
-    let parameters = {
-      server: this.state.server,
-      player: this.state.player
-    };
-    HttpUtils().GET(process.env.REACT_APP_SERVER_URL, '/data/playerExistInServer', parameters, function (data) {
-      console.log(data);
-      if (data) {
-        this.setState({guiParameters: true});
-      } else {
-        this.setState({
-          errorPlayer: "There is no data for " + parameters.player + " on " + parameters.server
-        });
-      }
-    }.bind(this), function (errorStatus, error) {
-      console.log(error);
-      this.setState({
-        errorPlayer: error,
-      });
-    }.bind(this));
   }
 
   generateApiEndpointForChart() {
@@ -267,14 +113,6 @@ class PlayerActivity extends Component {
     }.bind(this));
   }
 
-  filterServerOptions(inputValue) {
-    if (this.state.servers.length === 0)
-      this.generateServerOptions();
-    return this.state.servers.filter(i =>
-      i.label.toLowerCase().includes(inputValue.toLowerCase())
-    );
-  }
-
   onDateTypeBtnClick(radioSelected) {
     this.setState({
       dateTypeSelected: radioSelected,
@@ -289,16 +127,20 @@ class PlayerActivity extends Component {
     });
   }
 
-  onServerSelect = selectedOption => {
+  onPlayerValidate() {
+    this.setState({guiParameters: true});
+  }
+
+  handleServerChange = selectedOption => {
     if (selectedOption.value)
       this.setState({
-        server: selectedOption.value, errorServer: '', hasChange: true
+        server: selectedOption.value, hasChange: true
       });
   };
 
-  handlePlayerChange(event) {
+  handlePlayerChange(value) {
     this.setState({
-      player: event.target.value, errorPlayer: '', hasChange: true
+      player: value, hasChange: true
     });
   }
 
@@ -436,40 +278,20 @@ class PlayerActivity extends Component {
         );
       }
     }.bind(this);
-    let drawPlayerInput = function () {
-      if (!TString.isNull(this.state.server)) {
-        return (
-          <div>
-            <p className="input-title text-muted">Enter a pseudo :</p>
-            <CFormInput className="input-body" gui={{headIcon: "fa fa-user-o"}} type={"text"} placeHolder={"Pseudo"}
-                        value={this.state.player} onChange={this.handlePlayerChange}
-                        error={this.state.errorPlayer} verify={this.verifyPseudo}/>
-          </div>
-        );
-      }
-    }.bind(this);
     let drawPlayerParameter = function () {
       return (
         <Card>
           <CardHeader>
             Select a server & player:
-
             <div className="card-header-actions">
               <CPopInfo className="card-header-action btn" id="paramInfo" position="bottom"
                         title="popinfo.activity.player.param.title" body="popinfo.activity.player.param.body"/>
             </div>
           </CardHeader>
           <CardBody>
-            <p className="input-title text-muted">Select the desired Ogame server :</p>
-            <CFormInput className="input-body" gui={{headIcon: "fa fa-server"}} type={"text"}
-                        placeHolder={"Select a server.."} value={this.state.server} error={this.state.errorServer}
-                        autoComplete={{
-                          options: this.state.servers,
-                          handleSelectChange: this.onServerSelect,
-                          handleInputChange: this.onServerSelect,
-                          filterOptions: this.filterServerOptions
-                        }}/>
-            {drawPlayerInput()}
+            <SelectServerForm onChange={this.handleServerChange}/>
+            {!TString.isNull(this.state.server) &&
+            (<SelectPlayerForm onChange={this.handlePlayerChange} onValidate={this.onPlayerValidate} server={this.state.server}/>)}
           </CardBody>
         </Card>
       );
