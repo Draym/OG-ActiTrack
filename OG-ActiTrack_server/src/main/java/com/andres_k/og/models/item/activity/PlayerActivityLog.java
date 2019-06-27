@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 
 @Entity(name = "ActivityLog")
 @Table(name = "activity_log")
-public class ActivityLog {
+public class PlayerActivityLog {
     @Id
     @Column(name="id")
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -33,7 +33,7 @@ public class ActivityLog {
     @Column(name="creation_date")
     private LocalDateTime creationDate;
 
-    public ActivityLog(){
+    public PlayerActivityLog(){
     }
 
     public Long getId() {

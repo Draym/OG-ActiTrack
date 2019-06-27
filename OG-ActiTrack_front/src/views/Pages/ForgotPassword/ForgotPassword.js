@@ -20,6 +20,7 @@ import CBlocError from "../../Components/CBlocError";
 import CFormInput from "../../Components/CFormInput/CFormInput";
 import '../custom.css';
 import './forgotPassword.css';
+import {ApiEndpoint} from "../../../Utils/ApiEndpoint";
 
 class ForgotPassword extends Component {
   constructor(props) {
@@ -50,7 +51,7 @@ class ForgotPassword extends Component {
     let data = {
       'email': this.state.email
     };
-    HttpUtils().GET(process.env.REACT_APP_SERVER_URL, '/auth/forgot-password', data, function (data) {
+    HttpUtils().GET(process.env.REACT_APP_SERVER_URL, ApiEndpoint.AUTH_ForgotPassword, data, function (data) {
       console.log(data);
       if (data) {
         this.setState({jobIsDone: true})

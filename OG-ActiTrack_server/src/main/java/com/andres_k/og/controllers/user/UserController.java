@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @Controller
+@RequestMapping("/user")
 public class UserController {
     @Autowired
     private UserService userService;
@@ -21,7 +22,7 @@ public class UserController {
     private TokenService tokenService;
 
     @Restricted
-    @RequestMapping(value = "/user/delete", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/delete", method = RequestMethod.DELETE)
     @ResponseBody
     public ResponseEntity<?> deleteUser(@RequestHeader String Authorization, @RequestBody Long userId) {
         try {
@@ -35,7 +36,7 @@ public class UserController {
     }
 
     @Restricted
-    @RequestMapping(value = "/user/update", method = RequestMethod.PUT)
+    @RequestMapping(value = "/update", method = RequestMethod.PUT)
     @ResponseBody
     public ResponseEntity<?> update(@RequestHeader String Authorization, @RequestBody User user) {
         try {

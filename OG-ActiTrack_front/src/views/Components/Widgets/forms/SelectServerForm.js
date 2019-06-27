@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 
 import HttpUtils from "../../../../Utils/HttpUtils";
 import CFormInput from "../../CFormInput";
+import {ApiEndpoint} from "../../../../Utils/ApiEndpoint";
 
 class SelectServerForm extends Component {
   constructor(props) {
@@ -19,7 +20,7 @@ class SelectServerForm extends Component {
   }
 
   generateServerOptions() {
-    HttpUtils().GET(process.env.REACT_APP_SERVER_URL, '/data/availableServers', null, function (data) {
+    HttpUtils().GET(process.env.REACT_APP_SERVER_URL, ApiEndpoint.DATA_AvailableServers, null, function (data) {
       console.log(data);
       if (data) {
         let servers = [];

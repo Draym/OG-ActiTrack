@@ -13,13 +13,13 @@ import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @Controller("AdminUserRoleController")
-@RequestMapping(value = "/admin")
+@RequestMapping(value = "/admin/user/role")
 public class UserRoleController {
     @Autowired
     private UserService userService;
 
     @Restricted(required = ERoles.ADMIN)
-    @RequestMapping(value = "/user/role/delete", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/delete", method = RequestMethod.DELETE)
     @ResponseBody
     public ResponseEntity<?> deleteUserRole(@RequestParam Long userId, @RequestParam Long roleId) {
         try {

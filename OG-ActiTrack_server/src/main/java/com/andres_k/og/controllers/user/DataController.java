@@ -19,6 +19,7 @@ import java.util.Optional;
 
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @Controller
+@RequestMapping("/data")
 public class DataController {
     @Autowired
     OGServerRepository serverRepository;
@@ -26,7 +27,7 @@ public class DataController {
     PlayerRepository playerRepository;
 
     @Restricted
-    @RequestMapping(value = "/data/availableServers", method = RequestMethod.GET)
+    @RequestMapping(value = "/availableServers", method = RequestMethod.GET)
     @ResponseBody
     public ResponseEntity<?> getAvailableServer() {
         try {
@@ -39,7 +40,7 @@ public class DataController {
     }
 
     @Restricted
-    @RequestMapping(value = "/data/playerExistInServer", method = RequestMethod.GET)
+    @RequestMapping(value = "/playerExistInServer", method = RequestMethod.GET)
     @ResponseBody
     public ResponseEntity<?> playerExistInServer(@RequestParam String server, @RequestParam String player) {
         try {

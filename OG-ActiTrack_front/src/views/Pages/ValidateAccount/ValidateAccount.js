@@ -19,6 +19,7 @@ import MinimalFooter from '../../Containers/MinimalLayout/MinimalFooter';
 import HttpUtils from "../../../Utils/HttpUtils";
 import '../custom.css';
 import './validateAccount.css';
+import {ApiEndpoint} from "../../../Utils/ApiEndpoint";
 
 const override = css`
     display: block;
@@ -59,7 +60,7 @@ class ValidateAccount extends Component {
       identifier: this.state.verificationLink
     };
     console.log(data);
-    HttpUtils().GET(process.env.REACT_APP_SERVER_URL, '/auth/validate', data, function (data) {
+    HttpUtils().GET(process.env.REACT_APP_SERVER_URL, ApiEndpoint.AUTH_Validate, data, function (data) {
       console.log(data);
       setTimeout(function () {
         this.setState({

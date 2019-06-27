@@ -23,6 +23,7 @@ import java.io.IOException;
 
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @Controller
+@RequestMapping("/auth")
 public class AuthController {
     @Autowired
     private UserService userService;
@@ -33,7 +34,7 @@ public class AuthController {
     @Autowired
     private SecurityLinkService securityLinkService;
 
-    @RequestMapping(value = "/auth/login", method = RequestMethod.POST)
+    @RequestMapping(value = "/login", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<?> login(@RequestBody AuthHandler auth) {
 
@@ -47,7 +48,7 @@ public class AuthController {
         }
     }
 
-    @RequestMapping(value = "/auth/register", method = RequestMethod.POST)
+    @RequestMapping(value = "/register", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<?> register(@RequestBody RegisterHandler auth) {
         try {
@@ -62,7 +63,7 @@ public class AuthController {
         }
     }
 
-    @RequestMapping(value = "/auth/validate", method = RequestMethod.GET)
+    @RequestMapping(value = "/validate", method = RequestMethod.GET)
     @ResponseBody
     public ResponseEntity<?> validate(@RequestParam String identifier) {
         try {
@@ -74,7 +75,7 @@ public class AuthController {
         }
     }
 
-    @RequestMapping(value = "/auth/token/login", method = RequestMethod.GET)
+    @RequestMapping(value = "/token/login", method = RequestMethod.GET)
     @ResponseBody
     public ResponseEntity<?> loginByToken(@RequestParam String token) {
         try {
@@ -86,7 +87,7 @@ public class AuthController {
         }
     }
 
-    @RequestMapping(value = "/auth/token/checkResetPasswordToken", method = RequestMethod.GET)
+    @RequestMapping(value = "/token/checkResetPasswordToken", method = RequestMethod.GET)
     @ResponseBody
     public ResponseEntity<?> checkResetPasswordToken(@RequestParam String token) {
         try {
@@ -98,7 +99,7 @@ public class AuthController {
         }
     }
 
-    @RequestMapping(value = "/auth/refresh", method = RequestMethod.GET)
+    @RequestMapping(value = "/refresh", method = RequestMethod.GET)
     @ResponseBody
     public ResponseEntity<?> refresh(@RequestHeader String Authorization) {
         try {
@@ -111,7 +112,7 @@ public class AuthController {
     }
 
 
-    @RequestMapping(value = "/auth/reset-password", method = RequestMethod.POST)
+    @RequestMapping(value = "/reset-password", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<?> resetPassword(@RequestBody PasswordHandler password) {
         try {
@@ -129,7 +130,7 @@ public class AuthController {
         }
     }
 
-    @RequestMapping(value = "/auth/forgot-password", method = RequestMethod.GET)
+    @RequestMapping(value = "/forgot-password", method = RequestMethod.GET)
     @ResponseBody
     public ResponseEntity<?> forgetPassword(@RequestParam String email) {
         try {

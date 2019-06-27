@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 
 import HttpUtils from "../../../../Utils/HttpUtils";
 import CFormInput from "../../CFormInput";
+import {ApiEndpoint} from "../../../../Utils/ApiEndpoint";
 
 class SelectPlayerForm extends Component {
   constructor(props) {
@@ -27,7 +28,7 @@ class SelectPlayerForm extends Component {
       server: this.props.server,
       player: this.state.player
     };
-    HttpUtils().GET(process.env.REACT_APP_SERVER_URL, '/data/playerExistInServer', parameters, function (data) {
+    HttpUtils().GET(process.env.REACT_APP_SERVER_URL, ApiEndpoint.DATA_PlayerExistInServer, parameters, function (data) {
       console.log(data);
       if (data) {
         this.props.onValidate();

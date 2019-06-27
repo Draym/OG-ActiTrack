@@ -11,8 +11,8 @@ public class PlayerRank {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     @NotNull
-    @Column(name="player_id")
-    private String player_id;
+    @Column(name="player_ref")
+    private String playerRef;
     @NotNull
     @Column(name="general")
     private String general;
@@ -35,14 +35,6 @@ public class PlayerRank {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public String getPlayer_id() {
-        return player_id;
-    }
-
-    public void setPlayer_id(String player_id) {
-        this.player_id = player_id;
     }
 
     public String getGeneral() {
@@ -75,5 +67,13 @@ public class PlayerRank {
 
     public void setEconomy(String economy) {
         this.economy = economy;
+    }
+
+    public String getPlayerRef() {
+        return playerRef;
+    }
+
+    public void setPlayerRef(String playerRef) {
+        this.playerRef = playerRef;
     }
 }

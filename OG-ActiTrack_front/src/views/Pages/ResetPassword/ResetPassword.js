@@ -21,6 +21,7 @@ import {ClipLoader} from "react-spinners";
 import {css} from "@emotion/core";
 import '../custom.css';
 import './resetPassword.css';
+import {ApiEndpoint} from "../../../Utils/ApiEndpoint";
 
 const override = css`
     display: block;
@@ -66,7 +67,7 @@ class ResetPassword extends Component {
     let data = {
       token: this.state.resetToken
     };
-    HttpUtils().GET(process.env.REACT_APP_SERVER_URL, '/auth/token/checkResetPasswordToken', data, function (data) {
+    HttpUtils().GET(process.env.REACT_APP_SERVER_URL, ApiEndpoint.AUTH_CheckResetPasswordToken, data, function (data) {
       console.log(data);
       setTimeout(function () {
         this.setState({
@@ -104,7 +105,7 @@ class ResetPassword extends Component {
       'resetToken': this.state.resetToken,
       'password': this.state.password
     };
-    HttpUtils().POST(process.env.REACT_APP_SERVER_URL, '/auth/reset-password', auth, function (data) {
+    HttpUtils().POST(process.env.REACT_APP_SERVER_URL, ApiEndpoint.AUTH_ResetPassword, auth, function (data) {
       console.log(data);
       if (data) {
         this.setState({isJobDone: true});
