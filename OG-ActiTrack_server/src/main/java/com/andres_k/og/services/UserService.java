@@ -1,11 +1,14 @@
 package com.andres_k.og.services;
 
+import com.andres_k.og.dao.RoleRepository;
+import com.andres_k.og.dao.UserRepository;
 import com.andres_k.og.models.auth.User;
 import com.andres_k.og.models.auth.*;
 import com.andres_k.og.models.auth.link.UserActivationLink;
-import com.andres_k.og.models.auth.link.UserActivationLinkRepository;
+import com.andres_k.og.dao.UserActivationLinkRepository;
 import com.andres_k.og.models.auth.user.UserRole;
-import com.andres_k.og.models.auth.user.UserRoleRepository;
+import com.andres_k.og.dao.UserRoleRepository;
+import com.andres_k.og.models.enums.ERoles;
 import com.andres_k.og.models.http.RegisterHandler;
 import com.andres_k.og.utils.managers.EmailManager;
 import com.andres_k.og.utils.managers.PasswordManager;

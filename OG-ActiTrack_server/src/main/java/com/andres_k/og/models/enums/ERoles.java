@@ -1,4 +1,6 @@
-package com.andres_k.og.models.auth;
+package com.andres_k.og.models.enums;
+
+import com.andres_k.og.models.auth.Role;
 
 public enum ERoles {
     USER("USER_ROLE"),

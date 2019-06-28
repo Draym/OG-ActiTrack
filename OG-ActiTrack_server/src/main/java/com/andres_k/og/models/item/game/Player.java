@@ -1,4 +1,4 @@
-package com.andres_k.og.models.item.mapping;
+package com.andres_k.og.models.item.game;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -16,9 +16,10 @@ public class Player {
     @NotNull
     @Column(name="player_name")
     private String playerName;
-    @NotNull
     @Column(name="player_ally")
     private String playerAlly;
+    @Column(name="player_name")
+    private Long honor;
     @NotNull
     @Column(name="server")
     private String server;
@@ -64,5 +65,13 @@ public class Player {
 
     public void setPlayerRef(String playerRef) {
         this.playerRef = playerRef;
+    }
+
+    public Long getHonor() {
+        return honor;
+    }
+
+    public void setHonor(Long honor) {
+        this.honor = honor;
     }
 }

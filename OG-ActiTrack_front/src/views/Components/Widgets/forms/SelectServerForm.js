@@ -20,7 +20,7 @@ class SelectServerForm extends Component {
   }
 
   generateServerOptions() {
-    HttpUtils().GET(process.env.REACT_APP_SERVER_URL, ApiEndpoint.DATA_AvailableServers, null, function (data) {
+    HttpUtils().GET(process.env.REACT_APP_SERVER_URL, ApiEndpoint.SERVER_Available, null, function (data) {
       console.log(data);
       if (data) {
         let servers = [];

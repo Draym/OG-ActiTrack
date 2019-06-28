@@ -17,6 +17,7 @@ import CFormInput from "../../Components/CFormInput/CFormInput";
 import CBlocError from "../../Components/CBlocError";
 import '../custom.css';
 import './register.css';
+import {ApiEndpoint} from "../../../Utils/ApiEndpoint";
 
 class Register extends Component {
   constructor(props) {
@@ -66,7 +67,7 @@ class Register extends Component {
       'pseudo': this.state.username,
       'password': this.state.password
     };
-    HttpUtils().POST(process.env.REACT_APP_SERVER_URL, '/auth/register', auth, function (data) {
+    HttpUtils().POST(process.env.REACT_APP_SERVER_URL, ApiEndpoint.AUTH_Register, auth, function (data) {
       if (data) {
         this.setState({
           jobIsDone: true

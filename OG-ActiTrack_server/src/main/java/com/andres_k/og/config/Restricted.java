@@ -1,6 +1,6 @@
 package com.andres_k.og.config;
 
-import com.andres_k.og.models.auth.ERoles;
+import com.andres_k.og.models.enums.ERoles;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

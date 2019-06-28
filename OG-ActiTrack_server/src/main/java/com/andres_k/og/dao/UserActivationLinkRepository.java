@@ -1,5 +1,6 @@
-package com.andres_k.og.models.auth.link;
+package com.andres_k.og.dao;
 
+import com.andres_k.og.models.auth.link.UserActivationLink;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

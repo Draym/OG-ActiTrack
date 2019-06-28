@@ -1,9 +1,8 @@
 package com.andres_k.og.services;
 
-import com.andres_k.og.models.auth.TokenRepository;
 import com.andres_k.og.models.auth.link.PasswordSecurityLink;
-import com.andres_k.og.models.auth.link.PasswordSecurityLinkRepository;
-import com.andres_k.og.models.auth.link.UserActivationLinkRepository;
+import com.andres_k.og.dao.PasswordSecurityLinkRepository;
+import com.andres_k.og.dao.UserActivationLinkRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

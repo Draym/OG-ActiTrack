@@ -1,7 +1,7 @@
 package com.andres_k.og.services;
 
 import com.andres_k.og.config.Restricted;
-import com.andres_k.og.models.auth.ERoles;
+import com.andres_k.og.models.enums.ERoles;
 import com.andres_k.og.models.auth.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

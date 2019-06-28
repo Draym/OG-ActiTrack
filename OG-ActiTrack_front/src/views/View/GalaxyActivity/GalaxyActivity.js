@@ -13,6 +13,8 @@ import ChartCreator from "../../../Utils/ChartCreator";
 import "react-vis/dist/style.css";
 import CSlider from "../../Components/CSlider";
 import GalaxyActivityChart from "./widgets/GalaxyActivityChart";
+import HttpUtils from "../../../Utils/HttpUtils";
+import {ApiEndpoint} from "../../../Utils/ApiEndpoint";
 
 let flatData = [
   {
@@ -169,14 +171,40 @@ class GalaxyActivity extends Component {
     super(props);
     this.state = {
       fullData: [],
-      data: []
+      data: [],
+      selectedDay: null
     };
     this.onDateSliderChange = this.onDateSliderChange.bind(this);
-    this.init = this.init.bind(this);
-    this.init();
+    this.loadData = this.loadData.bind(this);
+    this.loadData();
   }
 
-  init() {
+  loadData() {
+    let parameters = {
+      server: this.state.server,
+      galaxy: this.state.galaxy,
+      start: new Date(this.state.selectedDay).toISOString().split("T")[0] + "T00:00:00.000",
+      end: new Date(this.state.selectedDay).toISOString().split("T")[0] + "T23:59:59.999"
+    };
+    HttpUtils().GET(process.env.REACT_APP_SERVER_URL, ApiEndpoint.ACTIVITY_GlobalGalaxy, parameters, function (data) {
+      console.log(data);
+      if (data) {
+        this.setState({
+          activityLogs: data,
+          guiChart: true,
+          hasChange: false
+        });
+      } else {
+        this.setState({
+          errorPlayer: "There is no data for " + callParameters.parameters.player + " on " + callParameters.parameters.server
+        });
+      }
+    }.bind(this), function (errorStatus, error) {
+      console.log(error);
+      this.setState({
+        errorPlayer: error,
+      });
+    }.bind(this));
     let result = ChartCreator.preBuildPlayerDataPerDay(flatData, 14);
 
     for (let i in result) {

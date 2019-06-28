@@ -23,6 +23,7 @@ import UserSession from "../../../Utils/UserSession";
 import {withTranslation} from 'react-i18next';
 import '../custom.css';
 import './login.css';
+import {ApiEndpoint} from "../../../Utils/ApiEndpoint";
 
 class Login extends Component {
   constructor(props) {
@@ -58,7 +59,7 @@ class Login extends Component {
       'password': this.state.password,
       'origin': 'OG-ActiTrack_front'
     };
-    HttpUtils().POST(process.env.REACT_APP_SERVER_URL, '/auth/login', auth, function (data) {
+    HttpUtils().POST(process.env.REACT_APP_SERVER_URL, ApiEndpoint.AUTH_Login, auth, function (data) {
       console.log(data);
       if (data) {
         UserSession.storeSession(data);

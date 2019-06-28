@@ -1,15 +1,16 @@
-package com.andres_k.og.models.item.mapping;
+package com.andres_k.og.models.item.game;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
-@Entity(name = "Planet")
-@Table(name = "planet")
-public class Planet {
+@Entity(name = "Moon")
+@Table(name = "moon")
+public class Moon {
     @Id
     @Column(name="id")
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+    @NotNull
     @Column(name="player_id")
     private Long playerId;
     @NotNull
@@ -19,7 +20,7 @@ public class Planet {
     @Column(name="position")
     private String position;
 
-    public Planet(){
+    public Moon(){
     }
 
     public Long getId() {

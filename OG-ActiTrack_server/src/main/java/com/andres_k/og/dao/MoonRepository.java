@@ -1,5 +1,6 @@
-package com.andres_k.og.models.item.mapping;
+package com.andres_k.og.dao;
 
+import com.andres_k.og.models.item.game.Moon;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

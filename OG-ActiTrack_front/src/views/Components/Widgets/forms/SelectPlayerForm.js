@@ -28,7 +28,7 @@ class SelectPlayerForm extends Component {
       server: this.props.server,
       player: this.state.player
     };
-    HttpUtils().GET(process.env.REACT_APP_SERVER_URL, ApiEndpoint.DATA_PlayerExistInServer, parameters, function (data) {
+    HttpUtils().GET(process.env.REACT_APP_SERVER_URL, ApiEndpoint.SERVER_PlayerExist, parameters, function (data) {
       console.log(data);
       if (data) {
         this.props.onValidate();

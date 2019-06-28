@@ -1,4 +1,4 @@
-package com.andres_k.og.models.item.mapping;
+package com.andres_k.og.models.item.game;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -6,7 +6,7 @@ import javax.validation.constraints.NotNull;
 
 @Entity(name = "OGServer")
 @Table(name = "og_server")
-public class OGServer {
+public class GameServer {
     @Id
     @Column(name="id")
     @GeneratedValue(strategy = GenerationType.AUTO)

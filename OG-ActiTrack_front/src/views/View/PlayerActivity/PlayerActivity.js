@@ -5,25 +5,16 @@ import {
   ButtonToolbar,
   Card,
   CardBody,
-  CardFooter,
   CardHeader,
-  CardTitle,
-  Col, Form, Progress,
-  Row,
-  Table
+  Col,
+  Row
 } from 'reactstrap';
-import {Line, Bar} from "react-chartjs-2";
-import ChartUtils from "../../../Utils/ChartUtils";
-import ChartCreator from "../../../Utils/ChartCreator";
-import CFormInput from "../../Components/CFormInput/CFormInput";
 import HttpUtils from "../../../Utils/HttpUtils";
 import UserSession from "../../../Utils/UserSession";
 import TString from "../../../Utils/TString";
 
-import moment from "moment";
 import 'moment/locale/fr';
 import 'moment/locale/en-gb';
-import i18next from 'i18next';
 
 import CDatePicker from "../../Components/CDatePicker";
 import {EDatePicker} from "../../Components/CDatePicker/EDatePicker";
@@ -32,6 +23,7 @@ import CBoolInput from "../../Components/CBoolInput";
 import PlayerActivityChart from "./widgets/PlayerActivityChart";
 import SelectServerForm from "../../Components/Widgets/forms/SelectServerForm";
 import SelectPlayerForm from "../../Components/Widgets/forms/SelectPlayerForm";
+import {ApiEndpoint} from "../../../Utils/ApiEndpoint";
 
 class PlayerActivity extends Component {
   constructor(props) {
@@ -73,17 +65,17 @@ class PlayerActivity extends Component {
     };
     if (this.state.friendData === true) {
       return {
-        endpoint: '/activity/friendgroup/player',
+        endpoint: ApiEndpoint.ACTIVITY_FriendGroupPlayer,
         parameters: parameters
       };
     } else if (this.state.globalData === true) {
       return {
-        endpoint: '/activity/global/player',
+        endpoint: ApiEndpoint.ACTIVITY_GlobalPlayer,
         parameters: parameters
       };
     } else {
       return {
-        endpoint: '/activity/self/player',
+        endpoint: ApiEndpoint.ACTIVITY_SelfPlayer,
         parameters: parameters
       };
     }

@@ -1,16 +1,17 @@
 package com.andres_k.og.services;
 
+import com.andres_k.og.dao.TokenRepository;
+import com.andres_k.og.dao.UserRepository;
 import com.andres_k.og.models.auth.*;
 import com.andres_k.og.models.auth.link.PasswordSecurityLink;
-import com.andres_k.og.models.auth.link.PasswordSecurityLinkRepository;
+import com.andres_k.og.dao.PasswordSecurityLinkRepository;
 import com.andres_k.og.models.auth.link.UserActivationLink;
-import com.andres_k.og.models.auth.link.UserActivationLinkRepository;
+import com.andres_k.og.dao.UserActivationLinkRepository;
 import com.andres_k.og.models.http.PasswordHandler;
 import com.andres_k.og.models.http.TokenResponse;
 import com.andres_k.og.utils.managers.EmailManager;
 import com.andres_k.og.utils.managers.PasswordManager;
 import com.andres_k.og.utils.managers.TokenManager;
-import com.andres_k.og.utils.tools.THashString;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

@@ -1,4 +1,4 @@
-package com.andres_k.og.models.item.activity;
+package com.andres_k.og.models.item.game;
 
 
 import javax.persistence.*;
@@ -18,14 +18,15 @@ public class PlayerActivityLog {
     @NotNull
     @Column(name="isMoon")
     private boolean isMoon;
-    @Column(name="playerName")
-    private String playerName;
     @NotNull
     @Column(name="server")
     private String server;
     @NotNull
     @Column(name="user_id")
     private Long userId;
+    @NotNull
+    @Column(name="player_id")
+    private Long playerId;
     @NotNull
     @Column(name="activity")
     private String activity;
@@ -59,14 +60,6 @@ public class PlayerActivityLog {
         this.creationDate = creationDate;
     }
 
-    public String getPlayerName() {
-        return playerName;
-    }
-
-    public void setPlayerName(String playerName) {
-        this.playerName = playerName;
-    }
-
     public String getServer() {
         return server;
     }
@@ -97,5 +90,13 @@ public class PlayerActivityLog {
 
     public void setMoon(boolean moon) {
         isMoon = moon;
+    }
+
+    public Long getPlayerId() {
+        return playerId;
+    }
+
+    public void setPlayerId(Long playerId) {
+        this.playerId = playerId;
     }
 }
