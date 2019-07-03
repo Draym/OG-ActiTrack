@@ -16,10 +16,14 @@ import org.springframework.web.bind.annotation.*;
 @Controller
 @RequestMapping("/user")
 public class UserController {
+    private final UserService userService;
+    private final TokenService tokenService;
+
     @Autowired
-    private UserService userService;
-    @Autowired
-    private TokenService tokenService;
+    public UserController(UserService userService, TokenService tokenService) {
+        this.userService = userService;
+        this.tokenService = tokenService;
+    }
 
     @Restricted
     @RequestMapping(value = "/delete", method = RequestMethod.DELETE)

@@ -18,7 +18,7 @@ public class Player {
     private String playerName;
     @Column(name="player_ally")
     private String playerAlly;
-    @Column(name="player_name")
+    @Column(name="honor")
     private Long honor;
     @NotNull
     @Column(name="server")

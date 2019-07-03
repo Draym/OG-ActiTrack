@@ -16,8 +16,12 @@ import java.util.Optional;
 
 @Service
 public class TokenService {
+    private final TokenRepository tokenRepository;
+
     @Autowired
-    private TokenRepository tokenRepository;
+    public TokenService(TokenRepository tokenRepository) {
+        this.tokenRepository = tokenRepository;
+    }
 
     public void expirePreviousTokens(User user, String origin) {
         List<Token> oldTokens = this.tokenRepository.getAllByUserIdAndValidIsTrueAndOriginEquals(user.getId(), origin);

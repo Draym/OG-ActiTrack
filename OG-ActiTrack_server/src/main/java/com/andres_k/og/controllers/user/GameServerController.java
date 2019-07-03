@@ -18,10 +18,14 @@ import java.util.Optional;
 @Controller
 @RequestMapping("/server")
 public class GameServerController {
+    private final GameServerRepository serverRepository;
+    private final PlayerRepository playerRepository;
+
     @Autowired
-    GameServerRepository serverRepository;
-    @Autowired
-    PlayerRepository playerRepository;
+    public GameServerController(GameServerRepository serverRepository, PlayerRepository playerRepository) {
+        this.serverRepository = serverRepository;
+        this.playerRepository = playerRepository;
+    }
 
     @Restricted
     @RequestMapping(value = "/available", method = RequestMethod.GET)

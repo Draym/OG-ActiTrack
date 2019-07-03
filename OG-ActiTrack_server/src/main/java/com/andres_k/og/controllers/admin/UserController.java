@@ -15,8 +15,12 @@ import org.springframework.web.bind.annotation.*;
 @Controller("AdminUserController")
 @RequestMapping(value = "/admin/user")
 public class UserController {
+    private final UserService userService;
+
     @Autowired
-    private UserService userService;
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
 
     @Restricted(required = ERoles.ADMIN)
     @RequestMapping(value = "/delete", method = RequestMethod.DELETE)

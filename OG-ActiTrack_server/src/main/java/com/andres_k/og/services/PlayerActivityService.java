@@ -59,7 +59,7 @@ public class PlayerActivityService {
             this.GameServerRepository.save(GameServer);
         }
         // GET PLAYER
-        Player player = this.playerRepository.findByPlayerRef(playerActivity.getPlayerRef()).orElse(null);
+        Player player = this.playerRepository.findByServerAndPlayerRef(playerActivity.getServer(), playerActivity.getPlayerRef()).orElse(null);
         if (player == null) {
             player = new Player();
             player.setPlayerName(playerActivity.getPlayerName());

@@ -26,7 +26,7 @@ public class PlayerRankService {
 
     public void saveRanking(List<PlayerRankHandler> ranking) {
         for (PlayerRankHandler rank : ranking) {
-            Optional<Player> optPlayer = this.playerRepository.findByPlayerRef(rank.getPlayerRef());
+            Optional<Player> optPlayer = this.playerRepository.findByServerAndPlayerRef(rank.getServer(), rank.getPlayerRef());
             this.updatePlayerFromRank((optPlayer.orElse(new Player())), rank);
 
             Optional<PlayerRank> optPlayerRank = this.playerRankRepository.findByPlayerRef(rank.getPlayerRef());
@@ -35,11 +35,11 @@ public class PlayerRankService {
     }
 
     private void updatePlayerFromRank(Player player, PlayerRankHandler rank) {
-        if (!rank.getPlayerName().contains("..."))
+        if (player.getPlayerName() == null || !rank.getPlayerName().contains("..."))
             player.setPlayerName(rank.getPlayerName());
-        player.setPlayerRef(rank.getPlayerRef());
         player.setServer(rank.getServer());
-        player.setHonor(rank.getHonor());
+        player.setPlayerRef(rank.getPlayerRef());
+        player.setHonor(rank.getPlayerHonor());
         this.playerRepository.save(player);
 
     }
@@ -47,30 +47,30 @@ public class PlayerRankService {
     private void updatePlayerRank(PlayerRank playerRank, PlayerRankHandler rank) {
         playerRank.setPlayerRef(rank.getPlayerRef());
 
-        RankAttribute rankAttribute = new RankAttribute(rank.getRank(), rank.getRankPoint());
+        RankAttribute rankAttribute = new RankAttribute(rank.getRankPosition(), rank.getRankScore());
 
-        if (ERankType.GENERAL.is(rank.getRankType())) {
+        if (ERankType.GENERAL.is(rank.getRankTypeId())) {
             if (playerRank.getGeneralRank() != null) {
                 playerRank.getGeneralRank().update(rankAttribute);
             } else {
                 playerRank.setGeneralRank(rankAttribute);
             }
         }
-        else if (ERankType.MILITARY.is(rank.getRankType())) {
+        else if (ERankType.MILITARY.is(rank.getRankTypeId())) {
             if (playerRank.getMilitaryRank() != null) {
                 playerRank.getMilitaryRank().update(rankAttribute);
             } else {
                 playerRank.setMilitaryRank(rankAttribute);
             }
         }
-        else if (ERankType.ECONOMY.is(rank.getRankType())) {
+        else if (ERankType.ECONOMY.is(rank.getRankTypeId())) {
             if (playerRank.getEconomyRank() != null) {
                 playerRank.getEconomyRank().update(rankAttribute);
             } else {
                 playerRank.setEconomyRank(rankAttribute);
             }
         }
-        else if (ERankType.RESEARCH.is(rank.getRankType())) {
+        else if (ERankType.RESEARCH.is(rank.getRankTypeId())) {
             if (playerRank.getResearchRank() != null) {
                 playerRank.getResearchRank().update(rankAttribute);
             } else {

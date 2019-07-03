@@ -17,7 +17,7 @@ public class PlayerService {
     }
 
     public void update(Player data) {
-        Optional<Player> optPlayer = this.playerRepository.findByPlayerRef(data.getPlayerRef());
+        Optional<Player> optPlayer = this.playerRepository.findByServerAndPlayerRef(data.getServer(), data.getPlayerRef());
 
         if (optPlayer.isPresent()) {
             Player player = optPlayer.get();

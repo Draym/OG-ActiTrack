@@ -27,13 +27,16 @@ public class User {
     @Column(name = "password")
     private String password;
     @NotNull
+    @Column(name = "secret")
+    private String secret;
+    @NotNull
     @Column(name = "created_date")
     private Date date;
     @NotNull
     @Column(name = "premium")
     private boolean premium;
 
-    public void copy(User user) throws THashString.CannotPerformOperationException {
+    public void copy(User user) {
         if (user.password != null)
             this.setPassword(PasswordManager.hashPassword(user.password));
         if (user.email != null)
@@ -96,5 +99,13 @@ public class User {
 
     public void setPremium(boolean premium) {
         this.premium = premium;
+    }
+
+    public String getSecret() {
+        return secret;
+    }
+
+    public void setSecret(String secret) {
+        this.secret = secret;
     }
 }

@@ -8,12 +8,16 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class AuthorizationService {
+    private final TokenService tokenService;
+    private final UserService userService;
+    private final UserRoleService userRoleService;
+
     @Autowired
-    TokenService tokenService;
-    @Autowired
-    UserService userService;
-    @Autowired
-    UserRoleService userRoleService;
+    public AuthorizationService(TokenService tokenService, UserService userService, UserRoleService userRoleService) {
+        this.tokenService = tokenService;
+        this.userService = userService;
+        this.userRoleService = userRoleService;
+    }
 
     public boolean isAuthorized(Restricted restriction, String token) {
         if (!this.tokenService.verifyValidity(token))

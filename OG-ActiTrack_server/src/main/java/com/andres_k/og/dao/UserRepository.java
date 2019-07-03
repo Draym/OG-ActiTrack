@@ -8,20 +8,9 @@ import java.util.Optional;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
-    /**
-     * Method findByEmail
-     *
-     * @param email the user email.
-     * @return the user having the passed email or null if no user is found.
-     */
     Optional<User> findByEmail(String email);
-    /**
-     * Method findByPseudo
-     *
-     * @param pseudo the user pseudo.
-     * @return the user having the passed pseudo or null if no user is found.
-     */
     Optional<User> findByPseudo(String pseudo);
     boolean existsUserByEmail(String email);
     boolean existsUserByPseudo(String pseudo);
+    Optional<User> findByPseudoAndSecret(String pseudo, String secret);
 }

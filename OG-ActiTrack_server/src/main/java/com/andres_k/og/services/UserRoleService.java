@@ -11,8 +11,12 @@ import java.util.List;
 
 @Service
 public class UserRoleService {
+    private final UserRoleRepository userRoleRepository;
+
     @Autowired
-    UserRoleRepository userRoleRepository;
+    public UserRoleService(UserRoleRepository userRoleRepository) {
+        this.userRoleRepository = userRoleRepository;
+    }
 
     public boolean isUserAllowed(User user, List<ERoles> allowed) {
         List<UserRole> userRoles = this.userRoleRepository.getAllByUserId(user.getId());

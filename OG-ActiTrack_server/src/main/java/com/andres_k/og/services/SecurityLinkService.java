@@ -10,10 +10,14 @@ import java.util.Optional;
 
 @Service
 public class SecurityLinkService {
+    private final UserActivationLinkRepository userActivationLinkRepository;
+    private final PasswordSecurityLinkRepository passwordSecurityLinkRepository;
+
     @Autowired
-    private UserActivationLinkRepository userActivationLinkRepository;
-    @Autowired
-    private PasswordSecurityLinkRepository passwordSecurityLinkRepository;
+    public SecurityLinkService(UserActivationLinkRepository userActivationLinkRepository, PasswordSecurityLinkRepository passwordSecurityLinkRepository) {
+        this.userActivationLinkRepository = userActivationLinkRepository;
+        this.passwordSecurityLinkRepository = passwordSecurityLinkRepository;
+    }
 
     public PasswordSecurityLink getPasswordSecurityLink(String identifier) {
         Optional<PasswordSecurityLink> optPasswordSecurityLink = this.passwordSecurityLinkRepository.findByIdentifier(identifier);

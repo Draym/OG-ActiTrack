@@ -1,15 +1,14 @@
 package com.andres_k.og.services;
 
-import com.andres_k.og.dao.RoleRepository;
-import com.andres_k.og.dao.UserRepository;
+import com.andres_k.og.dao.*;
 import com.andres_k.og.models.auth.User;
 import com.andres_k.og.models.auth.*;
 import com.andres_k.og.models.auth.link.UserActivationLink;
-import com.andres_k.og.dao.UserActivationLinkRepository;
 import com.andres_k.og.models.auth.user.UserRole;
-import com.andres_k.og.dao.UserRoleRepository;
 import com.andres_k.og.models.enums.ERoles;
+import com.andres_k.og.models.http.FriendRequestHandler;
 import com.andres_k.og.models.http.RegisterHandler;
+import com.andres_k.og.models.item.FriendGroup;
 import com.andres_k.og.utils.managers.EmailManager;
 import com.andres_k.og.utils.managers.PasswordManager;
 import com.andres_k.og.utils.tools.TRandomString;
@@ -24,16 +23,20 @@ import java.util.Optional;
 
 @Service
 public class UserService {
+    private final UserRepository userRepository;
+    private final UserActivationLinkRepository userActivationLinkRepository;
+    private final UserRoleRepository userRoleRepository;
+    private final RoleRepository roleRepository;
+    private final TokenService tokenService;
+
     @Autowired
-    private UserRepository userRepository;
-    @Autowired
-    private UserActivationLinkRepository userActivationLinkRepository;
-    @Autowired
-    private UserRoleRepository userRoleRepository;
-    @Autowired
-    private RoleRepository roleRepository;
-    @Autowired
-    private TokenService tokenService;
+    public UserService(UserRepository userRepository, UserActivationLinkRepository userActivationLinkRepository, UserRoleRepository userRoleRepository, RoleRepository roleRepository, TokenService tokenService) {
+        this.userRepository = userRepository;
+        this.userActivationLinkRepository = userActivationLinkRepository;
+        this.userRoleRepository = userRoleRepository;
+        this.roleRepository = roleRepository;
+        this.tokenService = tokenService;
+    }
 
     public User createUser(RegisterHandler auth) throws InternalError, SecurityException, IOException, MessagingException {
         if (this.userRepository.existsUserByEmail(auth.getEmail()))
@@ -46,6 +49,7 @@ public class UserService {
             user.setEmail(auth.getEmail());
             user.setPseudo(auth.getPseudo());
             user.setPassword(PasswordManager.hashPassword(auth.getPassword()));
+            user.setSecret(TRandomString.get().generate(6));
             user.setEnabled(0);
             user.setDate(new Date());
             user.setPremium(false);

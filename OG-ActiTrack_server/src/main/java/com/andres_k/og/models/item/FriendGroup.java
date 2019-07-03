@@ -7,15 +7,28 @@ import javax.validation.constraints.NotNull;
 @Table(name = "friends")
 public class FriendGroup {
     @Id
-    @Column(name="id")
+    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     @NotNull
-    @Column(name="user_id")
+    @Column(name = "user_id")
     private Long userId;
     @NotNull
-    @Column(name="friend_id")
+    @Column(name = "friend_id")
     private Long friendId;
+    @NotNull
+    @Column(name = "friend_secret")
+    private String friendSecret;
+
+    public FriendGroup() {
+
+    }
+
+    public FriendGroup(Long userId, Long friendId, String friendSecret) {
+        this.userId = userId;
+        this.friendId = friendId;
+        this.friendSecret = friendSecret;
+    }
 
     public Long getId() {
         return id;
@@ -39,5 +52,13 @@ public class FriendGroup {
 
     public void setFriendId(Long friendId) {
         this.friendId = friendId;
+    }
+
+    public String getFriendSecret() {
+        return friendSecret;
+    }
+
+    public void setFriendSecret(String friendSecret) {
+        this.friendSecret = friendSecret;
     }
 }

@@ -3,11 +3,12 @@ package com.andres_k.og.models.http;
 public class PlayerRankHandler {
     private String playerRef;
     private String playerName;
+    private Long playerHonor;
     private String server;
-    private Long honor;
-    private String rankType;
-    private Long rankPoint;
-    private Long rank;
+    private Integer rankTypeId;
+    private String rankTypeName;
+    private Long rankScore;
+    private Long rankPosition;
 
     public String getPlayerRef() {
         return playerRef;
@@ -33,35 +34,43 @@ public class PlayerRankHandler {
         this.server = server;
     }
 
-    public String getRankType() {
-        return rankType;
+    public Long getPlayerHonor() {
+        return playerHonor;
     }
 
-    public void setRankType(String rankType) {
-        this.rankType = rankType;
+    public void setPlayerHonor(Long playerHonor) {
+        this.playerHonor = playerHonor;
     }
 
-    public Long getHonor() {
-        return honor;
+    public String getRankTypeName() {
+        return rankTypeName;
     }
 
-    public void setHonor(Long honor) {
-        this.honor = honor;
+    public void setRankTypeName(String rankTypeName) {
+        this.rankTypeName = rankTypeName;
     }
 
-    public Long getRankPoint() {
-        return rankPoint;
+    public Long getRankScore() {
+        return rankScore;
     }
 
-    public void setRankPoint(Long rankPoint) {
-        this.rankPoint = rankPoint;
+    public void setRankScore(Long rankScore) {
+        this.rankScore = rankScore;
     }
 
-    public Long getRank() {
-        return rank;
+    public Long getRankPosition() {
+        return rankPosition;
     }
 
-    public void setRank(Long rank) {
-        this.rank = rank;
+    public void setRankPosition(Long rankPosition) {
+        this.rankPosition = rankPosition;
+    }
+
+    public Integer getRankTypeId() {
+        return rankTypeId;
+    }
+
+    public void setRankTypeId(Integer rankTypeId) {
+        this.rankTypeId = rankTypeId;
     }
 }

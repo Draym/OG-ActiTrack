@@ -25,14 +25,18 @@ import java.io.IOException;
 @Controller
 @RequestMapping("/auth")
 public class AuthController {
+    private final UserService userService;
+    private final AuthService authService;
+    private final TokenService tokenService;
+    private final SecurityLinkService securityLinkService;
+
     @Autowired
-    private UserService userService;
-    @Autowired
-    private AuthService authService;
-    @Autowired
-    private TokenService tokenService;
-    @Autowired
-    private SecurityLinkService securityLinkService;
+    public AuthController(UserService userService, AuthService authService, TokenService tokenService, SecurityLinkService securityLinkService) {
+        this.userService = userService;
+        this.authService = authService;
+        this.tokenService = tokenService;
+        this.securityLinkService = securityLinkService;
+    }
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     @ResponseBody

@@ -196,7 +196,7 @@ class GalaxyActivity extends Component {
         });
       } else {
         this.setState({
-          errorPlayer: "There is no data for " + callParameters.parameters.player + " on " + callParameters.parameters.server
+          errorPlayer: "There is no data for " + parameters.galaxy + " on " + parameters.server
         });
       }
     }.bind(this), function (errorStatus, error) {

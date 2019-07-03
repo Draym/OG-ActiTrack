@@ -23,18 +23,22 @@ import java.util.Optional;
 
 @Service
 public class AuthService {
+    private final UserRepository userRepository;
+    private final UserActivationLinkRepository userActivationLinkRepository;
+    private final TokenRepository tokenRepository;
+    private final PasswordSecurityLinkRepository passwordSecurityLinkRepository;
+    private final SecurityLinkService securityLinkService;
+    private final TokenService tokenService;
+
     @Autowired
-    private UserRepository userRepository;
-    @Autowired
-    private UserActivationLinkRepository userActivationLinkRepository;
-    @Autowired
-    private TokenRepository tokenRepository;
-    @Autowired
-    private PasswordSecurityLinkRepository passwordSecurityLinkRepository;
-    @Autowired
-    private SecurityLinkService securityLinkService;
-    @Autowired
-    private TokenService tokenService;
+    public AuthService(UserRepository userRepository, UserActivationLinkRepository userActivationLinkRepository, TokenRepository tokenRepository, PasswordSecurityLinkRepository passwordSecurityLinkRepository, SecurityLinkService securityLinkService, TokenService tokenService) {
+        this.userRepository = userRepository;
+        this.userActivationLinkRepository = userActivationLinkRepository;
+        this.tokenRepository = tokenRepository;
+        this.passwordSecurityLinkRepository = passwordSecurityLinkRepository;
+        this.securityLinkService = securityLinkService;
+        this.tokenService = tokenService;
+    }
 
     public User login(String email, String password) throws SecurityException, InternalError {
         Optional<User> optUser = this.userRepository.findByEmail(email);
