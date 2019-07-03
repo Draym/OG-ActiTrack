@@ -1,13 +1,13 @@
 // ==UserScript==
 // @name        OG-SoundAlert
-// @description Create sound alert
+// @description Create sound alert on Ogame when an attacke/spy is detected.
 // @include     *.ogame*gameforge.com/game/index.php*
 // @author      Draym
 // @copyright   2019, Draym (draymlab.fr)
 // @license     MIT
-// @version     2.0.0.2
+// @version     2.0.0.3
 // @updateURL https://openuserjs.org/meta/Draym/OG-SoundAlert.meta.js
-// @downloadURL https://openuserjs.org/install/Draym/OG-SoundAlert.meta.js/
+// @downloadURL https://openuserjs.org/install/Draym/OG-SoundAlert.user.js
 // @grant          GM_getValue
 // @grant          GM_setValue
 // @grant          GM_addStyle

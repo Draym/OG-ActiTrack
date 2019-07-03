@@ -1,13 +1,13 @@
 // ==UserScript==
 // @name        OG-GalaxyCheck
-// @description Check position in galaxy
+// @description [do not use under v2] Bot to be used with OG-Tracker. Navigate to each position in the galaxy.
 // @include     *.ogame*gameforge.com/game/index.php*
 // @author      Draym
 // @copyright   2019, Draym (draymlab.fr)
 // @license     MIT
-// @version     1.0.0.1
+// @version     1.0.1.4
 // @updateURL https://openuserjs.org/meta/Draym/OG-GalaxyCheck.meta.js
-// @downloadURL https://openuserjs.org/install/Draym/OG-GalaxyCheck.meta.js/
+// @downloadURL https://openuserjs.org/install/Draym/OG-GalaxyCheck.user.js
 // @grant          GM_getValue
 // @grant          GM_setValue
 // @grant          GM_addStyle

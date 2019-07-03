@@ -1,13 +1,13 @@
 // ==UserScript==
 // @name        OG-Tracker
-// @description Save players activity
+// @description [do not use under v2] Track ogame data : player activity & score & position
 // @include     *.ogame*gameforge.com/game/index.php*
 // @author      Draym
 // @copyright   2019, Draym (draymlab.fr)
 // @license     MIT
-// @version     1.0.0.1
+// @version     1.0.1.7
 // @updateURL https://openuserjs.org/meta/Draym/OG-Tracker.meta.js
-// @downloadURL https://openuserjs.org/install/Draym/OG-Tracker.meta.js/
+// @downloadURL https://openuserjs.org/install/Draym/OG-Tracker.user.js
 // @grant          GM_getValue
 // @grant          GM_setValue
 // @grant          GM_addStyle
@@ -22,7 +22,10 @@
 (function() {
     'use strict';
     var $ = unsafeWindow.$;
-    var state = {};
+    var state = {
+        log: true,
+        api: 'http://localhost:9090/api'
+    };
     function getState() {
         return state;
     }
@@ -32,45 +35,149 @@
         }
     }
 
-    /* **************************************************************/
-    /* ********************** SCRIPT ********************************/
-    /* **************************************************************/
-    function tk_observerCurrentGalaxy() {
-        var galaxyRows = tk_parseGalaxy();
-        for (var i = 0; i < galaxyRows.length; i++)
-        {
-            console.log(galaxyRows[i]);
+    function tk_log(...values) {
+        if (state.log) {
+            console.log(...values);
         }
-        var jsonData = JSON.stringify(galaxyRows);
+    }
+
+    /* **************************************************************/
+    /* ********************** RANKING *******************************/
+    /* **************************************************************/
+    function isPlayerRankPage() {
+        var menuPlayer = $('div#categoryButtons').find('a#player');
+        return menuPlayer.hasClass('active');
+    }
+
+    function tk_observeRanking() {
+        console.log("update");
+        if (!isPlayerRankPage()) {
+            return;
+        }
+        var rankingRows = tk_parseRanking();
+        if (rankingRows.length == 0) {
+            return;
+        }
+        var jsonData = JSON.stringify(rankingRows);
         GM_xmlhttpRequest ( {
             method:     "POST",
-            url:        "http://localhost:9090/api/activity",
+            url:        getState().api + "/player/ranking/save",
             data:       jsonData,
             headers:    {
+                "Origin":"tampermonkey_" + getState().server,
                 "Authorization": GM_getValue('tk_token'),
                 "Content-Type": "application/json"
             },
             onload:     function (response) {
-                console.log ("got response", response);
+                if (response.status == 200) {
+                    var data = JSON.parse(response.responseText);
+                }
+                tk_log("observeRanking: ", rankingRows, response.responseText);
             }
         } );
     }
 
+    function tk_parseRanking() {
+        var rankingRows = [];
+        var rows = $('tr[id^="position"]');
+
+        let rankType = $('div#typeButtons').find('a.active');
+        for (var i = 0; i < rows.length; i++) {
+            if (rows.eq(i).hasClass('myrank')) {
+                continue;
+            }
+            let rankPos = rows.eq(i).find('td.position').html().trim();
+            let rankScore = rows.eq(i).find('td.score').html().trim().replace(/\./g,'');
+            let playerName = rows.eq(i).find('td.name a span.playername').text().trim();
+            let playerRef = rows.eq(i).find('td.sendmsg div.sendmsg_content a.sendMail').attr('data-playerid').trim();
+            let honor = rows.eq(i).find('td.name a span.honorScore span').text().trim().replace(/\./g,'');
+
+            rankingRows.push({
+                playerName: playerName,
+                playerRef: playerRef,
+                playerHonor: parseInt(honor),
+                rankPosition: parseInt(rankPos),
+                rankScore: parseFloat(rankScore),
+                rankTypeId: rankType.attr('rel'),
+                rankTypeName: rankType.find('span.textlabel').text(),
+                server: getState().server
+            });
+        }
+        tk_log("rows", rankingRows);
+        return rankingRows;
+    }
+
+    /* **************************************************************/
+    /* ********************** GALAXY ********************************/
+    /* **************************************************************/
+    function tk_observePlayerTooltip() {
+        let tooltip = $('div.t_Tooltip.t_Tooltip_cloud.t_visible');
+
+        if (tooltip) {
+            let tooltipContent = tooltip.find('div.t_Content div.t_ContentContainer.t_clearfix.t_Content_cloud div.htmlTooltip.galaxyTooltip');
+            let playerRef = tooltipContent.attr('id');
+            let playerName = tooltipContent.find('h1 span').text().trim();
+
+            let parameters = {
+                playerRef: playerRef,
+                playerName: playerName,
+                server: getState().server
+            };
+
+            GM_xmlhttpRequest ( {
+            method:     "PUT",
+            url:        getState().api + "/player/update",
+            data:       JSON.stringify(parameters),
+            headers:    {
+                "Origin":"tampermonkey_" + getState().server,
+                "Authorization": GM_getValue('tk_token'),
+                "Content-Type": "application/json"
+            },
+            onload:     function (response) {
+                if (response.status == 200) {
+                    var data = JSON.parse(response.responseText);
+                }
+                tk_log("observePlayerTooltip: ", parameters, response.responseText);
+            }
+        } );
+        }
+    }
+
+    function tk_observeCurrentGalaxy() {
+        var galaxyRows = tk_parseGalaxy();
+        var jsonData = JSON.stringify(galaxyRows);
+        GM_xmlhttpRequest({
+            method:     "POST",
+            url:        getState().api + "/activity/save",
+            data:       jsonData,
+            headers:    {
+                "Origin":"tampermonkey_" + getState().server,
+                "Authorization": GM_getValue('tk_token'),
+                "Content-Type": "application/json"
+            },
+            onload:     function (response) {
+                if (response.status == 200) {
+                    var data = JSON.parse(response.responseText);
+                }
+                tk_log("observeCurrentGalaxy: ", galaxyRows, response.responseText);
+            }
+        });
+    }
+
     function tk_parseGalaxy()
     {
-        var galaxyRows = new Array();
+        var galaxyRows = [];
         var rows = $('tr.row');
         var galaxySystem = tk_getCurrentGalaxySystem();
 
-        console.log("init:", rows, rows.length);
         for (var i = 0; i < rows.length; i++) {
             var planetItem = new tkGalaxyRow();
 
             var objItem1 = rows.eq(i).find('td.position');
             if (objItem1.length == 1) {
-                planetItem.planetPos = galaxySystem.split(':')[0] + ':' + galaxySystem.split(':')[1] + ':' + objItem1.html();
+                planetItem.position = galaxySystem.split(':')[0] + ':' + galaxySystem.split(':')[1] + ':' + objItem1.html();
             } else {
-                console.log("no planet");
+                tk_log("no planet");
                 continue;
             }
 
@@ -79,13 +186,12 @@
                 objItem2 = objItem2.find('a[rel*="player"]');
                 var playerId = objItem2.eq(0).attr('rel').replace('player', '');
                 if (playerId != 0) {
-                    planetItem.playerName = objItem2.find('span').text();
-                    var link = $('a[href$="searchRelId=' + playerId + '"]');
-                    planetItem.playerRank = link.length == 0 ? 0 : link.eq(0).text();
+                    planetItem.playerName = objItem2.find('span').text().trim();
+                    planetItem.playerRef = objItem2.eq(0).attr('rel');
                 }
             } else if(objItem2.find("span.status_abbr_active").length == 1) {
-                planetItem.playerName = objItem2.find("span.status_abbr_active").text().replace(/\s/g,'');
-                planetItem.playerRank = $('#bar').find('a[href*="highscore"]').parent().text().split('(')[1].split(')')[0];
+                //planetItem.playerName = objItem2.find("span.status_abbr_active").text().replace(/\s/g,'');
+                continue;
             } else {
                 planetItem.isEmpty = true;
                 planetItem.playerName = "";
@@ -96,17 +202,12 @@
                 planetItem.allyTag = Trim(objItem3.clone().children().remove().end().text());
             }
 
-            var objItem4 = rows.eq(i).find('td.allytag').find('li.rank');
-            if (objItem4.length == 1) {
-                planetItem.allyRank = objItem4.find('a').text();
-            }
-
             var objItem5 = rows.eq(i).find('td.microplanet.colonized').find('div.ListImage');
             if (objItem5.length == 1) {
                 if (objItem5.find('div.minute15').length == 1) {
                     planetItem.activity = "0";
                 } else {
-                    planetItem.activity = objItem5.find('div.activity').text().replace(/\D/g,'');
+                    planetItem.activity = objItem5.find('div.activity').text().trim();
                 }
             }
             planetItem.server = getState().server;
@@ -116,9 +217,9 @@
                 var moonItem = tk_copyGalaxyRow(planetItem);
                 moonItem.isMoon = true;
                 if (objItem6.find('div.minute15')) {
-                    moonItem.activity = "1";
+                    moonItem.activity = "0";
                 } else if (objItem6.find('div.activity')) {
-                    moonItem.activity = objItem6.find('div.activity').text().replace(/\D/g,'');
+                    moonItem.activity = objItem6.find('div.activity').text().trim();
                 }
                 galaxyRows.push(moonItem);
             }
@@ -168,13 +269,12 @@
 
     function tk_copyGalaxyRow(row) {
         let result = new tkGalaxyRow();
-        result.planetPos = row.planetPos;
+        result.position = row.position;
         result.isMoon = row.isMoon;
         result.isEmpty = row.isEmpty;
         result.playerName = row.playerName;
-        result.playerRank = row.playerRank;
+        result.playerRef = row.playerRef;
         result.allyTag = row.allyTag;
-        result.allyRank = row.allyRank;
         result.activity = row.activity;
         result.server = row.server;
         return result;
@@ -182,13 +282,12 @@
 
     function tkGalaxyRow()
     {
-        this.planetPos = '';
+        this.position = '';
         this.isMoon = false;
         this.isEmpty = false;
         this.playerName = '';
-        this.playerRank = '';
+        this.playerRef = '';
         this.allyTag = '';
-        this.allyRank = '';
         this.activity = '';
         this.server = '';
 
@@ -198,12 +297,11 @@
 
             if (this.playerRank == '-') this.playerRank = 0;
 
-            str = this.planetPos + '\t';
+            str = this.position + '\t';
             str += this.isMoon + '\t';
             str += this.playerName + '\t';
-            str += this.playerRank + '\t';
+            str += this.playerRef + '\t';
             str += this.allyTag + '\t';
-            str += this.allyRank + '\t';
             str += this.server + '\t';
             str += this.activity;
             str += '\n';
@@ -215,7 +313,7 @@
         {
             var str;
 
-            str = this.planetPos + '\t';
+            str = this.position + '\t';
             str += this.isMoon + '\t';
             str += this.playerName + '\t';
             str += this.server + '\t';
@@ -285,26 +383,26 @@
         var email = $("#tkEmail").val();
         var password = $("#tkPassword").val();
 
-        console.log(email, password);
-        var jsonData = JSON.stringify({email:email, password:password, origin:'tampermonkey'});
+        var jsonData = JSON.stringify({email:email, password:password, origin:"tampermonkey_" + getState().server});
         GM_xmlhttpRequest({
             method: "POST",
-            url: "http://localhost:9090/api/auth/login",
+            url: getState().api + "/auth/login",
             data: jsonData,
             headers: {
+                "Origin":"tampermonkey_" + getState().server,
                 "Content-Type": "application/json"
             },
             onload: function(response) {
-                var data = JSON.parse(response.responseText);
-                if (data.hasError) {
-                    tk_showLoginError(data.error);
-                }
-                else {
+                if (response.status == 200) {
+                    var data = JSON.parse(response.responseText);
                     GM_setValue('tk_token', data.token.token);
                     GM_setValue('tk_tokenBackup', data.token.tokenBackup);
                     GM_setValue('tk_email', data.user.email);
                     GM_setValue('tk_pseudo', data.user.pseudo);
                     tk_drawLogin(false);
+                }
+                else {
+                    tk_showLoginError(response.responseText);
                 }
             }
         } );
@@ -356,6 +454,7 @@
     /* **************************************************************/
 
     function init(){
+        console.log("window:", unsafeWindow);
         setState({
             pseudo: document.getElementsByName('ogame-player-name')[0].content,
             idPlayer : document.getElementsByName('ogame-player-id')[0].content,
@@ -374,10 +473,15 @@
         var galaxyObserver = new MutationObserver(function(mutations, observer) {
             var token = GM_getValue('tk_token');
             if (token) {
-                tk_observerCurrentGalaxy();
+                tk_observeCurrentGalaxy();
             }
         });
         galaxyObserver.observe(document.getElementById("galaxyContent"), { childList: true });
+
+        var tooltipObserver = new MutationObserver(function(mutations, observer) {
+            tk_observePlayerTooltip();
+        });
+        tooltipObserver.observe($('#galaxy').get(0), { childList: true });
     }
     // CHECK SPY
     else if (/page=messages/.test(location.href))
@@ -386,6 +490,14 @@
     // CHECK RANK
     else if (/page=highscore/.test(location.href))
     {
+        tk_observeRanking();
+        var rankingObserver = new MutationObserver(function(mutations, observer) {
+            var token = GM_getValue('tk_token');
+            if (token) {
+                tk_observeRanking();
+            }
+        });
+        rankingObserver.observe($("div#stat_list_content").get(0), { childList: true });
     }
 
     /* **************************************************************/
@@ -413,7 +525,7 @@ visibility: none;
 }
 #tkLogin, #tkAccount {
 position:               fixed;
-top:                    80%;
+top:                    70%;
 left:                   0;
 width:                  300px;
 padding:                10px;
