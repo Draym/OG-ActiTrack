@@ -27,17 +27,17 @@ public class FriendGroupService {
     }
 
     public List<FriendGroup> getAllFriend(String token) {
-        Token self = this.tokenService.getToken(token);
+        Token self = this.tokenService.getTokenByValue(token);
         return this.friendGroupRepository.findAllByUserId(self.getUserId());
     }
 
     public List<FriendGroup> getAllReverseFriend(String token) {
-        Token self = this.tokenService.getToken(token);
+        Token self = this.tokenService.getTokenByValue(token);
         return this.friendGroupRepository.findAllByFriendId(self.getUserId());
     }
 
     public void deleteFriend(String token, FriendRequestHandler friendRequest) throws EntityNotFoundException {
-        Token self = this.tokenService.getToken(token);
+        Token self = this.tokenService.getTokenByValue(token);
         User friend = this.getRequestedFriendUser(friendRequest);
         Optional<FriendGroup> optFriendGroup = this.friendGroupRepository.findByUserIdAndFriendId(self.getUserId(), friend.getId());
         if (!optFriendGroup.isPresent())
@@ -46,7 +46,7 @@ public class FriendGroupService {
     }
 
     public void addFriend(String token, FriendRequestHandler friendRequest) throws EntityNotFoundException {
-        Token self = this.tokenService.getToken(token);
+        Token self = this.tokenService.getTokenByValue(token);
         User friend = this.getRequestedFriendUser(friendRequest);
         boolean exists = this.friendGroupRepository.existsByUserIdAndFriendId(self.getUserId(), friend.getId());
         if (exists)

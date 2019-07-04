@@ -59,7 +59,7 @@ public class TokenService {
     }
 
     public boolean verifyValidity(String value) {
-        Token token = this.getToken(value);
+        Token token = this.getTokenByValue(value);
         if (new Date().compareTo(token.getExpirationDate()) > 0) {
             token.setValid(false);
             this.tokenRepository.save(token);
@@ -68,7 +68,9 @@ public class TokenService {
         return true;
     }
 
-    public Token getToken(String value) {
+    /** GETTERS **/
+
+    public Token getTokenByValue(String value) {
         Optional<Token> optToken = this.tokenRepository.findByToken(value);
 
         if (!optToken.isPresent())
@@ -77,4 +79,13 @@ public class TokenService {
             throw new NullPointerException("The token {" + value + "} has expired.");
         return optToken.get();
     }
+
+    public Token getTokenByBackup(String tokenBackup) {
+        Optional<Token> optToken = this.tokenRepository.findByTokenBackup(tokenBackup);
+
+        if (!optToken.isPresent())
+            throw new EntityNotFoundException("The backup token {" + tokenBackup + "} has not been found.");
+        return optToken.get();
+    }
+
 }

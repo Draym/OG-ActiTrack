@@ -11,22 +11,33 @@ public class Role {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     @NotNull
-    @Column(name="value")
-    private String value;
+    @Column(name="name")
+    private String name;
+    @NotNull
+    @Column(name="level")
+    private Integer level;
 
     public Long getId() {
-        return this.id;
-    }
-
-    public String getValue() {
-        return this.value;
+        return id;
     }
 
     public void setId(Long id) {
         this.id = id;
     }
 
-    public void setValue(String value) {
-        this.value = value;
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Integer getLevel() {
+        return level;
+    }
+
+    public void setLevel(Integer level) {
+        this.level = level;
     }
 }

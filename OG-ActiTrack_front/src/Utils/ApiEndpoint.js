@@ -1,6 +1,7 @@
 export const ApiEndpoint = {
   SERVER_PlayerExist: '/server/playerExist',
   SERVER_Available: '/server/available',
+  SERVER_Galaxy_Available: '/server/galaxy/available',
   AUTH_ResetPassword: '/auth/reset-password',
   AUTH_ForgotPassword: '/auth/forgot-password',
   AUTH_CheckResetPasswordToken: '/auth/token/checkResetPasswordToken',

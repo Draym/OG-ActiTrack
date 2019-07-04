@@ -5,8 +5,8 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
-@Entity(name = "ActivityLog")
-@Table(name = "activity_log")
+@Entity(name = "PlayerActivityLog")
+@Table(name = "player_activity_log")
 public class PlayerActivityLog {
     @Id
     @Column(name="id")

@@ -2,9 +2,8 @@ package com.andres_k.og.controllers.user;
 
 import com.andres_k.og.config.Restricted;
 import com.andres_k.og.models.item.game.GameServer;
-import com.andres_k.og.dao.GameServerRepository;
 import com.andres_k.og.models.item.game.Player;
-import com.andres_k.og.dao.PlayerRepository;
+import com.andres_k.og.services.GameServerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,19 +11,16 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @Controller
 @RequestMapping("/server")
 public class GameServerController {
-    private final GameServerRepository serverRepository;
-    private final PlayerRepository playerRepository;
+    private final GameServerService gameServerService;
 
     @Autowired
-    public GameServerController(GameServerRepository serverRepository, PlayerRepository playerRepository) {
-        this.serverRepository = serverRepository;
-        this.playerRepository = playerRepository;
+    public GameServerController(GameServerService gameServerService) {
+        this.gameServerService = gameServerService;
     }
 
     @Restricted
@@ -32,9 +28,22 @@ public class GameServerController {
     @ResponseBody
     public ResponseEntity<?> getAvailableServer() {
         try {
-            List<GameServer> GameServers = this.serverRepository.findAll();
+            List<GameServer> gameServers = this.gameServerService.getAllServer();
 
-            return new ResponseEntity<>(GameServers, HttpStatus.OK);
+            return new ResponseEntity<>(gameServers, HttpStatus.OK);
+        } catch (Exception ex) {
+            return new ResponseEntity<>(ex.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
+        }
+    }
+
+    @Restricted
+    @RequestMapping(value = "/galaxy/available", method = RequestMethod.GET)
+    @ResponseBody
+    public ResponseEntity<?> getAvailableGalaxyInServer(@RequestParam String serverName) {
+        try {
+            List<Object> galaxies = this.gameServerService.getAvailableGalaxyInServer(serverName);
+
+            return new ResponseEntity<>(galaxies, HttpStatus.OK);
         } catch (Exception ex) {
             return new ResponseEntity<>(ex.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
         }
@@ -43,10 +52,17 @@ public class GameServerController {
     @Restricted
     @RequestMapping(value = "/playerExist", method = RequestMethod.GET)
     @ResponseBody
-    public ResponseEntity<?> playerExistInServer(@RequestParam String server, @RequestParam String player) {
+    public ResponseEntity<?> playerExistInServer(@RequestParam String serverName, String playerName) {
         try {
-            Optional<Player> optPlayer = this.playerRepository.findByServerAndPlayerName(server, player);
-            return new ResponseEntity<>(optPlayer.isPresent(), HttpStatus.OK);
+            Player player = this.gameServerService.getByServerAndPlayerName(serverName, playerName);
+            if (player != null) {
+                return new ResponseEntity<>(player.getPlayerName(), HttpStatus.OK);
+            } else {
+                List<Object> possiblePlayerNames = this.gameServerService.checkPlayerInServer(serverName, playerName);
+                if (possiblePlayerNames.size() > 0)
+                    return new ResponseEntity<>(possiblePlayerNames, HttpStatus.NOT_FOUND);
+                return new ResponseEntity<>("There is no data for this player.", HttpStatus.BAD_REQUEST);
+            }
         } catch (Exception ex) {
             return new ResponseEntity<>(ex.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
         }

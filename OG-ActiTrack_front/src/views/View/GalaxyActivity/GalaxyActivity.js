@@ -15,6 +15,11 @@ import CSlider from "../../Components/CSlider";
 import GalaxyActivityChart from "./widgets/GalaxyActivityChart";
 import HttpUtils from "../../../Utils/HttpUtils";
 import {ApiEndpoint} from "../../../Utils/ApiEndpoint";
+import {Card, CardBody, CardHeader, Col, Row} from "reactstrap";
+import CPopInfo from "../PlayerActivity";
+import TString from "../../../Utils/TString";
+import SelectServerForm from "../../Components/Widgets/forms/SelectServerForm";
+import SelectGalaxyForm from "../../Components/Widgets/forms/SelectGalaxyForm";
 
 let flatData = [
   {
@@ -225,10 +230,39 @@ class GalaxyActivity extends Component {
   }
 
   render() {
+    let drawPlayerParameter = function () {
+      return (
+        <Card>
+          <CardHeader>
+            Select a server & player:
+            <div className="card-header-actions">
+              <CPopInfo className="card-header-action btn" id="paramInfo" position="bottom"
+                        title="popinfo.activity.player.param.title" body="popinfo.activity.player.param.body"/>
+            </div>
+          </CardHeader>
+          <CardBody>
+            <SelectServerForm onChange={this.handleServerChange}/>
+            {!TString.isNull(this.state.server) &&
+            (<SelectGalaxyForm onChange={this.handlePlayerChange} onValidate={this.onPlayerValidate} server={this.state.server}/>)}
+          </CardBody>
+        </Card>
+      );
+    }.bind(this);
     return (
       <div className="animated fadeIn">
-       <CSlider onChange={this.onDateSliderChange} width={1250}/>
-      <GalaxyActivityChart data={this.state.data} width={1250} height={500} colors={['#3193b6', '#ffffff']} xRange={[0, 499]} yRange={[0, 499]}/>
+        <Row className="card-parameters">
+          <Col sm="4" className="card-param1">
+            {drawPlayerParameter()}
+          </Col>
+        </Row>
+        <Row>
+          <Col>
+            <GalaxyActivityChart data={this.state.data} width={1250} height={500} colors={['#3193b6', '#ffffff']}
+                                 xRange={[0, 499]} yRange={[0, 499]}/>
+            <CSlider onChange={this.onDateSliderChange} width={1250}/>
+          </Col>
+        </Row>
+
       </div>
     )
   }

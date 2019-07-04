@@ -34,7 +34,17 @@ public class User {
     private Date date;
     @NotNull
     @Column(name = "premium")
-    private boolean premium;
+    private Boolean premium;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "role_id", referencedColumnName = "id")
+    private Role role;
+
+    public User(Long id) {
+        this.id = id;
+    }
+
+    public User() {
+    }
 
     public void copy(User user) {
         if (user.password != null)
@@ -43,6 +53,10 @@ public class User {
             this.setEmail(user.email);
         if (user.pseudo != null)
             this.setPseudo(user.pseudo);
+        if (user.enabled != null)
+            this.setEnabled(user.enabled);
+        if (user.premium != null)
+            this.setPremium(user.premium);
     }
 
     public Long getId() {
@@ -93,11 +107,11 @@ public class User {
         this.date = date;
     }
 
-    public boolean isPremium() {
+    public Boolean isPremium() {
         return premium;
     }
 
-    public void setPremium(boolean premium) {
+    public void setPremium(Boolean premium) {
         this.premium = premium;
     }
 
@@ -107,5 +121,13 @@ public class User {
 
     public void setSecret(String secret) {
         this.secret = secret;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
     }
 }

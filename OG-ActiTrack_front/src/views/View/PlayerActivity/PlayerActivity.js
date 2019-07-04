@@ -24,6 +24,7 @@ import PlayerActivityChart from "./widgets/PlayerActivityChart";
 import SelectServerForm from "../../Components/Widgets/forms/SelectServerForm";
 import SelectPlayerForm from "../../Components/Widgets/forms/SelectPlayerForm";
 import {ApiEndpoint} from "../../../Utils/ApiEndpoint";
+import CButtonLoading from "../../Components/CButton/CButtonLoading";
 
 class PlayerActivity extends Component {
   constructor(props) {
@@ -260,9 +261,13 @@ class PlayerActivity extends Component {
               </Row>
               <Row className="parameter-bloc">
                 <Col>
-                  <Button className="float-right" color="primary"
-                          disabled={this.state.selectedDays.length === 0 || !this.state.hasChange}
-                          onClick={this.submitChart}>Generate chart</Button>
+                  <CButtonLoading color="primary"
+                                  onClick={this.submitChart}
+                                  loading={this.state.loading.login}
+                                  disabled={this.state.selectedDays.length === 0 || !this.state.hasChange}
+                                  className="float-right"
+                                  text="Generate chart"
+                                  loadingText="Generating chart"/>
                 </Col>
               </Row>
             </CardBody>

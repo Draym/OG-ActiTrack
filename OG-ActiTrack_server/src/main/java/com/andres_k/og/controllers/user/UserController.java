@@ -30,7 +30,7 @@ public class UserController {
     @ResponseBody
     public ResponseEntity<?> deleteUser(@RequestHeader String Authorization, @RequestBody Long userId) {
         try {
-            Token tokenValue = this.tokenService.getToken(Authorization);
+            Token tokenValue = this.tokenService.getTokenByValue(Authorization);
             this.userService.deleteUser(userId, tokenValue);
             return new ResponseEntity<>(true, HttpStatus.OK);
         } catch (Exception ex) {
@@ -44,7 +44,7 @@ public class UserController {
     @ResponseBody
     public ResponseEntity<?> update(@RequestHeader String Authorization, @RequestBody User user) {
         try {
-            Token tokenValue = this.tokenService.getToken(Authorization);
+            Token tokenValue = this.tokenService.getTokenByValue(Authorization);
             User newUser = this.userService.updateUser(user, tokenValue);
             return new ResponseEntity<>(newUser, HttpStatus.OK);
         } catch (SecurityException ex) {

@@ -1,8 +1,8 @@
 package com.andres_k.og.controllers.admin;
 
 import com.andres_k.og.config.Restricted;
-import com.andres_k.og.models.enums.ERoles;
 import com.andres_k.og.models.auth.User;
+import com.andres_k.og.models.enums.ERoles;
 import com.andres_k.og.services.UserService;
 import com.andres_k.og.utils.tools.Console;
 import org.springframework.beans.factory.annotation.Autowired;

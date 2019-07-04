@@ -18,6 +18,7 @@ import CBlocError from "../../Components/CBlocError";
 import '../custom.css';
 import './register.css';
 import {ApiEndpoint} from "../../../Utils/ApiEndpoint";
+import CButtonLoading from "../../Components/CButton/CButtonLoading";
 
 class Register extends Component {
   constructor(props) {
@@ -32,7 +33,10 @@ class Register extends Component {
       errorUsername: '',
       errorPassword: '',
       errorVerifyPassword: '',
-      errorMessage: ''
+      errorMessage: '',
+      loading: {
+        registerAccount: false
+      }
     };
     this.triggerHome = this.triggerHome.bind(this);
     this.triggerRegister = this.triggerRegister.bind(this);
@@ -46,18 +50,21 @@ class Register extends Component {
 
   triggerRegister(event) {
     event.preventDefault();
+    this.setState({loading: {registerAccount: true}});
     console.log("Register", this.state);
     if (TString.isNull(this.state.password) || TString.isNull(this.state.email) || TString.isNull(this.state.username)) {
       this.setState({
         errorEmail: (TString.isNull(this.state.email) ? 'Please enter an email.' : ''),
         errorUsername: (TString.isNull(this.state.username) ? 'Please enter an username.' : ''),
-        errorPassword: (TString.isNull(this.state.password) ? 'Please enter a password.' : '')
+        errorPassword: (TString.isNull(this.state.password) ? 'Please enter a password.' : ''),
+        loading: {registerAccount: false}
       });
       return;
     }
     if (this.state.password !== this.state.passwordVerify) {
       this.setState({
-        errorVerifyPassword: "The verification password does't match with the password."
+        errorVerifyPassword: "The verification password does't match with the password.",
+        loading: {registerAccount: false}
       });
       return;
     }
@@ -70,7 +77,8 @@ class Register extends Component {
     HttpUtils().POST(process.env.REACT_APP_SERVER_URL, ApiEndpoint.AUTH_Register, auth, function (data) {
       if (data) {
         this.setState({
-          jobIsDone: true
+          jobIsDone: true,
+          loading: {registerAccount: false}
         });
       }
     }.bind(this), function (errorStatus, error) {
@@ -79,7 +87,8 @@ class Register extends Component {
       this.setState({
         errorEmail: (error.indexOf("email") !== -1 ? error : ''),
         errorUsername: (error.indexOf("pseudo") !== -1 ? error : ''),
-        errorMessage: (error.indexOf("email") === -1 && error.indexOf("pseudo") === -1 ? error : '')
+        errorMessage: (error.indexOf("email") === -1 && error.indexOf("pseudo") === -1 ? error : ''),
+        loading: {registerAccount: false}
       });
     }.bind(this));
   }
@@ -124,7 +133,10 @@ class Register extends Component {
                 <CFormInput gui={{headIcon: "icon-lock"}} type={"password"} placeHolder={"Repeat Password"}
                             value={this.state.passwordVerify} onChange={this.handlePasswordVerifyChange}
                             error={this.state.errorVerifyPassword}/>
-                <Button color="success" type="submit" block onClick={this.triggerRegister}>Create Account</Button>
+                <CButtonLoading color="success" block onClick={this.triggerRegister}
+                                loading={this.state.loading.registerAccount}
+                                text="Create Account"
+                                loadingText="Creating your account"/>
               </Form>
             </CardBody>
             <CBlocError error={this.state.errorMessage}/>

@@ -6,11 +6,10 @@ import com.andres_k.og.models.http.PasswordHandler;
 import com.andres_k.og.models.http.RegisterHandler;
 import com.andres_k.og.models.http.TokenResponse;
 import com.andres_k.og.services.AuthService;
-import com.andres_k.og.services.SecurityLinkService;
+import com.andres_k.og.services.PasswordSecurityLinkService;
 import com.andres_k.og.services.TokenService;
 import com.andres_k.og.services.UserService;
 import com.andres_k.og.utils.tools.Console;
-import com.andres_k.og.utils.tools.THashString;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,14 +27,14 @@ public class AuthController {
     private final UserService userService;
     private final AuthService authService;
     private final TokenService tokenService;
-    private final SecurityLinkService securityLinkService;
+    private final PasswordSecurityLinkService passwordSecurityLinkService;
 
     @Autowired
-    public AuthController(UserService userService, AuthService authService, TokenService tokenService, SecurityLinkService securityLinkService) {
+    public AuthController(UserService userService, AuthService authService, TokenService tokenService, PasswordSecurityLinkService passwordSecurityLinkService) {
         this.userService = userService;
         this.authService = authService;
         this.tokenService = tokenService;
-        this.securityLinkService = securityLinkService;
+        this.passwordSecurityLinkService = passwordSecurityLinkService;
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
@@ -73,7 +72,7 @@ public class AuthController {
         try {
             this.authService.validateAccount(identifier);
             return new ResponseEntity<>(true, HttpStatus.OK);
-        } catch (EntityNotFoundException ex) {
+        } catch (Exception ex) {
             Console.log("[Auth/validate]: " + ex.toString());
             return new ResponseEntity<>(ex.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
         }
@@ -95,7 +94,7 @@ public class AuthController {
     @ResponseBody
     public ResponseEntity<?> checkResetPasswordToken(@RequestParam String token) {
         try {
-            this.securityLinkService.getPasswordSecurityLink(token);
+            this.passwordSecurityLinkService.getByIdentifier(token);
             return new ResponseEntity<>(true, HttpStatus.OK);
         } catch (Exception ex) {
             Console.log("[Auth/token/checkResetPasswordToken]: " + ex.toString());

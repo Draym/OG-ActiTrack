@@ -1,7 +1,5 @@
 package com.andres_k.og.services;
 
-import com.andres_k.og.dao.TokenRepository;
-import com.andres_k.og.dao.UserRepository;
 import com.andres_k.og.models.auth.*;
 import com.andres_k.og.models.auth.link.PasswordSecurityLink;
 import com.andres_k.og.dao.PasswordSecurityLinkRepository;
@@ -11,41 +9,31 @@ import com.andres_k.og.models.http.PasswordHandler;
 import com.andres_k.og.models.http.TokenResponse;
 import com.andres_k.og.utils.managers.EmailManager;
 import com.andres_k.og.utils.managers.PasswordManager;
-import com.andres_k.og.utils.managers.TokenManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.mail.MessagingException;
 import javax.persistence.EntityNotFoundException;
 import java.io.IOException;
-import java.util.Date;
 import java.util.Optional;
 
 @Service
 public class AuthService {
-    private final UserRepository userRepository;
-    private final UserActivationLinkRepository userActivationLinkRepository;
-    private final TokenRepository tokenRepository;
-    private final PasswordSecurityLinkRepository passwordSecurityLinkRepository;
-    private final SecurityLinkService securityLinkService;
+    private final UserService userService;
+    private final PasswordSecurityLinkService passwordSecurityLinkService;
     private final TokenService tokenService;
+    private final UserActivationLinkService userActivationLinkService;
 
     @Autowired
-    public AuthService(UserRepository userRepository, UserActivationLinkRepository userActivationLinkRepository, TokenRepository tokenRepository, PasswordSecurityLinkRepository passwordSecurityLinkRepository, SecurityLinkService securityLinkService, TokenService tokenService) {
-        this.userRepository = userRepository;
-        this.userActivationLinkRepository = userActivationLinkRepository;
-        this.tokenRepository = tokenRepository;
-        this.passwordSecurityLinkRepository = passwordSecurityLinkRepository;
-        this.securityLinkService = securityLinkService;
+    public AuthService(UserService userService, UserActivationLinkService userActivationLinkService, PasswordSecurityLinkRepository passwordSecurityLinkRepository, PasswordSecurityLinkService passwordSecurityLinkService, TokenService tokenService) {
+        this.userService = userService;
+        this.passwordSecurityLinkService = passwordSecurityLinkService;
+        this.userActivationLinkService = userActivationLinkService;
         this.tokenService = tokenService;
     }
 
     public User login(String email, String password) throws SecurityException, InternalError {
-        Optional<User> optUser = this.userRepository.findByEmail(email);
-
-        if (!optUser.isPresent())
-            throw new EntityNotFoundException("No user found for the given email.");
-        User user = optUser.get();
+        User user = this.userService.getUserByEmail(email);
 
         PasswordManager.verifyPassword(password, user.getPassword());
         if (user.getEnabled() == 0)
@@ -58,78 +46,43 @@ public class AuthService {
     public TokenResponse loginByToken(String token) {
         TokenResponse result = new TokenResponse();
 
-        Optional<Token> optToken = this.tokenRepository.findByToken(token);
-
-        if (!optToken.isPresent())
-            throw new EntityNotFoundException("The token {" + token + "} has not been found.");
-        Optional<User> optUser = this.userRepository.findById(optToken.get().getUserId());
-        if (!optUser.isPresent())
-            throw new EntityNotFoundException("The user {" + optToken.get().getUserId() + "} has not been found.");
-        result.setUser(optUser.get());
-        result.setToken(optToken.get());
+        Token tokenObj = this.tokenService.getTokenByValue(token);
+        User userObj = this.userService.getUserByToken(token);
+        result.setUser(userObj);
+        result.setToken(tokenObj);
         return result;
     }
 
     public TokenResponse refreshToken(String tokenBackup) {
-        Optional<Token> optToken = this.tokenRepository.findByTokenBackup(tokenBackup);
-
-        if (!optToken.isPresent())
-            throw new EntityNotFoundException("The backup token {" + tokenBackup + "} has not been found.");
-        Optional<User> optUser = this.userRepository.findById(optToken.get().getUserId());
-        if (!optUser.isPresent())
-            throw new EntityNotFoundException("The user {" + optToken.get().getUserId() + "} has not been found.");
-
-        //this.tokenService.expirePreviousTokens(optUser.getValue(), optToken.getValue().getOrigin());
-
-        return this.tokenService.createToken(optUser.get(), optToken.get().getOrigin(), optToken.get().getTokenBackup());
+        Token token = this.tokenService.getTokenByBackup(tokenBackup);
+        User user = this.userService.getUserById(token.getUserId());
+        return this.tokenService.createToken(user, token.getOrigin(), token.getTokenBackup());
     }
 
-    public void validateAccount(String identifier) {
-        Optional<UserActivationLink> optUserActivation = this.userActivationLinkRepository.findByIdentifier(identifier);
+    public void validateAccount(String identifier) throws Exception {
+        UserActivationLink userActivationLink = this.userActivationLinkService.getByIdentifier(identifier);
 
-        if (!optUserActivation.isPresent())
-            throw new EntityNotFoundException("The identifier link {" + identifier + "} is invalid.");
-
-        Optional<User> optUser = this.userRepository.findById(optUserActivation.get().getUserId());
-
-        if (!optUser.isPresent())
-            throw new EntityNotFoundException("No user has been found for the identifier link {" + identifier + "}.");
-
-        optUser.get().setEnabled(1);
-        this.userRepository.save(optUser.get());
+        User user = new User(userActivationLink.getUserId());
+        user.setEnabled(1);
+        this.userService.updateUser(user);
     }
 
 
-    public void resetPassword(PasswordHandler password) {
-        PasswordSecurityLink passwordSecurityLink = this.securityLinkService.getPasswordSecurityLink(password.getResetToken());
-        Optional<User> optUser = this.userRepository.findById(passwordSecurityLink.getUserId());
+    public void resetPassword(PasswordHandler password) throws Exception {
+        PasswordSecurityLink passwordSecurityLink = this.passwordSecurityLinkService.getByIdentifier(password.getResetToken());
 
-        if (!optUser.isPresent())
-            throw new EntityNotFoundException("No user found for the given id.");
-
-        User user = optUser.get();
+        User user = new User(passwordSecurityLink.getUserId());
         user.setPassword(PasswordManager.hashPassword(password.getPassword()));
-        this.userRepository.save(user);
+        this.userService.updateUser(user);
 
         passwordSecurityLink.setValid(false);
-        this.passwordSecurityLinkRepository.save(passwordSecurityLink);
+        this.passwordSecurityLinkService.update(passwordSecurityLink);
     }
 
     public void forgetPassword(String email) throws IOException, MessagingException {
-        Optional<User> optUser = this.userRepository.findByEmail(email);
+        User user = this.userService.getUserByEmail(email);
 
-        if (!optUser.isPresent())
-            throw new EntityNotFoundException("No user found for the given email.");
-
-        User user = optUser.get();
-
-        PasswordSecurityLink passwordSecurityLink = new PasswordSecurityLink();
-        passwordSecurityLink.setDate(new Date());
-        passwordSecurityLink.setUserId(user.getId());
-        passwordSecurityLink.setIdentifier(TokenManager.generate());
-        passwordSecurityLink.setValid(true);
-        this.passwordSecurityLinkRepository.save(passwordSecurityLink);
-
-        EmailManager.get().sendPasswordForget(user, passwordSecurityLink.getIdentifier());
+        PasswordSecurityLink psl = this.passwordSecurityLinkService.create(user.getId());
+        EmailManager.get().sendPasswordForget(user, psl.getIdentifier());
     }
 }

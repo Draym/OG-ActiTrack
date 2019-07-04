@@ -22,14 +22,14 @@ public class UserRoleController {
     }
 
     @Restricted(required = ERoles.ADMIN)
-    @RequestMapping(value = "/delete", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/update", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<?> deleteUserRole(@RequestParam Long userId, @RequestParam Long roleId) {
+    public ResponseEntity<?> updateUserRole(@RequestParam Long userId, @RequestParam Long roleId) {
         try {
-            this.userService.deleteRole(userId, roleId);
+            this.userService.updateRole(userId, roleId);
             return new ResponseEntity<>(true, HttpStatus.OK);
         } catch (Exception ex) {
-            Console.log("[UserRole/delete]: " + ex.toString());
+            Console.log("[UserRole/update]: " + ex.toString());
             return new ResponseEntity<>(ex.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
         }
     }

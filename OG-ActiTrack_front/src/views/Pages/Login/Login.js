@@ -24,6 +24,7 @@ import {withTranslation} from 'react-i18next';
 import '../custom.css';
 import './login.css';
 import {ApiEndpoint} from "../../../Utils/ApiEndpoint";
+import CButtonLoading from "../../Components/CButton/CButtonLoading";
 
 class Login extends Component {
   constructor(props) {
@@ -32,7 +33,10 @@ class Login extends Component {
       email: '',
       password: '',
       errorEmail: '',
-      errorPassword: ''
+      errorPassword: '',
+      loading: {
+        login: false
+      }
     };
     this.triggerLogin = this.triggerLogin.bind(this);
     this.triggerForgotPassword = this.triggerForgotPassword.bind(this);
@@ -45,11 +49,13 @@ class Login extends Component {
 
   triggerLogin(event) {
     event.preventDefault();
+    this.setState({loading: {login: true}});
     console.log("Login", this.state);
     if (TString.isNull(this.state.password) || TString.isNull(this.state.email)) {
       this.setState({
         errorEmail: (TString.isNull(this.state.email) ? 'Please enter an email.' : ''),
-        errorPassword: (TString.isNull(this.state.password) ? 'Please enter a password.' : '')
+        errorPassword: (TString.isNull(this.state.password) ? 'Please enter a password.' : ''),
+        loading: {login: false}
       });
       return;
     }
@@ -61,6 +67,7 @@ class Login extends Component {
     };
     HttpUtils().POST(process.env.REACT_APP_SERVER_URL, ApiEndpoint.AUTH_Login, auth, function (data) {
       console.log(data);
+      this.setState({loading: {login: false}});
       if (data) {
         UserSession.storeSession(data);
         this.props.history.push("/");
@@ -69,7 +76,8 @@ class Login extends Component {
       console.log(error);
       this.setState({
         errorEmail: (error.indexOf("password") === -1 ? error : ''),
-        errorPassword: (error.indexOf("password") !== -1 ? error : '')
+        errorPassword: (error.indexOf("password") !== -1 ? error : ''),
+        loading: {login: false}
       });
     }.bind(this));
   }
@@ -115,8 +123,11 @@ class Login extends Component {
                                         error={this.state.errorPassword}/>
                             <Row>
                               <Col xs="6">
-                                <Button color="primary" className="px-4" type="submit"
-                                        onClick={this.triggerLogin}>Login</Button>
+                                <CButtonLoading color="primary" onClick={this.triggerLogin}
+                                                loading={this.state.loading.login}
+                                                className="px-4"
+                                                text="Login"
+                                                loadingText="Logging in"/>
                               </Col>
                               <Col xs="6" className="text-right">
                                 <Button color="link" className="px-0" onClick={this.triggerForgotPassword}>Forgot

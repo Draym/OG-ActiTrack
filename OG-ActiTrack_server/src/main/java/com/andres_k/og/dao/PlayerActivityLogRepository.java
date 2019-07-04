@@ -2,6 +2,7 @@ package com.andres_k.og.dao;
 
 import com.andres_k.og.models.item.game.PlayerActivityLog;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
@@ -12,6 +13,9 @@ import java.util.Set;
 public interface PlayerActivityLogRepository extends JpaRepository<PlayerActivityLog, Long> {
 
     PlayerActivityLog findByPositionAndServerAndUserIdAndCreationDateBetween(String position, String server, Long userId, LocalDateTime from, LocalDateTime to);
+
+    @Query("SELECT SUBSTRING(pal.position, 0, 1) FROM PlayerActivityLog pal WHERE pal.server = ?1 GROUP BY SUBSTRING(pal.position, 0, 1)")
+    List<Object> findDistinctGalaxyByServer(String server);
 
     /** COUNT **/
     Long countByCreationDateBetween(LocalDateTime from, LocalDateTime to);

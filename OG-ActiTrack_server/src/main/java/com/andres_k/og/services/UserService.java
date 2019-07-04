@@ -3,13 +3,8 @@ package com.andres_k.og.services;
 import com.andres_k.og.dao.*;
 import com.andres_k.og.models.auth.User;
 import com.andres_k.og.models.auth.*;
-import com.andres_k.og.models.auth.link.UserActivationLink;
-import com.andres_k.og.models.auth.user.UserRole;
 import com.andres_k.og.models.enums.ERoles;
-import com.andres_k.og.models.http.FriendRequestHandler;
 import com.andres_k.og.models.http.RegisterHandler;
-import com.andres_k.og.models.item.FriendGroup;
-import com.andres_k.og.utils.managers.EmailManager;
 import com.andres_k.og.utils.managers.PasswordManager;
 import com.andres_k.og.utils.tools.TRandomString;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,18 +19,18 @@ import java.util.Optional;
 @Service
 public class UserService {
     private final UserRepository userRepository;
-    private final UserActivationLinkRepository userActivationLinkRepository;
-    private final UserRoleRepository userRoleRepository;
-    private final RoleRepository roleRepository;
+    private final RoleService roleService;
     private final TokenService tokenService;
+    private final PasswordSecurityLinkService passwordSecurityLinkService;
+    private final UserActivationLinkService userActivationLinkService;
 
     @Autowired
-    public UserService(UserRepository userRepository, UserActivationLinkRepository userActivationLinkRepository, UserRoleRepository userRoleRepository, RoleRepository roleRepository, TokenService tokenService) {
+    public UserService(UserRepository userRepository, RoleService roleService, TokenService tokenService, PasswordSecurityLinkService passwordSecurityLinkService, UserActivationLinkService userActivationLinkService) {
         this.userRepository = userRepository;
-        this.userActivationLinkRepository = userActivationLinkRepository;
-        this.userRoleRepository = userRoleRepository;
-        this.roleRepository = roleRepository;
+        this.roleService = roleService;
         this.tokenService = tokenService;
+        this.passwordSecurityLinkService = passwordSecurityLinkService;
+        this.userActivationLinkService = userActivationLinkService;
     }
 
     public User createUser(RegisterHandler auth) throws InternalError, SecurityException, IOException, MessagingException {
@@ -54,18 +49,11 @@ public class UserService {
             user.setDate(new Date());
             user.setPremium(false);
 
-            // createToken user role USER
-            UserRole userRole = new UserRole();
-            Optional<Role> optRole = this.roleRepository.findByValue(ERoles.USER.getValue());
-            if (!optRole.isPresent())
-                throw new EntityNotFoundException("Cannot find the default user role.");
+            Role role = this.roleService.getRoleByValue(ERoles.USER.getValue());
+            user.setRole(role);
+
             User newUser = this.userRepository.save(user);
-            userRole.setUserId(newUser.getId());
-            userRole.setRole(optRole.get());
-            this.userRoleRepository.save(userRole);
-
-            this.sendVerificationUserEmail(newUser);
-
+            this.userActivationLinkService.sendVerificationUserEmail(newUser);
             return newUser;
         }
     }
@@ -79,60 +67,65 @@ public class UserService {
             throw new SecurityException("You are not allowed to modify this user");
 
         Long targetId = (newUser.getId() == null ? token.getUserId() : newUser.getId());
-        Optional<User> optUser = this.userRepository.findById(targetId);
 
-        if (!optUser.isPresent())
-            throw new EntityNotFoundException("No user found for the given id");
-
-        User user = optUser.get();
+        User user = this.getUserById(targetId);
         if (!user.getEmail().equals(newUser.getEmail()) && this.userRepository.existsUserByEmail(newUser.getEmail()))
             throw new Exception("The email '" + newUser.getEmail() + "' is already used.");
         else if (!user.getPseudo().equals(newUser.getPseudo()) && this.userRepository.existsUserByPseudo(newUser.getPseudo()))
             throw new Exception("The pseudo '" + newUser.getPseudo() + "' is already used.");
         else {
-            if (!user.getEmail().equals(newUser.getEmail())) {
+            if (newUser.getEmail() != null && !user.getEmail().equals(newUser.getEmail())) {
                 user.setEnabled(0);
-                this.sendVerificationUserEmail(newUser);
+                this.userActivationLinkService.sendVerificationUserEmail(newUser);
             }
             user.copy(newUser);
             return this.userRepository.save(user);
         }
     }
 
-    public void deleteUser(Long id) throws Exception {
+    public void deleteUser(Long id) {
         deleteUser(id, null);
     }
 
-    public void deleteUser(Long id, Token token) throws Exception {
-        if (token != null && !token.getId().equals(id))
+    public void deleteUser(Long id, Token token) {
+        if (token != null && !token.getUserId().equals(id))
             throw new SecurityException("You are not allowed to delete this user");
-        Optional<User> optUser = this.userRepository.findById(id);
-        if (!optUser.isPresent())
-            throw new EntityNotFoundException("Cannot find user [id=" + id + "]");
-        this.userRepository.delete(optUser.get());
-        this.userRoleRepository.deleteAllByUserId(id);
-        this.userActivationLinkRepository.deleteAllByUserId(id);
+
+        User user = this.getUserById(id);
+        this.userRepository.delete(user);
+        this.userActivationLinkService.deleteAllByUserId(id);
     }
 
-    public void deleteRole(Long userId, Long roleId) {
-        this.userRoleRepository.deleteByUserIdAndRoleId(userId, roleId);
+    public void updateRole(Long userId, Long roleId) {
+        User user = this.getUserById(userId);
+
+        Role role = this.roleService.getRoleById(roleId);
+        user.setRole(role);
+        this.userRepository.save(user);
     }
+
+    /**
+     * GETTERS
+     **/
 
     public User getUserByToken(String value) {
-        Token token = this.tokenService.getToken(value);
+        Token token = this.tokenService.getTokenByValue(value);
 
         return this.userRepository.findById(token.getUserId()).orElse(null);
     }
 
-    private void sendVerificationUserEmail(User user) throws IOException, MessagingException {
-        // createToken UserActivationLink
-        UserActivationLink userActivationLink = new UserActivationLink();
-        userActivationLink.setDate(new Date());
-        userActivationLink.setUserId(user.getId());
-        userActivationLink.setIdentifier(TRandomString.get().generate());
-        this.userActivationLinkRepository.save(userActivationLink);
-
-        // send verification email
-        EmailManager.get().sendVerification(user, userActivationLink.getIdentifier());
+    public User getUserById(Long id) {
+        Optional<User> optUser = this.userRepository.findById(id);
+        if (!optUser.isPresent())
+            throw new EntityNotFoundException("No user found for the given id.");
+        return optUser.get();
     }
+
+    public User getUserByEmail(String email) {
+        Optional<User> optUser = this.userRepository.findByEmail(email);
+        if (!optUser.isPresent())
+            throw new EntityNotFoundException("No user found for the given email [" + email + "].");
+        return optUser.get();
+    }
+
 }
