@@ -60,10 +60,11 @@ public class PlayerActivityLogController {
             return new ResponseEntity<>(ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
     @Restricted
     @RequestMapping(value = "/self/galaxy", method = RequestMethod.GET)
     @ResponseBody
-    public ResponseEntity<?> getSelfPlayerActivity(@RequestHeader String Authorization, @RequestParam String server, @RequestParam String galaxy, @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime start, @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime end) {
+    public ResponseEntity<?> getSelfPlayerActivity(@RequestHeader String Authorization, @RequestParam String server, @RequestParam(required = false) String galaxy, @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime start, @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime end) {
         try {
             User user = this.userService.getUserByToken(Authorization);
             List<PlayerActivityLog> activities = this.playerActivityService.getGalaxyActivity(EActivityType.SELF, user.getId(), server, galaxy, start, end);
@@ -88,10 +89,11 @@ public class PlayerActivityLogController {
             return new ResponseEntity<>(ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
     @Restricted
     @RequestMapping(value = "/friendgroup/galaxy", method = RequestMethod.GET)
     @ResponseBody
-    public ResponseEntity<?> getFriendGroupPlayerActivity(@RequestHeader String Authorization, @RequestParam String server, @RequestParam String galaxy, @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime start, @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime end) {
+    public ResponseEntity<?> getFriendGroupPlayerActivity(@RequestHeader String Authorization, @RequestParam String server, @RequestParam(required = false) String galaxy, @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime start, @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime end) {
         try {
             User user = this.userService.getUserByToken(Authorization);
             List<PlayerActivityLog> activities = this.playerActivityService.getGalaxyActivity(EActivityType.FRIEND, user.getId(), server, galaxy, start, end);
@@ -100,6 +102,7 @@ public class PlayerActivityLogController {
             return new ResponseEntity<>(ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
     /**
      * GLOBAL ACTIVITY
      */
@@ -115,10 +118,11 @@ public class PlayerActivityLogController {
             return new ResponseEntity<>(ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
     @Restricted
     @RequestMapping(value = "/global/galaxy", method = RequestMethod.GET)
     @ResponseBody
-    public ResponseEntity<?> getGlobalPlayerActivity(@RequestHeader String Authorization, @RequestParam String server, @RequestParam String galaxy, @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime start, @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime end) {
+    public ResponseEntity<?> getGlobalPlayerActivity(@RequestHeader String Authorization, @RequestParam String server, @RequestParam(required = false) String galaxy, @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime start, @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime end) {
         try {
             User user = this.userService.getUserByToken(Authorization);
             List<PlayerActivityLog> activities = this.playerActivityService.getGalaxyActivity(EActivityType.GLOBAL, user.getId(), server, galaxy, start, end);

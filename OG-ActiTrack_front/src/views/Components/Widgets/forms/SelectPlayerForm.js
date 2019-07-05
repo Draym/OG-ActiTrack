@@ -8,7 +8,7 @@ class SelectPlayerForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      player: '',
+      playerName: '',
       errorPlayer: ''
     };
     this.handlePlayerChange = this.handlePlayerChange.bind(this);
@@ -18,15 +18,15 @@ class SelectPlayerForm extends Component {
 
   handlePlayerChange(event) {
     this.setState({
-      player: event.target.value, errorPlayer: ''
+      playerName: event.target.value, errorPlayer: ''
     });
     this.props.onChange(event.target.value);
   }
 
   verifyPseudo() {
     let parameters = {
-      server: this.props.server,
-      player: this.state.player
+      serverName: this.props.server,
+      playerName: this.state.playerName
     };
     HttpUtils().GET(process.env.REACT_APP_SERVER_URL, ApiEndpoint.SERVER_PlayerExist, parameters, function (data) {
       console.log(data);
@@ -34,24 +34,27 @@ class SelectPlayerForm extends Component {
         this.props.onValidate();
       } else {
         this.setState({
-          errorPlayer: "There is no data for " + parameters.player + " on " + parameters.server
+          errorPlayer: "There is no data for " + parameters.playerName + " on " + parameters.serverName
         });
       }
     }.bind(this), function (errorStatus, error) {
       console.log(error);
-      this.setState({
-        errorPlayer: error,
-      });
+      if (errorStatus !== 404) {
+        this.setState({
+          errorPlayer: error,
+        });
+      }
+      // TODO: add player suggestion
     }.bind(this));
   }
 
   render() {
     return (
-      <div>
+      <div className={this.props.className}>
         <p className="input-title text-muted">Enter a pseudo :</p>
-        <CFormInput className="input-body" gui={{headIcon: "fa fa-user-o"}} type={"text"} placeHolder={"Pseudo"}
-                    value={this.state.player} onChange={this.handlePlayerChange}
-                    error={this.state.errorPlayer} verify={this.verifyPseudo}/>
+        <CFormInput className="input-body" gui={{headIcon: "fa fa-user-o"}} type={"text"} placeHolder={"Enter the exact pseudo"}
+                    value={this.state.playerName} onChange={this.handlePlayerChange}
+                    error={this.state.errorPlayer || this.props.error} verify={this.verifyPseudo}/>
       </div>
     );
   }

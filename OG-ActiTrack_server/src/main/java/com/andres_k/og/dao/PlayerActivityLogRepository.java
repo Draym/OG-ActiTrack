@@ -14,7 +14,7 @@ public interface PlayerActivityLogRepository extends JpaRepository<PlayerActivit
 
     PlayerActivityLog findByPositionAndServerAndUserIdAndCreationDateBetween(String position, String server, Long userId, LocalDateTime from, LocalDateTime to);
 
-    @Query("SELECT SUBSTRING(pal.position, 0, 1) FROM PlayerActivityLog pal WHERE pal.server = ?1 GROUP BY SUBSTRING(pal.position, 0, 1)")
+    @Query("SELECT SUBSTRING(pal.position, 1, 1) FROM PlayerActivityLog pal WHERE pal.server = ?1 GROUP BY SUBSTRING(pal.position, 1, 1)")
     List<Object> findDistinctGalaxyByServer(String server);
 
     /** COUNT **/
@@ -28,4 +28,5 @@ public interface PlayerActivityLogRepository extends JpaRepository<PlayerActivit
 
     /** GALAXY ACTIVITY **/
     List<PlayerActivityLog> findAllByServerAndPositionStartingWithAndCreationDateBetweenAndUserIdIn(String server, String galaxy, LocalDateTime from, LocalDateTime to, Set<Long> playerId);
+    List<PlayerActivityLog> findAllByServerAndCreationDateBetweenAndUserIdIn(String server, LocalDateTime from, LocalDateTime to, Set<Long> playerId);
 }

@@ -25,7 +25,7 @@ class CLanguageCtrl extends Component {
     console.log("init: ", i18next.language);
     this.state = {
       dropdownOpen: false,
-      language: i18next.language.toUpperCase(),
+      language: (i18next.language ? i18next.language.toUpperCase() : i18next.language),
       flag: 'flag-icon-' + gbIconLang(i18next.language)
     };
   }

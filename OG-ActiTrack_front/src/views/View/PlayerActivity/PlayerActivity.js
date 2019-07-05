@@ -6,7 +6,7 @@ import {
   Card,
   CardBody,
   CardHeader,
-  Col,
+  Col, InputGroup,
   Row
 } from 'reactstrap';
 import HttpUtils from "../../../Utils/HttpUtils";
@@ -34,8 +34,8 @@ class PlayerActivity extends Component {
     this.onGroupTypeBtnClick = this.onGroupTypeBtnClick.bind(this);
     this.handlePlayerChange = this.handlePlayerChange.bind(this);
     this.handleServerChange = this.handleServerChange.bind(this);
-    this.submitChart = this.submitChart.bind(this);
-    this.onPlayerValidate= this.onPlayerValidate.bind(this);
+    this.createChart = this.createChart.bind(this);
+    this.onPlayerValidate = this.onPlayerValidate.bind(this);
     this.handleDayChange = this.handleDayChange.bind(this);
     this.handleFriendDataChange = this.handleFriendDataChange.bind(this);
     this.handleGlobalDataChange = this.handleGlobalDataChange.bind(this);
@@ -53,7 +53,11 @@ class PlayerActivity extends Component {
       guiChart: false,
       friendData: false,
       globalData: false,
-      hasChange: false
+      hasChange: false,
+
+      loading: {
+        loadChart: false
+      }
     };
   }
 
@@ -82,7 +86,8 @@ class PlayerActivity extends Component {
     }
   }
 
-  submitChart() {
+  createChart() {
+    this.setState({loading: {loadChart: true}});
     let callParameters = this.generateApiEndpointForChart();
 
     HttpUtils().GET(process.env.REACT_APP_SERVER_URL, callParameters.endpoint, callParameters.parameters, function (data) {
@@ -91,17 +96,20 @@ class PlayerActivity extends Component {
         this.setState({
           activityLogs: data,
           guiChart: true,
-          hasChange: false
+          hasChange: false,
+          loading: {loadChart: false}
         });
       } else {
         this.setState({
-          errorPlayer: "There is no data for " + callParameters.parameters.player + " on " + callParameters.parameters.server
+          errorPlayer: "There is no data for " + callParameters.parameters.player + " on " + callParameters.parameters.server,
+          loading: {loadChart: false}
         });
       }
     }.bind(this), function (errorStatus, error) {
       console.log(error);
       this.setState({
         errorPlayer: error,
+        loading: {loadChart: false}
       });
     }.bind(this));
   }
@@ -135,29 +143,27 @@ class PlayerActivity extends Component {
     this.setState({
       player: value, hasChange: true
     });
-  }
+  };
 
   handleDayChange(days) {
     this.setState({
       selectedDays: days, hasChange: true
     });
-  }
+  };
 
   handleFriendDataChange(value) {
     this.setState({
       friendData: value,
       hasChange: true
     })
-  }
-  ;
+  };
 
   handleGlobalDataChange(value) {
     this.setState({
       globalData: value,
       hasChange: true
     })
-  }
-  ;
+  };
 
   render() {
     let drawPremiumParameters = function () {
@@ -262,8 +268,8 @@ class PlayerActivity extends Component {
               <Row className="parameter-bloc">
                 <Col>
                   <CButtonLoading color="primary"
-                                  onClick={this.submitChart}
-                                  loading={this.state.loading.login}
+                                  onClick={this.createChart}
+                                  loading={this.state.loading.loadChart}
                                   disabled={this.state.selectedDays.length === 0 || !this.state.hasChange}
                                   className="float-right"
                                   text="Generate chart"
@@ -286,9 +292,10 @@ class PlayerActivity extends Component {
             </div>
           </CardHeader>
           <CardBody>
-            <SelectServerForm onChange={this.handleServerChange}/>
+            <SelectServerForm className="mb-3" onChange={this.handleServerChange}/>
             {!TString.isNull(this.state.server) &&
-            (<SelectPlayerForm onChange={this.handlePlayerChange} onValidate={this.onPlayerValidate} server={this.state.server}/>)}
+            (<SelectPlayerForm onChange={this.handlePlayerChange} onValidate={this.onPlayerValidate}
+                               server={this.state.server} error={this.state.errorPlayer}/>)}
           </CardBody>
         </Card>
       );

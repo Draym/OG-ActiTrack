@@ -20,12 +20,16 @@ class SelectGalaxyForm extends Component {
   }
 
   generateGalaxyOptions() {
-    HttpUtils().GET(process.env.REACT_APP_SERVER_URL, ApiEndpoint.SERVER_Galaxy_Available, null, function (data) {
+    let parameters = {
+      serverName: this.props.server
+    };
+
+    HttpUtils().GET(process.env.REACT_APP_SERVER_URL, ApiEndpoint.SERVER_Galaxy_Available, parameters, function (data) {
       console.log(data);
       if (data) {
         let galaxies = [];
         for (let i in data) {
-          galaxies.push({value: data[i].galaxy, label: data[i].galaxy});
+          galaxies.push({value: data[i], label: "Galaxy G" + data[i]});
         }
         this.setState({galaxies: galaxies});
       } else {
@@ -44,6 +48,7 @@ class SelectGalaxyForm extends Component {
   filterGalaxyOptions(inputValue) {
     if (this.state.galaxies.length === 0)
       this.generateGalaxyOptions();
+    console.log("HAHA: ", this.state.galaxies);
     return this.state.galaxies.filter(i =>
       i.label.toLowerCase().includes(inputValue.toLowerCase())
     );
@@ -62,8 +67,8 @@ class SelectGalaxyForm extends Component {
     return (
       <div>
         <p className="input-title text-muted">Select the desired Ogame galaxy :</p>
-        <CFormInput className="input-body" gui={{headIcon: "fa fa-galaxy"}} type={"text"}
-                    placeHolder={"Select a galaxy.."} value={this.state.galaxy} error={this.state.errorGalaxy}
+        <CFormInput className="input-body" gui={{headIcon: "icon-map"}} type={"text"}
+                    placeHolder={"Select a galaxy.."} value={this.state.galaxy} error={this.state.errorGalaxy || this.props.error}
                     autoComplete={{
                       options: this.state.galaxies,
                       handleSelectChange: this.handleGalaxyChange,

@@ -52,6 +52,28 @@
           "title": "aaa",
           "body": "tutu"
         }
+      },
+      "galaxy": {
+        "param": {
+          "title": "aaa",
+          "body": "tutu"
+        },
+        "date": {
+          "title": "aaa",
+          "body": "tutu"
+        },
+        "advanced": {
+          "title": "aaa",
+          "body": "tutu"
+        },
+        "friend": {
+          "title": "aaa",
+          "body": "tutu"
+        },
+        "premium": {
+          "title": "aaa",
+          "body": "tutu"
+        }
       }
     }
   },

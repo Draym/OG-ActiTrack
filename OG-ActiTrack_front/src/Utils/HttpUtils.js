@@ -15,11 +15,10 @@ let HttpUtils = function() {
   }
   function httpResult(response, cbSuccess, cbError) {
     if (response.status === 200) {
+      console.log("response: ", response);
       response.json().then(function (data) {
         cbSuccess(data);
       });
-    } else if (response.status === 404) {
-      window.location.pathname = "/404";
     } else {
       response.text().then(function(data){
         cbError(response.status, data);

@@ -1,252 +1,290 @@
 import React, {Component} from 'react';
-import {
-  XYPlot,
-  XAxis,
-  YAxis,
-  ContourSeries,
-  MarkSeriesCanvas,
-  Borders,
-  Hint,
-  MarkSeries
-} from "react-vis";
+import {Card, CardBody, CardHeader, Col, Row} from "reactstrap";
 import ChartCreator from "../../../Utils/ChartCreator";
-import "react-vis/dist/style.css";
 import CSlider from "../../Components/CSlider";
 import GalaxyActivityChart from "./widgets/GalaxyActivityChart";
 import HttpUtils from "../../../Utils/HttpUtils";
 import {ApiEndpoint} from "../../../Utils/ApiEndpoint";
-import {Card, CardBody, CardHeader, Col, Row} from "reactstrap";
-import CPopInfo from "../PlayerActivity";
-import TString from "../../../Utils/TString";
 import SelectServerForm from "../../Components/Widgets/forms/SelectServerForm";
-import SelectGalaxyForm from "../../Components/Widgets/forms/SelectGalaxyForm";
+import CPopInfo from "../../Components/CPopover/CPopInfo";
+import {EDatePicker} from "../../Components/CDatePicker/EDatePicker";
+import CButtonLoading from "../../Components/CButton/CButtonLoading";
+import CDatePicker from "../../Components/CDatePicker";
+import UserSession from "../../../Utils/UserSession";
 
-let flatData = [
-  {
-    position: "1:10;2",
-    playerName: "Draym",
-    server: "Fenrir",
-    activity: "18",
-    creationDate: new Date("2019-06-12 15:00:00")
-  },
-  {
-    position: "1:10;2",
-    playerName: "Draym",
-    server: "Fenrir",
-    activity: "35",
-    creationDate: new Date("2019-06-12 11:16:00")
-  },
-  {
-    position: "1:10;2",
-    playerName: "Draym",
-    server: "Fenrir",
-    activity: "15",
-    creationDate: new Date("2019-06-12 15:30:00")
-  },
-  {
-    position: "1:10;2",
-    playerName: "Draym",
-    server: "Fenrir",
-    activity: "15",
-    creationDate: new Date("2019-06-12 16:00:00")
-  },
-  {
-    position: "1:10;2",
-    playerName: "Draym",
-    server: "Fenrir",
-    activity: "15",
-    creationDate: new Date("2019-06-12 17:08:00")
-  },
-  {
-    position: "1:10;2",
-    playerName: "Draym",
-    server: "Fenrir",
-    activity: "15",
-    creationDate: new Date("2019-06-12 17:30:00")
-  },
-  {
-    position: "1:10;2",
-    playerName: "Draym",
-    server: "Fenrir",
-    activity: "15",
-    creationDate: new Date("2019-06-12 18:00:00")
-  },
-  {
-    position: "1:10;2",
-    playerName: "Draym",
-    server: "Fenrir",
-    activity: "15",
-    creationDate: new Date("2019-06-12 19:00:00")
-  },
-  {
-    position: "1:10;2",
-    playerName: "Draym",
-    server: "Fenrir",
-    activity: "15",
-    creationDate: new Date("2019-06-12 20:00:00")
-  }, {
-    position: "1:10;2",
-    playerName: "Draym",
-    server: "Fenrir",
-    activity: "15",
-    creationDate: new Date("2019-06-12 23:00:00")
-  },
-  {
-    position: "1:10;2",
-    playerName: "Draym",
-    server: "Fenrir",
-    activity: "0",
-    creationDate: new Date("2019-06-12 01:00:00")
-  },
-  {
-    position: "1:100;2",
-    playerName: "Draym",
-    server: "Fenrir",
-    activity: "0",
-    creationDate: new Date("2019-06-12 01:05:00")
-  },
-  {
-    position: "1:200;2",
-    playerName: "Draym",
-    server: "Fenrir",
-    activity: "0",
-    creationDate: new Date("2019-06-12 01:05:00")
-  },
-  {
-    position: "1:300;2",
-    playerName: "Draym",
-    server: "Fenrir",
-    activity: "0",
-    creationDate: new Date("2019-06-12 01:05:00")
-  },
-  {
-    position: "1:350;2",
-    playerName: "Draym",
-    server: "Fenrir",
-    activity: "0",
-    creationDate: new Date("2019-06-12 01:05:00")
-  },
-  {
-    position: "1:30;2",
-    playerName: "Draym",
-    server: "Fenrir",
-    activity: "0",
-    creationDate: new Date("2019-06-12 01:05:00")
-  },
-  {
-    position: "1:52;2",
-    playerName: "Draym",
-    server: "Fenrir",
-    activity: "0",
-    creationDate: new Date("2019-06-12 01:05:00")
-  },
-  {
-    position: "1:69;2",
-    playerName: "Draym",
-    server: "Fenrir",
-    activity: "0",
-    creationDate: new Date("2019-06-12 01:05:00")
-  },
-  {
-    position: "1:150;2",
-    playerName: "Draym",
-    server: "Fenrir",
-    activity: "0",
-    creationDate: new Date("2019-06-12 01:20:00")
-  },
-  {
-    position: "1:250;2",
-    playerName: "Draym",
-    server: "Fenrir",
-    activity: "0",
-    creationDate: new Date("2019-06-12 01:20:00")
-  },
-  {
-    position: "1:450;2",
-    playerName: "Draym",
-    server: "Fenrir",
-    activity: "0",
-    creationDate: new Date("2019-06-12 01:20:00")
-  }
-];
+import "react-vis/dist/style.css";
+import CBoolInput from "../../Components/CBoolInput";
 
 
 class GalaxyActivity extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      fullData: [],
-      data: [],
-      selectedDay: null
+      sliderValue: 0,
+      currentSliderDate: this.getCurrentSliderDate(0),
+      formattedData: {},
+      currentData: [],
+      selectedDays: [],
+
+      guiParameters: false,
+      guiChart: false,
+      friendData: false,
+      globalData: false,
+      hasChange: false,
+      loading: {
+        loadChart: false
+      }
     };
+    this.createChart = this.createChart.bind(this);
+    this.handleDayChange = this.handleDayChange.bind(this);
+    this.handleServerChange = this.handleServerChange.bind(this);
+    this.handleGalaxyChange = this.handleGalaxyChange.bind(this);
+    this.handleGalaxyChange = this.handleGalaxyChange.bind(this);
     this.onDateSliderChange = this.onDateSliderChange.bind(this);
-    this.loadData = this.loadData.bind(this);
-    this.loadData();
+    this.handleFriendDataChange = this.handleFriendDataChange.bind(this);
+    this.handleGlobalDataChange = this.handleGlobalDataChange.bind(this);
+    this.generateApiEndpointForChart = this.generateApiEndpointForChart.bind(this);
   }
 
-  loadData() {
+  generateApiEndpointForChart() {
     let parameters = {
       server: this.state.server,
-      galaxy: this.state.galaxy,
-      start: new Date(this.state.selectedDay).toISOString().split("T")[0] + "T00:00:00.000",
-      end: new Date(this.state.selectedDay).toISOString().split("T")[0] + "T23:59:59.999"
+      start: new Date(this.state.selectedDays[0]).toISOString().split("T")[0] + "T00:00:00.000",
+      end: new Date(this.state.selectedDays[this.state.selectedDays.length - 1]).toISOString().split("T")[0] + "T23:59:59.999"
     };
-    HttpUtils().GET(process.env.REACT_APP_SERVER_URL, ApiEndpoint.ACTIVITY_GlobalGalaxy, parameters, function (data) {
+    if (this.state.friendData === true) {
+      return {
+        endpoint: ApiEndpoint.ACTIVITY_FriendGroupGalaxy,
+        parameters: parameters
+      };
+    } else if (this.state.globalData === true) {
+      return {
+        endpoint: ApiEndpoint.ACTIVITY_GlobalGalaxy,
+        parameters: parameters
+      };
+    } else {
+      return {
+        endpoint: ApiEndpoint.ACTIVITY_SelfGalaxy,
+        parameters: parameters
+      };
+    }
+  }
+
+  formatChartData(flatData) {
+    let result = ChartCreator.preBuildPlayerDataPerDay(flatData, 14);
+
+    console.log("1:", result);
+    for (let i in result) {
+      for (let i2 = 0; i2 < result[i].length; ++i2) {
+        if (!result[i][i2].activity) {
+          result[i].splice(i2, 1);
+          --i2;
+          continue;
+        }
+        result[i][i2].x = Number(result[i][i2].position.split(/[:;]/)[1]);
+        result[i][i2].y = Number(result[i][i2].position.split(/[:;]/)[0]);
+      }
+    }
+    console.log("2:", result);
+    return result;
+  }
+
+  createChart() {
+    this.setState({loading: {loadChart: true}});
+    let callParameters = this.generateApiEndpointForChart();
+
+    HttpUtils().GET(process.env.REACT_APP_SERVER_URL, callParameters.endpoint, callParameters.parameters, function (data) {
       console.log(data);
       if (data) {
+        let formattedData = this.formatChartData(data);
         this.setState({
-          activityLogs: data,
+          formattedData: formattedData,
+          currentData: formattedData[this.state.sliderValue],
           guiChart: true,
-          hasChange: false
+          hasChange: false,
+          loading: {loadChart: false}
         });
       } else {
         this.setState({
-          errorPlayer: "There is no data for " + parameters.galaxy + " on " + parameters.server
+          errorServer: "There is no data for " + callParameters.parameters.server,
+          loading: {loadChart: false}
         });
       }
     }.bind(this), function (errorStatus, error) {
       console.log(error);
       this.setState({
-        errorPlayer: error,
+        errorServer: error,
+        loading: {loadChart: false}
       });
     }.bind(this));
-    let result = ChartCreator.preBuildPlayerDataPerDay(flatData, 14);
-
-    for (let i in result) {
-      for (let i2 in result[i]) {
-        result[i][i2].x = Number(result[i][i2].position.split(/[:;]/)[1]);
-        result[i][i2].y = Number(result[i][i2].position.split(/[:;]/)[1]);
-      }
-    }
-    console.log(result);
-    this.state.fullData = result;
-    this.state.data = result[this.state.sliderValue];
   }
 
   onDateSliderChange(value) {
+    console.log("slider: ", value);
     this.setState({
-      data: (value < this.state.fullData.length ? [] : this.state.fullData[value])
+      sliderValue: value,
+      currentSliderDate: this.getCurrentSliderDate(value),
+      currentData: (this.state.formattedData[value] ? this.state.formattedData[value] : [])
     });
   }
 
+  handleDayChange(days) {
+    this.setState({
+      selectedDays: days, hasChange: true
+    });
+  };
+
+  handleServerChange = selectedOption => {
+    if (selectedOption.value)
+      this.setState({
+        server: selectedOption.value, hasChange: true,
+        guiParameters: true
+      });
+  };
+
+  handleGalaxyChange = selectedOption => {
+    if (selectedOption.value)
+      this.setState({
+        galaxy: selectedOption.value, hasChange: true
+      });
+  };
+
+  handleFriendDataChange(value) {
+    this.setState({
+      friendData: value,
+      hasChange: true
+    })
+  };
+
+  handleGlobalDataChange(value) {
+    this.setState({
+      globalData: value,
+      hasChange: true
+    })
+  };
+
+  getCurrentSliderDate(sliderValue) {
+    let fullTime = sliderValue * 14;
+    let hour = (fullTime / 60 >> 0);
+    let minutes = (fullTime % 60 >> 0);
+    console.log("time: ", hour + "h" + minutes);
+    return hour + "h" + (minutes < 10 ? "0" + minutes : minutes);
+  }
+
   render() {
+    let drawPremiumParameters = function () {
+      return (
+        <Card>
+          <CardHeader>
+            Advanced parameters:
+
+            <div className="card-header-actions">
+              <CPopInfo className="card-header-action btn" id="advancedInfo" position="bottom"
+                        title="popinfo.activity.galaxy.advanced.title" body="popinfo.activity.galaxy.advanced.body"/>
+            </div>
+          </CardHeader>
+          <CardBody>
+            <Row>
+              <Col md={5}>
+                <span className="btn-label">Use friend data:</span>
+              </Col>
+              <Col md={4}>
+                <CBoolInput handleChange={this.handleFriendDataChange} value={this.state.friendData}/>
+              </Col>
+              <Col md={2}>
+                <CPopInfo className="btn-label card-header-action btn" id="friendInfo" position="bottom"
+                          title="popinfo.activity.galaxy.friend.title" body="popinfo.activity.galaxy.friend.body"/>
+              </Col>
+            </Row>
+            <Row>
+              <Col md={1}>
+                <i className="btn-label fa fa-star"
+                   style={{color: '#ffe200'}}/>
+              </Col>
+              <Col className="padding-off" md={4}>
+                <span className="btn-label">Use global data:</span>
+              </Col>
+              <Col md={4}>
+                <CBoolInput handleChange={this.handleGlobalDataChange} value={this.state.globalData}
+                            disabled={!UserSession.getSession() || UserSession.getSession().premium}/>
+              </Col>
+              <Col md={2}>
+                <CPopInfo className="btn-label card-header-action btn" id="premiumInfo" position="bottom"
+                          title="popinfo.activity.galaxy.premium.title" body="popinfo.activity.galaxy.premium.body"/>
+              </Col>
+            </Row>
+          </CardBody>
+        </Card>
+      );
+    }.bind(this);
+    let drawParameters = function () {
+      if (this.state.guiParameters) {
+        return (
+          <Card>
+            <CardHeader>
+              Choose a day:
+
+              <div className="card-header-actions">
+                <CPopInfo className="card-header-action btn" id="dateInfo" position="bottom"
+                          title="popinfo.activity.galaxy.date.title" body="popinfo.activity.galaxy.date.body"/>
+              </div>
+            </CardHeader>
+            <CardBody className="margin-bot-l5">
+              <Row>
+                <Col md={5}>
+                  <span>Select the Date:</span>
+                </Col>
+                <Col md={7}>
+                  <CDatePicker handleDayChange={this.handleDayChange} dateTypeSelected={EDatePicker.DayInputPicker}/>
+                </Col>
+              </Row>
+              <Row className="parameter-bloc">
+                <Col>
+                  <CButtonLoading color="primary"
+                                  onClick={this.createChart}
+                                  loading={this.state.loading.loadChart}
+                                  disabled={this.state.selectedDays.length === 0 || !this.state.hasChange}
+                                  className="float-right"
+                                  text="Generate chart"
+                                  loadingText="Generating chart"/>
+                </Col>
+              </Row>
+            </CardBody>
+          </Card>
+        );
+      }
+    }.bind(this);
     let drawPlayerParameter = function () {
       return (
         <Card>
           <CardHeader>
-            Select a server & player:
+            Select a server:
             <div className="card-header-actions">
               <CPopInfo className="card-header-action btn" id="paramInfo" position="bottom"
-                        title="popinfo.activity.player.param.title" body="popinfo.activity.player.param.body"/>
+                        title="popinfo.activity.galaxy.param.title" body="popinfo.activity.galaxy.param.body"/>
             </div>
           </CardHeader>
           <CardBody>
-            <SelectServerForm onChange={this.handleServerChange}/>
-            {!TString.isNull(this.state.server) &&
-            (<SelectGalaxyForm onChange={this.handlePlayerChange} onValidate={this.onPlayerValidate} server={this.state.server}/>)}
+            <SelectServerForm className="mb-2" onChange={this.handleServerChange} error={this.state.errorServer}/>
+            {/*!TString.isNull(this.state.server) && <SelectGalaxyForm onChange={this.handleGalaxyChange} server={this.state.server}/>*/}
           </CardBody>
         </Card>
       );
+    }.bind(this);
+    let drawChart = function () {
+      if (this.state.guiChart) {
+        return (
+          <div>
+            <GalaxyActivityChart data={this.state.currentData} width={1250} height={500}
+                                 colors={['#3193b6', '#ffffff']}
+                                 xRange={[0, 499]} yRange={[0, 10]}/>
+            <CSlider id="galaxyDateSlider" onChange={this.onDateSliderChange} width={1250}
+                     value={this.state.sliderValue} position={"bottom"}
+                     sliderLabelStart="00h" sliderLabelMid="12h" sliderLabelEnd="24h"
+                     sliderTipText={this.state.currentSliderDate}/>
+          </div>
+        );
+      }
     }.bind(this);
     return (
       <div className="animated fadeIn">
@@ -254,15 +292,18 @@ class GalaxyActivity extends Component {
           <Col sm="4" className="card-param1">
             {drawPlayerParameter()}
           </Col>
+          <Col sm="4" className="card-param2">
+            {drawParameters()}
+          </Col>
+          <Col sm="4" className="card-param3">
+            {drawPremiumParameters()}
+          </Col>
         </Row>
         <Row>
           <Col>
-            <GalaxyActivityChart data={this.state.data} width={1250} height={500} colors={['#3193b6', '#ffffff']}
-                                 xRange={[0, 499]} yRange={[0, 499]}/>
-            <CSlider onChange={this.onDateSliderChange} width={1250}/>
+            {drawChart()}
           </Col>
         </Row>
-
       </div>
     )
   }

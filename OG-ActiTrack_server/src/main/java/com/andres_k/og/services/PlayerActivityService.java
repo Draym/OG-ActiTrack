@@ -131,14 +131,20 @@ public class PlayerActivityService {
         this.playerActivityLogRepository.save(playerActivityLog);
     }
 
-    /** SELF **/
+    /**
+     * SELF
+     **/
     public List<PlayerActivityLog> getPlayerActivity(EActivityType type, Long userId, String server, Long playerId, LocalDateTime start, LocalDateTime end) {
         Set<Long> users = generateUsersFor(type, userId);
         return this.playerActivityLogRepository.findAllByServerAndPlayerIdAndCreationDateBetweenAndUserIdIn(server, playerId, start, end, users);
     }
+
     public List<PlayerActivityLog> getGalaxyActivity(EActivityType type, Long userId, String server, String galaxy, LocalDateTime start, LocalDateTime end) {
         Set<Long> users = generateUsersFor(type, userId);
-        return this.playerActivityLogRepository.findAllByServerAndPositionStartingWithAndCreationDateBetweenAndUserIdIn(server, galaxy, start, end, users);
+        if (galaxy != null)
+            return this.playerActivityLogRepository.findAllByServerAndPositionStartingWithAndCreationDateBetweenAndUserIdIn(server, galaxy, start, end, users);
+        else
+            return this.playerActivityLogRepository.findAllByServerAndCreationDateBetweenAndUserIdIn(server, start, end, users);
     }
 
     private Set<Long> generateUsersFor(EActivityType type, Long userId) {

@@ -56,7 +56,7 @@ public class GameServerController {
         try {
             Player player = this.gameServerService.getByServerAndPlayerName(serverName, playerName);
             if (player != null) {
-                return new ResponseEntity<>(player.getPlayerName(), HttpStatus.OK);
+                return new ResponseEntity<>(true, HttpStatus.OK);
             } else {
                 List<Object> possiblePlayerNames = this.gameServerService.checkPlayerInServer(serverName, playerName);
                 if (possiblePlayerNames.size() > 0)

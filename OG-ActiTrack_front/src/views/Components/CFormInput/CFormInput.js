@@ -74,7 +74,7 @@ class CFormInput extends Component {
       if (!autoComplete) {
         if (!TString.isNull(error)) {
           return (
-            <InputGroup className="mb-3">
+            <InputGroup>
               {renderInputHead(gui)}
               <Input type={type} invalid placeholder={placeHolder} autoComplete={autoComplete}
                      value={value} onChange={onChange}/>
@@ -85,7 +85,7 @@ class CFormInput extends Component {
           );
         } else {
           return (
-            <InputGroup className="mb-3">
+            <InputGroup>
               {renderInputHead(gui)}
               <Input type={type} placeholder={placeHolder} autoComplete={autoComplete}
                      value={value} onChange={onChange}/>
@@ -96,7 +96,7 @@ class CFormInput extends Component {
         }
       } else {
         return (
-          <InputGroup className="mb-3">
+          <InputGroup>
             {renderInputHead(gui)}
             <AsyncSelect className="input-fill input-addon"
                          cacheOptions
