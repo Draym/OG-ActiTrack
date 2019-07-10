@@ -13,13 +13,11 @@ class SelectGalaxyForm extends Component {
       errorGalaxy: ''
     };
     this.handleGalaxyChange = this.handleGalaxyChange.bind(this);
-    this.filterGalaxyOptions = this.filterGalaxyOptions.bind(this);
+    this.loadGalaxyOptions = this.loadGalaxyOptions.bind(this);
     this.generateGalaxyOptions = this.generateGalaxyOptions.bind(this);
-
-    this.generateGalaxyOptions();
   }
 
-  generateGalaxyOptions() {
+  generateGalaxyOptions(callback) {
     let parameters = {
       serverName: this.props.server
     };
@@ -32,6 +30,7 @@ class SelectGalaxyForm extends Component {
           galaxies.push({value: data[i], label: "Galaxy G" + data[i]});
         }
         this.setState({galaxies: galaxies});
+        callback(galaxies);
       } else {
         this.setState({
           errorPlayer: "There is no galaxy registered."
@@ -45,13 +44,18 @@ class SelectGalaxyForm extends Component {
     }.bind(this));
   }
 
-  filterGalaxyOptions(inputValue) {
-    if (this.state.galaxies.length === 0)
-      this.generateGalaxyOptions();
-    console.log("HAHA: ", this.state.galaxies);
-    return this.state.galaxies.filter(i =>
-      i.label.toLowerCase().includes(inputValue.toLowerCase())
-    );
+  loadGalaxyOptions(inputValue, callback) {
+    if (this.state.galaxies.length === 0) {
+      this.generateGalaxyOptions(function (suggestions) {
+        callback(suggestions.filter(i =>
+          i.label.toLowerCase().includes(inputValue.toLowerCase())
+        ));
+      });
+    } else {
+      callback(this.state.galaxies.filter(i =>
+        i.label.toLowerCase().includes(inputValue.toLowerCase())
+      ));
+    }
   }
 
   handleGalaxyChange = selectedOption => {
@@ -73,7 +77,7 @@ class SelectGalaxyForm extends Component {
                       options: this.state.galaxies,
                       handleSelectChange: this.handleGalaxyChange,
                       handleInputChange: this.handleGalaxyChange,
-                      filterOptions: this.filterGalaxyOptions
+                      loadOptions: this.loadGalaxyOptions
                     }}/>
       </div>
     );

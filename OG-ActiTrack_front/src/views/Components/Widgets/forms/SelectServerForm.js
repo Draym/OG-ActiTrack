@@ -13,13 +13,11 @@ class SelectServerForm extends Component {
       errorServer: ''
     };
     this.handleServerChange = this.handleServerChange.bind(this);
-    this.filterServerOptions = this.filterServerOptions.bind(this);
+    this.loadServerOptions = this.loadServerOptions.bind(this);
     this.generateServerOptions = this.generateServerOptions.bind(this);
-
-    this.generateServerOptions();
   }
 
-  generateServerOptions() {
+  generateServerOptions(callback) {
     HttpUtils().GET(process.env.REACT_APP_SERVER_URL, ApiEndpoint.SERVER_Available, null, function (data) {
       if (data) {
         let servers = [];
@@ -27,6 +25,7 @@ class SelectServerForm extends Component {
           servers.push({value: data[i].server, label: data[i].server});
         }
         this.setState({servers: servers});
+        callback(servers);
       } else {
         this.setState({
           errorPlayer: "There is no server registered."
@@ -40,13 +39,18 @@ class SelectServerForm extends Component {
     }.bind(this));
   }
 
-  filterServerOptions(inputValue) {
+  loadServerOptions(inputValue, callback) {
     if (this.state.servers.length === 0) {
-        this.generateServerOptions();
+        this.generateServerOptions(function (suggestions) {
+          callback(suggestions.filter(i =>
+            i.label.toLowerCase().includes(inputValue.toLowerCase())
+          ));
+        });
+    } else {
+      callback(this.state.servers.filter(i =>
+        i.label.toLowerCase().includes(inputValue.toLowerCase())
+      ));
     }
-    return this.state.servers.filter(i =>
-      i.label.toLowerCase().includes(inputValue.toLowerCase())
-    );
   }
 
   handleServerChange = selectedOption => {
@@ -68,7 +72,7 @@ class SelectServerForm extends Component {
                       options: this.state.servers,
                       handleSelectChange: this.handleServerChange,
                       handleInputChange: this.handleServerChange,
-                      filterOptions: this.filterServerOptions
+                      loadOptions: this.loadServerOptions
                     }}/>
       </div>
     );

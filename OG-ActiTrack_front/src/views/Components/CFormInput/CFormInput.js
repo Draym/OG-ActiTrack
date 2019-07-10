@@ -12,13 +12,12 @@ import AsyncSelect from 'react-select/async';
 class CFormInput extends Component {
   constructor(props) {
     super(props);
-
     this.loadOptions = this.loadOptions.bind(this);
   }
 
   loadOptions(inputValue, callback) {
     setTimeout(() => {
-      callback(this.props.autoComplete.filterOptions(inputValue));
+      this.props.autoComplete.loadOptions(inputValue, callback);
     }, 1000);
   };
 
@@ -56,13 +55,13 @@ class CFormInput extends Component {
       }
     };
 
-    let renderVerify = function (verify, error) {
+    let renderVerify = function (verify, success, error) {
       if (verify) {
         return (
           <InputGroupAddon addonType="append">
             <InputGroupText className={"input-verification " + (TString.isNull(error)? "" : "input-error")}>
               <button type="button" className="form-control input-addon" onClick={verify}>
-                <i className={(TString.isNull(error)? "icon-arrow-right-circle" : "icon-close") + " icons font-1x2"} style={{color: "grey"}}/>
+                <i className={(TString.isNull(error)? (TString.isNull(success) ? "icon-arrow-right-circle" : "icon-check") : "icon-close") + " icons font-1x2"} style={{color: "grey"}}/>
               </button>
             </InputGroupText>
           </InputGroupAddon>
@@ -70,7 +69,7 @@ class CFormInput extends Component {
       }
       return null;
     };
-    let render = function (gui, type, placeHolder, autoComplete, value, onChange, error, verify) {
+    let render = function (gui, type, placeHolder, autoComplete, value, onChange, success, error, verify) {
       if (!autoComplete) {
         if (!TString.isNull(error)) {
           return (
@@ -79,7 +78,7 @@ class CFormInput extends Component {
               <Input type={type} invalid placeholder={placeHolder} autoComplete={autoComplete}
                      value={value} onChange={onChange}/>
               {renderInputBack(gui)}
-              {renderVerify(verify, error)}
+              {renderVerify(verify, success, error)}
               <FormFeedback>{error}</FormFeedback>
             </InputGroup>
           );
@@ -90,7 +89,7 @@ class CFormInput extends Component {
               <Input type={type} placeholder={placeHolder} autoComplete={autoComplete}
                      value={value} onChange={onChange}/>
               {renderInputBack(gui)}
-              {renderVerify(verify, error)}
+              {renderVerify(verify, success, error)}
             </InputGroup>
           );
         }
@@ -115,13 +114,14 @@ class CFormInput extends Component {
                            }})}
             />
             {renderInputBack(gui)}
+            {renderVerify(verify, success, error)}
           </InputGroup>
         );
       }
     }.bind(this);
     return (
       <div>
-        {render(this.props.gui, this.props.type, this.props.placeHolder, this.props.autoComplete, this.props.value, this.props.onChange, this.props.error, this.props.verify)}
+        {render(this.props.gui, this.props.type, this.props.placeHolder, this.props.autoComplete, this.props.value, this.props.onChange, this.props.success, this.props.error, this.props.verify)}
       </div>
     );
   }

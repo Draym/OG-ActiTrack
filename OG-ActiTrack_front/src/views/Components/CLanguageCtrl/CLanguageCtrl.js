@@ -10,7 +10,7 @@ import * as moment from "moment";
 
 
 const gbIconLang = function(language) {
-  if (language.indexOf('en') === 0) {
+  if (language && language.indexOf('en') === 0) {
     return 'gb';
   }
   return language;

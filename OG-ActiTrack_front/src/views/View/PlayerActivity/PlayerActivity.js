@@ -128,8 +128,8 @@ class PlayerActivity extends Component {
     });
   }
 
-  onPlayerValidate() {
-    this.setState({guiParameters: true});
+  onPlayerValidate(state) {
+    this.setState({guiParameters: state});
   }
 
   handleServerChange = selectedOption => {

@@ -26,6 +26,7 @@ class GalaxyActivityChart extends Component {
         <ContourSeries
           animation
           className="contour-series-example"
+          bandwidth={18}
           style={{
             stroke: '#125C77',
             strokeLinejoin: 'round'

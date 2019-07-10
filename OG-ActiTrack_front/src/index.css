@@ -90,9 +90,6 @@
   border: 0 !important;
 }
 
-.font-1x2 {
-  font-size: 1.2rem;
-}
 
 .input-error {
   background-color: rgba(255, 0, 8, 0.50) !important;
@@ -100,6 +97,21 @@
 
 .input-error button {
   background-color: transparent !important;
+}
+
+/**
+* FONT
+ */
+
+.font-1x2 {
+  font-size: 1.2rem;
+}
+
+/**
+* MARGIN
+ */
+.margin-bot-l5 {
+  margin-bottom: -5px !important;
 }
 
 /**
