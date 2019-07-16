@@ -115,7 +115,7 @@ class Login extends Component {
                                           loading={this.state.loading.login}
                                           className="px-5 m-2 mx-4"
                                           text="Login"
-                                          loadingText="Logging in"/>
+                                          loadingText="Logging"/>
                         </Col>
                         <Col xs="6" className="text-right">
                           <Button color="link" className="px-0" onClick={this.triggerForgotPassword}>Forgot

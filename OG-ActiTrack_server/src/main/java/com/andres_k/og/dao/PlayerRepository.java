@@ -11,7 +11,7 @@ import java.util.Optional;
 @Repository
 public interface PlayerRepository extends JpaRepository<Player, Long> {
 
-    @Query("SELECT playerName FROM Player WHERE playerName LIKE %?1% AND server = ?2")
+    @Query("SELECT playerName, playerRef, id AS playerId FROM Player WHERE playerName LIKE %?1% AND server = ?2")
     List<Object> findAllByPossiblePlayerNameAndServer(String playerName, String server);
     Optional<Player> findByServerAndPlayerRef(String server, String playerRef);
     Optional<Player> findByServerAndPlayerName(String server, String playerName);

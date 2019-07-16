@@ -16,24 +16,15 @@ class SelectPlayerForm extends Component {
     this.loadPlayerOptions = this.loadPlayerOptions.bind(this);
   }
 
-  /*
-    handlePlayerChange(event) {
-      this.setState({
-        playerName: event.target.value, errorPlayer: ''
-      });
-      this.props.onChange(event.target.value);
-    }*/
-
   handlePlayerChange = selectedOption => {
-    console.log("player: ", selectedOption);
     if (selectedOption.value) {
       this.setState({
-        playerName: selectedOption.value,
+        playerName: selectedOption.label,
         errorPlayer: ''
       });
-      this.props.onChange(selectedOption);
+      this.props.onChange(selectedOption.value);
       this.props.onValidate(true);
-    } else {
+    } else if (selectedOption) {
       this.props.onValidate(false);
     }
   };
@@ -46,24 +37,22 @@ class SelectPlayerForm extends Component {
       playerName: playerName
     };
     HttpUtils().GET(process.env.REACT_APP_SERVER_URL, ApiEndpoint.SERVER_PlayerExist, parameters, function (data) {
-      console.log(data);
+      console.log("GET:", data);
       if (data) {
-        // only validate on SELECT
-        //this.props.onValidate();
-        callback([{value: playerName, label: playerName}]);
+        callback([{value: data, label: playerName}]);
       } else {
         this.setState({
           errorPlayer: "There is no data for " + parameters.playerName + " on " + parameters.serverName
         });
       }
     }.bind(this), function (errorStatus, error) {
-      console.log(error);
+      console.log("ERROR:", error);
       if (errorStatus === 404) {
         // Player suggestion
           let data = JSON.parse(error);
           let suggestions = [];
           for (let i in data) {
-            suggestions.push({value: data[i], label: data[i]});
+            suggestions.push({value: data[i], label: data[i].playerName});
           }
           callback(suggestions);
       } else {
@@ -103,6 +92,4 @@ class SelectPlayerForm extends Component {
     );
   }
 }
-
-//onChange={this.handlePlayerChange}  verify={this.verifyPseudo}
 export default SelectPlayerForm;

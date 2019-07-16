@@ -139,6 +139,23 @@
 .slider-max {
   float: right;
 }
+
+/**
+** BORDER
+ */
+.border-bottom-off {
+  border-bottom: none !important;
+}
+.border-top-off {
+  border-top: none !important;
+}
+.border-right-off {
+  border-right: none !important;
+}
+.border-left-off {
+  border-left: none !important;
+}
+
 /**
 ** GENERAL
  */

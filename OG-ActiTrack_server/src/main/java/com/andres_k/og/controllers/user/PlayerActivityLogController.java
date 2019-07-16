@@ -54,7 +54,7 @@ public class PlayerActivityLogController {
     public ResponseEntity<?> getSelfPlayerActivity(@RequestHeader String Authorization, @RequestParam String server, @RequestParam Long playerId, @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime start, @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime end) {
         try {
             User user = this.userService.getUserByToken(Authorization);
-            List<PlayerActivityLog> activities = activities = this.playerActivityService.getPlayerActivity(EActivityType.SELF, user.getId(), server, playerId, start, end);
+            List<PlayerActivityLog> activities = this.playerActivityService.getPlayerActivity(EActivityType.SELF, user.getId(), server, playerId, start, end);
             return new ResponseEntity<>(activities, HttpStatus.OK);
         } catch (Exception ex) {
             return new ResponseEntity<>(ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);

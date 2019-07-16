@@ -3,7 +3,7 @@ class UserSession {
     return 'user-data';
   }
   static getSession() {
-    let session = localStorage.getItem(this.sessionKey());
+    let session = localStorage.getItem(UserSession.sessionKey());
 
     if (session != null) {
       return JSON.parse(session);
@@ -12,23 +12,23 @@ class UserSession {
   }
 
   static getPseudo() {
-    let user = this.getSession();
+    let session = UserSession.getSession();
 
-    if (user != null) {
-      return user.pseudo;
+    if (session != null) {
+      return session.user.pseudo;
     }
     return null;
   }
 
   static clearSession() {
-    localStorage.removeItem(this.sessionKey());
+    localStorage.removeItem(UserSession.sessionKey());
   }
   static storeSession(data) {
-    localStorage.setItem(this.sessionKey(), JSON.stringify(data));
+    localStorage.setItem(UserSession.sessionKey(), JSON.stringify(data));
   }
 
   static hasSession() {
-    return localStorage.getItem(this.sessionKey()) != null;
+    return localStorage.getItem(UserSession.sessionKey()) != null;
   }
 }
 

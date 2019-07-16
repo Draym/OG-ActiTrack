@@ -35,17 +35,17 @@ class DefaultAccountHeader extends Component {
   }
   goProfile(e) {
     e.preventDefault();
-    this.props.history.push(RoutesEndpoint.ACCOUNT_User.replace("pseudo", UserSession.getPseudo));
+    this.props.history.push(RoutesEndpoint.ACCOUNT_User.replace(":pseudo", UserSession.getPseudo));
   }
 
   goPremium(e) {
     e.preventDefault();
-    this.props.history.push(RoutesEndpoint.ACCOUNT_Premium.replace("pseudo", UserSession.getPseudo));
+    this.props.history.push(RoutesEndpoint.ACCOUNT_Premium.replace(":pseudo", UserSession.getPseudo));
   }
 
   goSettings(e) {
     e.preventDefault();
-    this.props.history.push(RoutesEndpoint.ACCOUNT_Settings.replace("pseudo", UserSession.getPseudo));
+    this.props.history.push(RoutesEndpoint.ACCOUNT_Settings.replace(":pseudo", UserSession.getPseudo));
   }
 
   render() {
@@ -56,10 +56,10 @@ class DefaultAccountHeader extends Component {
         return (
           <DropdownMenu right style={{right: 'auto'}}>
             <DropdownItem header tag="div" className="text-center"><strong>{t('header.account.title')}</strong></DropdownItem>
-            <DropdownItem onClick={this.goProfile}><i className="fa fa-user"/>{t('account.profile')}</DropdownItem>
+            <DropdownItem onClick={this.goProfile}><i className="fa fa-user"/>{t('header.account.profile')}</DropdownItem>
             <DropdownItem onClick={this.goPremium}><i className="fa fa-star"
                                                               style={{color: '#ffe200'}}/> {t('header.account.premium')}</DropdownItem>
-            <DropdownItem onClick={this.goSettings}><i className="fa fa-wrench"/> {t('header.account.settings')}</DropdownItem>
+            <DropdownItem className="border-bottom-off" onClick={this.goSettings}><i className="fa fa-wrench"/> {t('header.account.settings')}</DropdownItem>
             <DropdownItem divider/>
             <DropdownItem onClick={this.signOut}><i className="fa fa-lock"/> {t('header.account.signOut')}</DropdownItem>
           </DropdownMenu>);

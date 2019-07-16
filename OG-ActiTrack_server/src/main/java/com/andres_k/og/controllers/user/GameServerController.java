@@ -1,6 +1,7 @@
 package com.andres_k.og.controllers.user;
 
 import com.andres_k.og.config.Restricted;
+import com.andres_k.og.models.http.PlayerIdentityHandler;
 import com.andres_k.og.models.item.game.GameServer;
 import com.andres_k.og.models.item.game.Player;
 import com.andres_k.og.services.GameServerService;
@@ -56,7 +57,7 @@ public class GameServerController {
         try {
             Player player = this.gameServerService.getByServerAndPlayerName(serverName, playerName);
             if (player != null) {
-                return new ResponseEntity<>(true, HttpStatus.OK);
+                return new ResponseEntity<>(new PlayerIdentityHandler(player.getId(), player.getPlayerName(), player.getPlayerRef()), HttpStatus.OK);
             } else {
                 List<Object> possiblePlayerNames = this.gameServerService.checkPlayerInServer(serverName, playerName);
                 if (possiblePlayerNames.size() > 0)

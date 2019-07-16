@@ -62,9 +62,10 @@ class PlayerActivity extends Component {
   }
 
   generateApiEndpointForChart() {
+    console.log("Generate chart for ", this.state.player);
     let parameters = {
       server: this.state.server,
-      playerName: this.state.player,
+      playerId: this.state.player.playerId,
       start: new Date(this.state.selectedDays[0]).toISOString().split("T")[0] + "T00:00:00.000",
       end: new Date(this.state.selectedDays[this.state.selectedDays.length - 1]).toISOString().split("T")[0] + "T23:59:59.999"
     };
@@ -304,7 +305,7 @@ class PlayerActivity extends Component {
       if (this.state.guiChart) {
         return (
           <PlayerActivityChart selectedDays={this.state.selectedDays} data={this.state.activityLogs}
-                               player={this.state.player} isGroup={this.state.groupTypeSelected === 1}
+                               player={this.state.player.playerName} isGroup={this.state.groupTypeSelected === 1}
                                isUnique={!this.state.globalData && !this.state.friendData}/>
         );
       }
