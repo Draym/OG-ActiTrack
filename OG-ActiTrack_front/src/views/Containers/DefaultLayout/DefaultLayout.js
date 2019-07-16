@@ -16,7 +16,7 @@ import {
 // sidebar nav config
 import navigation from '../../../_nav';
 // routesDefault config
-import routesDefault from '../../../routes-default';
+import routes from '../../../routes-default';
 import CLanguageCtrl from "../../Components/CLanguageCtrl";
 import {RoutesEndpoint} from "../../../Utils/RoutesEndpoint";
 
@@ -46,11 +46,12 @@ class DefaultLayout extends Component {
             <AppSidebarFooter/>
           </AppSidebar>
           <main className="main">
-            <AppBreadcrumb appRoutes={routesDefault} router={router}/>
+            <AppBreadcrumb appRoutes={routes} router={router}/>
             <Container fluid>
               <Suspense fallback={this.loading()}>
                 <Switch>
-                  {routesDefault.map((route, idx) => {
+                  {routes.map((route, idx) => {
+                    console.log("route:", route);
                     return route.component ? (
                       <Route
                         key={idx}

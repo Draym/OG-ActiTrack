@@ -8,9 +8,6 @@ import {
   Form,
   Row
 } from 'reactstrap';
-import {AppFooter, AppHeader} from "@coreui/react";
-import AuthHeader from '../../../Containers/AuthLayout/AuthHeader';
-import AuthFooter from '../../../Containers/AuthLayout/AuthFooter';
 import HttpUtils from "../../../../Utils/HttpUtils";
 import TString from "../../../../Utils/TString";
 import CFormInput from "../../../Components/CFormInput";
