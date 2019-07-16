@@ -5,7 +5,7 @@ import logo from '../../../assets/img/brand/logo.png'
 import CLanguageCtrl from "../../Components/CLanguageCtrl";
 
 
-class MinimalHeader extends Component {
+class AuthHeader extends Component {
   constructor(props) {
     super(props);
   }
@@ -23,4 +23,4 @@ class MinimalHeader extends Component {
   }
 }
 
-export default MinimalHeader;
+export default AuthHeader;

@@ -14,12 +14,13 @@ import {
 } from "@coreui/react";
 import {css} from '@emotion/core';
 import {ClipLoader} from 'react-spinners';
-import MinimalHeader from '../../Containers/MinimalLayout/MinimalHeader';
-import MinimalFooter from '../../Containers/MinimalLayout/MinimalFooter';
-import HttpUtils from "../../../Utils/HttpUtils";
+import AuthHeader from '../../../Containers/AuthLayout/AuthHeader';
+import AuthFooter from '../../../Containers/AuthLayout/AuthFooter';
+import HttpUtils from "../../../../Utils/HttpUtils";
 import '../custom.css';
 import './validateAccount.css';
-import {ApiEndpoint} from "../../../Utils/ApiEndpoint";
+import {ApiEndpoint} from "../../../../Utils/ApiEndpoint";
+import {RoutesEndpoint} from "../../../../Utils/RoutesEndpoint";
 
 const override = css`
     display: block;
@@ -79,11 +80,11 @@ class ValidateAccount extends Component {
   }
 
   triggerLogin() {
-    this.props.history.push("/login");
+    this.props.history.push(RoutesEndpoint.AUTH_Login);
   }
 
   triggerHome() {
-    this.props.history.push("/");
+    this.props.history.push(RoutesEndpoint.HOME);
   }
 
   render() {
@@ -142,28 +143,12 @@ class ValidateAccount extends Component {
       }
     }.bind(this);
     return (
-      <div className="app">
-        <AppHeader fixed>
-          <Suspense fallback={this.loading()}>
-            <MinimalHeader/>
-          </Suspense>
-        </AppHeader>
-        <div className="app-body">
-          <main className="main">
-            <div className="flex-row align-items-center">
-              <Container style={{'marginTop': 7 + 'em'}}>
-                <Row className="justify-content-center">
-                  {isLoading()}
-                </Row>
-              </Container>
-            </div>
-          </main>
-        </div>
-        <AppFooter className="minimalFooter">
-          <Suspense fallback={this.loading()}>
-            <MinimalFooter/>
-          </Suspense>
-        </AppFooter>
+      <div className="flex-row align-items-center">
+        <Container style={{'marginTop': 7 + 'em'}}>
+          <Row className="justify-content-center">
+            {isLoading()}
+          </Row>
+        </Container>
       </div>
     );
   }

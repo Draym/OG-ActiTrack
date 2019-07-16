@@ -1,19 +1,19 @@
 import React, {Component} from 'react';
 import {Card, CardBody, CardHeader, Col, Row} from "reactstrap";
-import ChartCreator from "../../../Utils/ChartCreator";
-import CSlider from "../../Components/CSlider";
+import ChartCreator from "../../../../Utils/ChartCreator";
+import CSlider from "../../../Components/CSlider";
 import GalaxyActivityChart from "./widgets/GalaxyActivityChart";
-import HttpUtils from "../../../Utils/HttpUtils";
-import {ApiEndpoint} from "../../../Utils/ApiEndpoint";
-import SelectServerForm from "../../Components/Widgets/forms/SelectServerForm";
-import CPopInfo from "../../Components/CPopover/CPopInfo";
-import {EDatePicker} from "../../Components/CDatePicker/EDatePicker";
-import CButtonLoading from "../../Components/CButton/CButtonLoading";
-import CDatePicker from "../../Components/CDatePicker";
-import UserSession from "../../../Utils/UserSession";
+import HttpUtils from "../../../../Utils/HttpUtils";
+import {ApiEndpoint} from "../../../../Utils/ApiEndpoint";
+import SelectServerForm from "../../../Components/Widgets/forms/SelectServerForm";
+import CPopInfo from "../../../Components/CPopover/CPopInfo";
+import {EDatePicker} from "../../../Components/CDatePicker/EDatePicker";
+import CButtonLoading from "../../../Components/CButton/CButtonLoading";
+import CDatePicker from "../../../Components/CDatePicker";
+import UserSession from "../../../../Utils/UserSession";
 
 import "react-vis/dist/style.css";
-import CBoolInput from "../../Components/CBoolInput";
+import CBoolInput from "../../../Components/CBoolInput";
 
 
 class GalaxyActivity extends Component {

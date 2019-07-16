@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import {AppNavbarBrand, AppSidebarToggler} from '@coreui/react';
 import logo from '../../../assets/img/brand/logo.png'
 import DefaultAccountHeader from "./DefaultAccountHeader";
-import CLanguageCtrl from "../../Components/CLanguageCtrl";
 
 const propTypes = {
   children: PropTypes.node,

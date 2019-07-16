@@ -9,16 +9,17 @@ import {
   Row
 } from 'reactstrap';
 import {AppFooter, AppHeader} from "@coreui/react";
-import MinimalHeader from '../../Containers/MinimalLayout/MinimalHeader';
-import MinimalFooter from '../../Containers/MinimalLayout/MinimalFooter';
-import HttpUtils from "../../../Utils/HttpUtils";
-import TString from "../../../Utils/TString";
-import CFormInput from "../../Components/CFormInput/CFormInput";
-import CBlocError from "../../Components/CBlocError";
+import AuthHeader from '../../../Containers/AuthLayout/AuthHeader';
+import AuthFooter from '../../../Containers/AuthLayout/AuthFooter';
+import HttpUtils from "../../../../Utils/HttpUtils";
+import TString from "../../../../Utils/TString";
+import CFormInput from "../../../Components/CFormInput";
+import CBlocError from "../../../Components/CBlocError";
 import '../custom.css';
 import './register.css';
-import {ApiEndpoint} from "../../../Utils/ApiEndpoint";
-import CButtonLoading from "../../Components/CButton/CButtonLoading";
+import {ApiEndpoint} from "../../../../Utils/ApiEndpoint";
+import CButtonLoading from "../../../Components/CButton/CButtonLoading";
+import {RoutesEndpoint} from "../../../../Utils/RoutesEndpoint";
 
 class Register extends Component {
   constructor(props) {
@@ -94,7 +95,7 @@ class Register extends Component {
   }
 
   triggerHome() {
-    this.props.history.push("/");
+    this.props.history.push(RoutesEndpoint.HOME);
   }
 
   handleEmailChange(event) {
@@ -161,30 +162,14 @@ class Register extends Component {
       }
     }.bind(this);
     return (
-      <div className="app">
-        <AppHeader fixed>
-          <Suspense fallback={this.loading()}>
-            <MinimalHeader/>
-          </Suspense>
-        </AppHeader>
-        <div className="app-body">
-          <main className="main">
-            <div className="flex-row align-items-center">
-              <Container style={{'marginTop': 7 + 'em'}}>
-                <Row className="justify-content-center">
-                  <Col md="9" lg="7" xl="6">
-                    {drawState()}
-                  </Col>
-                </Row>
-              </Container>
-            </div>
-          </main>
-        </div>
-        <AppFooter className="minimalFooter">
-          <Suspense fallback={this.loading()}>
-            <MinimalFooter/>
-          </Suspense>
-        </AppFooter>
+      <div className="flex-row align-items-center">
+        <Container style={{'marginTop': 7 + 'em'}}>
+          <Row className="justify-content-center">
+            <Col md="9" lg="7" xl="6">
+              {drawState()}
+            </Col>
+          </Row>
+        </Container>
       </div>
     );
   }

@@ -2,5 +2,5 @@
   "name": "ResetPassword",
   "version": "0.0.0",
   "private": true,
-  "main": "./ResetPassword.js"
+  "main": "ResetPassword.js"
 }

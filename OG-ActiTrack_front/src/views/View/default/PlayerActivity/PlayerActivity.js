@@ -9,22 +9,22 @@ import {
   Col, InputGroup,
   Row
 } from 'reactstrap';
-import HttpUtils from "../../../Utils/HttpUtils";
-import UserSession from "../../../Utils/UserSession";
-import TString from "../../../Utils/TString";
+import HttpUtils from "../../../../Utils/HttpUtils";
+import UserSession from "../../../../Utils/UserSession";
+import TString from "../../../../Utils/TString";
 
 import 'moment/locale/fr';
 import 'moment/locale/en-gb';
 
-import CDatePicker from "../../Components/CDatePicker";
-import {EDatePicker} from "../../Components/CDatePicker/EDatePicker";
-import CPopInfo from "../../Components/CPopover/CPopInfo";
-import CBoolInput from "../../Components/CBoolInput";
+import CDatePicker from "../../../Components/CDatePicker";
+import {EDatePicker} from "../../../Components/CDatePicker/EDatePicker";
+import CPopInfo from "../../../Components/CPopover/CPopInfo";
+import CBoolInput from "../../../Components/CBoolInput";
 import PlayerActivityChart from "./widgets/PlayerActivityChart";
-import SelectServerForm from "../../Components/Widgets/forms/SelectServerForm";
-import SelectPlayerForm from "../../Components/Widgets/forms/SelectPlayerForm";
-import {ApiEndpoint} from "../../../Utils/ApiEndpoint";
-import CButtonLoading from "../../Components/CButton/CButtonLoading";
+import SelectServerForm from "../../../Components/Widgets/forms/SelectServerForm";
+import SelectPlayerForm from "../../../Components/Widgets/forms/SelectPlayerForm";
+import {ApiEndpoint} from "../../../../Utils/ApiEndpoint";
+import CButtonLoading from "../../../Components/CButton/CButtonLoading";
 
 class PlayerActivity extends Component {
   constructor(props) {

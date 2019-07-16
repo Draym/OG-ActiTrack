@@ -1,29 +1,18 @@
 import React, {Component, Suspense} from 'react';
 import {Route, Switch, Redirect} from 'react-router-dom';
-import * as router from 'react-router-dom';
 import {Container} from 'reactstrap';
 
 import {
   AppFooter,
-  AppHeader,
-  AppSidebar,
-  AppSidebarFooter,
-  AppSidebarForm,
-  AppSidebarHeader,
-  AppBreadcrumb2 as AppBreadcrumb,
-  AppSidebarNav2 as AppSidebarNav,
+  AppHeader
 } from '@coreui/react';
-// sidebar nav config
-import navigation from '../../../_nav';
-// routesDefault config
-import routesDefault from '../../../routes-default';
-import CLanguageCtrl from "../../Components/CLanguageCtrl";
+import routes from '../../../routes-auth';
 import {RoutesEndpoint} from "../../../Utils/RoutesEndpoint";
 
-const DefaultFooter = React.lazy(() => import('./DefaultFooter'));
-const DefaultHeader = React.lazy(() => import('./DefaultHeader'));
+const AuthFooter = React.lazy(() => import('./AuthFooter'));
+const AuthHeader = React.lazy(() => import('./AuthHeader'));
 
-class DefaultLayout extends Component {
+class AuthLayout extends Component {
 
   loading = () => <div className="animated fadeIn pt-1 text-center">Loading...</div>
 
@@ -32,25 +21,15 @@ class DefaultLayout extends Component {
       <div className="app">
         <AppHeader fixed>
           <Suspense fallback={this.loading()}>
-            <DefaultHeader {...this.props}/>
+            <AuthHeader {...this.props}/>
           </Suspense>
         </AppHeader>
         <div className="app-body">
-          <AppSidebar fixed display="lg">
-            <AppSidebarHeader/>
-            <AppSidebarForm/>
-            <Suspense>
-              <AppSidebarNav navConfig={navigation} {...this.props} router={router}/>
-            </Suspense>
-            <CLanguageCtrl/>
-            <AppSidebarFooter/>
-          </AppSidebar>
           <main className="main">
-            <AppBreadcrumb appRoutes={routesDefault} router={router}/>
             <Container fluid>
               <Suspense fallback={this.loading()}>
                 <Switch>
-                  {routesDefault.map((route, idx) => {
+                  {routes.map((route, idx) => {
                     return route.component ? (
                       <Route
                         key={idx}
@@ -70,7 +49,7 @@ class DefaultLayout extends Component {
         </div>
         <AppFooter>
           <Suspense fallback={this.loading()}>
-            <DefaultFooter/>
+            <AuthFooter/>
           </Suspense>
         </AppFooter>
       </div>
@@ -78,4 +57,4 @@ class DefaultLayout extends Component {
   }
 }
 
-export default DefaultLayout;
+export default AuthLayout;

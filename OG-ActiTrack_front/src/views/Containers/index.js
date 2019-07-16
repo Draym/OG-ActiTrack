@@ -1,4 +1,4 @@
 import DefaultLayout from './DefaultLayout/DefaultLayout';
-import BaseLayout from './MinimalLayout';
+import BaseLayout from './AuthLayout';
 
 export { DefaultLayout, BaseLayout };

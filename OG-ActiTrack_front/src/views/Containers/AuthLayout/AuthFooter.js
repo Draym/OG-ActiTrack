@@ -7,7 +7,7 @@ const propTypes = {
 
 const defaultProps = {};
 
-class MinimalFooter extends Component {
+class AuthFooter extends Component {
   render() {
     return (
       <React.Fragment>
@@ -17,7 +17,7 @@ class MinimalFooter extends Component {
   }
 }
 
-MinimalFooter.propTypes = propTypes;
-MinimalFooter.defaultProps = defaultProps;
+AuthFooter.propTypes = propTypes;
+AuthFooter.defaultProps = defaultProps;
 
-export default MinimalFooter;
+export default AuthFooter;

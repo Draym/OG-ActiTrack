@@ -1,4 +1,4 @@
-import React, {Component, Suspense} from 'react';
+import React, {Component} from 'react';
 import {
   Button,
   Card,
@@ -8,19 +8,14 @@ import {
   Form,
   Row
 } from 'reactstrap';
-import {
-  AppFooter,
-  AppHeader
-} from "@coreui/react";
-import MinimalHeader from '../../Containers/MinimalLayout/MinimalHeader';
-import MinimalFooter from '../../Containers/MinimalLayout/MinimalFooter';
-import HttpUtils from "../../../Utils/HttpUtils";
-import TString from "../../../Utils/TString";
-import CBlocError from "../../Components/CBlocError";
-import CFormInput from "../../Components/CFormInput/CFormInput";
+import HttpUtils from "../../../../Utils/HttpUtils";
+import TString from "../../../../Utils/TString";
+import CBlocError from "../../../Components/CBlocError";
+import CFormInput from "../../../Components/CFormInput";
 import '../custom.css';
 import './forgotPassword.css';
-import {ApiEndpoint} from "../../../Utils/ApiEndpoint";
+import {ApiEndpoint} from "../../../../Utils/ApiEndpoint";
+import {RoutesEndpoint} from "../../../../Utils/RoutesEndpoint";
 
 class ForgotPassword extends Component {
   constructor(props) {
@@ -65,7 +60,7 @@ class ForgotPassword extends Component {
   }
 
   triggerHome() {
-    this.props.history.push("/");
+    this.props.history.push(RoutesEndpoint.HOME);
   }
 
   handleEmailChange(event) {
@@ -98,7 +93,8 @@ class ForgotPassword extends Component {
               An email has been sent to {this.state.email}
             </CardHeader>
             <CardBody className="p-4 validate-bloc">
-              <h6>Please verify your email, you will find a secure link which will allow you to change your password.</h6>
+              <h6>Please verify your email, you will find a secure link which will allow you to change your
+                password.</h6>
               <Row className="justify-content-center">
                 <Button color="secondary" className="px-4" type="button"
                         onClick={this.triggerHome}>Back to Home</Button>
@@ -109,30 +105,14 @@ class ForgotPassword extends Component {
       }
     }.bind(this);
     return (
-      <div className="app">
-        <AppHeader fixed>
-          <Suspense fallback={this.loading()}>
-            <MinimalHeader/>
-          </Suspense>
-        </AppHeader>
-        <div className="app-body">
-          <main className="main">
-            <div className="flex-row align-items-center">
-              <Container style={{'marginTop': 7 + 'em'}}>
-                <Row className="justify-content-center">
-                  <Col md="9" lg="7" xl="6">
-                    {drawState()}
-                  </Col>
-                </Row>
-              </Container>
-            </div>
-          </main>
-        </div>
-        <AppFooter className="minimalFooter">
-          <Suspense fallback={this.loading()}>
-            <MinimalFooter/>
-          </Suspense>
-        </AppFooter>
+      <div className="flex-row align-items-center">
+        <Container style={{'marginTop': 7 + 'em'}}>
+          <Row className="justify-content-center">
+            <Col md="9" lg="7" xl="6">
+              {drawState()}
+            </Col>
+          </Row>
+        </Container>
       </div>
     );
   }

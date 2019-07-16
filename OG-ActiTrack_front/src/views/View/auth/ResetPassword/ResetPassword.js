@@ -12,16 +12,17 @@ import {
   AppFooter,
   AppHeader
 } from "@coreui/react";
-import MinimalHeader from '../../Containers/MinimalLayout/MinimalHeader';
-import MinimalFooter from '../../Containers/MinimalLayout/MinimalFooter';
-import HttpUtils from "../../../Utils/HttpUtils";
-import TString from "../../../Utils/TString";
-import CFormInput from "../../Components/CFormInput/CFormInput";
+import AuthHeader from '../../../Containers/AuthLayout/AuthHeader';
+import AuthFooter from '../../../Containers/AuthLayout/AuthFooter';
+import HttpUtils from "../../../../Utils/HttpUtils";
+import TString from "../../../../Utils/TString";
+import CFormInput from "../../../Components/CFormInput";
 import {ClipLoader} from "react-spinners";
 import {css} from "@emotion/core";
 import '../custom.css';
 import './resetPassword.css';
-import {ApiEndpoint} from "../../../Utils/ApiEndpoint";
+import {ApiEndpoint} from "../../../../Utils/ApiEndpoint";
+import {RoutesEndpoint} from "../../../../Utils/RoutesEndpoint";
 
 const override = css`
     display: block;
@@ -118,11 +119,11 @@ class ResetPassword extends Component {
   }
 
   triggerHome() {
-    this.props.history.push("/");
+    this.props.history.push(RoutesEndpoint.HOME);
   }
 
   triggerLogin() {
-    this.props.history.push("/login");
+    this.props.history.push(RoutesEndpoint.AUTH_Login);
   }
 
   handlePasswordChange(event) {
@@ -141,10 +142,10 @@ class ResetPassword extends Component {
             <CardBody className="p-5">
               <Form>
                 <h2>Reset your password</h2>
-                <CFormInput gui={{headIcon:"icon-lock"}} type={"password"} placeHolder={"Password"}
+                <CFormInput gui={{headIcon: "icon-lock"}} type={"password"} placeHolder={"Password"}
                             autoComplete={"current-password"} value={this.state.password}
                             onChange={this.handlePasswordChange} error={this.state.errorPassword}/>
-                <CFormInput gui={{headIcon:"icon-lock"}} type={"password"} placeHolder={"Verify Password"}
+                <CFormInput gui={{headIcon: "icon-lock"}} type={"password"} placeHolder={"Verify Password"}
                             autoComplete={"new-password"} value={this.state.passwordVerify}
                             onChange={this.handlePasswordVerifyChange}
                             error={this.state.errorVerifyPassword}/>
@@ -215,28 +216,12 @@ class ResetPassword extends Component {
       }
     }.bind(this);
     return (
-      <div className="app">
-        <AppHeader fixed>
-          <Suspense fallback={this.loading()}>
-            <MinimalHeader/>
-          </Suspense>
-        </AppHeader>
-        <div className="app-body">
-          <main className="main">
-            <div className="flex-row align-items-center">
-              <Container style={{'marginTop': 7 + 'em'}}>
-                <Row className="justify-content-center">
-                  {isLoading()}
-                </Row>
-              </Container>
-            </div>
-          </main>
-        </div>
-        <AppFooter className="minimalFooter">
-          <Suspense fallback={this.loading()}>
-            <MinimalFooter/>
-          </Suspense>
-        </AppFooter>
+      <div className="flex-row align-items-center">
+        <Container style={{'marginTop': 7 + 'em'}}>
+          <Row className="justify-content-center">
+            {isLoading()}
+          </Row>
+        </Container>
       </div>
     );
   }

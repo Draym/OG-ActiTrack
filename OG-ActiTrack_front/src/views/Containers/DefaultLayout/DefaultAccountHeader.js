@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import {AppHeaderDropdown} from '@coreui/react';
 import UserSession from "../../../Utils/UserSession";
 import { withTranslation } from 'react-i18next';
-import CLanguageCtrl from "../../Components/CLanguageCtrl";
+import {RoutesEndpoint} from "../../../Utils/RoutesEndpoint";
 
 const propTypes = {
   children: PropTypes.node,
@@ -27,25 +27,25 @@ class DefaultAccountHeader extends Component {
   signOut(e) {
     e.preventDefault();
     UserSession.clearSession();
-    this.props.history.push('/login');
+    this.props.history.push(RoutesEndpoint.AUTH_Login);
   }
   signIn(e) {
     e.preventDefault();
-    this.props.history.push('/login');
+    this.props.history.push(RoutesEndpoint.AUTH_Login);
   }
   goProfile(e) {
     e.preventDefault();
-    this.props.history.push('/account/' + UserSession.getPseudo());
+    this.props.history.push(RoutesEndpoint.ACCOUNT_User.replace("pseudo", UserSession.getPseudo));
   }
 
   goPremium(e) {
     e.preventDefault();
-    this.props.history.push('/account/' + UserSession.getPseudo() + '/premium');
+    this.props.history.push(RoutesEndpoint.ACCOUNT_Premium.replace("pseudo", UserSession.getPseudo));
   }
 
   goSettings(e) {
     e.preventDefault();
-    this.props.history.push('/account/' + UserSession.getPseudo() + '/settings');
+    this.props.history.push(RoutesEndpoint.ACCOUNT_Settings.replace("pseudo", UserSession.getPseudo));
   }
 
   render() {
@@ -75,8 +75,7 @@ class DefaultAccountHeader extends Component {
       <Nav className="ml-auto" navbar>
         <AppHeaderDropdown direction="down">
           <DropdownToggle nav>
-            <img src={'../../assets/img/avatars/user_icon.png'} className="img-avatar"
-                 alt="admin@bootstrapmaster.com"/>
+            <img src={'../../assets/img/avatars/user_icon.png'} className="img-avatar" alt={"wigmo.main@gmail.com"}/>
           </DropdownToggle>
           {getProfileDropDown()}
         </AppHeaderDropdown>

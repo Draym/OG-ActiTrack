@@ -1,11 +1,12 @@
 import i18next from 'i18next';
+import {RoutesEndpoint} from "./Utils/RoutesEndpoint";
 
 
 export default {
     items: [
       {
         name: 'Dashboard',
-        url: '/dashboard',
+        url: RoutesEndpoint.DASHBOARD,
         icon: 'icon-speedometer',
         /*badge: {
           variant: 'info',
@@ -23,7 +24,7 @@ export default {
       },
       {
         name: i18next.t('nav.activity.player.title'),
-        url: '/activity/player',
+        url: RoutesEndpoint.PLAYER_Activity,
         icon: 'icon-chart',
         /*badge: {
           variant: 'info',
@@ -32,7 +33,7 @@ export default {
       },
       {
         name: i18next.t('nav.activity.galaxy.title'),
-        url: '/activity/galaxy',
+        url: RoutesEndpoint.PLAYER_Galaxy,
         icon: 'icon-globe',
         /*badge: {
           variant: 'info',
@@ -50,7 +51,7 @@ export default {
       },
       {
         name: i18next.t('nav.data.colonial.title'),
-        url: '/data/colonial',
+        url: RoutesEndpoint.DATA_Colonial,
         icon: 'fa fa-ravelry',
         badge: {
           variant: 'info',
@@ -60,7 +61,7 @@ export default {
       },
       {
         name: i18next.t('nav.data.military.title'),
-        url: '/data/military',
+        url: RoutesEndpoint.DATA_Military,
         icon: 'fa fa-fighter-jet',
         badge: {
           variant: 'info',

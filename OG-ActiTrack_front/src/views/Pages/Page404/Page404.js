@@ -1,7 +1,7 @@
 import React, {Component, Suspense} from 'react';
 import {Col, Container, Row} from 'reactstrap';
-import MinimalHeader from '../../Containers/MinimalLayout/MinimalHeader';
-import MinimalFooter from '../../Containers/MinimalLayout/MinimalFooter';
+import AuthHeader from '../../Containers/AuthLayout/AuthHeader';
+import AuthFooter from '../../Containers/AuthLayout/AuthFooter';
 import {AppFooter, AppHeader} from "@coreui/react";
 
 import errorImg from '../../../assets/img/404.png'
@@ -21,7 +21,7 @@ class Page404 extends Component {
       <div className="app">
         <AppHeader fixed>
           <Suspense fallback={this.loading()}>
-            <MinimalHeader/>
+            <AuthHeader/>
           </Suspense>
         </AppHeader>
         <div className="app-body">
@@ -53,7 +53,7 @@ class Page404 extends Component {
         </div>
         <AppFooter className="minimalFooter">
           <Suspense fallback={this.loading()}>
-            <MinimalFooter/>
+            <AuthFooter/>
           </Suspense>
         </AppFooter>
       </div>

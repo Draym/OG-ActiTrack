@@ -41,7 +41,7 @@ let HttpUtils = function() {
       httpResult(response, cbSuccess, cbError);
     }).catch(error => {
       console.log(error);
-      cbError(error);
+      cbError(400, error);
     });
   }
 
@@ -61,7 +61,7 @@ let HttpUtils = function() {
       httpResult(response, cbSuccess, cbError);
     }).catch(error => {
       console.log(error);
-      cbError(error);
+      cbError(400, error);
     });
   }
 
