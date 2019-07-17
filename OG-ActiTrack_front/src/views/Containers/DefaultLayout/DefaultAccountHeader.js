@@ -55,19 +55,19 @@ class DefaultAccountHeader extends Component {
       if (UserSession.hasSession()) {
         return (
           <DropdownMenu right style={{right: 'auto'}}>
-            <DropdownItem header tag="div" className="text-center"><strong>{t('header.account.title')}</strong></DropdownItem>
-            <DropdownItem onClick={this.goProfile}><i className="fa fa-user"/>{t('header.account.profile')}</DropdownItem>
+            <DropdownItem header tag="div" className="text-center"><strong>{t('label.accountModal.title')}</strong></DropdownItem>
+            <DropdownItem onClick={this.goProfile}><i className="fa fa-user"/>{t('label.accountModal.profile')}</DropdownItem>
             <DropdownItem onClick={this.goPremium}><i className="fa fa-star"
-                                                              style={{color: '#ffe200'}}/> {t('header.account.premium')}</DropdownItem>
-            <DropdownItem className="border-bottom-off" onClick={this.goSettings}><i className="fa fa-wrench"/> {t('header.account.settings')}</DropdownItem>
+                                                              style={{color: '#ffe200'}}/> {t('label.accountModal.premium')}</DropdownItem>
+            <DropdownItem className="border-bottom-off" onClick={this.goSettings}><i className="fa fa-wrench"/> {t('label.accountModal.settings')}</DropdownItem>
             <DropdownItem divider/>
-            <DropdownItem onClick={this.signOut}><i className="fa fa-lock"/> {t('header.account.signOut')}</DropdownItem>
+            <DropdownItem onClick={this.signOut}><i className="fa fa-lock"/> {t('label.auth.signOut')}</DropdownItem>
           </DropdownMenu>);
       } else {
         return (
           <DropdownMenu right style={{right: 'auto'}}>
-            <DropdownItem header tag="div" className="text-center"><strong>{t('header.account.title')}</strong></DropdownItem>
-            <DropdownItem onClick={this.signIn}><i className="fa fa-user-o"/> {t('header.account.signIn')}</DropdownItem>
+            <DropdownItem header tag="div" className="text-center"><strong>{t('label.accountModal.title')}</strong></DropdownItem>
+            <DropdownItem onClick={this.signIn}><i className="fa fa-user-o"/> {t('label.auth.signIn')}</DropdownItem>
           </DropdownMenu>);
       }
     }.bind(this);

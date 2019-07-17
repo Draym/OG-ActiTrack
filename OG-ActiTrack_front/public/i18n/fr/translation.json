@@ -111,14 +111,32 @@
       }
     }
   },
-  "header": {
-    "account": {
-      "title": "Account",
+  "label": {
+    "accountModal": {
+      "title":"User Account",
       "profile": "Profile",
       "premium": "Premium",
+      "settings": "Settings"
+    },
+    "accountMenu": {
+      "sectionPersonal": "Personal settings",
+      "sectionSocial": "Social",
+      "sectionContact": "Contact",
+      "profile": "Profile",
+      "premium": "Premium",
+      "security": "Security",
+      "request": "Request",
       "settings": "Settings",
-      "signIn": "Sign in",
-      "signOut": "Sign out"
+      "friendList": "Friend list",
+      "groupManagement": "Group management",
+      "contact": "Contact",
+      "reportBug": "Report a bug"
+    },
+    "auth": {
+      "signIn": "Sign in'",
+      "signOut": "Sign out",
+      "login": "Login",
+      "logout": "Logout"
     }
   },
   "page": {

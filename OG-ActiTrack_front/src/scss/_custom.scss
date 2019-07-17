@@ -1,1 +1,205 @@
 // Here you can add other styles
+.breadcrumb{
+  margin-bottom: 0.60rem !important;
+}
+
+.img-center {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.minimalFooter {
+  margin-left: 0 !important;
+}
+
+
+.disabled {
+  color: currentColor;
+  display: inline-block; /* For IE11/ MS Edge bug */
+  pointer-events: none;
+  text-decoration: none;
+}
+
+/**
+** COL
+ */
+.margin-off {
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+}
+.padding-off {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+/**
+** CARD
+ */
+.card-empty-background {
+  background-color: #fff !important;
+}
+
+.card-border-full {
+  border-width: 1.5px !important;
+  border-style: solid;
+}
+
+.card-header {
+  padding-bottom: 5px !important;
+}
+
+.card-parameters {
+  padding-left: 15px !important;
+  padding-right: 15px !important;
+}
+
+.card-param1 {
+  padding-right: 10px !important;
+}
+
+.card-param2 {
+  padding-right: 5px !important;
+}
+
+[class*="card-param"] > [class*="col-"] {
+  padding: 0;
+}
+
+.card-parameters > .card {
+  margin-bottom: 0.5rem !important;
+}
+
+/**
+** INPUT
+ */
+
+.input-fill {
+  flex: 1 1 auto;
+}
+
+.input-title {
+  margin-bottom: 0.3rem;
+}
+
+.input-addon, .input-addon div {
+  border-radius: 0 4px 4px 0 !important;
+}
+
+.input-verification {
+  padding: 0 !important;
+  margin: 0 !important;
+  border: 0 !important;
+}
+
+
+.input-error {
+  background-color: rgba(255, 0, 8, 0.50) !important;
+}
+
+.input-error button {
+  background-color: transparent !important;
+}
+
+/**
+* FONT
+ */
+
+.font-1x2 {
+  font-size: 1.2rem;
+}
+
+/**
+* MARGIN
+ */
+.margin-bot-l5 {
+  margin-bottom: -5px !important;
+}
+
+/**
+** POPOVER
+ */
+.pop-btn:hover{
+  cursor: pointer;
+  color: #63c2de !important;
+}
+.pop-info{
+  padding: 0 !important;
+}
+/**
+** SLIDER
+ */
+.slider-labels {
+  text-align: center;
+}
+.slider-min{
+  float: left;
+}
+.slider-middle {
+  vertical-align: middle;
+}
+.slider-max {
+  float: right;
+}
+
+/**
+** BORDER
+ */
+.border-bottom-off {
+  border-bottom: none !important;
+}
+.border-top-off {
+  border-top: none !important;
+}
+.border-right-off {
+  border-right: none !important;
+}
+.border-left-off {
+  border-left: none !important;
+}
+
+/**
+** BADGES
+ */
+
+.badge-info.light {
+  color:white;
+}
+
+/**
+** LIST-GROUP
+ */
+.list-group-item.header{
+  background-color: #f3f5f8;
+  color: #586069;
+}
+.list-group-item.active{
+  font-weight: bold;
+  background-color: white;
+  color: #1b1f23;
+  border: 1px solid rgba(0, 0, 0, 0.125);
+  border-left: 4px solid #e36209;
+}
+
+/**
+** GENERAL
+ */
+
+.box-delim {
+  padding-top: 1.3rem;
+}
+
+.btn-label {
+  display: flex !important;
+  margin-top: 5px !important;
+}
+.btn-label:before {
+  display: flex !important;
+  margin-top: 5px !important;
+}
+.btn-label:after {
+  display: flex !important;
+  margin-top: 5px !important;
+}
+.parameter-bloc {
+  padding-top: 15px !important;
+}

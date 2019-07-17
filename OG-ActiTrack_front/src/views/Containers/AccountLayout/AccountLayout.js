@@ -25,7 +25,6 @@ class AccountLayout extends Component {
               <Col md={10}>
               <Switch>
                 {routes.map((route, idx) => {
-                  console.log("route2:", route);
                   return route.component ? (
                     <Route
                       key={idx}
