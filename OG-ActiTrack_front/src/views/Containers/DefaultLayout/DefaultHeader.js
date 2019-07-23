@@ -20,7 +20,7 @@ class DefaultHeader extends Component {
             href="/"
             full={{src: logo, width: 150, height: 31, alt: 'ActiTrack Logo'}}
           />
-        <AppSidebarToggler className="d-md-down-none" display="lg"/>
+        <AppSidebarToggler id="menu-toggle-icon" className="d-md-down-none" display="lg"/>
         <DefaultAccountHeader {...this.props}/>
       </React.Fragment>
     );

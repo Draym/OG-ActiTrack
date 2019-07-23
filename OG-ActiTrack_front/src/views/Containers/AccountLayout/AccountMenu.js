@@ -6,6 +6,7 @@ import {
 import {withTranslation} from "react-i18next";
 import {withRouter} from 'react-router-dom';
 import UserSession from "../../../Utils/UserSession";
+import $ from 'jquery';
 
 class AccountMenu extends Component {
 
@@ -23,10 +24,14 @@ class AccountMenu extends Component {
     this.goGroupManagement = this.goGroupManagement.bind(this);
     this.goReportBug = this.goReportBug.bind(this);
   }
+
   componentWillUpdate(nextProps, nextState, nextContext) {
     this.state.selected = this.getStateFromHistory(this.props.history.location.pathname);
   }
 
+  componentDidMount() {
+    $('#menu-toggle-icon').click();
+  }
 
   getStateFromHistory(location) {
     let path = location.slice(9);
@@ -98,7 +103,8 @@ class AccountMenu extends Component {
           <ListGroupItem active={this.state.selected === 'friendList'} tag="button" onClick={this.goFriendList}
                          action>{t('label.accountMenu.friendList')}</ListGroupItem>
           <ListGroupItem disabled tag="button" onClick={this.goGroupManagement}
-                         action>{t('label.accountMenu.groupManagement')} <Badge color="primary">SOON</Badge></ListGroupItem>
+                         action>{t('label.accountMenu.groupManagement')} <Badge
+            color="primary">SOON</Badge></ListGroupItem>
         </ListGroup>
         <ListGroup>
           <ListGroupItem className="header">{t('label.accountMenu.sectionContact')}</ListGroupItem>
