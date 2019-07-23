@@ -23,7 +23,6 @@ class SelectGalaxyForm extends Component {
     };
 
     HttpUtils().GET(process.env.REACT_APP_SERVER_URL, ApiEndpoint.SERVER_Galaxy_Available, parameters, function (data) {
-      console.log(data);
       if (data) {
         let galaxies = [];
         for (let i in data) {

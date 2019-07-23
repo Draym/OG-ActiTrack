@@ -18,7 +18,7 @@ class CBoolInput extends Component {
     this.setState({
       selected: value
     });
-    this.props.handleChange(value);
+    this.props.onChange(value);
   }
 
   render() {

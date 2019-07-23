@@ -15,8 +15,9 @@ let HttpUtils = function() {
   }
   function httpResult(response, cbSuccess, cbError) {
     if (response.status === 200) {
-      console.log("response: ", response);
       response.json().then(function (data) {
+        console.log("response: ", response);
+        console.log("--->", data);
         cbSuccess(data);
       });
     } else {

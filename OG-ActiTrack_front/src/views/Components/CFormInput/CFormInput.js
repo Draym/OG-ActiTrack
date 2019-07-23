@@ -13,6 +13,7 @@ class CFormInput extends Component {
   constructor(props) {
     super(props);
     this.loadOptions = this.loadOptions.bind(this);
+    this.onChange = this.onChange.bind(this);
   }
 
   loadOptions(inputValue, callback) {
@@ -20,6 +21,16 @@ class CFormInput extends Component {
       this.props.autoComplete.loadOptions(inputValue, callback);
     }, 1000);
   };
+
+  onChange(event) {
+    if (this.props.dataKey) {
+      let data = {};
+      data[this.props.dataKey] = event.target.value;
+      this.props.onChange(data);
+    } else {
+      this.props.onChange(event);
+    }
+  }
 
   render() {
     let renderIconBorder = function (data, type) {
@@ -69,14 +80,14 @@ class CFormInput extends Component {
       }
       return null;
     };
-    let render = function (gui, type, placeHolder, autoComplete, value, onChange, success, error, verify) {
+    let render = function (gui, type, placeHolder, autoComplete, value, onChange, success, error, verify, disabled) {
       if (!autoComplete) {
         if (!TString.isNull(error)) {
           return (
             <InputGroup>
               {renderInputHead(gui)}
               <Input type={type} invalid placeholder={placeHolder} autoComplete={autoComplete}
-                     value={value} onChange={onChange}/>
+                     value={value} onChange={onChange} disabled={disabled}/>
               {renderInputBack(gui)}
               {renderVerify(verify, success, error)}
               <FormFeedback>{error}</FormFeedback>
@@ -87,7 +98,7 @@ class CFormInput extends Component {
             <InputGroup>
               {renderInputHead(gui)}
               <Input type={type} placeholder={placeHolder} autoComplete={autoComplete}
-                     value={value} onChange={onChange}/>
+                     value={value} onChange={onChange} disabled={disabled}/>
               {renderInputBack(gui)}
               {renderVerify(verify, success, error)}
             </InputGroup>
@@ -104,6 +115,7 @@ class CFormInput extends Component {
                          onChange={autoComplete.handleSelectChange}
                          onInputChange={autoComplete.handleInputChange}
                          placeholder={placeHolder}
+                         disabled={disabled}
                          theme={theme => ({
                            ...theme,
                            borderRadius: 0,
@@ -121,7 +133,7 @@ class CFormInput extends Component {
     }.bind(this);
     return (
       <div>
-        {render(this.props.gui, this.props.type, this.props.placeHolder, this.props.autoComplete, this.props.value, this.props.onChange, this.props.success, this.props.error, this.props.verify)}
+        {render(this.props.gui, this.props.type, this.props.placeHolder, this.props.autoComplete, this.props.value, this.onChange, this.props.success, this.props.error, this.props.verify, this.props.disabled)}
       </div>
     );
   }

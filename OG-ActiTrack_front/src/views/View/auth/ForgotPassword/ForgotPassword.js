@@ -47,7 +47,6 @@ class ForgotPassword extends Component {
       'email': this.state.email
     };
     HttpUtils().GET(process.env.REACT_APP_SERVER_URL, ApiEndpoint.AUTH_ForgotPassword, data, function (data) {
-      console.log(data);
       if (data) {
         this.setState({jobIsDone: true})
       }

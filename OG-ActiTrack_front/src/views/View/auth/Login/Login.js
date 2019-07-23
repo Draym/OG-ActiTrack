@@ -62,7 +62,6 @@ class Login extends Component {
       'origin': 'OG-ActiTrack_front'
     };
     HttpUtils().POST(process.env.REACT_APP_SERVER_URL, ApiEndpoint.AUTH_Login, auth, function (data) {
-      console.log(data);
       this.setState({loading: {login: false}});
       if (data) {
         UserSession.storeSession(data);

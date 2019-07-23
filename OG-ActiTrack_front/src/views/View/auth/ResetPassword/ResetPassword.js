@@ -69,7 +69,6 @@ class ResetPassword extends Component {
       token: this.state.resetToken
     };
     HttpUtils().GET(process.env.REACT_APP_SERVER_URL, ApiEndpoint.AUTH_CheckResetPasswordToken, data, function (data) {
-      console.log(data);
       setTimeout(function () {
         this.setState({
           isTokenValid: true,
@@ -107,7 +106,6 @@ class ResetPassword extends Component {
       'password': this.state.password
     };
     HttpUtils().POST(process.env.REACT_APP_SERVER_URL, ApiEndpoint.AUTH_ResetPassword, auth, function (data) {
-      console.log(data);
       if (data) {
         this.setState({isJobDone: true});
       }

@@ -92,11 +92,11 @@ class AccountMenu extends Component {
                          action>{t('label.accountMenu.profile')}</ListGroupItem>
           <ListGroupItem active={this.state.selected === 'security'} tag="button" onClick={this.goSecurity}
                          action>{t('label.accountMenu.security')}</ListGroupItem>
-          <ListGroupItem active={this.state.selected === 'settings'} tag="button" onClick={this.goSettings}
-                         action>{t('label.accountMenu.settings')}</ListGroupItem>
+          <ListGroupItem disabled tag="button" onClick={this.goSettings}
+                         action>{t('label.accountMenu.settings')} <Badge
+            color="primary">SOON</Badge></ListGroupItem>
           <ListGroupItem active={this.state.selected === 'premium'} tag="button" onClick={this.goPremium}
                          action>{t('label.accountMenu.premium')}</ListGroupItem>
-
         </ListGroup>
         <ListGroup>
           <ListGroupItem className="header">{t('label.accountMenu.sectionSocial')}</ListGroupItem>

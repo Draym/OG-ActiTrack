@@ -60,9 +60,8 @@ class ValidateAccount extends Component {
     let data = {
       identifier: this.state.verificationLink
     };
-    console.log(data);
+    console.log("VerifyLink:", data);
     HttpUtils().GET(process.env.REACT_APP_SERVER_URL, ApiEndpoint.AUTH_Validate, data, function (data) {
-      console.log(data);
       setTimeout(function () {
         this.setState({
           isLinkValid: data === true,

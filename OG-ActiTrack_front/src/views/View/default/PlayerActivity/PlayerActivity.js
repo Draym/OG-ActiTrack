@@ -92,7 +92,6 @@ class PlayerActivity extends Component {
     let callParameters = this.generateApiEndpointForChart();
 
     HttpUtils().GET(process.env.REACT_APP_SERVER_URL, callParameters.endpoint, callParameters.parameters, function (data) {
-      console.log(data);
       if (data) {
         this.setState({
           activityLogs: data,
@@ -199,7 +198,7 @@ class PlayerActivity extends Component {
                 <span className="btn-label">Use friend data:</span>
               </Col>
               <Col md={4}>
-                <CBoolInput handleChange={this.handleFriendDataChange} value={this.state.friendData}/>
+                <CBoolInput onChange={this.handleFriendDataChange} value={this.state.friendData}/>
               </Col>
               <Col md={2}>
                 <CPopInfo className="btn-label card-header-action btn" id="friendInfo" position="bottom"
@@ -215,7 +214,7 @@ class PlayerActivity extends Component {
                 <span className="btn-label">Use global data:</span>
               </Col>
               <Col md={4}>
-                <CBoolInput handleChange={this.handleGlobalDataChange} value={this.state.globalData}
+                <CBoolInput onChange={this.handleGlobalDataChange} value={this.state.globalData}
                             disabled={!UserSession.getSession() || UserSession.getSession().premium}/>
               </Col>
               <Col md={2}>
