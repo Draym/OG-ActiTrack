@@ -1,8 +1,8 @@
 import {getStyle, hexToRgba} from "@coreui/coreui/dist/js/coreui-utilities";
-import TString from "./TString";
+import TString from "../TString";
 import ChartIntervalCreator from "./ChartIntervalCreator";
-import DateUtils from "./DateUtils";
-import MathUtils from "./MathUtils";
+import DateUtils from "../DateUtils";
+import MathUtils from "../MathUtils";
 
 const brandPrimary = getStyle('--primary');
 const brandSuccess = getStyle('--success');

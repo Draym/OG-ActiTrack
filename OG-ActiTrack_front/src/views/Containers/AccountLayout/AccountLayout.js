@@ -1,7 +1,5 @@
 import React, {Component, Suspense} from 'react';
 import {Route, Switch, Redirect} from 'react-router-dom';
-import {Container} from 'reactstrap';
-
 import routes from '../../../routes-account';
 import {RoutesEndpoint} from "../../../Utils/RoutesEndpoint";
 import {
@@ -9,6 +7,7 @@ import {
   Row
 } from 'reactstrap';
 import AccountMenu from "./AccountMenu";
+import AuthUtils from "../../../Utils/auth/AuthUtils";
 
 class AccountLayout extends Component {
 
@@ -17,12 +16,12 @@ class AccountLayout extends Component {
   render() {
     return (
       <div>
-          <Suspense fallback={this.loading()}>
-            <Row>
-              <Col md={2}>
-                <AccountMenu/>
-              </Col>
-              <Col md={10}>
+        <Suspense fallback={this.loading()}>
+          <Row>
+            <Col md={2}>
+              <AccountMenu/>
+            </Col>
+            <Col md={10}>
               <Switch>
                 {routes.map((route, idx) => {
                   return route.component ? (
@@ -32,15 +31,17 @@ class AccountLayout extends Component {
                       exact={route.exact}
                       name={route.name}
                       render={props => (
-                        <route.component {...props} />
+                        (!route.restricted || AuthUtils.isAuthorized(route.restricted) ?
+                          <route.component {...props} /> :
+                          <Redirect to={{pathname: '/auth/login', state: {from: props.location}}}/>)
                       )}/>
                   ) : (null);
                 })}
                 <Redirect path="*" to={RoutesEndpoint["404"]}/>
               </Switch>
-              </Col>
-            </Row>
-          </Suspense>
+            </Col>
+          </Row>
+        </Suspense>
       </div>
     );
   }

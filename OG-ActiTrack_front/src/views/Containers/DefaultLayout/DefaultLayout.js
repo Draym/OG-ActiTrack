@@ -19,6 +19,7 @@ import navigation from '../../../_nav';
 import routes from '../../../routes-default';
 import CLanguageCtrl from "../../Components/CLanguageCtrl";
 import {RoutesEndpoint} from "../../../Utils/RoutesEndpoint";
+import AuthUtils from "../../../Utils/auth/AuthUtils";
 
 const DefaultFooter = React.lazy(() => import('./DefaultFooter'));
 const DefaultHeader = React.lazy(() => import('./DefaultHeader'));
@@ -58,11 +59,13 @@ class DefaultLayout extends Component {
                         exact={route.exact}
                         name={route.name}
                         render={props => (
-                          <route.component {...props} />
+                          (!route.restricted || AuthUtils.isAuthorized(route.restricted) ?
+                            <route.component {...props} /> :
+                            <Redirect to={{pathname: '/auth/login', state: {from: props.location}}}/>)
                         )}/>
                     ) : (null);
                   })}
-                  <Redirect path="*" to={RoutesEndpoint["404"]} />
+                  <Redirect path="*" to={RoutesEndpoint["404"]}/>
                 </Switch>
               </Suspense>
             </Container>

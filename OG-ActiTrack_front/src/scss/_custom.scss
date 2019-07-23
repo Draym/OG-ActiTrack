@@ -1,5 +1,5 @@
 // Here you can add other styles
-.breadcrumb{
+.breadcrumb {
   margin-bottom: 0.60rem !important;
 }
 
@@ -28,13 +28,24 @@
   margin-left: 0 !important;
   margin-right: 0 !important;
 }
+
 .padding-off {
   padding-left: 0 !important;
   padding-right: 0 !important;
 }
+
 /**
 ** CARD
  */
+
+.card {
+  height: 100%;
+  margin-bottom: 0;
+}
+
+.card-body {
+}
+
 .card-empty-background {
   background-color: #fff !important;
 }
@@ -118,25 +129,30 @@
 /**
 ** POPOVER
  */
-.pop-btn:hover{
+.pop-btn:hover {
   cursor: pointer;
   color: #63c2de !important;
 }
-.pop-info{
+
+.pop-info {
   padding: 0 !important;
 }
+
 /**
 ** SLIDER
  */
 .slider-labels {
   text-align: center;
 }
-.slider-min{
+
+.slider-min {
   float: left;
 }
+
 .slider-middle {
   vertical-align: middle;
 }
+
 .slider-max {
   float: right;
 }
@@ -147,12 +163,15 @@
 .border-bottom-off {
   border-bottom: none !important;
 }
+
 .border-top-off {
   border-top: none !important;
 }
+
 .border-right-off {
   border-right: none !important;
 }
+
 .border-left-off {
   border-left: none !important;
 }
@@ -162,17 +181,18 @@
  */
 
 .badge-info.light {
-  color:white;
+  color: white;
 }
 
 /**
 ** LIST-GROUP
  */
-.list-group-item.header{
+.list-group-item.header {
   background-color: #f3f5f8;
   color: #586069;
 }
-.list-group-item.active{
+
+.list-group-item.active {
   font-weight: bold;
   background-color: white;
   color: #1b1f23;
@@ -192,14 +212,17 @@
   display: flex !important;
   margin-top: 5px !important;
 }
+
 .btn-label:before {
   display: flex !important;
   margin-top: 5px !important;
 }
+
 .btn-label:after {
   display: flex !important;
   margin-top: 5px !important;
 }
+
 .parameter-bloc {
   padding-top: 15px !important;
 }

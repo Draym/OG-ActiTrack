@@ -3,8 +3,8 @@ import React, {Component} from 'react';
 import i18next from 'i18next';
 import {Card, CardBody, CardTitle, Col, Row} from "reactstrap";
 import {Bar, Line} from "react-chartjs-2";
-import ChartCreator from "../../../../../Utils/ChartCreator";
-import ChartUtils from "../../../../../Utils/ChartUtils";
+import ChartCreator from "../../../../../Utils/chart/ChartCreator";
+import ChartUtils from "../../../../../Utils/chart/ChartUtils";
 import moment from "moment";
 
 class PlayerActivityChart extends Component {

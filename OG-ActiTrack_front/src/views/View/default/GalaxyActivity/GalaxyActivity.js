@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {Card, CardBody, CardHeader, Col, Row} from "reactstrap";
-import ChartCreator from "../../../../Utils/ChartCreator";
+import ChartCreator from "../../../../Utils/chart/ChartCreator";
 import CSlider from "../../../Components/CSlider";
 import GalaxyActivityChart from "./widgets/GalaxyActivityChart";
 import HttpUtils from "../../../../Utils/HttpUtils";
