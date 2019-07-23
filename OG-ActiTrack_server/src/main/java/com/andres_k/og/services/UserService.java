@@ -69,9 +69,9 @@ public class UserService {
         Long targetId = (newUser.getId() == null ? token.getUserId() : newUser.getId());
 
         User user = this.getUserById(targetId);
-        if (!user.getEmail().equals(newUser.getEmail()) && this.userRepository.existsUserByEmail(newUser.getEmail()))
+        if (newUser.getEmail() != null && !user.getEmail().equals(newUser.getEmail()) && this.userRepository.existsUserByEmail(newUser.getEmail()))
             throw new Exception("The email '" + newUser.getEmail() + "' is already used.");
-        else if (!user.getPseudo().equals(newUser.getPseudo()) && this.userRepository.existsUserByPseudo(newUser.getPseudo()))
+        else if (newUser.getPseudo() != null  && !user.getPseudo().equals(newUser.getPseudo()) && this.userRepository.existsUserByPseudo(newUser.getPseudo()))
             throw new Exception("The pseudo '" + newUser.getPseudo() + "' is already used.");
         else {
             if (newUser.getEmail() != null && !user.getEmail().equals(newUser.getEmail())) {
