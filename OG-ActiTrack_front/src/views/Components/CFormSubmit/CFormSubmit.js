@@ -4,9 +4,11 @@ import {
   CardHeader,
   CardBody
 } from "reactstrap/es";
-import {Col, FormFeedback, InputGroup, Row} from "reactstrap";
+import {Col, FormFeedback, Row} from "reactstrap";
 import CButtonLoading from "../CButton/CButtonLoading";
-import HttpUtils from "../../../Utils/HttpUtils";
+import HttpUtils from "../../../Utils/api/HttpUtils";
+import CBlocError from "../CBlocError";
+import CBlocSuccess from "../CBlocSuccess";
 
 class CFormSubmit extends Component {
 
@@ -16,38 +18,49 @@ class CFormSubmit extends Component {
       loading: false,
       disabled: true,
       error: null,
+      success: null,
       data: {}
     };
     this.submit = this.submit.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
     this.checkRequirement = this.checkRequirement.bind(this);
 
+    React.Children.map(this.props.children, (child) => {
+      if (child.props.defaultValue)
+        this.state.data[child.props.dataKey] = child.props.defaultValue;
+    });
     if (!this.props.endpoint)
       throw new TypeError("Must provide a submit endpoint.");
   }
 
   submit() {
+    if (!this.props.verification(this.state)) {
+      this.setState({
+        error: "The form is invalid.",
+        success: null
+      });
+      return;
+    }
     this.setState({loading: true});
-    HttpUtils().GET(process.env.REACT_APP_SERVER_URL, this.props.endpoint, this.state.data, function (data) {
-      if (data) {
-
-      } else {
-        this.setState({
-          error: "There is no data on server for that request.",
-          loading: false
-        });
-      }
+    HttpUtils().PUT(process.env.REACT_APP_SERVER_URL, this.props.endpoint, this.state.data, function (data) {
+      this.setState({
+        error: (!data ? "There is no data on server for that request." : null),
+        success: (data ? "Your data have been updated successfully." : null),
+        loading: false
+      });
+      if (data && this.props.success && typeof this.props.success === "function")
+        this.props.success(data);
     }.bind(this), function (errorStatus, error) {
       console.log(error);
       this.setState({
         error: error,
+        success: null,
         loading: false
       });
     }.bind(this));
   }
 
   checkRequirement() {
-    console.log("check: ", this.state);
     if (this.props.requirements && this.props.requirements.length > 0) {
       for (let i in this.props.requirements) {
         if (!this.state.data[this.props.requirements[i]]) {
@@ -64,7 +77,7 @@ class CFormSubmit extends Component {
     for (let id in data) {
       newData[id] = data[id];
     }
-    this.setState({data: newData, error: null}, function () {
+    this.setState({data: newData, error: null, success: null}, function () {
       this.checkRequirement();
     }.bind(this));
   }
@@ -74,16 +87,6 @@ class CFormSubmit extends Component {
       if (this.props.title)
         return (
           <CardHeader>{this.props.title}</CardHeader>
-        )
-    }.bind(this);
-    let drawError = function () {
-      if (this.state.error)
-        return (
-          <Row>
-            <Col>
-              <FormFeedback>{this.state.error}</FormFeedback>
-            </Col>
-          </Row>
         )
     }.bind(this);
     let drawDesc = function () {
@@ -103,16 +106,20 @@ class CFormSubmit extends Component {
           {drawDesc()}
           <Row>
             <Col md={this.props.col ? this.props.col : 12}>
-              {React.Children.map(this.props.children, (child, i) => {
+              {React.Children.map(this.props.children, (child) => {
                 return (<Row className="parameter-bloc">
                   <Col>
-                    {React.cloneElement(child, {onChange: this.handleInputChange})}
+                    {React.cloneElement(child, {
+                      onChange: this.handleInputChange,
+                      value: this.state.data[child.props.dataKey]
+                    })}
                   </Col>
                 </Row>)
               })}
             </Col>
           </Row>
-          {drawError()}
+          <CBlocError value={this.state.error} className="mt-2"/>
+          <CBlocSuccess value={this.state.success} className="mt-2"/>
           <Row className="parameter-bloc">
             <Col>
               <CButtonLoading color={this.props.submitType ? this.props.submitType : "primary"}

@@ -4,7 +4,7 @@ import {
 } from 'reactstrap';
 import TString from "../../../Utils/TString";
 
-class CBlocError extends Component {
+class CBlocSuccess extends Component {
   constructor(props) {
     super(props);
   }
@@ -13,8 +13,8 @@ class CBlocError extends Component {
     let render = function (value) {
       if (!TString.isNull(value)) {
         return (
-          <CardFooter className={"border-danger card-border-full card-empty-background " + this.props.className}>
-            <h6>An error occurred: {value} </h6>
+          <CardFooter className={"border-success card-border-full card-empty-background " + this.props.className}>
+            <h6>{value}</h6>
           </CardFooter>
         );
       } else {
@@ -31,4 +31,4 @@ class CBlocError extends Component {
   }
 }
 
-export default CBlocError;
+export default CBlocSuccess;

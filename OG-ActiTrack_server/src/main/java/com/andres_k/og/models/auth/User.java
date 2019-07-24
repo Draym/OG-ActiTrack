@@ -47,8 +47,6 @@ public class User {
     }
 
     public void copy(User user) {
-        if (user.password != null)
-            this.setPassword(PasswordManager.hashPassword(user.password));
         if (user.email != null)
             this.setEmail(user.email);
         if (user.pseudo != null)
@@ -57,6 +55,10 @@ public class User {
             this.setEnabled(user.enabled);
         if (user.premium != null)
             this.setPremium(user.premium);
+    }
+
+    public void changePassword(String password) {
+        this.setPassword(PasswordManager.hashPassword(password));
     }
 
     public Long getId() {

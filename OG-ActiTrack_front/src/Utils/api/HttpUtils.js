@@ -1,4 +1,4 @@
-import UserSession from "./UserSession";
+import UserSession from "../UserSession";
 
 let HttpUtils = function() {
 

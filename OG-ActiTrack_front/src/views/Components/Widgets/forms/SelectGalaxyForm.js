@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
 
-import HttpUtils from "../../../../Utils/HttpUtils";
+import HttpUtils from "../../../../Utils/api/HttpUtils";
 import CFormInput from "../../CFormInput";
-import {ApiEndpoint} from "../../../../Utils/ApiEndpoint";
+import {ApiEndpoint} from "../../../../Utils/api/ApiEndpoint";
 
 class SelectGalaxyForm extends Component {
   constructor(props) {

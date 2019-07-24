@@ -14,5 +14,6 @@ export const ApiEndpoint = {
   ACTIVITY_SelfGalaxy: '/activity/self/galaxy',
   ACTIVITY_GlobalPlayer: '/activity/global/player',
   ACTIVITY_GlobalGalaxy: '/activity/global/galaxy',
-  USER_Update: '/user/update'
+  USER_Update: '/user/update',
+  USER_UpdatePassword: '/user/update/password'
 };

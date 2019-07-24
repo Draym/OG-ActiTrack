@@ -4,8 +4,7 @@ import com.andres_k.og.models.auth.*;
 import com.andres_k.og.models.auth.link.PasswordSecurityLink;
 import com.andres_k.og.dao.PasswordSecurityLinkRepository;
 import com.andres_k.og.models.auth.link.UserActivationLink;
-import com.andres_k.og.dao.UserActivationLinkRepository;
-import com.andres_k.og.models.http.PasswordHandler;
+import com.andres_k.og.models.http.ResetPasswordHandler;
 import com.andres_k.og.models.http.TokenResponse;
 import com.andres_k.og.utils.managers.EmailManager;
 import com.andres_k.og.utils.managers.PasswordManager;
@@ -13,9 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.mail.MessagingException;
-import javax.persistence.EntityNotFoundException;
 import java.io.IOException;
-import java.util.Optional;
 
 @Service
 public class AuthService {
@@ -68,7 +65,7 @@ public class AuthService {
     }
 
 
-    public void resetPassword(PasswordHandler password) throws Exception {
+    public void resetPassword(ResetPasswordHandler password) throws Exception {
         PasswordSecurityLink passwordSecurityLink = this.passwordSecurityLinkService.getByIdentifier(password.getResetToken());
 
         User user = new User(passwordSecurityLink.getUserId());

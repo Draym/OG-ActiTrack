@@ -9,7 +9,7 @@ import {
   Col, InputGroup,
   Row
 } from 'reactstrap';
-import HttpUtils from "../../../../Utils/HttpUtils";
+import HttpUtils from "../../../../Utils/api/HttpUtils";
 import UserSession from "../../../../Utils/UserSession";
 import TString from "../../../../Utils/TString";
 
@@ -23,7 +23,7 @@ import CBoolInput from "../../../Components/CBoolInput";
 import PlayerActivityChart from "./widgets/PlayerActivityChart";
 import SelectServerForm from "../../../Components/Widgets/forms/SelectServerForm";
 import SelectPlayerForm from "../../../Components/Widgets/forms/SelectPlayerForm";
-import {ApiEndpoint} from "../../../../Utils/ApiEndpoint";
+import {ApiEndpoint} from "../../../../Utils/api/ApiEndpoint";
 import CButtonLoading from "../../../Components/CButton/CButtonLoading";
 
 class PlayerActivity extends Component {

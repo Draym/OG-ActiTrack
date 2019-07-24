@@ -10,12 +10,12 @@ import {
   Form,
   Row
 } from 'reactstrap';
-import HttpUtils from "../../../../Utils/HttpUtils";
+import HttpUtils from "../../../../Utils/api/HttpUtils";
 import TString from "../../../../Utils/TString";
 import CFormInput from "../../../Components/CFormInput";
 import UserSession from "../../../../Utils/UserSession";
 import {withTranslation} from 'react-i18next';
-import {ApiEndpoint} from "../../../../Utils/ApiEndpoint";
+import {ApiEndpoint} from "../../../../Utils/api/ApiEndpoint";
 import CButtonLoading from "../../../Components/CButton/CButtonLoading";
 import {RoutesEndpoint} from "../../../../Utils/RoutesEndpoint";
 

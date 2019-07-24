@@ -2,7 +2,7 @@ package com.andres_k.og.controllers;
 
 import com.andres_k.og.models.auth.User;
 import com.andres_k.og.models.http.AuthHandler;
-import com.andres_k.og.models.http.PasswordHandler;
+import com.andres_k.og.models.http.ResetPasswordHandler;
 import com.andres_k.og.models.http.RegisterHandler;
 import com.andres_k.og.models.http.TokenResponse;
 import com.andres_k.og.services.AuthService;
@@ -117,7 +117,7 @@ public class AuthController {
 
     @RequestMapping(value = "/reset-password", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<?> resetPassword(@RequestBody PasswordHandler password) {
+    public ResponseEntity<?> resetPassword(@RequestBody ResetPasswordHandler password) {
         try {
             this.authService.resetPassword(password);
             return new ResponseEntity<>(true, HttpStatus.OK);

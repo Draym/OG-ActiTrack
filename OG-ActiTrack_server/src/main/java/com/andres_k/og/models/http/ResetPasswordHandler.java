@@ -1,6 +1,6 @@
 package com.andres_k.og.models.http;
 
-public class PasswordHandler {
+public class ResetPasswordHandler {
     private String password;
     private String resetToken;
 

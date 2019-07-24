@@ -1,4 +1,4 @@
-import React, {Component, Suspense} from 'react';
+import React, {Component} from 'react';
 import {
   Button,
   Card,
@@ -8,20 +8,14 @@ import {
   Form,
   Row,
 } from 'reactstrap';
-import {
-  AppFooter,
-  AppHeader
-} from "@coreui/react";
-import AuthHeader from '../../../Containers/AuthLayout/AuthHeader';
-import AuthFooter from '../../../Containers/AuthLayout/AuthFooter';
-import HttpUtils from "../../../../Utils/HttpUtils";
+import HttpUtils from "../../../../Utils/api/HttpUtils";
 import TString from "../../../../Utils/TString";
 import CFormInput from "../../../Components/CFormInput";
 import {ClipLoader} from "react-spinners";
 import {css} from "@emotion/core";
 import '../custom.css';
 import './resetPassword.css';
-import {ApiEndpoint} from "../../../../Utils/ApiEndpoint";
+import {ApiEndpoint} from "../../../../Utils/api/ApiEndpoint";
 import {RoutesEndpoint} from "../../../../Utils/RoutesEndpoint";
 
 const override = css`

@@ -2,6 +2,7 @@ class UserSession {
   static sessionKey() {
     return 'user-data';
   }
+
   static getSession() {
     let session = localStorage.getItem(UserSession.sessionKey());
 
@@ -20,11 +21,18 @@ class UserSession {
     return null;
   }
 
+  static updateUser(user) {
+    let session = this.getSession();
+    session.user = user;
+    this.storeSession(session);
+  }
+
   static clearSession() {
     localStorage.removeItem(UserSession.sessionKey());
   }
-  static storeSession(data) {
-    localStorage.setItem(UserSession.sessionKey(), JSON.stringify(data));
+
+  static storeSession(session) {
+    localStorage.setItem(UserSession.sessionKey(), JSON.stringify(session));
   }
 
   static hasSession() {

@@ -1,6 +1,16 @@
 import moment from "moment";
 
 class DateUtils {
+  static getDaysInRange(startDate, endDate) {
+    let dateArray = [];
+    let currentDate = moment(startDate);
+    let stopDate = moment(endDate);
+    while (currentDate <= stopDate) {
+      dateArray.push(moment(currentDate).format('YYYY-MM-DD'));
+      currentDate = moment(currentDate).add(1, 'days');
+    }
+    return dateArray;
+  }
   static getWeekDays(weekRange) {
     let start = weekRange.from;
     const days = [start];

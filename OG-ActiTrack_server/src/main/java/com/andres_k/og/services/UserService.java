@@ -4,6 +4,7 @@ import com.andres_k.og.dao.*;
 import com.andres_k.og.models.auth.User;
 import com.andres_k.og.models.auth.*;
 import com.andres_k.og.models.enums.ERoles;
+import com.andres_k.og.models.http.ChangePasswordHandler;
 import com.andres_k.og.models.http.RegisterHandler;
 import com.andres_k.og.utils.managers.PasswordManager;
 import com.andres_k.og.utils.tools.TRandomString;
@@ -21,15 +22,13 @@ public class UserService {
     private final UserRepository userRepository;
     private final RoleService roleService;
     private final TokenService tokenService;
-    private final PasswordSecurityLinkService passwordSecurityLinkService;
     private final UserActivationLinkService userActivationLinkService;
 
     @Autowired
-    public UserService(UserRepository userRepository, RoleService roleService, TokenService tokenService, PasswordSecurityLinkService passwordSecurityLinkService, UserActivationLinkService userActivationLinkService) {
+    public UserService(UserRepository userRepository, RoleService roleService, TokenService tokenService, UserActivationLinkService userActivationLinkService) {
         this.userRepository = userRepository;
         this.roleService = roleService;
         this.tokenService = tokenService;
-        this.passwordSecurityLinkService = passwordSecurityLinkService;
         this.userActivationLinkService = userActivationLinkService;
     }
 
@@ -71,7 +70,7 @@ public class UserService {
         User user = this.getUserById(targetId);
         if (newUser.getEmail() != null && !user.getEmail().equals(newUser.getEmail()) && this.userRepository.existsUserByEmail(newUser.getEmail()))
             throw new Exception("The email '" + newUser.getEmail() + "' is already used.");
-        else if (newUser.getPseudo() != null  && !user.getPseudo().equals(newUser.getPseudo()) && this.userRepository.existsUserByPseudo(newUser.getPseudo()))
+        else if (newUser.getPseudo() != null && !user.getPseudo().equals(newUser.getPseudo()) && this.userRepository.existsUserByPseudo(newUser.getPseudo()))
             throw new Exception("The pseudo '" + newUser.getPseudo() + "' is already used.");
         else {
             if (newUser.getEmail() != null && !user.getEmail().equals(newUser.getEmail())) {
@@ -81,6 +80,18 @@ public class UserService {
             user.copy(newUser);
             return this.userRepository.save(user);
         }
+    }
+
+    public void updateUserPassword(ChangePasswordHandler passwordHandler, Token token) throws SecurityException, InternalError {
+        if (token == null)
+            throw new SecurityException("You are not allowed to modify this user");
+        User user = this.getUserById(token.getUserId());
+
+        PasswordManager.verifyPassword(passwordHandler.getOldPassword(), user.getPassword());
+        if (!passwordHandler.getPassword().equals(passwordHandler.getRepeatPassword()))
+            throw new SecurityException("The repeat password doesn't match with the new password.");
+        user.changePassword(passwordHandler.getPassword());
+        this.userRepository.save(user);
     }
 
     public void deleteUser(Long id) {

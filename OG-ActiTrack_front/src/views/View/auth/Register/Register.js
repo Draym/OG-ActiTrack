@@ -1,4 +1,4 @@
-import React, {Component, Suspense} from 'react';
+import React, {Component} from 'react';
 import {
   Button,
   Card,
@@ -8,13 +8,13 @@ import {
   Form,
   Row
 } from 'reactstrap';
-import HttpUtils from "../../../../Utils/HttpUtils";
+import HttpUtils from "../../../../Utils/api/HttpUtils";
 import TString from "../../../../Utils/TString";
 import CFormInput from "../../../Components/CFormInput";
 import CBlocError from "../../../Components/CBlocError";
 import '../custom.css';
 import './register.css';
-import {ApiEndpoint} from "../../../../Utils/ApiEndpoint";
+import {ApiEndpoint} from "../../../../Utils/api/ApiEndpoint";
 import CButtonLoading from "../../../Components/CButton/CButtonLoading";
 import {RoutesEndpoint} from "../../../../Utils/RoutesEndpoint";
 
@@ -137,7 +137,7 @@ class Register extends Component {
                                 loadingText="Creating your account"/>
               </Form>
             </CardBody>
-            <CBlocError error={this.state.errorMessage}/>
+            <CBlocError value={this.state.errorMessage}/>
           </Card>
         );
       } else {
