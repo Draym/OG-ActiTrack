@@ -4,6 +4,7 @@ import com.andres_k.og.config.Restricted;
 import com.andres_k.og.models.auth.Token;
 import com.andres_k.og.models.auth.User;
 import com.andres_k.og.models.http.ChangePasswordHandler;
+import com.andres_k.og.models.item.message.ContactMessage;
 import com.andres_k.og.services.TokenService;
 import com.andres_k.og.services.UserService;
 import com.andres_k.og.utils.tools.Console;

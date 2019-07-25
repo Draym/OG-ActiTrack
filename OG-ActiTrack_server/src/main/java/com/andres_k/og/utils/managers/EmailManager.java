@@ -20,7 +20,7 @@ public class EmailManager {
 
     private void addFooter(StringBuilder body) {
         body.append("<br/>");
-        body.append("You can contact us, by replying this email.");
+        body.append("You can message us, by replying this email.");
         body.append("<br/>");
         body.append("<br/>");
         body.append("Regards, Draymlab.fr");
