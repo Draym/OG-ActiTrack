@@ -2,16 +2,16 @@ import React, { Component } from 'react';
 import { Card, CardBody, CardHeader, Col, Row, Table } from 'reactstrap';
 
 
-class ReportBug extends Component {
+class DashboardSettings extends Component {
 
   render() {
 
     return (
       <div className="animated fadeIn">
-        ReportBug
+        DashboardSettings : not available yet
       </div>
     )
   }
 }
 
-export default ReportBug;
+export default DashboardSettings;

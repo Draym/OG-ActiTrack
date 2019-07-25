@@ -45,7 +45,7 @@ class DefaultAccountHeader extends Component {
 
   goSettings(e) {
     e.preventDefault();
-    this.props.history.push(RoutesEndpoint.ACCOUNT_Settings.replace(":pseudo", UserSession.getPseudo));
+    this.props.history.push(RoutesEndpoint.ACCOUNT_Security.replace(":pseudo", UserSession.getPseudo));
   }
 
   render() {

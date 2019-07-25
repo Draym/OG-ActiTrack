@@ -83,6 +83,10 @@
 /**
 ** INPUT
  */
+.DayPickerInput input{
+  border: 1px solid #e4e7ea;
+  border-radius: 0.25rem;
+}
 
 .input-fill {
   flex: 1 1 auto;

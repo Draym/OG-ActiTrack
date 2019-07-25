@@ -31,7 +31,7 @@ class CWeekInputPicker extends Component {
       selectedDays: DateUtils.getWeekDays(range),
       isEmpty: !input.value.trim()
     });
-    this.props.handleDayChange(DateUtils.getWeekDays(range));
+    this.props.onChange(DateUtils.getWeekDays(range));
   }
 
   handleDayEnter = date => {

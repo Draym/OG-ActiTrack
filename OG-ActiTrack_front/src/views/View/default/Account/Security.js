@@ -16,7 +16,6 @@ class Security extends Component {
   }
 
   verification(state) {
-    console.log(state);
     return (state.data.password === state.data.repeatPassword);
   }
 
@@ -31,14 +30,12 @@ class Security extends Component {
                          requirements={['oldPassword', 'password', 'repeatPassword']}
                          title="Change your password" submitTitle="Update password" col={8}
                          desc="Please use a strong password with a combination of characters and numbers.">
-              <span className="text-muted">Old password</span>
-              <CFormInput dataKey='oldPassword' gui={{headIcon: "icon-lock"}} type={"password"}
-                          placeHolder={"Old password"}/>
-              <span className="text-muted">New password</span>
+              <CFormInput dataKey='oldPassword' gui={{headIcon: "icon-lock-open"}} type={"password"}
+                          placeHolder={"Old password"} title={"Old password"}/>
               <CFormInput dataKey='password' gui={{headIcon: "icon-lock"}} type={"password"}
-                          placeHolder={"New password"}/>
+                          placeHolder={"New password"} title={"New password"}/>
               <CFormInput dataKey='repeatPassword' gui={{headIcon: "icon-lock"}} type={"password"}
-                          placeHolder={"Repeat new password"}/>
+                          placeHolder={"Repeat new password"} title={"Repeat password"}/>
             </CFormSubmit>
           </Col>
         </Row>

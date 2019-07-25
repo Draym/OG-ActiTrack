@@ -262,7 +262,7 @@ class PlayerActivity extends Component {
                   <span>Select the Date:</span>
                 </Col>
                 <Col md={7}>
-                  <CDatePicker handleDayChange={this.handleDayChange} dateTypeSelected={this.state.dateTypeSelected}/>
+                  <CDatePicker onChange={this.handleDayChange} dateTypeSelected={this.state.dateTypeSelected}/>
                 </Col>
               </Row>
               <Row className="parameter-bloc">

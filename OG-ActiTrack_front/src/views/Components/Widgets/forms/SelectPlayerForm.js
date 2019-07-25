@@ -39,7 +39,7 @@ class SelectPlayerForm extends Component {
     HttpUtils().GET(process.env.REACT_APP_SERVER_URL, ApiEndpoint.SERVER_PlayerExist, parameters, function (data) {
       console.log("GET:", data);
       if (data) {
-        callback([{value: data, label: playerName}]);
+        callback([{value: data, label: parameters.playerName}]);
       } else {
         this.setState({
           errorPlayer: "There is no data for " + parameters.playerName + " on " + parameters.serverName
@@ -50,9 +50,13 @@ class SelectPlayerForm extends Component {
       if (errorStatus === 404) {
         // Player suggestion
           let data = JSON.parse(error);
+          console.log("Data: ", data);
           let suggestions = [];
           for (let i in data) {
-            suggestions.push({value: data[i], label: data[i].playerName});
+            if (data[i].length === 3) {
+              let player = {id: data[i][0], playerRef: data[i][1], playerName: data[i][2]};
+              suggestions.push({value: player, label: player.playerName});
+            }
           }
           callback(suggestions);
       } else {
@@ -66,6 +70,7 @@ class SelectPlayerForm extends Component {
   loadPlayerOptions(inputValue, callback) {
     if (inputValue.length > 2) {
       this.verifyPseudo(inputValue,function (suggestions) {
+        console.log("Suggestions: ", suggestions);
         callback(suggestions.filter(i =>
           i.label.toLowerCase().includes(inputValue.toLowerCase())
         ));

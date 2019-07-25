@@ -106,8 +106,8 @@ class CFormSubmit extends Component {
           {drawDesc()}
           <Row>
             <Col md={this.props.col ? this.props.col : 12}>
-              {React.Children.map(this.props.children, (child) => {
-                return (<Row className="parameter-bloc">
+              {React.Children.map(this.props.children, (child, i) => {
+                return (<Row className={i > 0 ? "parameter-bloc" : ""}>
                   <Col>
                     {React.cloneElement(child, {
                       onChange: this.handleInputChange,

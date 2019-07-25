@@ -21,7 +21,7 @@ class CDayPicker extends Component {
     this.setState({
       selectedDays: [selected ? undefined : day]
     });
-    this.props.handleDayChange([selected ? undefined : day]);
+    this.props.onChange([selected ? undefined : day]);
   };
 
   render() {

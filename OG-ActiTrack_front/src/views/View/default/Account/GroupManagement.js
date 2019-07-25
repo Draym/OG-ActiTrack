@@ -8,7 +8,7 @@ class GroupManagement extends Component {
 
     return (
       <div className="animated fadeIn">
-        Group Management
+        Group Management: not available yet
       </div>
     )
   }

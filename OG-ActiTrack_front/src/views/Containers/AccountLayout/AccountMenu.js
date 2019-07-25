@@ -16,13 +16,13 @@ class AccountMenu extends Component {
       selected: this.getStateFromHistory(this.props.history.location.pathname)
     };
     this.goPremium = this.goPremium.bind(this);
-    this.goSettings = this.goSettings.bind(this);
+    this.goDashboardSettings = this.goDashboardSettings.bind(this);
     this.goSecurity = this.goSecurity.bind(this);
-    this.goRequest = this.goRequest.bind(this);
+    this.goContact = this.goContact.bind(this);
     this.goProfile = this.goProfile.bind(this);
     this.goFriendList = this.goFriendList.bind(this);
     this.goGroupManagement = this.goGroupManagement.bind(this);
-    this.goReportBug = this.goReportBug.bind(this);
+    this.goBugReport = this.goBugReport.bind(this);
   }
 
   componentWillUpdate(nextProps, nextState, nextContext) {
@@ -47,9 +47,9 @@ class AccountMenu extends Component {
     this.props.history.push(RoutesEndpoint.ACCOUNT_Profile.replace(":pseudo", UserSession.getPseudo));
   }
 
-  goSettings(e) {
+  goDashboardSettings(e) {
     e.preventDefault();
-    this.props.history.push(RoutesEndpoint.ACCOUNT_Settings.replace(":pseudo", UserSession.getPseudo));
+    this.props.history.push(RoutesEndpoint.ACCOUNT_DashboardSettings.replace(":pseudo", UserSession.getPseudo));
   }
 
   goPremium(e) {
@@ -62,9 +62,9 @@ class AccountMenu extends Component {
     this.props.history.push(RoutesEndpoint.ACCOUNT_Security.replace(":pseudo", UserSession.getPseudo));
   }
 
-  goRequest(e) {
+  goContact(e) {
     e.preventDefault();
-    this.props.history.push(RoutesEndpoint.ACCOUNT_Request.replace(":pseudo", UserSession.getPseudo));
+    this.props.history.push(RoutesEndpoint.ACCOUNT_Contact.replace(":pseudo", UserSession.getPseudo));
   }
 
   goFriendList(e) {
@@ -77,9 +77,9 @@ class AccountMenu extends Component {
     this.props.history.push(RoutesEndpoint.ACCOUNT_GroupManagement.replace(":pseudo", UserSession.getPseudo));
   }
 
-  goReportBug(e) {
+  goBugReport(e) {
     e.preventDefault();
-    this.props.history.push(RoutesEndpoint.ACCOUNT_ReportBug.replace(":pseudo", UserSession.getPseudo));
+    this.props.history.push(RoutesEndpoint.ACCOUNT_BugReport.replace(":pseudo", UserSession.getPseudo));
   }
 
   render() {
@@ -92,8 +92,8 @@ class AccountMenu extends Component {
                          action>{t('label.accountMenu.profile')}</ListGroupItem>
           <ListGroupItem active={this.state.selected === 'security'} tag="button" onClick={this.goSecurity}
                          action>{t('label.accountMenu.security')}</ListGroupItem>
-          <ListGroupItem disabled tag="button" onClick={this.goSettings}
-                         action>{t('label.accountMenu.settings')} <Badge
+          <ListGroupItem disabled tag="button" onClick={this.goDashboardSettings}
+                         action>{t('label.accountMenu.dashboardSettings')} <Badge
             color="primary">SOON</Badge></ListGroupItem>
           <ListGroupItem active={this.state.selected === 'premium'} tag="button" onClick={this.goPremium}
                          action>{t('label.accountMenu.premium')}</ListGroupItem>
@@ -108,10 +108,10 @@ class AccountMenu extends Component {
         </ListGroup>
         <ListGroup>
           <ListGroupItem className="header">{t('label.accountMenu.sectionContact')}</ListGroupItem>
-          <ListGroupItem active={this.state.selected === 'request'} tag="button" onClick={this.goRequest}
-                         action>{t('label.accountMenu.request')}</ListGroupItem>
-          <ListGroupItem active={this.state.selected === 'reportBug'} tag="button" onClick={this.goReportBug}
-                         action>{t('label.accountMenu.reportBug')}</ListGroupItem>
+          <ListGroupItem active={this.state.selected === 'contact'} tag="button" onClick={this.goContact}
+                         action>{t('label.accountMenu.contact')}</ListGroupItem>
+          <ListGroupItem active={this.state.selected === 'bugReport'} tag="button" onClick={this.goBugReport}
+                         action>{t('label.accountMenu.bugReport')}</ListGroupItem>
         </ListGroup>
       </div>
     );

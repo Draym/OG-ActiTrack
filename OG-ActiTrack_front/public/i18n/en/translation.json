@@ -125,12 +125,11 @@
       "profile": "Profile",
       "premium": "Premium",
       "security": "Security",
-      "request": "Request",
-      "settings": "Settings",
+      "dashboardSettings": "Dashboard settings",
       "friendList": "Friend list",
       "groupManagement": "Group management",
       "contact": "Contact",
-      "reportBug": "Report a bug"
+      "bugReport": "Report a bug"
     },
     "auth": {
       "signIn": "Sign in'",

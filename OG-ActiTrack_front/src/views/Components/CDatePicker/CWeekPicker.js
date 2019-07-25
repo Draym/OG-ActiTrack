@@ -25,7 +25,7 @@ class CWeekPicker extends Component {
     this.setState({
       selectedDays: DateUtils.getWeekDays(DateUtils.getWeekRange(date)),
     });
-    this.props.handleDayChange(DateUtils.getWeekDays(DateUtils.getWeekRange(date)));
+    this.props.onChange(DateUtils.getWeekDays(DateUtils.getWeekRange(date)));
   };
 
   handleDayEnter = date => {

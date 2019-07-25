@@ -33,8 +33,10 @@ class Profile extends Component {
           <Col md={8}>
             <CFormSubmit endpoint={ApiEndpoint.USER_Update} requirements={['pseudo']} success={this.success}
                          title="Update your profile" submitTitle="Update" col={8}>
-              <CFormInput dataKey='pseudo' gui={{headText: "Pseudo"}} type={"text"} placeHolder={"type a new pseudo"} defaultValue={this.state.pseudo}/>
-              <CFormInput dataKey='avatar' gui={{headText: "Avatar"}} type={"text"} disabled={true}/>
+              <CFormInput dataKey='pseudo' gui={{headIcon: "icon-user"}} type={"text"} title={"Your pseudo"}
+                          placeHolder={"type a new pseudo"} defaultValue={this.state.pseudo}/>
+              <CFormInput dataKey='avatar' gui={{headIcon: "icon-social-instagram"}} type={"text"} title={"Profile avatar"}
+                          placeHolder={"not available yet"} disabled={true}/>
             </CFormSubmit>
           </Col>
         </Row>

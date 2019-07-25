@@ -20,7 +20,7 @@ class CDayInputPicker extends Component {
     this.setState({
       selectedDay
     });
-    this.props.handleDayChange([selectedDay]);
+    this.props.onChange([selectedDay]);
   }
 
 

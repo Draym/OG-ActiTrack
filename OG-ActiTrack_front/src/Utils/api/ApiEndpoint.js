@@ -15,5 +15,7 @@ export const ApiEndpoint = {
   ACTIVITY_GlobalPlayer: '/activity/global/player',
   ACTIVITY_GlobalGalaxy: '/activity/global/galaxy',
   USER_Update: '/user/update',
+  USER_Contact: '/message/user/contact',
+  USER_BugReport: '/message/user/bugReport',
   USER_UpdatePassword: '/user/update/password'
 };
