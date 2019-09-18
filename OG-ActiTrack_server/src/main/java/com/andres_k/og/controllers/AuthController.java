@@ -47,7 +47,7 @@ public class AuthController {
             return new ResponseEntity<>(result, HttpStatus.OK);
         } catch (SecurityException | EntityNotFoundException ex) {
             Console.log("[Auth/login]: " + ex.toString());
-            return new ResponseEntity<>(ex.getMessage(), HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity<>(ex.getMessage(), HttpStatus.FORBIDDEN);
         }
     }
 
@@ -123,7 +123,7 @@ public class AuthController {
             return new ResponseEntity<>(true, HttpStatus.OK);
         } catch (SecurityException ex) {
             Console.log("[Auth/reset-password]: " + ex.toString());
-            return new ResponseEntity<>(ex.getMessage(), HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity<>(ex.getMessage(), HttpStatus.FORBIDDEN);
         } catch (InternalError ex) {
             Console.log("[Auth/reset-password]: " + ex.toString());
             return new ResponseEntity<>(ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);

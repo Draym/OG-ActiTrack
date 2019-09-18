@@ -4,7 +4,6 @@ import com.andres_k.og.config.Restricted;
 import com.andres_k.og.models.auth.Token;
 import com.andres_k.og.models.auth.User;
 import com.andres_k.og.models.http.ChangePasswordHandler;
-import com.andres_k.og.models.item.message.ContactMessage;
 import com.andres_k.og.services.TokenService;
 import com.andres_k.og.services.UserService;
 import com.andres_k.og.utils.tools.Console;
@@ -51,7 +50,7 @@ public class UserController {
             return new ResponseEntity<>(newUser, HttpStatus.OK);
         } catch (SecurityException ex) {
             Console.log("[User/update]: " + ex.toString());
-            return new ResponseEntity<>(ex.getMessage(), HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity<>(ex.getMessage(), HttpStatus.FORBIDDEN);
         } catch (Exception ex) {
             Console.log("[User/update]: " + ex.toString());
             return new ResponseEntity<>(ex.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
@@ -68,7 +67,7 @@ public class UserController {
             return new ResponseEntity<>(true, HttpStatus.OK);
         } catch (SecurityException ex) {
             Console.log("[User/update/password]: " + ex.toString());
-            return new ResponseEntity<>(ex.getMessage(), HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity<>(ex.getMessage(), HttpStatus.FORBIDDEN);
         } catch (Exception ex) {
             Console.log("[User/update/password]: " + ex.toString());
             return new ResponseEntity<>(ex.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);

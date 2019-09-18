@@ -32,7 +32,7 @@ public class MessageController {
             return new ResponseEntity<>(true, HttpStatus.OK);
         } catch (SecurityException ex) {
             Console.log("[Message/contact]: " + ex.toString());
-            return new ResponseEntity<>(ex.getMessage(), HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity<>(ex.getMessage(), HttpStatus.FORBIDDEN);
         } catch (Exception ex) {
             Console.log("[Message/contact]: " + ex.toString());
             return new ResponseEntity<>(ex.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
@@ -49,7 +49,7 @@ public class MessageController {
             return new ResponseEntity<>(true, HttpStatus.OK);
         } catch (SecurityException ex) {
             Console.log("[Message/contact]: " + ex.toString());
-            return new ResponseEntity<>(ex.getMessage(), HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity<>(ex.getMessage(), HttpStatus.FORBIDDEN);
         } catch (Exception ex) {
             Console.log("[Message/contact]: " + ex.toString());
             return new ResponseEntity<>(ex.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);

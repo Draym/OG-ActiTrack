@@ -6,6 +6,7 @@ import com.andres_k.og.models.auth.*;
 import com.andres_k.og.models.enums.ERoles;
 import com.andres_k.og.models.http.ChangePasswordHandler;
 import com.andres_k.og.models.http.RegisterHandler;
+import com.andres_k.og.models.http.ResetPasswordHandler;
 import com.andres_k.og.utils.managers.PasswordManager;
 import com.andres_k.og.utils.tools.TRandomString;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -91,6 +92,12 @@ public class UserService {
         if (!passwordHandler.getPassword().equals(passwordHandler.getRepeatPassword()))
             throw new SecurityException("The repeat password doesn't match with the new password.");
         user.changePassword(passwordHandler.getPassword());
+        this.userRepository.save(user);
+    }
+
+    public void resetUserPassword(Long userId, ResetPasswordHandler password) {
+        User user = this.getUserById(userId);
+        user.changePassword(password.getPassword());
         this.userRepository.save(user);
     }
 

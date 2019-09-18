@@ -68,9 +68,7 @@ public class AuthService {
     public void resetPassword(ResetPasswordHandler password) throws Exception {
         PasswordSecurityLink passwordSecurityLink = this.passwordSecurityLinkService.getByIdentifier(password.getResetToken());
 
-        User user = new User(passwordSecurityLink.getUserId());
-        user.setPassword(PasswordManager.hashPassword(password.getPassword()));
-        this.userService.updateUser(user);
+        this.userService.resetUserPassword(passwordSecurityLink.getUserId(), password);
 
         passwordSecurityLink.setValid(false);
         this.passwordSecurityLinkService.update(passwordSecurityLink);

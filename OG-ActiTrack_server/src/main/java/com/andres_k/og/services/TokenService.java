@@ -63,7 +63,7 @@ public class TokenService {
         if (new Date().compareTo(token.getExpirationDate()) > 0) {
             token.setValid(false);
             this.tokenRepository.save(token);
-            throw new SecurityException("The token {" + value + "} has expired.");
+            throw new SecurityException("The token {" + value + "} has now expired.");
         }
         return true;
     }
@@ -76,7 +76,7 @@ public class TokenService {
         if (!optToken.isPresent())
             throw new EntityNotFoundException("The token {" + value + "} doesn't exist.");
         if (!optToken.get().isValid())
-            throw new NullPointerException("The token {" + value + "} has expired.");
+            throw new SecurityException("The token {" + value + "} is expired.");
         return optToken.get();
     }
 
