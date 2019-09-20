@@ -1,15 +1,17 @@
 import React, {Component} from 'react';
-import i18next from 'i18next';
 import DayPickerInput from 'react-day-picker/DayPickerInput';
 import 'react-day-picker/lib/style.css';
-import DateUtils from '../../../Utils/DateUtils';
 import moment from "moment";
+import DateUtils from '../../../utils/DateUtils';
 
 import MomentLocaleUtils from 'react-day-picker/moment';
 import 'moment/locale/fr';
 import 'moment/locale/en-gb';
+import PropTypes from 'prop-types';
 
-
+const propTypes = {
+  handleDayChange: PropTypes.func
+};
 class CWeekInputPicker extends Component {
   constructor(props) {
     super(props);
@@ -31,7 +33,7 @@ class CWeekInputPicker extends Component {
       selectedDays: DateUtils.getWeekDays(range),
       isEmpty: !input.value.trim()
     });
-    this.props.onChange(DateUtils.getWeekDays(range));
+    this.props.handleDayChange({first: range.from, last: range.to});
   }
 
   handleDayEnter = date => {
@@ -61,20 +63,23 @@ class CWeekInputPicker extends Component {
       hoverRangeEnd: hoverRange && hoverRange.to,
       selectedRangeStart: daysAreSelected && selectedDays[0],
       selectedRangeEnd: daysAreSelected && selectedDays[6],
+      sunday: day => day.getDay() === 0
     };
 
     let drawDateSelection = function () {
       return (
         <DayPickerInput
           value={selectedDay}
+          inputProps={{readOnly: true}}
           onDayChange={this.handleDayChange}
           dayPickerProps={{
-            locale: i18next.t("date.format"),
+            locale: "eng",
             localeUtils: MomentLocaleUtils,
             selectedDays: selectedDays,
             modifiers: modifiers,
             onDayMouseEnter: this.handleDayEnter,
-            onDayMouseLeave: this.handleDayLeave
+            onDayMouseLeave: this.handleDayLeave,
+            disabledDays:{ after: new Date() }
           }}
         />
       );
@@ -86,5 +91,7 @@ class CWeekInputPicker extends Component {
     );
   }
 }
+
+CWeekInputPicker.propTypes = propTypes;
 
 export default CWeekInputPicker;

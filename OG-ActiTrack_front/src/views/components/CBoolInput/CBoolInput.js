@@ -2,6 +2,17 @@ import React, {Component} from 'react';
 import {Button, ButtonGroup, ButtonToolbar} from "reactstrap";
 
 import i18next from 'i18next';
+import PropTypes from 'prop-types';
+
+const propTypes = {
+  value: PropTypes.bool,
+  disabled: PropTypes.bool
+};
+
+const defaultProps = {
+  value: false,
+  disabled: false
+};
 
 class CBoolInput extends Component {
   constructor(props) {
@@ -18,7 +29,7 @@ class CBoolInput extends Component {
     this.setState({
       selected: value
     });
-    this.props.onChange(value);
+    this.props.handleChange(value);
   }
 
   render() {
@@ -34,5 +45,8 @@ class CBoolInput extends Component {
     );
   }
 }
+
+CBoolInput.defaultProps = defaultProps;
+CBoolInput.propTypes = propTypes;
 
 export default CBoolInput;

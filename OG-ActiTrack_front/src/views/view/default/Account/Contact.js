@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { Card, CardBody, CardHeader, Col, Row, Table } from 'reactstrap';
-import CFormSubmit from "../../../Components/CFormSubmit";
-import {ApiEndpoint} from "../../../../Utils/api/ApiEndpoint";
-import CFormInput from "../../../Components/CFormInput";
-import UserSession from "../../../../Utils/UserSession";
+import CFormSubmit from "../../../components/CFormSubmit";
+import {ApiEndpoint} from "../../../../utils/api/ApiEndpoint";
+import CFormInput from "../../../components/CFormInput";
+import UserSession from "../../../../utils/storage/UserSession";
 
 
 class Contact extends Component {

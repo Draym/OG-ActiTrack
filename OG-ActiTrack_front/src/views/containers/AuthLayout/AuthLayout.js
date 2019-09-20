@@ -7,7 +7,7 @@ import {
   AppHeader
 } from '@coreui/react';
 import routes from '../../../routes-auth';
-import {RoutesEndpoint} from "../../../Utils/RoutesEndpoint";
+import {RoutesEndpoint} from "../../../utils/RoutesEndpoint";
 
 const AuthFooter = React.lazy(() => import('./AuthFooter'));
 const AuthHeader = React.lazy(() => import('./AuthHeader'));

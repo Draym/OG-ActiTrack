@@ -8,15 +8,15 @@ import {
   Form,
   Row,
 } from 'reactstrap';
-import HttpUtils from "../../../../Utils/api/HttpUtils";
-import TString from "../../../../Utils/TString";
-import CFormInput from "../../../Components/CFormInput";
+import HttpUtils from "../../../../utils/api/HttpUtils";
+import TString from "../../../../utils/TString";
+import CFormInput from "../../../components/CFormInput";
 import {ClipLoader} from "react-spinners";
 import {css} from "@emotion/core";
 import '../custom.css';
 import './resetPassword.css';
-import {ApiEndpoint} from "../../../../Utils/api/ApiEndpoint";
-import {RoutesEndpoint} from "../../../../Utils/RoutesEndpoint";
+import {ApiEndpoint} from "../../../../utils/api/ApiEndpoint";
+import {RoutesEndpoint} from "../../../../utils/RoutesEndpoint";
 
 const override = css`
     display: block;
@@ -62,7 +62,7 @@ class ResetPassword extends Component {
     let data = {
       token: this.state.resetToken
     };
-    HttpUtils().GET(process.env.REACT_APP_SERVER_URL, ApiEndpoint.AUTH_CheckResetPasswordToken, data, function (data) {
+    HttpUtils.GET(process.env.REACT_APP_SERVER_URL, ApiEndpoint.AUTH_CheckResetPasswordToken, data, function (data) {
       setTimeout(function () {
         this.setState({
           isTokenValid: true,
@@ -99,7 +99,7 @@ class ResetPassword extends Component {
       'resetToken': this.state.resetToken,
       'password': this.state.password
     };
-    HttpUtils().POST(process.env.REACT_APP_SERVER_URL, ApiEndpoint.AUTH_ResetPassword, auth, function (data) {
+    HttpUtils.POST(process.env.REACT_APP_SERVER_URL, ApiEndpoint.AUTH_ResetPassword, auth, function (data) {
       if (data) {
         this.setState({isJobDone: true});
       }
@@ -135,13 +135,13 @@ class ResetPassword extends Component {
               <Form>
                 <h2>Reset your password</h2>
                 <CFormInput gui={{headIcon: "icon-lock"}} type={"password"} placeHolder={"Password"}
-                            autoComplete={"current-password"} value={this.state.password}
+                            value={this.state.password}
                             onChange={this.handlePasswordChange} error={this.state.errorPassword}/>
                 <CFormInput gui={{headIcon: "icon-lock"}} type={"password"} placeHolder={"Verify Password"}
-                            autoComplete={"new-password"} value={this.state.passwordVerify}
+                            value={this.state.passwordVerify}
                             onChange={this.handlePasswordVerifyChange}
                             error={this.state.errorVerifyPassword}/>
-                <Button color="success" type="submit" block
+                <Button className="mt-2" color="success" type="submit" block
                         onClick={this.triggerResetPassword}>Update</Button>
               </Form>
             </CardBody>

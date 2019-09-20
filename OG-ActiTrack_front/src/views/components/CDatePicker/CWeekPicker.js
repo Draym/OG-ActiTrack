@@ -1,13 +1,16 @@
 import React, {Component} from 'react';
-import i18next from 'i18next';
 import DayPicker from 'react-day-picker';
 import 'react-day-picker/lib/style.css';
-import DateUtils from '../../../Utils/DateUtils';
+import DateUtils from '../../../utils/DateUtils';
 
 import MomentLocaleUtils from 'react-day-picker/moment';
 import 'moment/locale/fr';
 import 'moment/locale/en-gb';
+import PropTypes from 'prop-types';
 
+const propTypes = {
+  handleDayChange: PropTypes.func
+};
 class CWeekPicker extends Component {
   constructor(props) {
     super(props);
@@ -22,10 +25,11 @@ class CWeekPicker extends Component {
   }
 
   handleDayChange = date => {
+    const range = DateUtils.getWeekRange(date);
     this.setState({
-      selectedDays: DateUtils.getWeekDays(DateUtils.getWeekRange(date)),
+      selectedDays: DateUtils.getWeekDays(range),
     });
-    this.props.onChange(DateUtils.getWeekDays(DateUtils.getWeekRange(date)));
+    this.props.handleDayChange({first: range.from, last: range.to});
   };
 
   handleDayEnter = date => {
@@ -65,7 +69,8 @@ class CWeekPicker extends Component {
     let drawDateSelection = function () {
         return (
           <DayPicker
-            locale={i18next.t("date.format")}
+            firstDayOfWeek={1}
+            locale="eng"
             localeUtils={MomentLocaleUtils}
             selectedDays={selectedDays}
             showWeekNumbers
@@ -75,6 +80,7 @@ class CWeekPicker extends Component {
             onDayMouseEnter={this.handleDayEnter}
             onDayMouseLeave={this.handleDayLeave}
             onWeekClick={this.handleWeekClick}
+            disabledDays={{after: new Date()}}
           />
         );
     }.bind(this);
@@ -85,5 +91,7 @@ class CWeekPicker extends Component {
     );
   }
 }
+
+CWeekPicker.propTypes = propTypes;
 
 export default CWeekPicker;

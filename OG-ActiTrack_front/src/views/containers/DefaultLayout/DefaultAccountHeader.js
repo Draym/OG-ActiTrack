@@ -3,9 +3,9 @@ import {DropdownItem, DropdownMenu, DropdownToggle, Nav} from 'reactstrap';
 import PropTypes from 'prop-types';
 
 import {AppHeaderDropdown} from '@coreui/react';
-import UserSession from "../../../Utils/UserSession";
+import UserSession from "../../../utils/storage/UserSession";
 import { withTranslation } from 'react-i18next';
-import {RoutesEndpoint} from "../../../Utils/RoutesEndpoint";
+import {RoutesEndpoint} from "../../../utils/RoutesEndpoint";
 
 const propTypes = {
   children: PropTypes.node,

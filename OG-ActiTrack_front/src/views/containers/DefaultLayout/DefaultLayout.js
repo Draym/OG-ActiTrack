@@ -17,9 +17,9 @@ import {
 import navigation from '../../../_nav';
 // routesDefault config
 import routes from '../../../routes-default';
-import CLanguageCtrl from "../../Components/CLanguageCtrl";
-import {RoutesEndpoint} from "../../../Utils/RoutesEndpoint";
-import AuthUtils from "../../../Utils/auth/AuthUtils";
+import CLanguageCtrl from "../../components/CLanguageCtrl";
+import {RoutesEndpoint} from "../../../utils/RoutesEndpoint";
+import AuthUtils from "../../../utils/auth/AuthUtils";
 
 const DefaultFooter = React.lazy(() => import('./DefaultFooter'));
 const DefaultHeader = React.lazy(() => import('./DefaultHeader'));

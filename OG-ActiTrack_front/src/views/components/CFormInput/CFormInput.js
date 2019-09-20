@@ -4,12 +4,35 @@ import {
   InputGroup,
   InputGroupAddon,
   InputGroupText,
-  FormFeedback
+  FormFeedback, Button
 } from 'reactstrap';
-import TString from "../../../Utils/TString";
+import TString from "../../../utils/TString";
 import AsyncSelect from 'react-select/async';
-import {Col, Row} from "reactstrap/es";
 import COptionalCol from "../COptionalCol";
+import PropTypes from 'prop-types';
+
+const propTypes = {
+  // style
+  title: PropTypes.string,
+  gui: PropTypes.object,
+  type: PropTypes.string,
+  placeHolder: PropTypes.string,
+  autoComplete: PropTypes.object,
+  value: PropTypes.any,
+  col: PropTypes.number,
+  disabled: PropTypes.bool,
+  // controls
+  dataKey: PropTypes.string,
+  onChange: PropTypes.func,
+  onClick: PropTypes.func,
+  onVerify: PropTypes.func,
+  // result
+  success: PropTypes.bool,
+  error: PropTypes.string,
+  hackReload: PropTypes.any // if it changes the component will force reload using key
+};
+
+const defaultProps = {};
 
 class CFormInput extends Component {
   constructor(props) {
@@ -25,16 +48,19 @@ class CFormInput extends Component {
   };
 
   onChange(event) {
+    let triggerOnChange = (this.props.autoComplete ? this.props.autoComplete.handleSelectChange : this.props.onChange);
     if (this.props.dataKey) {
       let data = {};
       data[this.props.dataKey] = event.target.value;
-      this.props.onChange(data);
+      triggerOnChange(data);
     } else {
-      this.props.onChange(event);
+      triggerOnChange(event);
     }
   }
 
   render() {
+    const {title, gui, type, placeHolder, autoComplete, value, onClick, success, error, onVerify, hackReload, disabled, col, className} = this.props;
+
     let renderIconBorder = function (data, type) {
       return (
         <InputGroupAddon addonType={type}>
@@ -53,7 +79,7 @@ class CFormInput extends Component {
         </InputGroupAddon>
       );
     };
-    let renderInputHead = function (gui) {
+    let renderInputHead = function () {
       if (!gui)
         return;
       if (gui.headIcon) {
@@ -62,7 +88,7 @@ class CFormInput extends Component {
         return renderTextBorder(gui.headText, "prepend");
       }
     };
-    let renderInputBack = function (gui) {
+    let renderInputBack = function () {
       if (!gui)
         return;
       if (gui.backIcon) {
@@ -71,15 +97,14 @@ class CFormInput extends Component {
         return renderTextBorder(gui.backText, "append");
       }
     };
-
-    let renderVerify = function (verify, success, error) {
-      if (verify) {
+    let renderVerify = function () {
+      if (onVerify) {
         return (
           <InputGroupAddon addonType="append">
             <InputGroupText className={"input-verification " + (TString.isNull(error) ? "" : "input-error")}>
-              <button type="button" className="form-control input-addon" onClick={verify}>
+              <button type="button" className="form-control input-addon" onClick={onVerify}>
                 <i
-                  className={(TString.isNull(error) ? (TString.isNull(success) ? "icon-arrow-right-circle" : "icon-check") : "icon-close") + " icons font-1x2"}
+                  className={(TString.isNull(error) ? (!success ? "icon-arrow-right-circle" : "icon-check") : "icon-close") + " icons font-1x2"}
                   style={{color: "grey"}}/>
               </button>
             </InputGroupText>
@@ -88,70 +113,58 @@ class CFormInput extends Component {
       }
       return null;
     };
-    let renderInput = function (gui, type, placeHolder, autoComplete, value, onChange, success, error, verify, disabled, rows) {
+    let render = function () {
       if (!autoComplete) {
-        if (!TString.isNull(error)) {
-          return (
-            <InputGroup>
-              {renderInputHead(gui)}
-              <Input type={type} invalid placeholder={placeHolder} autoComplete={autoComplete}
-                     value={value} onChange={onChange} disabled={disabled} rows={(rows ? rows : 1)}/>
-              {renderInputBack(gui)}
-              {renderVerify(verify, success, error)}
-              <FormFeedback>{error}</FormFeedback>
-            </InputGroup>
-          );
-        } else {
-          return (
-            <InputGroup>
-              {renderInputHead(gui)}
-              <Input type={type} placeholder={placeHolder} autoComplete={autoComplete}
-                     value={value} onChange={onChange} disabled={disabled} rows={(rows ? rows : 1)}/>
-              {renderInputBack(gui)}
-              {renderVerify(verify, success, error)}
-            </InputGroup>
-          );
-        }
+        return (
+          <Input type={type} invalid={!!error}
+                 placeholder={placeHolder} autoComplete={autoComplete}
+                 value={value}
+                 onChange={this.onChange}
+                 disabled={disabled} onClick={onClick}/>
+        );
       } else {
         return (
-          <InputGroup>
-            {renderInputHead(gui)}
-            <AsyncSelect className="input-fill input-addon"
-                         cacheOptions
-                         loadOptions={this.loadOptions}
-                         defaultOptions
-                         onChange={autoComplete.handleSelectChange}
-                         onInputChange={autoComplete.handleInputChange}
-                         placeholder={placeHolder}
-                         disabled={disabled}
-                         theme={theme => ({
-                           ...theme,
-                           borderRadius: 0,
-                           colors: {
-                             ...theme.colors,
-                             primary25: '#DEEBFF',
-                             primary: '#B2D4FF',
-                           }
-                         })}
-            />
-            {renderInputBack(gui)}
-            {renderVerify(verify, success, error)}
-          </InputGroup>
+          <AsyncSelect key={hackReload}
+                       className="input-fill input-addon"
+                       cacheOptions
+                       defaultInputValue={value}
+                       loadOptions={this.loadOptions}
+                       defaultOptions
+                       disabled={disabled}
+                       onChange={this.onChange}
+                       onClick={onClick}
+                       onInputChange={autoComplete.handleInputChange}
+                       placeholder={placeHolder}
+                       theme={theme => ({
+                         ...theme,
+                         borderRadius: 0,
+                         colors: {
+                           ...theme.colors,
+                           primary25: '#DEEBFF',
+                           primary: '#B2D4FF',
+                         }
+                       })}
+          />
         );
       }
     }.bind(this);
 
     return (
-      <COptionalCol col={this.props.col} className={this.props.className}>
-          {this.props.title && <p className="text-muted input-title">{this.props.title}</p>}
-          {
-            renderInput(this.props.gui, this.props.type, this.props.placeHolder,
-              this.props.autoComplete, this.props.value, this.onChange, this.props.success,
-              this.props.error, this.props.verify, this.props.disabled, this.props.rows)
-          }
+      <COptionalCol col={col} className={className}>
+        {title && <p className="text-muted input-title">{title}</p>}
+        <InputGroup className="mt-1 mb-1" >
+          {renderInputHead(gui)}
+          {render()}
+          {renderInputBack(gui)}
+          {renderVerify(onVerify, success, error)}
+          {error && <FormFeedback>{error}</FormFeedback>}
+        </InputGroup>
       </COptionalCol>
     );
   }
 }
+
+CFormInput.defaultProps = defaultProps;
+CFormInput.propTypes = propTypes;
 
 export default CFormInput;

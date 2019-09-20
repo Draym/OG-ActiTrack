@@ -1,4 +1,4 @@
-import UserSession from "../UserSession";
+import UserSession from "../storage/UserSession";
 import EAuthRole from "./EAuthRole";
 
 let AuthUtils = function () {

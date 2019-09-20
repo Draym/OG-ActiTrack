@@ -1,19 +1,19 @@
 import React, {Component} from 'react';
 import {Card, CardBody, CardHeader, Col, Row} from "reactstrap";
-import ChartCreator from "../../../../Utils/chart/ChartCreator";
-import CSlider from "../../../Components/CSlider";
+import ChartCreator from "../../../../utils/chart/ChartCreator";
+import CSlider from "../../../components/CSlider";
 import GalaxyActivityChart from "./widgets/GalaxyActivityChart";
-import HttpUtils from "../../../../Utils/api/HttpUtils";
-import {ApiEndpoint} from "../../../../Utils/api/ApiEndpoint";
-import SelectServerForm from "../../../Components/Widgets/forms/SelectServerForm";
-import CPopInfo from "../../../Components/CPopover/CPopInfo";
-import {EDatePicker} from "../../../Components/CDatePicker/EDatePicker";
-import CButtonLoading from "../../../Components/CButton/CButtonLoading";
-import CDatePicker from "../../../Components/CDatePicker";
-import UserSession from "../../../../Utils/UserSession";
+import HttpUtils from "../../../../utils/api/HttpUtils";
+import {ApiEndpoint} from "../../../../utils/api/ApiEndpoint";
+import SelectServerInput from "../../../components/Widgets/inputs/select/SelectServerInput";
+import CPopInfo from "../../../components/CPopup/CPopInfo";
+import {EDatePicker} from "../../../components/CDatePicker/EDatePicker";
+import CButtonLoading from "../../../components/CButton/CButtonLoading";
+import CDatePicker from "../../../components/CDatePicker";
+import UserSession from "../../../../utils/storage/UserSession";
 
 import "react-vis/dist/style.css";
-import CBoolInput from "../../../Components/CBoolInput";
+import CBoolInput from "../../../components/CBoolInput";
 
 
 class GalaxyActivity extends Component {
@@ -93,7 +93,7 @@ class GalaxyActivity extends Component {
     this.setState({loading: {loadChart: true}});
     let callParameters = this.generateApiEndpointForChart();
 
-    HttpUtils().GET(process.env.REACT_APP_SERVER_URL, callParameters.endpoint, callParameters.parameters, function (data) {
+    HttpUtils.GET(process.env.REACT_APP_SERVER_URL, callParameters.endpoint, callParameters.parameters, function (data) {
       if (data) {
         let formattedData = this.formatChartData(data);
         this.setState({
@@ -264,7 +264,7 @@ class GalaxyActivity extends Component {
             </div>
           </CardHeader>
           <CardBody>
-            <SelectServerForm className="mb-2" onChange={this.handleServerChange} error={this.state.errorServer}/>
+            <SelectServerInput className="mb-2" onChange={this.handleServerChange} error={this.state.errorServer}/>
             {/*!TString.isNull(this.state.server) && <SelectGalaxyForm onChange={this.handleGalaxyChange} server={this.state.server}/>*/}
           </CardBody>
         </Card>

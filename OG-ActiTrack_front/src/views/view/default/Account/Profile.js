@@ -1,12 +1,12 @@
 import React, {Component} from 'react';
-import CFormSubmit from "../../../Components/CFormSubmit";
-import {ApiEndpoint} from "../../../../Utils/api/ApiEndpoint";
-import CFormInput from "../../../Components/CFormInput";
+import CFormSubmit from "../../../components/CFormSubmit";
+import {ApiEndpoint} from "../../../../utils/api/ApiEndpoint";
+import CFormInput from "../../../components/CFormInput";
 import {
   Row,
   Col
 } from "reactstrap/es";
-import UserSession from "../../../../Utils/UserSession";
+import UserSession from "../../../../utils/storage/UserSession";
 
 
 class Profile extends Component {

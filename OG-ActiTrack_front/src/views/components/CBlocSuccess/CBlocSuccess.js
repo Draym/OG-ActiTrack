@@ -2,7 +2,18 @@ import React, {Component} from 'react';
 import {
   CardFooter
 } from 'reactstrap';
-import TString from "../../../Utils/TString";
+import TString from "../../../utils/TString";
+import PropTypes from "prop-types";
+
+const propTypes = {
+  value: PropTypes.string,
+  className: PropTypes.string
+};
+
+const defaultProps = {
+  value: undefined,
+  className: ''
+};
 
 class CBlocSuccess extends Component {
   constructor(props) {
@@ -10,25 +21,18 @@ class CBlocSuccess extends Component {
   }
 
   render() {
-    let render = function (value) {
-      if (!TString.isNull(value)) {
-        return (
-          <CardFooter className={"border-success card-border-full card-empty-background " + this.props.className}>
-            <h6>{value}</h6>
-          </CardFooter>
-        );
-      } else {
-        return (
-          null
-        );
-      }
-    }.bind(this);
+    const {value, className} = this.props;
+    if (TString.isNull(value))
+      return null;
     return (
-      <div>
-        {render(this.props.value)}
-      </div>
+      <CardFooter className={"border-success card-border-full card-empty-background " + className}>
+        <h6>{value}</h6>
+      </CardFooter>
     );
   }
 }
+
+CBlocSuccess.defaultProps = defaultProps;
+CBlocSuccess.propTypes = propTypes;
 
 export default CBlocSuccess;

@@ -1,13 +1,13 @@
 import React, {Component, Suspense} from 'react';
 import {Route, Switch, Redirect} from 'react-router-dom';
 import routes from '../../../routes-account';
-import {RoutesEndpoint} from "../../../Utils/RoutesEndpoint";
+import {RoutesEndpoint} from "../../../utils/RoutesEndpoint";
 import {
   Col,
   Row
 } from 'reactstrap';
 import AccountMenu from "./AccountMenu";
-import AuthUtils from "../../../Utils/auth/AuthUtils";
+import AuthUtils from "../../../utils/auth/AuthUtils";
 
 class AccountLayout extends Component {
 

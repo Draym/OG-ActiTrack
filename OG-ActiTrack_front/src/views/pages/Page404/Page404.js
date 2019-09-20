@@ -1,7 +1,7 @@
 import React, {Component, Suspense} from 'react';
 import {Col, Container, Row} from 'reactstrap';
-import AuthHeader from '../../Containers/AuthLayout/AuthHeader';
-import AuthFooter from '../../Containers/AuthLayout/AuthFooter';
+import AuthHeader from '../../containers/AuthLayout/AuthHeader';
+import AuthFooter from '../../containers/AuthLayout/AuthFooter';
 import {AppFooter, AppHeader} from "@coreui/react";
 
 import errorImg from '../../../assets/img/404.png'

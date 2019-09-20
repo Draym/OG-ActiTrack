@@ -1,11 +1,13 @@
-import UserSession from "../UserSession";
+import UserSession from "../storage/UserSession";
+import {RoutesEndpoint} from "../RoutesEndpoint";
+import TEncoder from "../TEncoder";
 
-let HttpUtils = function() {
+let HttpUtils = function () {
 
   function stringifyParameters(parameters) {
     let result = '';
 
-    for(let i in parameters) {
+    for (let i in parameters) {
       if (result !== '')
         result += '&';
       result += i + '=' + parameters[i];
@@ -13,18 +15,53 @@ let HttpUtils = function() {
     result = (result === '' ? result : '?' + result);
     return result;
   }
-  function httpResult(response, cbSuccess, cbError) {
-    if (response.status === 200) {
-      response.json().then(function (data) {
-        console.log("response: ", response);
-        console.log("--->", data);
-        cbSuccess(data);
-      });
+
+  function createApiUrl(domainUrl, api, urlParameters) {
+    return api + (urlParameters ? urlParameters : '');
+  }
+
+  function triggerResultCallback(data, response, cbSuccess, cbError) {
+    const status = response.status;
+
+    if (status === 200) {
+      console.log("[SUCCESS]-->", data);
+      cbSuccess(data);
     } else {
-      response.text().then(function(data){
-        cbError(response.status, data);
-      });
+      console.log("[ERROR]-->", data);
+      cbError(status, (data.message ? data.message : data));
     }
+  }
+
+  function handleHttpResultRedirect(response) {
+    console.log("Try Redirect to ", response.url);
+    let url = response.url;
+
+    /** ONLY REDIRECT ON LOGIN **/
+    if (url.indexOf("/api/login") >= 0 && url.indexOf("?logout") === -1) {
+      console.log("Redirect done to ", url.replace("/api", "/auth"));
+      window.location.href = url.replace("/api", "/auth");
+    }
+  }
+
+  function redirectToAuthPage(code) {
+    window.location.href = RoutesEndpoint.AUTH_Login + (code? "?redirect=" + TEncoder.stringToB64(code) : '');
+  }
+
+  function handleHttpResult(response, cbSuccess, cbError) {
+    console.log("[HTTP]", response);
+    if (response.redirected || response.status === 302) {
+      handleHttpResultRedirect(response);
+    }
+    if (response.status === 401) {
+      redirectToAuthPage(window.location.pathname);
+    }
+    response.text().then(function (text) {
+      try {
+        triggerResultCallback(JSON.parse(text), response, cbSuccess, cbError);
+      } catch (err) {
+        triggerResultCallback(text, response, cbSuccess, cbError);
+      }
+    });
   }
 
   function httpURL(type, url, api, headers, parameters, cbSuccess, cbError) {
@@ -32,17 +69,20 @@ let HttpUtils = function() {
       headers = {};
     if (UserSession.hasSession()) {
       let session = UserSession.getSession();
-      headers.Authorization = session.token.token;
+      if (session.token)
+        headers.Authorization = session.token.token;
     }
     let urlParameters = stringifyParameters(parameters);
-    fetch(url + api + urlParameters, {
+    console.log("[API_" + type +"]", createApiUrl(url, api, urlParameters));
+    fetch(createApiUrl(url, api, urlParameters), {
       method: type,
-      headers: headers
+      headers: headers,
+      credentials: 'include'
     }).then(response => {
-      httpResult(response, cbSuccess, cbError);
+      handleHttpResult(response, cbSuccess, cbError);
     }).catch(error => {
-      console.log(error);
-      cbError(400, error);
+      console.log("[FAIL]-->", error);
+      cbError(-1, error.message);
     });
   }
 
@@ -51,46 +91,64 @@ let HttpUtils = function() {
       headers = {};
     if (UserSession.hasSession()) {
       let session = UserSession.getSession();
-      headers.Authorization = session.token.token;
+      if (session.token)
+        headers.Authorization = session.token.token;
     }
-    console.log(url, api);
-    fetch(url + api, {
+    console.log("[API_" + type +"]", createApiUrl(url, api), data);
+    fetch(createApiUrl(url, api), {
       method: type,
       headers: headers,
-      body: JSON.stringify(data)
+      credentials: 'include',
+      body: data
     }).then(response => {
-      httpResult(response, cbSuccess, cbError);
+      handleHttpResult(response, cbSuccess, cbError);
     }).catch(error => {
-      console.log(error);
-      cbError(400, error);
+      console.log("[FAIL]-->", error);
+      cbError(-1, error.message);
     });
   }
 
   return ({
-    GET: function(url, api, parameters, cbSuccess, cbError){
+    GET: function (url, api, parameters, cbSuccess, cbError) {
       let headers = {};
       //headers['Accept'] = 'text/plain';
+      headers['Access-Control-Allow-Origin'] = '*';
       httpURL('GET', url, api, headers, parameters, cbSuccess, cbError);
     },
-    POST: function(url, api, data, cbSuccess, cbError){
+    POST: function (url, api, data, cbSuccess, cbError) {
       let headers = {};
       headers['Content-Type'] = 'application/json';
       headers['Accept'] = 'application/json';
-      httpData('POST', url, api, headers, data, cbSuccess, cbError);
+      httpData('POST', url, api, headers, JSON.stringify(data), cbSuccess, cbError);
     },
-    PUT: function(url, api, data, cbSuccess, cbError){
+    PUT: function (url, api, data, cbSuccess, cbError) {
       let headers = {};
       headers['Content-Type'] = 'application/json';
       headers['Accept'] = 'application/json';
-      httpData('PUT', url, api, headers, data, cbSuccess, cbError);
+      httpData('PUT', url, api, headers, JSON.stringify(data), cbSuccess, cbError);
     },
-    DELETE: function(url, api, data, cbSuccess, cbError){
+    DELETE: function (url, api, data, cbSuccess, cbError) {
       let headers = {};
       headers['Content-Type'] = 'application/json';
       headers['Accept'] = 'application/json';
-      httpData('DELETE', url, api, headers, data, cbSuccess, cbError);
-    }
+      httpData('DELETE', url, api, headers, JSON.stringify(data), cbSuccess, cbError);
+    },
+    FORM_DATA: function (url, api, data, cbSuccess, cbError) {
+      let headers = {};
+      //headers['Content-Type'] = 'multipart/form-data';
+      let formData = new FormData();
+
+      for (let key in data) {
+        formData.append(key, data[key]);
+      }
+      const final = new URLSearchParams();
+      for (const pair of formData) {
+        final.append(pair[0], pair[1]);
+      }
+      console.log("Form: ", final);
+      httpData('POST', url, api, headers, final, cbSuccess, cbError);
+    },
   });
 };
 
-export default HttpUtils;
+export default HttpUtils();

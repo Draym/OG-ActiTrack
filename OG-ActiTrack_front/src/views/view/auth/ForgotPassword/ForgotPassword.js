@@ -8,14 +8,14 @@ import {
   Form,
   Row
 } from 'reactstrap';
-import HttpUtils from "../../../../Utils/api/HttpUtils";
-import TString from "../../../../Utils/TString";
-import CBlocError from "../../../Components/CBlocError";
-import CFormInput from "../../../Components/CFormInput";
+import HttpUtils from "../../../../utils/api/HttpUtils";
+import TString from "../../../../utils/TString";
+import CBlocError from "../../../components/CBlocError";
+import CFormInput from "../../../components/CFormInput";
 import '../custom.css';
 import './forgotPassword.css';
-import {ApiEndpoint} from "../../../../Utils/api/ApiEndpoint";
-import {RoutesEndpoint} from "../../../../Utils/RoutesEndpoint";
+import {ApiEndpoint} from "../../../../utils/api/ApiEndpoint";
+import {RoutesEndpoint} from "../../../../utils/RoutesEndpoint";
 
 class ForgotPassword extends Component {
   constructor(props) {
@@ -46,7 +46,7 @@ class ForgotPassword extends Component {
     let data = {
       'email': this.state.email
     };
-    HttpUtils().GET(process.env.REACT_APP_SERVER_URL, ApiEndpoint.AUTH_ForgotPassword, data, function (data) {
+    HttpUtils.GET(process.env.REACT_APP_SERVER_URL, ApiEndpoint.AUTH_ForgotPassword, data, function (data) {
       if (data) {
         this.setState({jobIsDone: true})
       }
@@ -78,7 +78,7 @@ class ForgotPassword extends Component {
                 <CFormInput gui={{headIcon: "icon-user"}} type={"text"} placeHolder={"Email"}
                             value={this.state.email} onChange={this.handleEmailChange}
                             error={this.state.errorEmail}/>
-                <Button color="primary" type="submit" block onClick={this.triggerForgotPassword}>Send me a
+                <Button className="mt-2" color="primary" type="submit" block onClick={this.triggerForgotPassword}>Send me a
                   verification email</Button>
               </Form>
             </CardBody>

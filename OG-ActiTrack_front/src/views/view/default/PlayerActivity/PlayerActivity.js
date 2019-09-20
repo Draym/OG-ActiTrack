@@ -9,22 +9,22 @@ import {
   Col, InputGroup,
   Row
 } from 'reactstrap';
-import HttpUtils from "../../../../Utils/api/HttpUtils";
-import UserSession from "../../../../Utils/UserSession";
-import TString from "../../../../Utils/TString";
+import HttpUtils from "../../../../utils/api/HttpUtils";
+import UserSession from "../../../../utils/storage/UserSession";
+import TString from "../../../../utils/TString";
 
 import 'moment/locale/fr';
 import 'moment/locale/en-gb';
 
-import CDatePicker from "../../../Components/CDatePicker";
-import {EDatePicker} from "../../../Components/CDatePicker/EDatePicker";
-import CPopInfo from "../../../Components/CPopover/CPopInfo";
-import CBoolInput from "../../../Components/CBoolInput";
+import CDatePicker from "../../../components/CDatePicker";
+import {EDatePicker} from "../../../components/CDatePicker/EDatePicker";
+import CPopInfo from "../../../components/CPopup/CPopInfo";
+import CBoolInput from "../../../components/CBoolInput";
 import PlayerActivityChart from "./widgets/PlayerActivityChart";
-import SelectServerForm from "../../../Components/Widgets/forms/SelectServerForm";
-import SelectPlayerForm from "../../../Components/Widgets/forms/SelectPlayerForm";
-import {ApiEndpoint} from "../../../../Utils/api/ApiEndpoint";
-import CButtonLoading from "../../../Components/CButton/CButtonLoading";
+import SelectServerInput from "../../../components/Widgets/inputs/select/SelectServerInput";
+import SearchPlayerInput from "../../../components/Widgets/inputs/search/SearchPlayerInput";
+import {ApiEndpoint} from "../../../../utils/api/ApiEndpoint";
+import CButtonLoading from "../../../components/CButton/CButtonLoading";
 
 class PlayerActivity extends Component {
   constructor(props) {
@@ -91,7 +91,7 @@ class PlayerActivity extends Component {
     this.setState({loading: {loadChart: true}});
     let callParameters = this.generateApiEndpointForChart();
 
-    HttpUtils().GET(process.env.REACT_APP_SERVER_URL, callParameters.endpoint, callParameters.parameters, function (data) {
+    HttpUtils.GET(process.env.REACT_APP_SERVER_URL, callParameters.endpoint, callParameters.parameters, function (data) {
       if (data) {
         this.setState({
           activityLogs: data,
@@ -292,10 +292,10 @@ class PlayerActivity extends Component {
             </div>
           </CardHeader>
           <CardBody>
-            <SelectServerForm className="mb-3" onChange={this.handleServerChange}/>
+            <SelectServerInput className="mb-3" onChange={this.handleServerChange}/>
             {!TString.isNull(this.state.server) &&
-            (<SelectPlayerForm onChange={this.handlePlayerChange} onValidate={this.onPlayerValidate}
-                               server={this.state.server} error={this.state.errorPlayer}/>)}
+            (<SearchPlayerInput onChange={this.handlePlayerChange} onValidate={this.onPlayerValidate}
+                                apiParameter={{serverName: this.state.server}} error={this.state.errorPlayer}/>)}
           </CardBody>
         </Card>
       );

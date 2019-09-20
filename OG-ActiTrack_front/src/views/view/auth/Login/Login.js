@@ -10,17 +10,18 @@ import {
   Form,
   Row
 } from 'reactstrap';
-import HttpUtils from "../../../../Utils/api/HttpUtils";
-import TString from "../../../../Utils/TString";
-import CFormInput from "../../../Components/CFormInput";
-import UserSession from "../../../../Utils/UserSession";
+import HttpUtils from "../../../../utils/api/HttpUtils";
+import TString from "../../../../utils/TString";
+import CFormInput from "../../../components/CFormInput";
+import UserSession from "../../../../utils/storage/UserSession";
 import {withTranslation} from 'react-i18next';
-import {ApiEndpoint} from "../../../../Utils/api/ApiEndpoint";
-import CButtonLoading from "../../../Components/CButton/CButtonLoading";
-import {RoutesEndpoint} from "../../../../Utils/RoutesEndpoint";
+import {ApiEndpoint} from "../../../../utils/api/ApiEndpoint";
+import CButtonLoading from "../../../components/CButton/CButtonLoading";
+import {RoutesEndpoint} from "../../../../utils/RoutesEndpoint";
 
 import '../custom.css';
 import './login.css';
+import TEncoder from "../../../../utils/TEncoder";
 
 class Login extends Component {
   constructor(props) {
@@ -32,8 +33,10 @@ class Login extends Component {
       errorPassword: '',
       loading: {
         login: false
-      }
+      },
+      redirect: TEncoder.b64ToString(TString.extractUrlParam("redirect", this.props.location.search))
     };
+    console.log("redirect: ", this.state.redirect, this.props);
     this.triggerLogin = this.triggerLogin.bind(this);
     this.triggerForgotPassword = this.triggerForgotPassword.bind(this);
     this.handleEmailChange = this.handleEmailChange.bind(this);
@@ -61,11 +64,11 @@ class Login extends Component {
       'password': this.state.password,
       'origin': 'OG-ActiTrack_front'
     };
-    HttpUtils().POST(process.env.REACT_APP_SERVER_URL, ApiEndpoint.AUTH_Login, auth, function (data) {
+    HttpUtils.POST(process.env.REACT_APP_SERVER_URL, ApiEndpoint.AUTH_Login, auth, function (data) {
       this.setState({loading: {login: false}});
       if (data) {
         UserSession.storeSession(data);
-        this.props.history.push(RoutesEndpoint.HOME);
+        this.props.history.push(this.state.redirect ? this.state.redirect : RoutesEndpoint.HOME);
       }
     }.bind(this), function (errorStatus, error) {
       console.log(error);
@@ -98,7 +101,7 @@ class Login extends Component {
             <Col md="8">
               <CardGroup>
                 <Card className="p-4">
-                  <CardBody>
+                  <CardBody className="p-2">
                     <Form>
                       <h1>Login</h1>
                       <p className="text-muted">Sign In to your account</p>
@@ -124,7 +127,7 @@ class Login extends Component {
                     </Form>
                   </CardBody>
                 </Card>
-                <Card className="text-white bg-primary py-5 d-md-down-none" style={{width: '44%'}}>
+                <Card className="text-white bg-primary py-5 d-md-down-none">
                   <CardBody className="text-center">
                     <div>
                       <h2>{t('page.login.signUp.title')}</h2>

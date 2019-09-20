@@ -4,11 +4,25 @@ import {
   CardHeader,
   CardBody
 } from "reactstrap/es";
-import {Col, FormFeedback, Row} from "reactstrap";
+import {Col, Row} from "reactstrap";
 import CButtonLoading from "../CButton/CButtonLoading";
-import HttpUtils from "../../../Utils/api/HttpUtils";
+import HttpUtils from "../../../utils/api/HttpUtils";
 import CBlocError from "../CBlocError";
 import CBlocSuccess from "../CBlocSuccess";
+import PropTypes from 'prop-types';
+
+const propTypes = {
+  endpoint: PropTypes.string,
+  verification: PropTypes.func,
+  success: PropTypes.func,
+  requirements: PropTypes.array,
+  title: PropTypes.string,
+  desc: PropTypes.string,
+  col: PropTypes.number,
+  submitType: PropTypes.string,
+  submitTitle: PropTypes.string
+};
+const defaultProps = {};
 
 class CFormSubmit extends Component {
 
@@ -42,7 +56,7 @@ class CFormSubmit extends Component {
       return;
     }
     this.setState({loading: true});
-    HttpUtils().PUT(process.env.REACT_APP_SERVER_URL, this.props.endpoint, this.state.data, function (data) {
+    HttpUtils.PUT(process.env.REACT_APP_SERVER_URL, this.props.endpoint, this.state.data, function (data) {
       this.setState({
         error: (!data ? "There is no data on server for that request." : null),
         success: (data ? "Your data have been updated successfully." : null),
@@ -136,5 +150,8 @@ class CFormSubmit extends Component {
     );
   };
 }
+
+CFormSubmit.defaultProps = defaultProps;
+CFormSubmit.propTypes = propTypes;
 
 export default CFormSubmit;

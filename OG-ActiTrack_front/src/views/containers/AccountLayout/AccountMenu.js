@@ -1,11 +1,11 @@
 import React, {Component} from 'react';
-import {RoutesEndpoint} from "../../../Utils/RoutesEndpoint";
+import {RoutesEndpoint} from "../../../utils/RoutesEndpoint";
 import {
   ListGroup, ListGroupItem, Badge
 } from 'reactstrap';
 import {withTranslation} from "react-i18next";
 import {withRouter} from 'react-router-dom';
-import UserSession from "../../../Utils/UserSession";
+import UserSession from "../../../utils/storage/UserSession";
 import $ from 'jquery';
 
 class AccountMenu extends Component {

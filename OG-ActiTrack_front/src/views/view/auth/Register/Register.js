@@ -8,15 +8,15 @@ import {
   Form,
   Row
 } from 'reactstrap';
-import HttpUtils from "../../../../Utils/api/HttpUtils";
-import TString from "../../../../Utils/TString";
-import CFormInput from "../../../Components/CFormInput";
-import CBlocError from "../../../Components/CBlocError";
+import HttpUtils from "../../../../utils/api/HttpUtils";
+import TString from "../../../../utils/TString";
+import CFormInput from "../../../components/CFormInput";
+import CBlocError from "../../../components/CBlocError";
 import '../custom.css';
 import './register.css';
-import {ApiEndpoint} from "../../../../Utils/api/ApiEndpoint";
-import CButtonLoading from "../../../Components/CButton/CButtonLoading";
-import {RoutesEndpoint} from "../../../../Utils/RoutesEndpoint";
+import {ApiEndpoint} from "../../../../utils/api/ApiEndpoint";
+import CButtonLoading from "../../../components/CButton/CButtonLoading";
+import {RoutesEndpoint} from "../../../../utils/RoutesEndpoint";
 
 class Register extends Component {
   constructor(props) {
@@ -72,7 +72,7 @@ class Register extends Component {
       'pseudo': this.state.username,
       'password': this.state.password
     };
-    HttpUtils().POST(process.env.REACT_APP_SERVER_URL, ApiEndpoint.AUTH_Register, auth, function (data) {
+    HttpUtils.POST(process.env.REACT_APP_SERVER_URL, ApiEndpoint.AUTH_Register, auth, function (data) {
       if (data) {
         this.setState({
           jobIsDone: true,

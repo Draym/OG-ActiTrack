@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 
 import {AppNavbarBrand, AppSidebarToggler} from '@coreui/react';
 import logo from '../../../assets/img/brand/logo.png'
-import CLanguageCtrl from "../../Components/CLanguageCtrl";
+import CLanguageCtrl from "../../components/CLanguageCtrl";
 
 
 class AuthHeader extends Component {

@@ -10,11 +10,11 @@ import {
 } from 'reactstrap';
 import {css} from '@emotion/core';
 import {ClipLoader} from 'react-spinners';
-import HttpUtils from "../../../../Utils/api/HttpUtils";
+import HttpUtils from "../../../../utils/api/HttpUtils";
 import '../custom.css';
 import './validateAccount.css';
-import {ApiEndpoint} from "../../../../Utils/api/ApiEndpoint";
-import {RoutesEndpoint} from "../../../../Utils/RoutesEndpoint";
+import {ApiEndpoint} from "../../../../utils/api/ApiEndpoint";
+import {RoutesEndpoint} from "../../../../utils/RoutesEndpoint";
 
 const override = css`
     display: block;
@@ -55,7 +55,7 @@ class ValidateAccount extends Component {
       identifier: this.state.verificationLink
     };
     console.log("VerifyLink:", data);
-    HttpUtils().GET(process.env.REACT_APP_SERVER_URL, ApiEndpoint.AUTH_Validate, data, function (data) {
+    HttpUtils.GET(process.env.REACT_APP_SERVER_URL, ApiEndpoint.AUTH_Validate, data, function (data) {
       setTimeout(function () {
         this.setState({
           isLinkValid: data === true,

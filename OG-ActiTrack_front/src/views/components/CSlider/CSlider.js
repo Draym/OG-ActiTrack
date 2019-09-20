@@ -1,5 +1,23 @@
 import React, {Component} from 'react';
 import ReactTooltip from 'react-tooltip'
+import PropTypes from 'prop-types';
+
+const propTypes = {
+  // mandatory
+  id: PropTypes.string,
+  value: PropTypes.any,
+  // style
+  width: PropTypes.number, // slider width
+  position: PropTypes.string, // 'top' or 'bottom'
+  sliderLabelStart: PropTypes.string,
+  sliderLabelMid: PropTypes.string,
+  sliderLabelEnd: PropTypes.string,
+  sliderTipText: PropTypes.string
+};
+
+const defaultProps = {
+  position: 'bottom'
+};
 
 class CSlider extends Component {
   constructor(props) {
@@ -19,7 +37,7 @@ class CSlider extends Component {
 
 
   render() {
-    let printLabels = function(position) {
+    let printLabels = function (position) {
       if (position === this.props.position) {
         return (<div className="slider-labels">
           <label className="slider-min" htmlFor={this.props.id}>{this.props.sliderLabelStart}</label>
@@ -29,16 +47,20 @@ class CSlider extends Component {
       }
     }.bind(this);
     return (
-     <div>
-       {printLabels("top")}
-       <input id={this.props.id} type="range" className="custom-range" style={{width: this.props.width + "px"}}
-              onChange={this.onDateSliderChange} value={this.state.sliderValue}
-              data-for={this.props.id + "-tip"} data-tip/>
-       {printLabels("bottom")}
-       <ReactTooltip id={this.props.id + "-tip"} getContent={() => this.props.sliderTipText}/>
-     </div>
+      <div>
+        {printLabels("top")}
+        <input id={this.props.id} type="range" className="custom-range"
+               style={this.props.width ? {width: this.props.width + "px"} : null}
+               onChange={this.onDateSliderChange} value={this.state.sliderValue}
+               data-for={this.props.id + "-tip"} data-tip/>
+        {printLabels("bottom")}
+        <ReactTooltip id={this.props.id + "-tip"} getContent={() => this.props.sliderTipText}/>
+      </div>
     );
   }
 }
+
+CSlider.defaultProps = defaultProps;
+CSlider.propTypes = propTypes;
 
 export default CSlider;

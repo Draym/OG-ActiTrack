@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import { Card, CardBody, CardHeader, Col, Row, Table } from 'reactstrap';
-import UserSession from "../../../../Utils/UserSession";
-import CFormSubmit from "../../../Components/CFormSubmit";
-import {ApiEndpoint} from "../../../../Utils/api/ApiEndpoint";
-import CFormInput from "../../../Components/CFormInput";
-import CDatePicker from "../../../Components/CDatePicker";
-import {EDatePicker} from "../../../Components/CDatePicker/EDatePicker";
+import UserSession from "../../../../utils/storage/UserSession";
+import CFormSubmit from "../../../components/CFormSubmit";
+import {ApiEndpoint} from "../../../../utils/api/ApiEndpoint";
+import CFormInput from "../../../components/CFormInput";
+import CDatePicker from "../../../components/CDatePicker";
+import {EDatePicker} from "../../../components/CDatePicker/EDatePicker";
 
 
 class BugReport extends Component {

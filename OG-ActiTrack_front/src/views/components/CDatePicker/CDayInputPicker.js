@@ -1,12 +1,15 @@
 import React, {Component} from 'react';
-import i18next from 'i18next';
 import DayPickerInput from 'react-day-picker/DayPickerInput';
 import 'react-day-picker/lib/style.css';
 
 import MomentLocaleUtils from 'react-day-picker/moment';
 import 'moment/locale/fr';
 import 'moment/locale/en-gb';
+import PropTypes from 'prop-types';
 
+const propTypes = {
+  handleDayChange: PropTypes.func
+};
 class CDayInputPicker extends Component {
   constructor(props) {
     super(props);
@@ -20,7 +23,7 @@ class CDayInputPicker extends Component {
     this.setState({
       selectedDay
     });
-    this.props.onChange([selectedDay]);
+    this.props.handleDayChange({first: selectedDay});
   }
 
 
@@ -29,15 +32,19 @@ class CDayInputPicker extends Component {
     return (
         <DayPickerInput
           value={selectedDays}
+          inputProps={{readOnly: true}}
           onDayChange={this.handleDayChange}
           dayPickerProps={{
-            locale: i18next.t("date.format"),
+            locale: "eng",
             localeUtils: MomentLocaleUtils,
-            selectedDays: selectedDays
+            selectedDays: selectedDays,
+            disabledDays:{ after: new Date() }
           }}
         />
     );
   }
 }
+
+CDayInputPicker.propTypes = propTypes;
 
 export default CDayInputPicker;

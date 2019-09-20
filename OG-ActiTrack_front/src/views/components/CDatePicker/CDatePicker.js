@@ -4,44 +4,56 @@ import CWeekPicker from "./CWeekPicker";
 import {EDatePicker} from "./EDatePicker";
 import CDayInputPicker from "./CDayInputPicker";
 import CWeekInputPicker from "./CWeekInputPicker";
-import COptionalCol from "../COptionalCol";
+import CDayRangePicker from "./CDayRangePicker";
+import CDayRangeInputPicker from "./CDayRangeInputPicker";
+import CMonthInputPicker from "./CMonthInputPicker";
+import CYearInputPicker from "./CYearInputPicker";
+import CQuarterInputPicker from "./CQuarterInputPicker";
+
+import PropTypes from 'prop-types';
+
+const propTypes = {
+  dateTypeSelected: PropTypes.number,
+  handleDayChange: PropTypes.func
+};
+
+const defaultProps = {
+  dateTypeSelected: 1
+};
 
 class CDatePicker extends Component {
-  constructor(props) {
-    super(props);
-    this.onChange = this.onChange.bind(this);
-  }
-
-  onChange(days) {
-    if (this.props.dataKey) {
-      let data = {};
-      let dateTypeSelected = this.props.dateTypeSelected;
-      data[this.props.dataKey] = (days.length === 1 && (dateTypeSelected === EDatePicker.DayPicker || dateTypeSelected === EDatePicker.DayInputPicker) ? days[0] : days);
-      this.props.onChange(data);
-    } else {
-      this.props.onChange(days);
-    }
-  }
-
   render() {
-    let drawDateSelection = function (dateTypeSelected) {
+    const {dateTypeSelected} = this.props;
+    let drawDateSelection = function () {
       if (dateTypeSelected === EDatePicker.DayPicker) {
-        return (<CDayPicker onChange={this.onChange}/>);
+        return (<CDayPicker handleDayChange={this.props.handleDayChange}/>);
       } else if (dateTypeSelected === EDatePicker.WeekPicker) {
-        return (<CWeekPicker onChange={this.onChange}/>);
+        return (<CWeekPicker handleDayChange={this.props.handleDayChange}/>);
       } else if (dateTypeSelected === EDatePicker.DayInputPicker) {
-        return (<CDayInputPicker onChange={this.onChange}/>);
+        return (<CDayInputPicker handleDayChange={this.props.handleDayChange}/>);
       } else if (dateTypeSelected === EDatePicker.WeekInputPicker) {
-        return (<CWeekInputPicker onChange={this.onChange}/>);
+        return (<CWeekInputPicker handleDayChange={this.props.handleDayChange}/>);
+      } else if (dateTypeSelected === EDatePicker.DayRangePicker) {
+        return (<CDayRangePicker handleDayChange={this.props.handleDayChange}/>);
+      } else if (dateTypeSelected === EDatePicker.DayRangeInputPicker) {
+        return (<CDayRangeInputPicker handleDayChange={this.props.handleDayChange}/>);
+      } else if (dateTypeSelected === EDatePicker.MonthInputPicker) {
+        return (<CMonthInputPicker handleDayChange={this.props.handleDayChange}/>);
+      } else if (dateTypeSelected === EDatePicker.QuarterInputPicker) {
+        return (<CQuarterInputPicker handleDayChange={this.props.handleDayChange}/>);
+      } else if (dateTypeSelected === EDatePicker.YearInputPicker) {
+        return (<CYearInputPicker handleDayChange={this.props.handleDayChange}/>);
       }
     }.bind(this);
     return (
-      <COptionalCol col={this.props.col}>
-        {this.props.title && <p className="text-muted input-title">{this.props.title}</p>}
-        {drawDateSelection(this.props.dateTypeSelected)}
-      </COptionalCol>
+      <div>
+        {drawDateSelection()}
+      </div>
     );
   }
 }
+
+CDatePicker.defaultProps = defaultProps;
+CDatePicker.propTypes = propTypes;
 
 export default CDatePicker;
