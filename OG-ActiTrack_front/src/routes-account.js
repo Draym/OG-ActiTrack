@@ -1,14 +1,14 @@
 import React from 'react';
-import {RoutesEndpoint} from "./Utils/RoutesEndpoint";
+import {RoutesEndpoint} from "./utils/RoutesEndpoint";
 
-const Profile = React.lazy(() => import('./views/View/default/Account/Profile'));
-const Premium = React.lazy(() => import('./views/View/default/Account/Premium'));
-const DashboardSettings = React.lazy(() => import('./views/View/default/Account/DashboardSettings'));
-const Contact = React.lazy(() => import('./views/View/default/Account/Contact'));
-const Security = React.lazy(() => import('./views/View/default/Account/Security'));
-const GroupManagement = React.lazy(() => import('./views/View/default/Account/GroupManagement'));
-const FriendList = React.lazy(() => import('./views/View/default/Account/FriendList'));
-const BugReport = React.lazy(() => import('./views/View/default/Account/BugReport'));
+const Profile = React.lazy(() => import('./views/view/default/Account/Profile'));
+const Premium = React.lazy(() => import('./views/view/default/Account/Premium'));
+const DashboardSettings = React.lazy(() => import('./views/view/default/Account/DashboardSettings'));
+const Contact = React.lazy(() => import('./views/view/default/Account/Contact'));
+const Security = React.lazy(() => import('./views/view/default/Account/Security'));
+const GroupManagement = React.lazy(() => import('./views/view/default/Account/GroupManagement'));
+const FriendList = React.lazy(() => import('./views/view/default/Account/FriendList'));
+const BugReport = React.lazy(() => import('./views/view/default/Account/BugReport'));
 
 const routes = [
   { path: RoutesEndpoint.ACCOUNT_Profile, exact: true,  name: 'User Profile', component: Profile },

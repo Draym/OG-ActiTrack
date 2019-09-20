@@ -1,16 +1,16 @@
 import React, { Component } from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import './App.scss';
-import {RoutesEndpoint} from "./Utils/RoutesEndpoint";
+import {RoutesEndpoint} from "./utils/RoutesEndpoint";
 
 const loading = () => <div className="animated fadeIn pt-3 text-center">Loading...</div>;
 
 // Containers
-const DefaultLayout = React.lazy(() => import('./views/Containers/DefaultLayout'));
-const AuthLayout = React.lazy(() => import('./views/Containers/AuthLayout'));
+const DefaultLayout = React.lazy(() => import('./views/containers/DefaultLayout'));
+const AuthLayout = React.lazy(() => import('./views/containers/AuthLayout'));
 
 // Pages
-const Page404 = React.lazy(() => import('./views/Pages/Page404'));
+const Page404 = React.lazy(() => import('./views/pages/Page404'));
 
 class App extends Component {
 

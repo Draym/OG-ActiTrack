@@ -25,6 +25,7 @@ import SelectServerInput from "../../../components/Widgets/inputs/select/SelectS
 import SearchPlayerInput from "../../../components/Widgets/inputs/search/SearchPlayerInput";
 import {ApiEndpoint} from "../../../../utils/api/ApiEndpoint";
 import CButtonLoading from "../../../components/CButton/CButtonLoading";
+import DateTypeSelector from "../../../components/Widgets/selector/DateTypeSelector";
 
 class PlayerActivity extends Component {
   constructor(props) {
@@ -39,6 +40,7 @@ class PlayerActivity extends Component {
     this.handleDayChange = this.handleDayChange.bind(this);
     this.handleFriendDataChange = this.handleFriendDataChange.bind(this);
     this.handleGlobalDataChange = this.handleGlobalDataChange.bind(this);
+    this.isParametersValid = this.isParametersValid.bind(this);
     this.generateApiEndpointForChart = this.generateApiEndpointForChart.bind(this);
     this.state = {
       server: '',
@@ -47,7 +49,7 @@ class PlayerActivity extends Component {
 
       dateTypeSelected: EDatePicker.DayInputPicker,
       groupTypeSelected: 1,
-      selectedDays: [],
+      dateRange: {},
 
       guiParameters: false,
       guiChart: false,
@@ -65,9 +67,9 @@ class PlayerActivity extends Component {
     console.log("Generate chart for ", this.state.player);
     let parameters = {
       server: this.state.server,
-      playerId: this.state.player.playerId,
-      start: new Date(this.state.selectedDays[0]).toISOString().split("T")[0] + "T00:00:00.000",
-      end: new Date(this.state.selectedDays[this.state.selectedDays.length - 1]).toISOString().split("T")[0] + "T23:59:59.999"
+      playerId: this.state.player.id,
+      start: new Date(this.state.dateRange.first).toISOString().split("T")[0] + "T00:00:00.000",
+      end: new Date(this.state.dateRange.last).toISOString().split("T")[0] + "T00:00:00.000"
     };
     if (this.state.friendData === true) {
       return {
@@ -128,8 +130,8 @@ class PlayerActivity extends Component {
     });
   }
 
-  onPlayerValidate(state) {
-    this.setState({guiParameters: state});
+  onPlayerValidate(status) {
+    this.setState({guiParameters: status});
   }
 
   handleServerChange = selectedOption => {
@@ -145,9 +147,10 @@ class PlayerActivity extends Component {
     });
   };
 
-  handleDayChange(days) {
+  handleDayChange(range) {
     this.setState({
-      selectedDays: days, hasChange: true
+      dateRange: range,
+      hasChange: true
     });
   };
 
@@ -164,6 +167,11 @@ class PlayerActivity extends Component {
       hasChange: true
     })
   };
+
+  isParametersValid() {
+    return (this.state.server && this.state.player && (this.state.dateTypeSelected === EDatePicker.All || this.state.dateRange.first));
+  }
+
 
   render() {
     let drawPremiumParameters = function () {
@@ -241,36 +249,29 @@ class PlayerActivity extends Component {
             </CardHeader>
             <CardBody>
               <Row>
-                <Col md={5}>
+                <Col sm={12} md={12} lg={4} xl={4}>
                   <span className="btn-label">Select the Range:</span>
                 </Col>
-                <Col md={7}>
-                  <ButtonToolbar aria-label="Toolbar to select the date type">
-                    <ButtonGroup className="mr-3" aria-label="First group">
-                      <Button color="outline-primary"
-                              onClick={() => this.onDateTypeBtnClick(EDatePicker.DayInputPicker)}
-                              active={this.state.dateTypeSelected === EDatePicker.DayInputPicker}>Day</Button>
-                      <Button color="outline-primary"
-                              onClick={() => this.onDateTypeBtnClick(EDatePicker.WeekInputPicker)}
-                              active={this.state.dateTypeSelected === EDatePicker.WeekInputPicker}>Week</Button>
-                    </ButtonGroup>
-                  </ButtonToolbar>
+                <Col sm={12} md={12} lg={8} xl={8} className="btn-sp-3">
+                  <DateTypeSelector onChange={this.onDateTypeBtnClick} default={this.state.dateTypeSelected}/>
                 </Col>
               </Row>
+              {this.state.dateTypeSelected !== EDatePicker.All &&
               <Row className="parameter-bloc">
-                <Col md={5}>
+                <Col sm={12} md={12} lg={4} xl={4} className="pt-1 mb-2">
                   <span>Select the Date:</span>
                 </Col>
-                <Col md={7}>
-                  <CDatePicker onChange={this.handleDayChange} dateTypeSelected={this.state.dateTypeSelected}/>
+                <Col sm={12} md={12} lg={8} xl={8}>
+                  <CDatePicker handleDayChange={this.handleDayChange} dateTypeSelected={this.state.dateTypeSelected}/>
                 </Col>
               </Row>
+              }
               <Row className="parameter-bloc">
                 <Col>
                   <CButtonLoading color="primary"
                                   onClick={this.createChart}
                                   loading={this.state.loading.loadChart}
-                                  disabled={this.state.selectedDays.length === 0 || !this.state.hasChange}
+                                  disabled={!this.isParametersValid() || !this.state.hasChange}
                                   className="float-right"
                                   text="Generate chart"
                                   loadingText="Generating chart"/>
@@ -303,7 +304,7 @@ class PlayerActivity extends Component {
     let drawChart = function () {
       if (this.state.guiChart) {
         return (
-          <PlayerActivityChart selectedDays={this.state.selectedDays} data={this.state.activityLogs}
+          <PlayerActivityChart dateRange={this.state.dateRange} data={this.state.activityLogs}
                                player={this.state.player.playerName} isGroup={this.state.groupTypeSelected === 1}
                                isUnique={!this.state.globalData && !this.state.friendData}/>
         );

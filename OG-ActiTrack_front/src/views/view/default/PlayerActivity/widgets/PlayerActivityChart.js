@@ -23,11 +23,11 @@ class PlayerActivityChart extends Component {
 
   render() {
 
-    let dateStart = moment(this.props.selectedDays[0]).locale(i18next.t("date.format")).format("DD MMMM YYYY");
-    let dateEnd = moment(this.props.selectedDays[this.props.selectedDays.length - 1]).locale(i18next.t("date.format")).format("DD MMMM YYYY");
+    let dateStart = moment(this.props.dateRange.first).locale(i18next.t("date.format")).format("DD MMMM YYYY");
+    let dateEnd = moment(this.props.dateRange.last).locale(i18next.t("date.format")).format("DD MMMM YYYY");
 
     let renderChart = function () {
-      if (this.props.selectedDays.length === 1) {
+      if (!this.props.dateRange.last) {
         if (this.props.isGroup) {
           let dataResults = ChartCreator.GeneratePlayerActivityPerDay(this.props.data, this.props.isUnique ? 15 : 5, ["Planet with activity", "Planet without activity"]);
           return (
@@ -87,7 +87,7 @@ class PlayerActivityChart extends Component {
             <Col sm="5">
               <CardTitle className="mb-0">Activity of {this.props.player}:</CardTitle>
               <div
-                className="small text-muted">For {dateStart} {this.props.selectedDays.length === 1 ? '' : ' to ' + dateEnd}</div>
+                className="small text-muted">For {dateStart} {this.props.dateRange.last ? ' to ' + dateEnd : ''}</div>
             </Col>
           </Row>
           {renderChart()}

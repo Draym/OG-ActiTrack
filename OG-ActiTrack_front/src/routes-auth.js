@@ -1,11 +1,11 @@
 import React from 'react';
-import {RoutesEndpoint} from "./Utils/RoutesEndpoint";
+import {RoutesEndpoint} from "./utils/RoutesEndpoint";
 
-const Login = React.lazy(() => import('./views/View/auth/Login'));
-const Register = React.lazy(() => import('./views/View/auth/Register'));
-const ValidateAccount = React.lazy(() => import('./views/View/auth/ValidateAccount'));
-const ForgotPassword = React.lazy(() => import('./views/View/auth/ForgotPassword'));
-const ResetPassword = React.lazy(() => import('./views/View/auth/ResetPassword'));
+const Login = React.lazy(() => import('./views/view/auth/Login'));
+const Register = React.lazy(() => import('./views/view/auth/Register'));
+const ValidateAccount = React.lazy(() => import('./views/view/auth/ValidateAccount'));
+const ForgotPassword = React.lazy(() => import('./views/view/auth/ForgotPassword'));
+const ResetPassword = React.lazy(() => import('./views/view/auth/ResetPassword'));
 
 const routes = [
   { path: RoutesEndpoint.AUTH_Login, exact: true, name: 'Login', component: Login },

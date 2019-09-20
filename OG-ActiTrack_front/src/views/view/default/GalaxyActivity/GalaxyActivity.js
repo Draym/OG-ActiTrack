@@ -24,7 +24,7 @@ class GalaxyActivity extends Component {
       currentSliderDate: this.getCurrentSliderDate(0),
       formattedData: {},
       currentData: [],
-      selectedDays: [],
+      dateRange: {},
 
       guiParameters: false,
       guiChart: false,
@@ -43,14 +43,15 @@ class GalaxyActivity extends Component {
     this.onDateSliderChange = this.onDateSliderChange.bind(this);
     this.handleFriendDataChange = this.handleFriendDataChange.bind(this);
     this.handleGlobalDataChange = this.handleGlobalDataChange.bind(this);
+    this.isParametersValid = this.isParametersValid.bind(this);
     this.generateApiEndpointForChart = this.generateApiEndpointForChart.bind(this);
   }
 
   generateApiEndpointForChart() {
     let parameters = {
       server: this.state.server,
-      start: new Date(this.state.selectedDays[0]).toISOString().split("T")[0] + "T00:00:00.000",
-      end: new Date(this.state.selectedDays[this.state.selectedDays.length - 1]).toISOString().split("T")[0] + "T23:59:59.999"
+      start: new Date(this.state.dateRange.first).toISOString().split("T")[0] + "T00:00:00.000",
+      end: new Date(this.state.dateRange.last).toISOString().split("T")[0] + "T00:00:00.000"
     };
     if (this.state.friendData === true) {
       return {
@@ -127,9 +128,9 @@ class GalaxyActivity extends Component {
     });
   }
 
-  handleDayChange(days) {
+  handleDayChange(range) {
     this.setState({
-      selectedDays: days, hasChange: true
+      dateRange: range, hasChange: true
     });
   };
 
@@ -168,6 +169,10 @@ class GalaxyActivity extends Component {
     let minutes = (fullTime % 60 >> 0);
     console.log("time: ", hour + "h" + minutes);
     return hour + "h" + (minutes < 10 ? "0" + minutes : minutes);
+  }
+
+  isParametersValid() {
+    return (this.state.server && (this.state.dateTypeSelected === EDatePicker.All || this.state.dateRange.first));
   }
 
   render() {
@@ -242,7 +247,7 @@ class GalaxyActivity extends Component {
                   <CButtonLoading color="primary"
                                   onClick={this.createChart}
                                   loading={this.state.loading.loadChart}
-                                  disabled={this.state.selectedDays.length === 0 || !this.state.hasChange}
+                                  disabled={!this.isParametersValid() || !this.state.hasChange}
                                   className="float-right"
                                   text="Generate chart"
                                   loadingText="Generating chart"/>

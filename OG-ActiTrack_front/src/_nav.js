@@ -1,5 +1,5 @@
 import i18next from 'i18next';
-import {RoutesEndpoint} from "./Utils/RoutesEndpoint";
+import {RoutesEndpoint} from "./utils/RoutesEndpoint";
 
 
 export default {

@@ -1,12 +1,12 @@
 import React from 'react';
-import {RoutesEndpoint} from "./Utils/RoutesEndpoint";
-import EAuthRole from "./Utils/auth/EAuthRole";
+import {RoutesEndpoint} from "./utils/RoutesEndpoint";
+import EAuthRole from "./utils/auth/EAuthRole";
 
-const Home = React.lazy(() => import('./views/View/default/Home'));
-const Dashboard = React.lazy(() => import('./views/View/default/Dashboard'));
-const PlayerActivity = React.lazy(() => import('./views/View/default/PlayerActivity/PlayerActivity'));
-const GalaxyActivity = React.lazy(() => import('./views/View/default/GalaxyActivity'));
-const AccountLayout = React.lazy(() => import('./views/Containers/AccountLayout'));
+const Home = React.lazy(() => import('./views/view/default/Home'));
+const Dashboard = React.lazy(() => import('./views/view/default/Dashboard'));
+const PlayerActivity = React.lazy(() => import('./views/view/default/PlayerActivity/PlayerActivity'));
+const GalaxyActivity = React.lazy(() => import('./views/view/default/GalaxyActivity'));
+const AccountLayout = React.lazy(() => import('./views/containers/AccountLayout'));
 
 const routes = [
   { path: RoutesEndpoint.HOME, exact: true, name: 'Home', component: Home, restricted: EAuthRole.NONE },

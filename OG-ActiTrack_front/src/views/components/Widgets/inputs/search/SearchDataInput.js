@@ -110,9 +110,9 @@ class SearchDataInput extends CComponent {
         selected: selectedOption.label,
         errorValue: ''
       });
-      this.props.onChange(selectedOption);
+      this.props.onChange(selectedOption.value);
       this.props.onValidate(true);
-    } else if (selectedOption) {
+    } else {
       this.props.onValidate(false);
     }
   };
