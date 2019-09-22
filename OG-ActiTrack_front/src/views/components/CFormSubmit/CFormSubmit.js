@@ -40,7 +40,7 @@ class CFormSubmit extends Component {
     this.checkRequirement = this.checkRequirement.bind(this);
 
     React.Children.map(this.props.children, (child) => {
-      if (child.props.defaultValue)
+      if (child.props.defaultValue && child.props.dataKey)
         this.state.data[child.props.dataKey] = child.props.defaultValue;
     });
     if (!this.props.endpoint)
@@ -125,7 +125,8 @@ class CFormSubmit extends Component {
                   <Col>
                     {React.cloneElement(child, {
                       onChange: this.handleInputChange,
-                      value: this.state.data[child.props.dataKey]
+                      value: child.props.dataKey ? this.state.data[child.props.dataKey] : child.props.defaultValue,
+                      editable: !!child.props.dataKey
                     })}
                   </Col>
                 </Row>)

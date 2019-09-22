@@ -1,6 +1,7 @@
 import UserSession from "../storage/UserSession";
 import {RoutesEndpoint} from "../RoutesEndpoint";
 import TEncoder from "../TEncoder";
+import LoginRedirect from "../auth/LoginRedirect";
 
 let HttpUtils = function () {
 
@@ -43,17 +44,13 @@ let HttpUtils = function () {
     }
   }
 
-  function redirectToAuthPage(code) {
-    window.location.href = RoutesEndpoint.AUTH_Login + (code? "?redirect=" + TEncoder.stringToB64(code) : '');
-  }
-
   function handleHttpResult(response, cbSuccess, cbError) {
     console.log("[HTTP]", response);
     if (response.redirected || response.status === 302) {
       handleHttpResultRedirect(response);
     }
     if (response.status === 401) {
-      redirectToAuthPage(window.location.pathname);
+      LoginRedirect();
     }
     response.text().then(function (text) {
       try {

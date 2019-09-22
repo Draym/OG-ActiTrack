@@ -18,7 +18,7 @@ class DefaultHeader extends Component {
         <AppSidebarToggler className="d-lg-none" display="md" mobile/>
           <AppNavbarBrand
             href="/"
-            full={{src: logo, width: 150, height: 31, alt: 'ActiTrack Logo'}}
+            full={{src: logo, width: 200, height: 50, alt: 'OG-Tracker Logo'}}
           />
         <AppSidebarToggler id="menu-toggle-icon" className="d-md-down-none" display="lg"/>
         <DefaultAccountHeader {...this.props}/>

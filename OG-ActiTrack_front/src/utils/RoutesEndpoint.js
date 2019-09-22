@@ -2,6 +2,8 @@ export const RoutesEndpoint = {
   '404': '/404',
   HOME: '/',
   DASHBOARD: '/dashboard',
+  HOWTOSTART: '/how-to-start',
+  GETHELP: '/get-help',
   PLAYER_Activity: '/activity/player',
   PLAYER_Galaxy: '/activity/galaxy',
   DATA_Colonial: '/data/colonial',

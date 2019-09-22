@@ -17,5 +17,9 @@ export const ApiEndpoint = {
   USER_Update: '/api/user/update',
   USER_Contact: '/api/message/user/contact',
   USER_BugReport: '/api/message/user/bugReport',
-  USER_UpdatePassword: '/api/user/update/password'
+  USER_UpdatePassword: '/api/user/update/password',
+  FRIEND_Add : '/api/user/friend/add',
+  FRIEND_Delete : '/api/user/friend/delete',
+  FRIEND_Get_All : '/api/user/friend/get/all',
+  FRIEND_GetReverse_All : '/api/user/friend/get/reverse/all'
 };

@@ -21,12 +21,14 @@ import CLanguageCtrl from "../../components/CLanguageCtrl";
 import {RoutesEndpoint} from "../../../utils/RoutesEndpoint";
 import AuthUtils from "../../../utils/auth/AuthUtils";
 
+import { withTranslation } from 'react-i18next';
+
 const DefaultFooter = React.lazy(() => import('./DefaultFooter'));
 const DefaultHeader = React.lazy(() => import('./DefaultHeader'));
 
 class DefaultLayout extends Component {
 
-  loading = () => <div className="animated fadeIn pt-1 text-center">Loading...</div>
+  loading = () => <div className="animated fadeIn pt-1 text-center">Loading...</div>;
 
   render() {
     return (

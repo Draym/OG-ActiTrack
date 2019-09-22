@@ -25,7 +25,7 @@ class BugReport extends Component {
     return (
       <div className="animated fadeIn">
         <Row>
-          <Col md={8}>
+          <Col xs={12} sm={12} md={12} lg={12} xl={8}>
             <CFormSubmit endpoint={ApiEndpoint.USER_BugReport} requirements={['email', 'subject', 'description']} success={this.success}
                          title="Contact us" submitTitle="Send message" col={12}>
               <CFormInput dataKey='email' gui={{headIcon: "fa fa-at"}} type={"text"} title={"Email"}

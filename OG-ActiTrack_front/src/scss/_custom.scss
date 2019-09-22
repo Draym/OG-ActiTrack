@@ -22,6 +22,32 @@
 }
 
 /**
+** NAV
+ */
+header > #menu-toggle-icon {
+  margin-top: 15px;
+}
+.header-fixed .app-body {
+  margin-top: 65px;
+}
+.app-header {
+  height: 65px;
+}
+.app-header .navbar-brand {
+  width: auto;
+  height: auto;
+}
+
+.navbar-brand img {
+  margin-left: 10px;
+  margin-bottom: 5px;
+  margin-top: 5px;
+}
+.sidebar .nav-link.active {
+  color: #fff;
+  background: #535e67;
+}
+/**
 ** COL
  */
 .margin-off {
@@ -106,6 +132,9 @@
   border: 0 !important;
 }
 
+input.not-editable, input.not-editable:focus {
+  background-color: #e4e7ea;
+}
 
 .input-error {
   background-color: rgba(255, 0, 8, 0.50) !important;
@@ -118,6 +147,11 @@
 /**
 * FONT
  */
+
+.code-highlight {
+  font-size: 2rem;
+  color: #3974df;
+}
 
 .font-1x2 {
   font-size: 1.2rem;

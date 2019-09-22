@@ -109,6 +109,15 @@
       "military": {
         "title": "Militaire"
       }
+    },
+    "info": {
+      "title": "Information",
+      "howto": {
+        "title": "How to start"
+      },
+      "help": {
+        "title": "Get Help"
+      }
     }
   },
   "label": {
@@ -132,7 +141,7 @@
       "bugReport": "Report a bug"
     },
     "auth": {
-      "signIn": "Sign in'",
+      "signIn": "Sign in",
       "signOut": "Sign out",
       "login": "Login",
       "logout": "Logout"

@@ -109,11 +109,20 @@
       "military": {
         "title": "Military"
       }
+    },
+    "info": {
+      "title": "Information",
+      "howto": {
+        "title": "How to start"
+      },
+      "help": {
+        "title": "Get Help"
+      }
     }
   },
   "label": {
     "accountModal": {
-      "title":"User Account",
+      "title": "User Account",
       "profile": "Profile",
       "premium": "Premium",
       "settings": "Settings"
@@ -132,7 +141,7 @@
       "bugReport": "Report a bug"
     },
     "auth": {
-      "signIn": "Sign in'",
+      "signIn": "Sign in",
       "signOut": "Sign out",
       "login": "Login",
       "logout": "Logout"

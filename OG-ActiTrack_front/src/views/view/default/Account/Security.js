@@ -24,7 +24,7 @@ class Security extends Component {
     return (
       <div className="animated fadeIn">
         <Row>
-          <Col md={8}>
+          <Col xs={12} sm={12} md={12} lg={12} xl={8}>
             <CFormSubmit endpoint={ApiEndpoint.USER_UpdatePassword}
                          success={this.success} verification={this.verification}
                          requirements={['oldPassword', 'password', 'repeatPassword']}

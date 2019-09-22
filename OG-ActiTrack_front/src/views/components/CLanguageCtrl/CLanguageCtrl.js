@@ -28,6 +28,7 @@ class CLanguageCtrl extends Component {
       language: (i18next.language ? i18next.language.toUpperCase() : i18next.language),
       flag: 'flag-icon-' + gbIconLang(i18next.language)
     };
+    console.log(this.state)
   }
   toggle() {
     this.setState({

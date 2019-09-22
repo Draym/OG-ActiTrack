@@ -8,7 +8,11 @@ class GroupManagement extends Component {
 
     return (
       <div className="animated fadeIn">
-        Group Management: not available yet
+        <Row>
+          <Col xs={12} sm={12} md={12} lg={12} xl={8}>
+            Group Management: not available yet
+          </Col>
+        </Row>
       </div>
     )
   }

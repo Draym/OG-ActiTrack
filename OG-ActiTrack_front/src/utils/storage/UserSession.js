@@ -1,3 +1,5 @@
+import LoginRedirect from "../auth/LoginRedirect";
+
 class UserSession {
   static sessionKey() {
     return 'user-data';
@@ -8,6 +10,18 @@ class UserSession {
 
     if (session != null) {
       return JSON.parse(session);
+    } else {
+      LoginRedirect();
+    }
+  }
+
+  static getTokenField(field) {
+    if (!field)
+      return null;
+    let session = this.getSession();
+
+    if (session.token != null) {
+      return session.token['' + field];
     }
     return null;
   }
@@ -15,10 +29,10 @@ class UserSession {
   static getSessionField(field) {
     if (!field)
       return null;
-    let user = this.getSession();
+    let session = this.getSession();
 
-    if (user != null) {
-      return user['' + field];
+    if (session.user != null) {
+      return session.user['' + field];
     }
     return null;
   }

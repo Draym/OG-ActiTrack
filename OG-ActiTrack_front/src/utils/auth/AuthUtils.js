@@ -6,7 +6,6 @@ let AuthUtils = function () {
     if (role === EAuthRole.NONE)
       return true;
     if (UserSession.hasSession()) {
-      console.log("hasAuth-> User: ", UserSession.getSession(), role);
       if (role === EAuthRole.BASIC) {
         return true;
       }

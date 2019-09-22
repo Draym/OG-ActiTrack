@@ -4,7 +4,7 @@ import {
   InputGroup,
   InputGroupAddon,
   InputGroupText,
-  FormFeedback, Button
+  FormFeedback
 } from 'reactstrap';
 import TString from "../../../utils/TString";
 import AsyncSelect from 'react-select/async';
@@ -21,6 +21,7 @@ const propTypes = {
   value: PropTypes.any,
   col: PropTypes.number,
   disabled: PropTypes.bool,
+  editable: PropTypes.bool,
   // controls
   dataKey: PropTypes.string,
   onChange: PropTypes.func,
@@ -32,7 +33,9 @@ const propTypes = {
   hackReload: PropTypes.any // if it changes the component will force reload using key
 };
 
-const defaultProps = {};
+const defaultProps = {
+  editable: true,
+};
 
 class CFormInput extends Component {
   constructor(props) {
@@ -48,6 +51,11 @@ class CFormInput extends Component {
   };
 
   onChange(event) {
+    console.log("EDITABLE: ", this.props.editable);
+    if (!this.props.editable) {
+      event.preventDefault();
+      return;
+    }
     let triggerOnChange = (this.props.autoComplete ? this.props.autoComplete.handleSelectChange : this.props.onChange);
     if (this.props.dataKey) {
       let data = {};
@@ -59,7 +67,7 @@ class CFormInput extends Component {
   }
 
   render() {
-    const {title, gui, type, placeHolder, autoComplete, value, onClick, success, error, onVerify, hackReload, disabled, col, className} = this.props;
+    const {title, gui, type, placeHolder, autoComplete, value, onClick, success, error, onVerify, hackReload, disabled, col, className, editable} = this.props;
 
     let renderIconBorder = function (data, type) {
       return (
@@ -116,7 +124,7 @@ class CFormInput extends Component {
     let render = function () {
       if (!autoComplete) {
         return (
-          <Input type={type} invalid={!!error}
+          <Input className={(!editable?"not-editable": "")} type={type} invalid={!!error}
                  placeholder={placeHolder} autoComplete={autoComplete}
                  value={value}
                  onChange={this.onChange}
@@ -125,7 +133,7 @@ class CFormInput extends Component {
       } else {
         return (
           <AsyncSelect key={hackReload}
-                       className="input-fill input-addon"
+                       className={"input-fill input-addon" + (!editable?"not-editable": "")}
                        cacheOptions
                        defaultInputValue={value}
                        loadOptions={this.loadOptions}

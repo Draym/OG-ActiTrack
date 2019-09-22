@@ -8,7 +8,11 @@ class DashboardSettings extends Component {
 
     return (
       <div className="animated fadeIn">
-        DashboardSettings : not available yet
+        <Row>
+          <Col xs={12} sm={12} md={12} lg={12} xl={8}>
+            DashboardSettings : not available yet
+          </Col>
+        </Row>
       </div>
     )
   }

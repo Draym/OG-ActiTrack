@@ -1,9 +1,9 @@
 {
-  "short_name": "OG-ActiTrack",
+  "short_name": "OG-Tracker",
   "name": "Activity Tracker",
   "icons": [
     {
-      "src": "./assets/img/brand/logo-i.png",
+      "src": "./assets/img/brand/logo.png",
       "sizes": "100x100",
       "type": "image/png"
     }

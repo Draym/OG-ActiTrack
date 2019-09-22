@@ -46,8 +46,7 @@ class CTableData extends CTable {
     this.setState({
       data: data
     });
-    if (this.props.load)
-      this.isLoading(false);
+    this.isLoading(false);
   }
 
   loadDataAndInitialize() {
