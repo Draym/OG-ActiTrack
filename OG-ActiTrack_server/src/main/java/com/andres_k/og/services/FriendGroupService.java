@@ -54,7 +54,7 @@ public class FriendGroupService {
         this.friendGroupRepository.save(new FriendGroup(self.getUserId(), friend.getId(), friendRequest.pseudo + "#" + friend.getSecret()));
     }
 
-    private User getRequestedFriendUser( FriendRequestHandler friendRequest) {
+    private User getRequestedFriendUser(FriendRequestHandler friendRequest) {
         Optional<User> optFriend = this.userRepository.findByPseudoAndSecret(friendRequest.pseudo, friendRequest.secret);
         if (!optFriend.isPresent())
             throw new EntityNotFoundException("No user exist for this pseudo and secret.");

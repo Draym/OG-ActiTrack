@@ -17,17 +17,17 @@ public class FriendGroup {
     @Column(name = "friend_id")
     private Long friendId;
     @NotNull
-    @Column(name = "friend_secret")
-    private String friendSecret;
+    @Column(name = "friend_profile_identifier")
+    private String friendProfileIdentifier;
 
     public FriendGroup() {
 
     }
 
-    public FriendGroup(Long userId, Long friendId, String friendSecret) {
+    public FriendGroup(Long userId, Long friendId, String friendProfileIdentifier) {
         this.userId = userId;
         this.friendId = friendId;
-        this.friendSecret = friendSecret;
+        this.friendProfileIdentifier = friendProfileIdentifier;
     }
 
     public Long getId() {
@@ -54,11 +54,11 @@ public class FriendGroup {
         this.friendId = friendId;
     }
 
-    public String getFriendSecret() {
-        return friendSecret;
+    public String getFriendProfileIdentifier() {
+        return friendProfileIdentifier;
     }
 
-    public void setFriendSecret(String friendSecret) {
-        this.friendSecret = friendSecret;
+    public void setFriendProfileIdentifier(String friendProfileIdentifier) {
+        this.friendProfileIdentifier = friendProfileIdentifier;
     }
 }
