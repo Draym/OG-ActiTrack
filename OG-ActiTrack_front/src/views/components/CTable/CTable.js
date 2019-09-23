@@ -9,6 +9,7 @@ import CTableControls from "./controls/CTableControls";
 import PropTypes from 'prop-types';
 import Button from "reactstrap/es/Button";
 import CTableSelection from "./controls/CTableSelection";
+import CBlockTitle from "../CBlockTitle/CBlockTitle";
 
 const propTypes = {
   // search
@@ -33,6 +34,7 @@ const propTypes = {
   confirmDelete: PropTypes.bool,
   //style
   title: PropTypes.string,
+  advertEmpty: PropTypes.string,
   bordered: PropTypes.bool,
   formatter: PropTypes.func,
   bootstrap4: PropTypes.bool,
@@ -65,6 +67,7 @@ const defaultProps = {
   confirmDelete: false,
   //style
   title: undefined,
+  advertEmpty: "There is no data.",
   bordered: false,
   bootstrap4: true,
   formatter: undefined,
@@ -203,7 +206,8 @@ class CTable extends CComponent {
     }.bind(this);
     return (
       <div>
-        {drawTable()}
+        {this.state.data && this.state.data.length > 0 && drawTable()}
+        {this.props.advertEmpty && (!this.state.data || this.state.data.length === 0) && <CBlockTitle text={this.props.advertEmpty}/>}
       </div>
     )
   }

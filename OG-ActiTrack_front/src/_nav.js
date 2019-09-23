@@ -62,7 +62,7 @@ export default {
         },
         {
           name: i18next.t('nav.data.spy.title', 'Spy Reports'),
-          url: RoutesEndpoint.PLAYER_Galaxy,
+          url: RoutesEndpoint.PLAYER_Report_Spy,
           icon: 'fa fa-eye',
         },
         {

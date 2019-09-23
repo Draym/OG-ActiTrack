@@ -9,7 +9,7 @@ import {
   InputGroup,
   InputGroupAddon,
   Button,
-  FormFeedback
+  FormFeedback, Form
 } from 'reactstrap';
 import UserSession from "../../../../utils/storage/UserSession";
 import TSessionTransform from "../../../../utils/TSessionTransform";
@@ -17,6 +17,7 @@ import CTableData from "../../../components/CTable/CTableData";
 import {ApiEndpoint} from "../../../../utils/api/ApiEndpoint";
 import HttpUtils from "../../../../utils/api/HttpUtils";
 import moment from "moment";
+import CBlockTitle from "../../../components/CBlockTitle/CBlockTitle";
 
 class FriendList extends Component {
   constructor(props) {
@@ -64,6 +65,7 @@ class FriendList extends Component {
       this.isLoadingInput(false, error);
     }.bind(this));
   }
+
   isLoadingInput(value, error) {
     console.log("loadingInput:", value)
     this.setState({
@@ -71,6 +73,7 @@ class FriendList extends Component {
       errorInput: error
     });
   }
+
   /**
    * TABLE
    **/
@@ -86,6 +89,7 @@ class FriendList extends Component {
     }
     return data;
   }
+
   isLoadingTable(value, error) {
     console.log("loading table:", value)
     this.setState({
@@ -93,6 +97,7 @@ class FriendList extends Component {
       errorTable: error
     });
   }
+
   onDeleteFriend(row, rowIndex, callback) {
     console.log("DELETE: ", row);
     this.isLoadingTable(true);
@@ -114,9 +119,9 @@ class FriendList extends Component {
               <CardBody>
                 <Row>
                   <Col xs={12} sm={12} md={12} lg={10} xl={6}>
-                    <h4>Your identifier is : <span className="code-highlight">{this.state.profileId}</span></h4>
-                    <p className="text-muted">Share this code to your friend to let them add you to their friend
-                      list.</p>
+                    <h4>Your identifier is : <span className="code-highlight font-xl">{this.state.profileId}</span></h4>
+
+                    <CBlockTitle text={"Share this code to your friend to let them add you to their friend list."}/>
                   </Col>
                 </Row>
               </CardBody>
@@ -130,14 +135,15 @@ class FriendList extends Component {
               <CardBody>
                 <Row>
                   <Col xs={12} sm={12} md={12} lg={10} xl={6}>
-                    <p className="text-muted input-title">Add a friend:</p>
+                    <CBlockTitle text={"Add a friend:"} head/>
                     <InputGroup>
                       <Input type="text" invalid={!!this.state.errorInput}
                              placeholder="type your friend profile's Identifier"
                              value={this.state.inputFriendId}
                              onChange={this.onFriendIdChange}/>
                       <InputGroupAddon addonType="append">
-                        <Button onClick={this.onAddFriend} disabled={this.state.loadingInput || this.state.loadingTable}>Add friend</Button>
+                        <Button onClick={this.onAddFriend}
+                                disabled={this.state.loadingInput || this.state.loadingTable}>Add friend</Button>
                       </InputGroupAddon>
                       {this.state.errorInput && <FormFeedback>{this.state.errorInput}</FormFeedback>}
                     </InputGroup>
@@ -146,9 +152,13 @@ class FriendList extends Component {
                 <Row className="mt-5">
                   <Col>
                     <CTableData key={this.state.reload} hasSearch hasPagination
-                                dataColumns={this.state.dataColumns} formatData={this.formatTableData} formatter={(row) => {return row.pseudo}}
+                                dataColumns={this.state.dataColumns} formatData={this.formatTableData}
+                                formatter={(row) => {
+                                  return row.pseudo
+                                }}
                                 endpoint={ApiEndpoint.FRIEND_Get_All} loadOnStart={true} loading={this.isLoadingTable}
-                                onDeleteBtn={this.onDeleteFriend}/>
+                                onDeleteBtn={this.onDeleteFriend}
+                                advertEmpty="You have no friend yet. Add some new friends using the form at the top."/>
                   </Col>
                 </Row>
               </CardBody>

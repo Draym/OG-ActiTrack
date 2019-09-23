@@ -15,7 +15,7 @@ class AccountLayout extends Component {
 
   render() {
     return (
-      <div>
+      <div className="mt-3">
         <Suspense fallback={this.loading()}>
           <Row>
             <Col md={2}>

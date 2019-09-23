@@ -17,6 +17,7 @@ import { getStyle, hexToRgba } from '@coreui/coreui/dist/js/coreui-utilities'
 import CSticker from "../../../components/CSticker";
 import ChartUtils from "../../../../utils/chart/ChartUtils";
 import CardHeader from "reactstrap/es/CardHeader";
+import CBlockTitle from "../../../components/CBlockTitle/CBlockTitle";
 
 const brandPrimary = getStyle('--primary');
 const brandSuccess = getStyle('--success');
@@ -200,7 +201,7 @@ class Dashboard extends Component {
                 <Row>
                   <Col sm="5">
                     <CardTitle className="mb-0">Traffic</CardTitle>
-                    <div className="small text-muted">November 2015</div>
+                    <CBlockTitle className="small" text={"November 2015"}/>
                   </Col>
                   <Col sm="7" className="d-none d-sm-inline-block">
                     <Button color="primary" className="float-right"><i className="icon-cloud-download"></i></Button>

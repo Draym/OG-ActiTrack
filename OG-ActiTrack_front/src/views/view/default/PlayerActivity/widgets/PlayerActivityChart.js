@@ -6,6 +6,7 @@ import {Bar, Line} from "react-chartjs-2";
 import ChartCreator from "../../../../../utils/chart/ChartCreator";
 import ChartUtils from "../../../../../utils/chart/ChartUtils";
 import moment from "moment";
+import CBlockTitle from "../../../../components/CBlockTitle/CBlockTitle";
 
 class PlayerActivityChart extends Component {
   constructor(props) {
@@ -86,8 +87,7 @@ class PlayerActivityChart extends Component {
           <Row>
             <Col sm="5">
               <CardTitle className="mb-0">Activity of {this.props.player}:</CardTitle>
-              <div
-                className="small text-muted">For {dateStart} {this.props.dateRange.last ? ' to ' + dateEnd : ''}</div>
+              <CBlockTitle className="small" text={"For " + dateStart + (this.props.dateRange.last ? ' to ' + dateEnd : '')}/>
             </Col>
           </Row>
           {renderChart()}

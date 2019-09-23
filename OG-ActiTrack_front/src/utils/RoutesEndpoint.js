@@ -6,6 +6,7 @@ export const RoutesEndpoint = {
   GETHELP: '/get-help',
   PLAYER_Activity: '/activity/player',
   PLAYER_Galaxy: '/activity/galaxy',
+  PLAYER_Report_Spy: '/report/spy',
   DATA_Colonial: '/data/colonial',
   DATA_Military: '/data/military',
   ACCOUNT_Profile: '/account/:pseudo',

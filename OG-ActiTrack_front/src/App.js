@@ -16,7 +16,7 @@ class App extends Component {
 
   render() {
     return (
-      <BrowserRouter>
+      <BrowserRouter style={{'backgroundColor': 'red'}}>
           <React.Suspense fallback={loading()}>
             <Switch>
               <Route exact path={RoutesEndpoint['404']} name="Page 404" render={props => <Page404 {...props}/>} />

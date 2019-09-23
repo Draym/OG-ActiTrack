@@ -16,6 +16,7 @@ import '../custom.css';
 import './forgotPassword.css';
 import {ApiEndpoint} from "../../../../utils/api/ApiEndpoint";
 import {RoutesEndpoint} from "../../../../utils/RoutesEndpoint";
+import CBlockTitle from "../../../components/CBlockTitle/CBlockTitle";
 
 class ForgotPassword extends Component {
   constructor(props) {
@@ -74,7 +75,7 @@ class ForgotPassword extends Component {
             <CardBody className="p-4">
               <Form>
                 <h2>Did you forget your password?</h2>
-                <p className="text-muted">please enter your email</p>
+                <CBlockTitle text={"please enter your email"}/>
                 <CFormInput gui={{headIcon: "icon-user"}} type={"text"} placeHolder={"Email"}
                             value={this.state.email} onChange={this.handleEmailChange}
                             error={this.state.errorEmail}/>

@@ -1,34 +1,4 @@
 {
-  "days": [
-    {
-      "abv": "Mon",
-      "full": "Monday"
-    },
-    {
-      "abv": "Tue",
-      "full": "Tuesday"
-    },
-    {
-      "abv": "Wed",
-      "full": "Wednesday"
-    },
-    {
-      "abv": "Thu",
-      "full": "Thursday"
-    },
-    {
-      "abv": "Fri",
-      "full": "Friday"
-    },
-    {
-      "abv": "Sat",
-      "full": "Saturday"
-    },
-    {
-      "abv": "Sun",
-      "full": "Sunday"
-    }
-  ],
   "popinfo": {
     "activity": {
       "player": {
@@ -137,7 +107,7 @@
       "dashboardSettings": "Dashboard settings",
       "friendList": "Friend list",
       "groupManagement": "Group management",
-      "contact": "Contact",
+      "contact": "Contact us",
       "bugReport": "Report a bug"
     },
     "auth": {
@@ -156,5 +126,35 @@
         "btnRegister": "Register Now!"
       }
     }
-  }
+  },
+  "days": [
+    {
+      "abv": "Mon",
+      "full": "Monday"
+    },
+    {
+      "abv": "Tue",
+      "full": "Tuesday"
+    },
+    {
+      "abv": "Wed",
+      "full": "Wednesday"
+    },
+    {
+      "abv": "Thu",
+      "full": "Thursday"
+    },
+    {
+      "abv": "Fri",
+      "full": "Friday"
+    },
+    {
+      "abv": "Sat",
+      "full": "Saturday"
+    },
+    {
+      "abv": "Sun",
+      "full": "Sunday"
+    }
+  ]
 }

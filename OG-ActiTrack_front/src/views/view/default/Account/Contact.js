@@ -1,9 +1,10 @@
-import React, { Component } from 'react';
-import { Card, CardBody, CardHeader, Col, Row, Table } from 'reactstrap';
+import React, {Component} from 'react';
+import {Card, CardBody, CardHeader, Col, Row, Table} from 'reactstrap';
 import CFormSubmit from "../../../components/CFormSubmit";
 import {ApiEndpoint} from "../../../../utils/api/ApiEndpoint";
 import CFormInput from "../../../components/CFormInput";
 import UserSession from "../../../../utils/storage/UserSession";
+import CBlockTitle from "../../../components/CBlockTitle/CBlockTitle";
 
 
 class Contact extends Component {
@@ -24,8 +25,10 @@ class Contact extends Component {
       <div className="animated fadeIn">
         <Row>
           <Col xs={12} sm={12} md={12} lg={12} xl={8}>
-            <CFormSubmit endpoint={ApiEndpoint.USER_Contact} requirements={['email', 'subject', 'message']} success={this.success}
+            <CFormSubmit endpoint={ApiEndpoint.USER_Contact} requirements={['email', 'subject', 'message']}
+                         success={this.success}
                          title="Contact us" submitTitle="Send message" col={12}>
+              <CBlockTitle text="Feel free to contact me and ask any question using the following form. I will reply to your questions as soon as possible." head/>
               <CFormInput dataKey='email' gui={{headIcon: "fa fa-at"}} type={"text"} title={"Email"}
                           defaultValue={this.state.email} disabled={true} col={5}/>
               <CFormInput dataKey='subject' gui={{headIcon: "icon-envelope-open"}} type={"text"} title={"Subject"}

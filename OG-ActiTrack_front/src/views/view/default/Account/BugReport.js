@@ -27,7 +27,7 @@ class BugReport extends Component {
         <Row>
           <Col xs={12} sm={12} md={12} lg={12} xl={8}>
             <CFormSubmit endpoint={ApiEndpoint.USER_BugReport} requirements={['email', 'subject', 'description']} success={this.success}
-                         title="Contact us" submitTitle="Send message" col={12}>
+                         title="Report a Bug" submitTitle="Send report" col={12}>
               <CFormInput dataKey='email' gui={{headIcon: "fa fa-at"}} type={"text"} title={"Email"}
                           defaultValue={this.state.email} disabled={true} col={5}/>
               <CFormInput dataKey='subject' gui={{headIcon: "icon-envelope-open"}} type={"text"} title={"Subject"}

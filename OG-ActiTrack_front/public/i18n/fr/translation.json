@@ -1,34 +1,4 @@
 {
-  "days": [
-    {
-      "abv": "Lun",
-      "full": "Lundi"
-    },
-    {
-      "abv": "Mar",
-      "full": "Mardi"
-    },
-    {
-      "abv": "Mer",
-      "full": "Mercredi"
-    },
-    {
-      "abv": "Jeu",
-      "full": "Jeudi"
-    },
-    {
-      "abv": "Ven",
-      "full": "Vendredi"
-    },
-    {
-      "abv": "Sam",
-      "full": "Samedi"
-    },
-    {
-      "abv": "Dim",
-      "full": "Dimanche"
-    }
-  ],
   "popinfo": {
     "activity": {
       "player": {
@@ -133,12 +103,12 @@
       "sectionContact": "Contact",
       "profile": "Profile",
       "premium": "Premium",
-      "security": "Security",
+      "security": "Securité",
       "dashboardSettings": "Dashboard settings",
-      "friendList": "Friend list",
+      "friendList": "Liste d'amis",
       "groupManagement": "Group management",
-      "contact": "Contact",
-      "bugReport": "Report a bug"
+      "contact": "Nous Contacter",
+      "bugReport": "Reporter un bug"
     },
     "auth": {
       "signIn": "Sign in",
@@ -156,5 +126,35 @@
         "btnRegister": "S'enregistrer maintenant!"
       }
     }
-  }
+  },
+  "days": [
+    {
+      "abv": "Lun",
+      "full": "Lundi"
+    },
+    {
+      "abv": "Mar",
+      "full": "Mardi"
+    },
+    {
+      "abv": "Mer",
+      "full": "Mercredi"
+    },
+    {
+      "abv": "Jeu",
+      "full": "Jeudi"
+    },
+    {
+      "abv": "Ven",
+      "full": "Vendredi"
+    },
+    {
+      "abv": "Sam",
+      "full": "Samedi"
+    },
+    {
+      "abv": "Dim",
+      "full": "Dimanche"
+    }
+  ]
 }

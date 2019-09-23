@@ -31,6 +31,7 @@ class DefaultLayout extends Component {
   loading = () => <div className="animated fadeIn pt-1 text-center">Loading...</div>;
 
   render() {
+    console.log("props:", this.props);
     return (
       <div className="app">
         <AppHeader fixed>
@@ -49,7 +50,7 @@ class DefaultLayout extends Component {
             <AppSidebarFooter/>
           </AppSidebar>
           <main className="main">
-            <AppBreadcrumb appRoutes={routes} router={router}/>
+            {this.props.location.pathname.indexOf("/account") < 0 && <AppBreadcrumb appRoutes={routes} router={router}/>}
             <Container fluid>
               <Suspense fallback={this.loading()}>
                 <Switch>

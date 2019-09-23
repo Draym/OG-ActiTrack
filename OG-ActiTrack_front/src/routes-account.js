@@ -14,7 +14,7 @@ const routes = [
   { path: RoutesEndpoint.ACCOUNT_Profile, exact: true,  name: 'User Profile', component: Profile },
   { path: RoutesEndpoint.ACCOUNT_Premium, exact: true, name: 'User Premium', component: Premium },
   { path: RoutesEndpoint.ACCOUNT_DashboardSettings, exact: true, name: 'Dashboard Settings', component: DashboardSettings },
-  { path: RoutesEndpoint.ACCOUNT_Contact, exact: true, name: 'User Request', component: Contact },
+  { path: RoutesEndpoint.ACCOUNT_Contact, exact: true, name: 'Contact me', component: Contact },
   { path: RoutesEndpoint.ACCOUNT_Security, exact: true, name: 'User Security', component: Security },
   { path: RoutesEndpoint.ACCOUNT_BugReport, exact: true, name: 'Report Bug', component: BugReport },
   { path: RoutesEndpoint.ACCOUNT_FriendList, exact: true, name: 'Friend List', component: FriendList },

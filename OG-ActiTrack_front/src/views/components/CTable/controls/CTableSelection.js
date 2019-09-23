@@ -34,7 +34,7 @@ class CTableSelection extends Component {
       <Button
         className={"pop-btn pop-btn-left table-btn-select " + (this.state.isSelected ? "table-btn-select-active" : "table-btn-select-inactive")}
         disabled={this.props.inactive} onClick={this.onClick}>
-        {this.state.isSelected && <i className="icon-check font-1x2"/>}
+        {this.state.isSelected && <i className="icon-check font-md"/>}
       </Button>
     )
   }

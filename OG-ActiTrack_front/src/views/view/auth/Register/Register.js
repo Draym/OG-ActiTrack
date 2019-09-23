@@ -17,6 +17,7 @@ import './register.css';
 import {ApiEndpoint} from "../../../../utils/api/ApiEndpoint";
 import CButtonLoading from "../../../components/CButton/CButtonLoading";
 import {RoutesEndpoint} from "../../../../utils/RoutesEndpoint";
+import CBlockTitle from "../../../components/CBlockTitle/CBlockTitle";
 
 class Register extends Component {
   constructor(props) {
@@ -119,7 +120,7 @@ class Register extends Component {
             <CardBody className="p-5">
               <Form>
                 <h1>Register</h1>
-                <p className="text-muted">Create your account</p>
+                <CBlockTitle text={"Create your account"}/>
                 <CFormInput gui={{headIcon: "icon-user"}} type={"text"} placeHolder={"Username"}
                             value={this.state.username} onChange={this.handleUsernameChange}
                             error={this.state.errorUsername}/>

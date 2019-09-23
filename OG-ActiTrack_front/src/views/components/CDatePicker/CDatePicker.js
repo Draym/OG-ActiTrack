@@ -11,8 +11,10 @@ import CYearInputPicker from "./CYearInputPicker";
 import CQuarterInputPicker from "./CQuarterInputPicker";
 
 import PropTypes from 'prop-types';
+import CBlockTitle from "../CBlockTitle/CBlockTitle";
 
 const propTypes = {
+  title: PropTypes.string,
   dateTypeSelected: PropTypes.number,
   handleDayChange: PropTypes.func
 };
@@ -47,6 +49,7 @@ class CDatePicker extends Component {
     }.bind(this);
     return (
       <div>
+        <CBlockTitle text={this.props.title} head/>
         {drawDateSelection()}
       </div>
     );

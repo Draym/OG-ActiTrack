@@ -22,6 +22,7 @@ import {RoutesEndpoint} from "../../../../utils/RoutesEndpoint";
 import '../custom.css';
 import './login.css';
 import TEncoder from "../../../../utils/TEncoder";
+import CBlockTitle from "../../../components/CBlockTitle/CBlockTitle";
 
 class Login extends Component {
   constructor(props) {
@@ -104,7 +105,7 @@ class Login extends Component {
                   <CardBody className="p-2">
                     <Form>
                       <h1>Login</h1>
-                      <p className="text-muted">Sign In to your account</p>
+                      <CBlockTitle text={"Sign In to your account"}/>
                       <CFormInput gui={{headIcon: "fa fa-at"}} type={"text"} placeHolder={"Email"}
                                   value={this.state.email} onChange={this.handleEmailChange}
                                   error={this.state.errorEmail}/>

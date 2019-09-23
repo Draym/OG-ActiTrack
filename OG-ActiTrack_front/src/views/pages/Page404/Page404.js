@@ -1,10 +1,11 @@
 import React, {Component, Suspense} from 'react';
-import {Col, Container, Row} from 'reactstrap';
+import {CardTitle, Col, Container, Row} from 'reactstrap';
 import AuthHeader from '../../containers/AuthLayout/AuthHeader';
 import AuthFooter from '../../containers/AuthLayout/AuthFooter';
 import {AppFooter, AppHeader} from "@coreui/react";
 
 import errorImg from '../../../assets/img/404.png'
+import CBlockTitle from "../../components/CBlockTitle/CBlockTitle";
 
 class Page404 extends Component {
   loading = () => <div className="animated fadeIn pt-1 text-center">Loading...</div>;
@@ -14,7 +15,7 @@ class Page404 extends Component {
       <div>
         <h1 className="float-left display-3 mr-4">404</h1>
         <h4 className="pt-3">Oops! You're lost.</h4>
-        <p className="text-muted float-left">The page you are looking for was not found.</p>
+        <CBlockTitle className="float-left" text={"The page you are looking for was not found."}/>
       </div>;
 
     return (

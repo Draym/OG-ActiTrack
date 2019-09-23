@@ -10,6 +10,7 @@ import TString from "../../../utils/TString";
 import AsyncSelect from 'react-select/async';
 import COptionalCol from "../COptionalCol";
 import PropTypes from 'prop-types';
+import CBlockTitle from "../CBlockTitle/CBlockTitle";
 
 const propTypes = {
   // style
@@ -112,7 +113,7 @@ class CFormInput extends Component {
             <InputGroupText className={"input-verification " + (TString.isNull(error) ? "" : "input-error")}>
               <button type="button" className="form-control input-addon" onClick={onVerify}>
                 <i
-                  className={(TString.isNull(error) ? (!success ? "icon-arrow-right-circle" : "icon-check") : "icon-close") + " icons font-1x2"}
+                  className={(TString.isNull(error) ? (!success ? "icon-arrow-right-circle" : "icon-check") : "icon-close") + " icons font-md"}
                   style={{color: "grey"}}/>
               </button>
             </InputGroupText>
@@ -159,7 +160,7 @@ class CFormInput extends Component {
 
     return (
       <COptionalCol col={col} className={className}>
-        {title && <p className="text-muted input-title">{title}</p>}
+        <CBlockTitle text={title} head/>
         <InputGroup className="mt-1 mb-1" >
           {renderInputHead(gui)}
           {render()}

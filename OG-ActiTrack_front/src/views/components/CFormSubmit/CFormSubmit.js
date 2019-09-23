@@ -10,6 +10,7 @@ import HttpUtils from "../../../utils/api/HttpUtils";
 import CBlocError from "../CBlocError";
 import CBlocSuccess from "../CBlocSuccess";
 import PropTypes from 'prop-types';
+import CBlockTitle from "../CBlockTitle/CBlockTitle";
 
 const propTypes = {
   endpoint: PropTypes.string,
@@ -103,21 +104,11 @@ class CFormSubmit extends Component {
           <CardHeader>{this.props.title}</CardHeader>
         )
     }.bind(this);
-    let drawDesc = function () {
-      if (this.props.desc)
-        return (
-          <Row>
-            <Col>
-              <span>{this.props.desc}</span>
-            </Col>
-          </Row>
-        )
-    }.bind(this);
     return (
       <Card>
         {drawHeader()}
         <CardBody>
-          {drawDesc()}
+          <CBlockTitle text={this.props.desc} muted={false}/>
           <Row>
             <Col md={this.props.col ? this.props.col : 12}>
               {React.Children.map(this.props.children, (child, i) => {
