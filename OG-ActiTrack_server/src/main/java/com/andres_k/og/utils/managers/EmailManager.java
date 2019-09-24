@@ -69,13 +69,18 @@ public class EmailManager {
 
         this.send(user.getEmail(), subject, body.toString());
     }
-
     public void send(String email, String subject, String body) throws MessagingException {
+        this.send(this.properties.getProperty("from"), email, subject, body);
+    }
+    public void sendToAdmin(String email, String subject, String body) throws MessagingException {
+        this.send(email, this.properties.getProperty("from"), subject, body);
+    }
+    public void send(String from, String to, String subject, String body) throws MessagingException {
 
         Message mail = new MimeMessage(this.session);
-        mail.setFrom(new InternetAddress(this.properties.getProperty("from")));
+        mail.setFrom(new InternetAddress(from));
         mail.setRecipients(
-                Message.RecipientType.TO, InternetAddress.parse(email));
+                Message.RecipientType.TO, InternetAddress.parse(to));
         mail.setSubject(subject);
 
         MimeBodyPart mimeBodyPart = new MimeBodyPart();
