@@ -232,10 +232,10 @@ class GalaxyActivity extends Component {
             </CardHeader>
             <CardBody className="margin-bot-l5">
               <Row>
-                <Col xs={12} sm={12} md={12} lg={8} xl={8}>
+                <Col xs={12} sm={12} md={12} lg={5} xl={5}>
                   <span>Select the Date:</span>
                 </Col>
-                <Col xs={12} sm={12} md={12} lg={8} xl={8}>
+                <Col xs={12} sm={12} md={12} lg={7} xl={7}>
                   <CDatePicker onChange={this.handleDayChange} dateTypeSelected={EDatePicker.DayInputPicker}/>
                 </Col>
               </Row>

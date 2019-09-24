@@ -246,19 +246,19 @@ class PlayerActivity extends Component {
             </CardHeader>
             <CardBody>
               <Row>
-                <Col xs={12} sm={12} md={12} lg={4} xl={4}>
+                <Col xs={12} sm={12} md={12} lg={5} xl={5}>
                   <span className="btn-label">Select the Range:</span>
                 </Col>
-                <Col xs={12} sm={12} md={12} lg={8} xl={8} className="btn-sp-3">
+                <Col xs={12} sm={12} md={12} lg={7} xl={7}>
                   <DateTypeSelector onChange={this.onDateTypeBtnClick} default={this.state.dateTypeSelected}/>
                 </Col>
               </Row>
               {this.state.dateTypeSelected !== EDatePicker.All &&
               <Row className="parameter-bloc">
-                <Col xs={12} sm={12} md={12} lg={8} xl={8} className="pt-1 mb-2">
+                <Col xs={12} sm={12} md={12} lg={5} xl={5} className="pt-1 mb-2">
                   <span>Select the Date:</span>
                 </Col>
-                <Col xs={12} sm={12} md={12} lg={8} xl={8}>
+                <Col xs={12} sm={12} md={12} lg={7} xl={7}>
                   <CDatePicker handleDayChange={this.handleDayChange} dateTypeSelected={this.state.dateTypeSelected}/>
                 </Col>
               </Row>

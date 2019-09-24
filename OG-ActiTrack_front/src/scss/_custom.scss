@@ -89,6 +89,165 @@ header > #mmenu-toggle-icon {
 .pr-6 {
   padding-right: 2.5rem;
 }
+
+/**
+** TABLE
+ */
+
+
+.react-bootstrap-table {
+  background-color: white;
+}
+
+.react-bootstrap-table th.sortable {
+  cursor: default !important;
+}
+
+.react-bootstrap-table th.sortable span{
+  cursor: pointer !important;
+}
+
+.table th {
+  border-top: none;
+}
+
+.table-bordered tbody tr td:not(:last-child), .table-bordered thead tr th:not(:last-child) {
+  border-right: none !important;
+}
+
+.table:not(.table-bordered) tbody tr td:not(:first-child), .table:not(.table-bordered) thead tr th:not(:first-child) {
+  border-left: 1px solid #c8ced3;
+}
+
+.table-ctrl-select {
+  padding: 0 !important;
+  position: relative;
+}
+
+.table-btn-select {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  padding: 0;
+  border-radius: 0;
+}
+
+.table-btn-select-active {
+  background-color: rgba(137, 215, 65, 0.2) !important;
+}
+
+.table-btn-select-inactive {
+  background-color: rgba(255, 76, 57, 0.06) !important;;
+}
+
+.table-row-clickable tbody tr td:not(.table-ctrl-select){
+  cursor:pointer;
+}
+
+.table-row-focus > td:not(.table-ctrl-select) {
+  background-color: rgba(200, 206, 211, 0.35);
+}
+
+.table-row-selected {
+  background-color: rgba(224, 230, 235, 0.35);
+}
+
+.table-ctrl-head {
+  border-left: none !important;
+}
+
+.table-ctrl-body {
+}
+
+.table-title {
+  font-size: 1.4rem;
+  font-weight: 500;
+  line-height: 1.2;
+}
+
+/**
+** DATE
+ */
+
+.picker-popper {
+  position: absolute;
+  will-change: transform;
+  top: 0;
+  left: 0;
+  transform: translate3d(15px, 25px, 0px);
+}
+
+.picker-popper[data-placement^="bottom"] {
+  margin-top: 10px;
+}
+
+.react-datepicker__navigation.react-datepicker__navigation--next.disabled, .react-datepicker__navigation.react-datepicker__navigation--prev.disabled {
+  display: none !important;
+}
+
+.react-datepicker-year-header {
+  min-height: 32px;
+}
+
+.react-datepicker__year-container {
+  float: left;
+  width: 12rem;
+}
+
+.react-datepicker__year .react-datepicker__year-text {
+  display: inline-block;
+  width: 3rem;
+  margin: 0.5rem;
+}
+
+.react-datepicker__quarter, .react-datepicker__year {
+  text-align: center;
+}
+
+.react-datepicker__quarter .react-datepicker__quarter-text {
+  display: inline-block;
+  width: 6rem;
+  margin: 0.5rem;
+}
+
+.react-datepicker__quarter-text > h5 {
+  margin-bottom: 0;
+}
+
+.react-datepicker__quarter-text, .react-datepicker__year-text {
+  cursor: pointer;
+}
+
+.react-datepicker__quarter-text:hover, .react-datepicker__year-text:hover {
+  background-color: #f0f0f0;
+  border-radius: 0.3rem;
+}
+
+.react-datepicker__quarter .disabled, .react-datepicker__year .disabled {
+  color: #ccc;
+  pointer-events: none;
+}
+
+.react-datepicker__quarter .selected, .react-datepicker__year .selected {
+  background-color: rgba(143, 165, 106, 0.80);
+  border-radius: 0.3rem;
+}
+
+.DayPickerInput {
+  width: 100%;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+}
+
+.react-datepicker-wrapper {
+  width: 100%;
+}
+.DayPickerInput input, .DayPicker input, .react-datepicker__input-container input {
+  border: 1px solid #e4e7ea;
+  border-radius: 0.25rem;
+  width: 100%;
+}
+
 /**
 ** CARD
  */
@@ -144,11 +303,56 @@ header > #mmenu-toggle-icon {
 }
 
 /**
+** CHART
+ */
+
+.chart-wrapper {
+  margin: auto;
+  padding-bottom: 1rem;
+}
+/**
+** DATE TYPE PICKER
+ */
+.btn-db-ctn {
+  width:100%;
+}
+
+button.btn-dp-width.btn-outline-primary {
+  margin-left: -1px;
+  margin-bottom: 5px;
+  border-radius: 0;
+}
+button.btn-dp-width.btn-outline-primary:first-child {
+  border-top-left-radius: 0.25rem;
+  border-bottom-left-radius: 0.25rem;
+}
+button.btn-dp-width.btn-outline-primary:last-child {
+  border-top-right-radius: 0.25rem;
+  border-bottom-right-radius: 0.25rem;
+}
+
+.btn-dp-width {
+  width: auto;
+}
+
+@media (min-width: 1620px) {
+  .btn-dp-width {
+    min-width: 17%;
+  }
+}
+
+@media (min-width: 1700px) {
+  .btn-dp-width {
+    min-width: 18%;
+  }
+}
+
+/**
 ** INPUT
  */
-.DayPickerInput input {
-  border: 1px solid #e4e7ea;
-  border-radius: 0.25rem;
+
+.input-group {
+  margin-bottom: 0.5rem;
 }
 
 .input-fill {
@@ -157,6 +361,13 @@ header > #mmenu-toggle-icon {
 
 .input-addon, .input-addon div {
   border-radius: 0 4px 4px 0 !important;
+}
+
+div.input-group > .input-addon:last-child div {
+  border-radius: 0 4px 4px 0 !important;
+}
+div.input-group > .input-addon:first-child div {
+  border-radius: 4px !important;
 }
 
 .input-verification {
@@ -183,6 +394,19 @@ input.not-editable, input.not-editable:focus {
 
 .title-small {
   margin-bottom: 0.3rem;
+}
+
+.ctn-title {
+  margin-bottom: 1rem;
+}
+
+.ctn-title .base-title {
+  font-size: 1.53125rem;
+}
+
+.ctn-title .base-subtitle {
+  font-size: 1.3125rem;
+  margin-left: 1rem;
 }
 
 /**
@@ -251,6 +475,17 @@ input.not-editable, input.not-editable:focus {
 .pop-btn:hover {
   cursor: pointer;
   color: #63c2de !important;
+}
+
+.pop-btn {
+  color: #73818f;
+  border: none !important;
+}
+.pop-btn-right {
+  padding-right: 0.65rem;
+}
+.pop-btn-left {
+  padding-left: 0.40rem;
 }
 
 .pop-info {
@@ -338,6 +573,7 @@ input.not-editable, input.not-editable:focus {
 
 .box-delim {
   padding-top: 1.3rem;
+  margin-bottom: 0.5rem;
 }
 
 .btn-label {

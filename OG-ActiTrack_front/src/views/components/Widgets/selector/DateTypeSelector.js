@@ -33,23 +33,23 @@ class DateTypeSelector extends Component {
 
     return (
       <ButtonToolbar aria-label="Toolbar to select the date type">
-        <div className="sp-btn-in" aria-label="First group">
-          <Button className="btn-sp-width" color="outline-primary"
+        <div className="btn-db-ctn" aria-label="First group">
+          <Button className="btn-dp-width" color="outline-primary"
                   onClick={() => this.onDateTypeBtnClick(EDatePicker.DayInputPicker)}
                   active={this.state.dateTypeSelected === EDatePicker.DayInputPicker}>Day</Button>
-          <Button className="btn-sp-width" color="outline-primary"
+          <Button className="btn-dp-width" color="outline-primary"
                   onClick={() => this.onDateTypeBtnClick(EDatePicker.WeekInputPicker)}
                   active={this.state.dateTypeSelected === EDatePicker.WeekInputPicker}>Week</Button>
-          <Button className="btn-sp-width" color="outline-primary"
+          <Button className="btn-dp-width" color="outline-primary"
                   onClick={() => this.onDateTypeBtnClick(EDatePicker.MonthInputPicker)}
                   active={this.state.dateTypeSelected === EDatePicker.MonthInputPicker}>Month</Button>
           {this.props.full &&
-          <Button className="btn-sp-width" color="outline-primary"
+          <Button className="btn-dp-width" color="outline-primary"
                   onClick={() => this.onDateTypeBtnClick(EDatePicker.QuarterInputPicker)}
                   active={this.state.dateTypeSelected === EDatePicker.QuarterInputPicker}>Quarter</Button>
           }
           {this.props.full &&
-          <Button className="btn-sp-width" color="outline-primary"
+          <Button className="btn-dp-width" color="outline-primary"
                   onClick={() => this.onDateTypeBtnClick(EDatePicker.YearInputPicker)}
                   active={this.state.dateTypeSelected === EDatePicker.YearInputPicker}>Year</Button>
           }
