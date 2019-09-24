@@ -4,34 +4,37 @@ import PropTypes from 'prop-types';
 
 const propTypes = {
   className: PropTypes.string,
-  muted: PropTypes.bool,
   text: PropTypes.string,
-  font: PropTypes.string,
+  color: PropTypes.string,
+  fontSize: PropTypes.string,
   center: PropTypes.string
 };
 
 const defaultProps = {
   muted: false,
   className: "",
-  font: "1",
+  fontSize: "1",
   align: "left"
 };
 
 class CBlockText extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
-    this.state.font = props.font.replace("x", ".") + "rem";
+    this.state = {
+      color: props.color ? "text-" + props.color : "",
+      fontSize: props.fontSize.replace("x", ".") + "rem",
+      align: "align-" + props.align
+    };
   }
 
   render() {
-    const {className, muted, text, align} = this.props;
-    const {font} = this.state;
+    const {className, text} = this.props;
+    const {color, align, fontSize} = this.state;
     if (!this.props.text)
       return null;
     return (
-      <p className={[className, (muted ? "text-muted" : ""), "align-" + align].join(" ")}
-      style={{'fontSize': font}}>{text}</p>
+      <p className={[className, align, color].join(" ")}
+      style={{'fontSize': fontSize}}>{text}</p>
     );
   }
 }

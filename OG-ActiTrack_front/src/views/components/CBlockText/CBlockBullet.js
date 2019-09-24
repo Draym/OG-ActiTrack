@@ -5,37 +5,48 @@ import {Col, Row} from "reactstrap";
 
 const propTypes = {
   className: PropTypes.string,
-  muted: PropTypes.bool,
-  font: PropTypes.string,
+  color: PropTypes.string,
+  fontSize: PropTypes.string,
   center: PropTypes.string
 };
 
 const defaultProps = {
   muted: false,
   className: "",
-  font: "1",
+  fontSize: "1",
   align: "left"
 };
 
 class CBlockBullet extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
-    this.state.font = props.font.replace("x", ".") + "rem";
+    this.state = {
+      color: props.color ? "text-" + props.color : "",
+      fontSize: props.fontSize ? props.fontSize.replace("x", ".") + "rem" : "",
+      align: "align-" + props.align
+    };
   }
 
   render() {
-    const {className, muted, bullets, align} = this.props;
-    const {font} = this.state;
+    const {className} = this.props;
+    const {color, align, fontSize} = this.state;
     console.log("children: ", this.props.children);
     return (
       <ul>
         {React.Children.map(this.props.children, (child, i) => {
           return (
             <div>
-            <li className={[className, (muted ? "text-muted" : ""), "align-" + align].join(" ")}
-                style={{'fontSize': font}}>{child.props.value}</li>
-          {child.props.children}
+              <li className={[className, align, color].join(" ")}
+                  style={{'fontSize': fontSize}}>
+                <Row>
+                  <Col className="pr-0">
+                    <span>{child.props.value}</span>
+                  </Col>
+                  <Col className="p-0 ml-2">
+                    {child.props.children}
+                  </Col>
+                </Row>
+              </li>
             </div>
           )
         })}

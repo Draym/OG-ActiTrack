@@ -26,11 +26,10 @@ class UserSession {
     return null;
   }
 
-  static getSessionField(field) {
+  static getUserField(field) {
     if (!field)
       return null;
     let session = this.getSession();
-
     if (session.user != null) {
       return session.user['' + field];
     }

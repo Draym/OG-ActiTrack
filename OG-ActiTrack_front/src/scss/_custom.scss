@@ -26,13 +26,23 @@
  */
 
 body {
-  background-color: rgba(228, 229, 230, 0.70);
+  background-color: rgba(233, 234, 235, 0.7);
+}
+
+.text-muted {
+  color: #73818f !important
+}
+.text-secondary {
+  color: #636466 !important
+}
+.text-light {
+  color: #b8b8b8 !important
 }
 
 /**
 ** NAV
  */
-header > #menu-toggle-icon {
+header > #mmenu-toggle-icon {
   margin-top: 15px;
 }
 
@@ -73,6 +83,12 @@ header > #menu-toggle-icon {
   padding-right: 0 !important;
 }
 
+.ml-6 {
+  margin-left: 2.5rem;
+}
+.pr-6 {
+  padding-right: 2.5rem;
+}
 /**
 ** CARD
  */

@@ -6,6 +6,7 @@ import {AppHeaderDropdown} from '@coreui/react';
 import UserSession from "../../../utils/storage/UserSession";
 import { withTranslation } from 'react-i18next';
 import {RoutesEndpoint} from "../../../utils/RoutesEndpoint";
+import PremiumStar from "../../components/Widgets/reusable/PremiumStar";
 
 const propTypes = {
   children: PropTypes.node,
@@ -35,17 +36,17 @@ class DefaultAccountHeader extends Component {
   }
   goProfile(e) {
     e.preventDefault();
-    this.props.history.push(RoutesEndpoint.ACCOUNT_Profile.replace(":pseudo", UserSession.getSessionField('pseudo')));
+    this.props.history.push(RoutesEndpoint.ACCOUNT_Profile.replace(":pseudo", UserSession.getUserField('pseudo')));
   }
 
   goPremium(e) {
     e.preventDefault();
-    this.props.history.push(RoutesEndpoint.ACCOUNT_Premium.replace(":pseudo", UserSession.getSessionField('pseudo')));
+    this.props.history.push(RoutesEndpoint.ACCOUNT_Premium.replace(":pseudo", UserSession.getUserField('pseudo')));
   }
 
   goSettings(e) {
     e.preventDefault();
-    this.props.history.push(RoutesEndpoint.ACCOUNT_Security.replace(":pseudo", UserSession.getSessionField('pseudo')));
+    this.props.history.push(RoutesEndpoint.ACCOUNT_Security.replace(":pseudo", UserSession.getUserField('pseudo')));
   }
 
   render() {
@@ -57,8 +58,7 @@ class DefaultAccountHeader extends Component {
           <DropdownMenu right style={{right: 'auto'}}>
             <DropdownItem header tag="div" className="text-center"><strong>{t('label.accountModal.title')}</strong></DropdownItem>
             <DropdownItem onClick={this.goProfile}><i className="fa fa-user"/>{t('label.accountModal.profile')}</DropdownItem>
-            <DropdownItem onClick={this.goPremium}><i className="fa fa-star"
-                                                              style={{color: '#ffe200'}}/> {t('label.accountModal.premium')}</DropdownItem>
+            <DropdownItem onClick={this.goPremium}><PremiumStar/> {t('label.accountModal.premium')}</DropdownItem>
             <DropdownItem className="border-bottom-off" onClick={this.goSettings}><i className="fa fa-wrench"/> {t('label.accountModal.settings')}</DropdownItem>
             <DropdownItem divider/>
             <DropdownItem onClick={this.signOut}><i className="fa fa-lock"/> {t('label.auth.signOut')}</DropdownItem>

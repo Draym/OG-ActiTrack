@@ -15,7 +15,6 @@ const defaultProps = {
   head: false,
   muted: true,
   className: "",
-  font: "1",
   align: "left"
 };
 
@@ -23,7 +22,7 @@ class CBlockTitle extends Component {
   constructor(props) {
     super(props);
     this.state = {};
-    this.state.font = props.font.replace("x", ".") + "rem";
+    this.state.font = props.font ? props.font.replace("x", ".") + "rem" : "";
   }
 
   render() {

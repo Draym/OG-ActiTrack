@@ -1,43 +1,25 @@
 import React, {Component} from 'react';
 import {Card, CardBody, CardHeader, Col, Row, Table} from 'reactstrap';
 
-import CBlockTitle from "../../../components/CBlockTitle/CBlockTitle";
 import BtnKofiSupport from "../../../components/Widgets/buttons/BtnKofiSupport";
 import CBlockText from "../../../components/CBlockText/CBlockText";
 import CBlockBullet from "../../../components/CBlockText/CBlockBullet";
 import CPopInfo from "../../../components/CPopup/CPopInfo";
+import UserSession from "../../../../utils/storage/UserSession";
 
 class Premium extends Component {
-
+  constructor(props) {
+    super(props);
+    this.state = {
+      user: UserSession.getSession().user
+    }
+  }
 
   render() {
-    return (
-      <div className="animated fadeIn">
+    let drawPremiumDashboard = function () {
+      return (
         <Row>
-          <Col xs={12} sm={12} md={12} lg={12} xl={8}>
-            <Card>
-              <CardHeader>Support OG-Tracker</CardHeader>
-              <CardBody>
-                <BtnKofiSupport title/>
-                <div className="mt-5">
-                  <CBlockText muted
-                    text={"To thanks you for your support, you will get hidden features from OG-Tracker:"}/>
-                  <CBlockBullet muted>
-                    <span value="A premium access for EVER 🚀"></span>
-                    <span value="Access to activity data from lower contributors 🤖"><CPopInfo title={"hi"} body={"hi2"} id="abc"/></span>
-                    <span value="Data protection against lower contributors 🛡️"></span>
-                    <span value="Monthly reports"></span>
-                    <span value="More coming soon.."></span>
-                  </CBlockBullet>
-                  <CBlockText className="mt-4" muted
-                              text={"Please add your profile name, or email in the tip message, so your thanks gift will be added automatically. Else please contact me."}/>
-                </div>
-              </CardBody>
-            </Card>
-          </Col>
-        </Row>
-        <Row>
-          <Col xs={12} sm={12} md={12} lg={12} xl={8}>
+          <Col xs={12} sm={12} md={12} lg={12} xl={10}>
             <Card>
               <CardHeader>Premium Dashboard</CardHeader>
               <CardBody>
@@ -46,6 +28,45 @@ class Premium extends Component {
             </Card>
           </Col>
         </Row>
+      );
+    };
+    return (
+      <div className="animated fadeIn">
+        <Row>
+          <Col xs={12} sm={12} md={12} lg={12} xl={10}>
+            <Card>
+              <CardHeader>Support OG-Tracker</CardHeader>
+              <CardBody>
+                <BtnKofiSupport title/>
+                <div className="mt-5">
+                  <CBlockText color="secondary"
+                              text={`OG-Tracker is a free tool and this will never change. All the functionality are available freely.
+                              In order to thanks the supporters, a Premium membership have been created.
+                              It opens the access to our data, allowing you to use much more data than the one you collect personally on Ogame.`}/>
+                  <CBlockText color="secondary" text={"As a big thanks gift:"}/>
+                  <CBlockBullet color="muted">
+                    <div value="A premium access for EVER 🚀"/>
+                    <div value="Access to activity data from lower contributors 🤖">
+                      <CPopInfo title={"🤖 Activity data"}
+                                body={"The data collected by lower contributors are included with the one you collect in-game."}
+                                id="activityInfo"/>
+                    </div>
+                    <div value="Data protection against lower contributors 🛡️">
+                      <CPopInfo title={"🛡️ Data protection"}
+                                body={"Lower contributors don't have access to the data you collect in-game."}
+                                id="protectionInfo"/>
+                    </div>
+                    <div value="Monthly reports"/>
+                    <div value="More coming soon.."/>
+                  </CBlockBullet>
+                  <CBlockText className="mt-4" color="secondary"
+                              text={"Please add your profile name, or email in the tip message, so your thanks gift will be added automatically."}/>
+                </div>
+              </CardBody>
+            </Card>
+          </Col>
+        </Row>
+        {this.state.user.premium && drawPremiumDashboard()}
       </div>
     )
   }

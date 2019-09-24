@@ -7,13 +7,15 @@ import {withTranslation} from "react-i18next";
 import {withRouter} from 'react-router-dom';
 import UserSession from "../../../utils/storage/UserSession";
 import $ from 'jquery';
+import PremiumStar from "../../components/Widgets/reusable/PremiumStar";
 
 class AccountMenu extends Component {
 
   constructor(props) {
     super(props);
     this.state = {
-      selected: this.getStateFromHistory(this.props.history.location.pathname)
+      selected: this.getStateFromHistory(this.props.history.location.pathname),
+      isPremium: UserSession.getUserField("premium")
     };
     this.goPremium = this.goPremium.bind(this);
     this.goDashboardSettings = this.goDashboardSettings.bind(this);
@@ -44,42 +46,42 @@ class AccountMenu extends Component {
 
   goProfile(e) {
     e.preventDefault();
-    this.props.history.push(RoutesEndpoint.ACCOUNT_Profile.replace(":pseudo", UserSession.getSessionField('pseudo')));
+    this.props.history.push(RoutesEndpoint.ACCOUNT_Profile.replace(":pseudo", UserSession.getUserField('pseudo')));
   }
 
   goDashboardSettings(e) {
     e.preventDefault();
-    this.props.history.push(RoutesEndpoint.ACCOUNT_DashboardSettings.replace(":pseudo", UserSession.getSessionField('pseudo')));
+    this.props.history.push(RoutesEndpoint.ACCOUNT_DashboardSettings.replace(":pseudo", UserSession.getUserField('pseudo')));
   }
 
   goPremium(e) {
     e.preventDefault();
-    this.props.history.push(RoutesEndpoint.ACCOUNT_Premium.replace(":pseudo", UserSession.getSessionField('pseudo')));
+    this.props.history.push(RoutesEndpoint.ACCOUNT_Premium.replace(":pseudo", UserSession.getUserField('pseudo')));
   }
 
   goSecurity(e) {
     e.preventDefault();
-    this.props.history.push(RoutesEndpoint.ACCOUNT_Security.replace(":pseudo", UserSession.getSessionField('pseudo')));
+    this.props.history.push(RoutesEndpoint.ACCOUNT_Security.replace(":pseudo", UserSession.getUserField('pseudo')));
   }
 
   goContact(e) {
     e.preventDefault();
-    this.props.history.push(RoutesEndpoint.ACCOUNT_Contact.replace(":pseudo", UserSession.getSessionField('pseudo')));
+    this.props.history.push(RoutesEndpoint.ACCOUNT_Contact.replace(":pseudo", UserSession.getUserField('pseudo')));
   }
 
   goFriendList(e) {
     e.preventDefault();
-    this.props.history.push(RoutesEndpoint.ACCOUNT_FriendList.replace(":pseudo", UserSession.getSessionField('pseudo')));
+    this.props.history.push(RoutesEndpoint.ACCOUNT_FriendList.replace(":pseudo", UserSession.getUserField('pseudo')));
   }
 
   goGroupManagement(e) {
     e.preventDefault();
-    this.props.history.push(RoutesEndpoint.ACCOUNT_GroupManagement.replace(":pseudo", UserSession.getSessionField('pseudo')));
+    this.props.history.push(RoutesEndpoint.ACCOUNT_GroupManagement.replace(":pseudo", UserSession.getUserField('pseudo')));
   }
 
   goBugReport(e) {
     e.preventDefault();
-    this.props.history.push(RoutesEndpoint.ACCOUNT_BugReport.replace(":pseudo", UserSession.getSessionField('pseudo')));
+    this.props.history.push(RoutesEndpoint.ACCOUNT_BugReport.replace(":pseudo", UserSession.getUserField('pseudo')));
   }
 
   render() {
@@ -96,7 +98,7 @@ class AccountMenu extends Component {
                          action>{t('label.accountMenu.dashboardSettings')} <Badge
             color="primary">SOON</Badge></ListGroupItem>
           <ListGroupItem active={this.state.selected === 'premium'} tag="button" onClick={this.goPremium}
-                         action>{t('label.accountMenu.premium')}</ListGroupItem>
+                         action>{this.state.isPremium && <PremiumStar/>} {t('label.accountMenu.premium')}</ListGroupItem>
         </ListGroup>
         <ListGroup>
           <ListGroupItem className="header">{t('label.accountMenu.sectionSocial')}</ListGroupItem>

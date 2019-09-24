@@ -18,10 +18,10 @@ class AccountLayout extends Component {
       <div className="mt-3">
         <Suspense fallback={this.loading()}>
           <Row>
-            <Col md={2}>
+            <Col id="accountMenu" md={2}>
               <AccountMenu/>
             </Col>
-            <Col md={10}>
+            <Col id="accountContent" md={9}>
               <Switch>
                 {routes.map((route, idx) => {
                   return route.component ? (
