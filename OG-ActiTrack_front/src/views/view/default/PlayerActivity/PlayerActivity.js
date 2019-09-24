@@ -26,6 +26,7 @@ import SearchPlayerInput from "../../../components/Widgets/inputs/search/SearchP
 import {ApiEndpoint} from "../../../../utils/api/ApiEndpoint";
 import CButtonLoading from "../../../components/CButton/CButtonLoading";
 import DateTypeSelector from "../../../components/Widgets/selector/DateTypeSelector";
+import PremiumStar from "../../../components/Widgets/reusable/PremiumStar";
 
 class PlayerActivity extends Component {
   constructor(props) {
@@ -187,7 +188,7 @@ class PlayerActivity extends Component {
           </CardHeader>
           <CardBody>
             <Row>
-              <Col md={5}>
+              <Col xs={12} sm={12} md={5} lg={5} xl={5}>
                 <span className="btn-label">Group the data:</span>
               </Col>
               <Col sm="7">
@@ -202,30 +203,26 @@ class PlayerActivity extends Component {
               </Col>
             </Row>
             <Row className="box-delim">
-              <Col md={5}>
+              <Col xs={5} sm={5} md={5} lg={5} xl={5}>
                 <span className="btn-label">Use friend data:</span>
               </Col>
-              <Col md={4}>
+              <Col xs={2} sm={2} md={2} lg={4} xl={4}>
                 <CBoolInput onChange={this.handleFriendDataChange} value={this.state.friendData}/>
               </Col>
-              <Col md={2}>
+              <Col xs={2} sm={2} md={2} lg={2} xl={2}>
                 <CPopInfo className="btn-label card-header-action btn" id="friendInfo" position="bottom"
                           title="popinfo.activity.player.friend.title" body="popinfo.activity.player.friend.body"/>
               </Col>
             </Row>
             <Row>
-              <Col md={1}>
-                <i className="btn-label fa fa-star"
-                   style={{color: '#ffe200'}}/>
+              <Col className="padding-off" xs={5} sm={5} md={5} lg={5} xl={5}>
+                <PremiumStar className="ml-2 mr-2"/><span>Use global data:</span>
               </Col>
-              <Col className="padding-off" md={4}>
-                <span className="btn-label">Use global data:</span>
-              </Col>
-              <Col md={4}>
+              <Col xs={2} sm={2} md={2} lg={4} xl={4}>
                 <CBoolInput onChange={this.handleGlobalDataChange} value={this.state.globalData}
                             disabled={!UserSession.getSession() || UserSession.getSession().premium}/>
               </Col>
-              <Col md={2}>
+              <Col xs={2} sm={2} md={2} lg={2} xl={2}>
                 <CPopInfo className="btn-label card-header-action btn" id="premiumInfo" position="bottom"
                           title="popinfo.activity.player.premium.title" body="popinfo.activity.player.premium.body"/>
               </Col>
@@ -249,19 +246,19 @@ class PlayerActivity extends Component {
             </CardHeader>
             <CardBody>
               <Row>
-                <Col sm={12} md={12} lg={4} xl={4}>
+                <Col xs={12} sm={12} md={12} lg={4} xl={4}>
                   <span className="btn-label">Select the Range:</span>
                 </Col>
-                <Col sm={12} md={12} lg={8} xl={8} className="btn-sp-3">
+                <Col xs={12} sm={12} md={12} lg={8} xl={8} className="btn-sp-3">
                   <DateTypeSelector onChange={this.onDateTypeBtnClick} default={this.state.dateTypeSelected}/>
                 </Col>
               </Row>
               {this.state.dateTypeSelected !== EDatePicker.All &&
               <Row className="parameter-bloc">
-                <Col sm={12} md={12} lg={4} xl={4} className="pt-1 mb-2">
+                <Col xs={12} sm={12} md={12} lg={8} xl={8} className="pt-1 mb-2">
                   <span>Select the Date:</span>
                 </Col>
-                <Col sm={12} md={12} lg={8} xl={8}>
+                <Col xs={12} sm={12} md={12} lg={8} xl={8}>
                   <CDatePicker handleDayChange={this.handleDayChange} dateTypeSelected={this.state.dateTypeSelected}/>
                 </Col>
               </Row>
@@ -313,13 +310,13 @@ class PlayerActivity extends Component {
     return (
       <div className="animated fadeIn">
         <Row className="card-parameters">
-          <Col sm="4" className="card-param1">
+          <Col xs={12} sm={12} md={12} lg={12} xl={4} className="card-param1">
             {drawPlayerParameter()}
           </Col>
-          <Col sm="4" className="card-param2">
+          <Col xs={12} sm={12} md={12} lg={12} xl={4} className="card-param2">
             {drawParameters()}
           </Col>
-          <Col sm="4" className="card-param3">
+          <Col xs={12} sm={12} md={12} lg={12} xl={4} className="card-param3">
             {drawPremiumParameters()}
           </Col>
         </Row>

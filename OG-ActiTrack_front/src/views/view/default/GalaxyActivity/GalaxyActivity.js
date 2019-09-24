@@ -14,6 +14,7 @@ import UserSession from "../../../../utils/storage/UserSession";
 
 import "react-vis/dist/style.css";
 import CBoolInput from "../../../components/CBoolInput";
+import PremiumStar from "../../../components/Widgets/reusable/PremiumStar";
 
 
 class GalaxyActivity extends Component {
@@ -189,30 +190,26 @@ class GalaxyActivity extends Component {
           </CardHeader>
           <CardBody>
             <Row>
-              <Col md={5}>
+              <Col xs={5} sm={5} md={5} lg={5} xl={5}>
                 <span className="btn-label">Use friend data:</span>
               </Col>
-              <Col md={4}>
+              <Col xs={2} sm={2} md={2} lg={4} xl={4}>
                 <CBoolInput onChange={this.handleFriendDataChange} value={this.state.friendData}/>
               </Col>
-              <Col md={2}>
+              <Col xs={2} sm={2} md={2} lg={2} xl={2}>
                 <CPopInfo className="btn-label card-header-action btn" id="friendInfo" position="bottom"
                           title="popinfo.activity.galaxy.friend.title" body="popinfo.activity.galaxy.friend.body"/>
               </Col>
             </Row>
             <Row>
-              <Col md={1}>
-                <i className="btn-label fa fa-star"
-                   style={{color: '#ffe200'}}/>
+              <Col xs={5} sm={5} md={5} lg={5} xl={5}>
+                <PremiumStar className="ml-2 mr-2"/><span>Use global data:</span>
               </Col>
-              <Col className="padding-off" md={4}>
-                <span className="btn-label">Use global data:</span>
-              </Col>
-              <Col md={4}>
+              <Col xs={2} sm={2} md={2} lg={4} xl={4}>
                 <CBoolInput onChange={this.handleGlobalDataChange} value={this.state.globalData}
                             disabled={!UserSession.getSession() || UserSession.getSession().premium}/>
               </Col>
-              <Col md={2}>
+              <Col xs={2} sm={2} md={2} lg={2} xl={2}>
                 <CPopInfo className="btn-label card-header-action btn" id="premiumInfo" position="bottom"
                           title="popinfo.activity.galaxy.premium.title" body="popinfo.activity.galaxy.premium.body"/>
               </Col>
@@ -235,10 +232,10 @@ class GalaxyActivity extends Component {
             </CardHeader>
             <CardBody className="margin-bot-l5">
               <Row>
-                <Col md={5}>
+                <Col xs={12} sm={12} md={12} lg={8} xl={8}>
                   <span>Select the Date:</span>
                 </Col>
-                <Col md={7}>
+                <Col xs={12} sm={12} md={12} lg={8} xl={8}>
                   <CDatePicker onChange={this.handleDayChange} dateTypeSelected={EDatePicker.DayInputPicker}/>
                 </Col>
               </Row>
@@ -293,13 +290,13 @@ class GalaxyActivity extends Component {
     return (
       <div className="animated fadeIn">
         <Row className="card-parameters">
-          <Col sm="4" className="card-param1">
+          <Col xs={12} sm={12} md={12} lg={12} xl={4} className="card-param1">
             {drawPlayerParameter()}
           </Col>
-          <Col sm="4" className="card-param2">
+          <Col xs={12} sm={12} md={12} lg={12} xl={4} className="card-param2">
             {drawParameters()}
           </Col>
-          <Col sm="4" className="card-param3">
+          <Col xs={12} sm={12} md={12} lg={12} xl={4} className="card-param3">
             {drawPremiumParameters()}
           </Col>
         </Row>

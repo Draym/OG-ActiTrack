@@ -119,16 +119,24 @@ header > #mmenu-toggle-icon {
   padding-right: 15px !important;
 }
 
-.card-param1 {
-  padding-right: 10px !important;
+@media(max-width: 1200px) {
+  .card-param1, .card-param2 {
+    margin-bottom: 5px;
+  }
 }
 
-.card-param2 {
-  padding-right: 5px !important;
-}
+@media(min-width: 1200px) {
+  .card-param1 {
+    padding-right: 10px !important;
+  }
 
-[class*="card-param"] > [class*="col-"] {
-  padding: 0;
+  .card-param2 {
+    padding-right: 10px !important;
+  }
+
+  [class*="card-param"] > [class*="col-"] {
+    padding: 0;
+  }
 }
 
 .card-parameters > .card {
