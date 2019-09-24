@@ -60,7 +60,7 @@ class Premium extends Component {
                     <div value="More coming soon.."/>
                   </CBlockBullet>
                   <CBlockText className="mt-4" color="secondary"
-                              text={"Please add your profile name, or email in the tip message, so your thanks gift will be added automatically."}/>
+                              text={"Please add your profile name, or email in the tip message, so your account will be updated automatically."}/>
                 </div>
               </CardBody>
             </Card>
