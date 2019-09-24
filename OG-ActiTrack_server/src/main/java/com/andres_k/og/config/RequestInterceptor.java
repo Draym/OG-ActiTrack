@@ -1,6 +1,6 @@
 package com.andres_k.og.config;
 
-import com.andres_k.og.services.*;
+import com.andres_k.og.services.auth.AuthorizationService;
 import com.andres_k.og.utils.managers.EndpointManager;
 import com.andres_k.og.utils.tools.Console;
 import org.springframework.beans.factory.annotation.Autowired;

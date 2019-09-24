@@ -7,4 +7,5 @@ public class KofiHandler {
     public String message;
     public String amount;
     public String url;
+    public String from_name;
 }

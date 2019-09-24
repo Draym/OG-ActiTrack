@@ -1,6 +1,6 @@
 package com.andres_k.og.config;
 
-import com.andres_k.og.services.AuthorizationService;
+import com.andres_k.og.services.auth.AuthorizationService;
 import com.andres_k.og.utils.tools.TString;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;

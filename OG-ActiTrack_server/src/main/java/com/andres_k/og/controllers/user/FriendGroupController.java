@@ -3,7 +3,7 @@ package com.andres_k.og.controllers.user;
 import com.andres_k.og.config.Restricted;
 import com.andres_k.og.models.http.FriendRequestHandler;
 import com.andres_k.og.models.item.FriendGroup;
-import com.andres_k.og.services.FriendGroupService;
+import com.andres_k.og.services.game.FriendGroupService;
 import com.andres_k.og.utils.tools.Console;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

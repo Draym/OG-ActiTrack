@@ -74,4 +74,9 @@ public class ContactMessage {
     public void setCreationDate(LocalDateTime creationDate) {
         this.creationDate = creationDate;
     }
+
+    public void init(Long userId) {
+        this.userId = userId;
+        this.creationDate = LocalDateTime.now();
+    }
 }

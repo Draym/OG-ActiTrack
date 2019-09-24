@@ -129,4 +129,10 @@ public class BugReportMessage {
     public void setEventDate(LocalDateTime eventDate) {
         this.eventDate = eventDate;
     }
+
+    public void init(Long userId) {
+        this.userId = userId;
+        this.creationDate = LocalDateTime.now();
+        this.resolved = false;
+    }
 }

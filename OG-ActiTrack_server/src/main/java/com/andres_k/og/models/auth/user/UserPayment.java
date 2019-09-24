@@ -1,7 +1,10 @@
 package com.andres_k.og.models.auth.user;
 
+import com.andres_k.og.models.http.KofiHandler;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.time.LocalDateTime;
 
 @Entity(name = "UserPayment")
 @Table(name = "user_payment")
@@ -21,13 +24,39 @@ public class UserPayment {
     private Long paymentFee;
     @NotNull
     @Column(name = "payment_date")
-    private Long paymentDate;
+    private LocalDateTime paymentDate;
     @NotNull
     @Column(name = "payment_status")
     private Long paymentStatus;
     @NotNull
     @Column(name = "currency")
     private String currency;
+    @NotNull
+    @Column(name = "message_id")
+    private String messageId;
+    @NotNull
+    @Column(name = "message")
+    private String message;
+    @NotNull
+    @Column(name = "from")
+    private String from;
+    @NotNull
+    @Column(name = "type")
+    private String type;
+    @NotNull
+    @Column(name = "url")
+    private String url;
+
+    public void init(KofiHandler handler) {
+        this.message = handler.message;
+        this.messageId = handler.message_id;
+        this.type = handler.type;
+        this.from = handler.from_name;
+        this.url = handler.url;
+        this.paymentGross = Long.parseLong(handler.amount);
+        this.paymentDate = LocalDateTime.parse(handler.timestamp);
+        this.paymentStatus = 1L;
+    }
 
     public Long getId() {
         return id;
@@ -61,11 +90,11 @@ public class UserPayment {
         this.paymentFee = paymentFee;
     }
 
-    public Long getPaymentDate() {
+    public LocalDateTime getPaymentDate() {
         return paymentDate;
     }
 
-    public void setPaymentDate(Long paymentDate) {
+    public void setPaymentDate(LocalDateTime paymentDate) {
         this.paymentDate = paymentDate;
     }
 
@@ -83,5 +112,45 @@ public class UserPayment {
 
     public void setCurrency(String currency) {
         this.currency = currency;
+    }
+
+    public String getMessageId() {
+        return messageId;
+    }
+
+    public void setMessageId(String messageId) {
+        this.messageId = messageId;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    public String getFrom() {
+        return from;
+    }
+
+    public void setFrom(String from) {
+        this.from = from;
     }
 }

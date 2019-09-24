@@ -14,6 +14,7 @@ class AccountLayout extends Component {
   loading = () => <div className="animated fadeIn pt-1 text-center">Loading...</div>;
 
   render() {
+    console.log("draw account layout");
     return (
       <div className="mt-3">
         <Suspense fallback={this.loading()}>

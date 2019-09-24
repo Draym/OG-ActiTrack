@@ -4,7 +4,7 @@ import com.andres_k.og.config.Restricted;
 import com.andres_k.og.models.http.PlayerIdentityHandler;
 import com.andres_k.og.models.item.game.GameServer;
 import com.andres_k.og.models.item.game.Player;
-import com.andres_k.og.services.GameServerService;
+import com.andres_k.og.services.game.GameServerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
