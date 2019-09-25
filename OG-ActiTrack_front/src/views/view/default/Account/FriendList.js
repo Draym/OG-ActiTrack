@@ -153,9 +153,6 @@ class FriendList extends Component {
                   <Col>
                     <CTableData key={this.state.reload} hasSearch hasPagination
                                 dataColumns={this.state.dataColumns} formatData={this.formatTableData}
-                                formatter={(row) => {
-                                  return row.pseudo
-                                }}
                                 endpoint={ApiEndpoint.FRIEND_Get_All} loadOnStart={true} loading={this.isLoadingTable}
                                 onDeleteBtn={this.onDeleteFriend}
                                 advertEmpty="You have no friend yet. Add some new friends using the form at the top."/>

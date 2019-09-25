@@ -32,16 +32,77 @@ body {
 .text-muted {
   color: #73818f !important
 }
+
 .text-secondary {
   color: #636466 !important
 }
+
 .text-light {
   color: #b8b8b8 !important
 }
 
 /**
+** ACCORDION
+ */
+
+.accordion > div > .card {
+  //border-bottom: none;
+}
+
+.accordion > div:not(:first-child) > .card {
+  border-top: none;
+  border-radius: 0;
+}
+
+.accordion > div > .card:not(.accordion-item_open) {
+  background-color: transparent;
+}
+
+.accordion > div > .card:not(.accordion-item_open) > .card-header {
+  border-bottom: none;
+}
+.accordion > div:first-child > .card {
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.accordion > div:last-child > .card.accordion-item_open {
+  border-bottom-left-radius: 0.25rem;
+  border-bottom-right-radius: 0.25rem;
+}
+
+.accordion > div:last-child > .card {
+  border-bottom-left-radius: 0.15rem;
+  border-bottom-right-radius: 0.15rem;
+}
+
+.accordion-grey > div > .card > .card-header {
+  background-color: #e4e5e6 !important
+}
+.accordion-light > div > .card > .card-header {
+  background-color: rgba(250, 251, 252, 0.81) !important
+}
+/**
 ** NAV
  */
+@media (max-width: 768px) {
+  .sidebar-show .main::before, .aside-menu-show .main::before {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1018;
+    width: 100%;
+    height: 100%;
+    content: "";
+    background: rgba(0, 0, 0, 0.7);
+    -webkit-animation: opacity 0.25s;
+    animation: opacity 0.25s;
+  }
+  html:not([dir="rtl"]) .sidebar-sm-show.sidebar-fixed .main, html:not([dir="rtl"]) .sidebar-sm-show.sidebar-fixed .app-footer, html:not([dir="rtl"]) .sidebar-show.sidebar-fixed .main, html:not([dir="rtl"]) .sidebar-show.sidebar-fixed .app-footer {
+    margin-left: 0px;
+  }
+}
+
 header > #mmenu-toggle-icon {
   margin-top: 15px;
 }
@@ -86,14 +147,20 @@ header > #mmenu-toggle-icon {
 .ml-6 {
   margin-left: 2.5rem;
 }
+
 .pr-6 {
   padding-right: 2.5rem;
+}
+
+@media (min-width: 1200px) {
+  .pr-col-6 {
+    padding-right: 2.5rem;
+  }
 }
 
 /**
 ** TABLE
  */
-
 
 .react-bootstrap-table {
   background-color: white;
@@ -103,7 +170,7 @@ header > #mmenu-toggle-icon {
   cursor: default !important;
 }
 
-.react-bootstrap-table th.sortable span{
+.react-bootstrap-table th.sortable span {
   cursor: pointer !important;
 }
 
@@ -140,8 +207,8 @@ header > #mmenu-toggle-icon {
   background-color: rgba(255, 76, 57, 0.06) !important;;
 }
 
-.table-row-clickable tbody tr td:not(.table-ctrl-select){
-  cursor:pointer;
+.table-row-clickable tbody tr td:not(.table-ctrl-select) {
+  cursor: pointer;
 }
 
 .table-row-focus > td:not(.table-ctrl-select) {
@@ -242,6 +309,7 @@ header > #mmenu-toggle-icon {
 .react-datepicker-wrapper {
   width: 100%;
 }
+
 .DayPickerInput input, .DayPicker input, .react-datepicker__input-container input {
   border: 1px solid #e4e7ea;
   border-radius: 0.25rem;
@@ -310,11 +378,12 @@ header > #mmenu-toggle-icon {
   margin: auto;
   padding-bottom: 1rem;
 }
+
 /**
 ** DATE TYPE PICKER
  */
 .btn-db-ctn {
-  width:100%;
+  width: 100%;
 }
 
 button.btn-dp-width.btn-outline-primary {
@@ -322,10 +391,12 @@ button.btn-dp-width.btn-outline-primary {
   margin-bottom: 5px;
   border-radius: 0;
 }
+
 button.btn-dp-width.btn-outline-primary:first-child {
   border-top-left-radius: 0.25rem;
   border-bottom-left-radius: 0.25rem;
 }
+
 button.btn-dp-width.btn-outline-primary:last-child {
   border-top-right-radius: 0.25rem;
   border-bottom-right-radius: 0.25rem;
@@ -366,6 +437,7 @@ button.btn-dp-width.btn-outline-primary:last-child {
 div.input-group > .input-addon:last-child div {
   border-radius: 0 4px 4px 0 !important;
 }
+
 div.input-group > .input-addon:first-child div {
   border-radius: 4px !important;
 }
@@ -449,15 +521,19 @@ input.not-editable, input.not-editable:focus {
 .code-highlight {
   color: #3974df;
 }
+
 .font-sm {
   font-size: 1rem;
 }
+
 .font-md {
   font-size: 1.2rem;
 }
+
 .font-lg {
   font-size: 1.5rem;
 }
+
 .font-xl {
   font-size: 2rem;
 }
@@ -481,9 +557,11 @@ input.not-editable, input.not-editable:focus {
   color: #73818f;
   border: none !important;
 }
+
 .pop-btn-right {
   padding-right: 0.65rem;
 }
+
 .pop-btn-left {
   padding-left: 0.40rem;
 }
@@ -517,11 +595,13 @@ input.not-editable, input.not-editable:focus {
 .align-left {
   text-align: left;
 }
+
 .align-right {
   text-align: right;
 }
+
 .align-center {
- text-align: center;
+  text-align: center;
 }
 
 /**

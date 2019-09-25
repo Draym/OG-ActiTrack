@@ -41,8 +41,6 @@ class CBlockBullet extends Component {
                 <Row>
                   <Col className="pr-0">
                     <span>{child.props.value}</span>
-                  </Col>
-                  <Col className="p-0 ml-2">
                     {child.props.children}
                   </Col>
                 </Row>

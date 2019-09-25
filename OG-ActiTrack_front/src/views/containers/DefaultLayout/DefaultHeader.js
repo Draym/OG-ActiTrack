@@ -14,13 +14,17 @@ const defaultProps = {};
 
 class DefaultHeader extends Component {
   componentDidMount() {
-    $('.d-md-down-none.navbar-toggler').on('click', function () {
+    $('.navbar-toggler').on('click', function () {
+      let item =  $('#accountMenu');
+      console.log("item: ", item);
       if ($('.sidebar').css('marginLeft') === "0px") {
-        $('#accountMenu').removeClass("col-md-3 pr-6");
-        $('#accountMenu').addClass("offset-xl-1 col-md-2");
+        item.removeClass("col-xs-4 col-sm-4 col-md-3 col-lg-3 col-md-3 pr-col-6");
+        item.addClass("offset-xl-1 col-xs-4 col-sm-4 col-md-3 col-lg-2 col-xl-2");
+        console.log("[1]: ", item);
       } else {
-        $('#accountMenu').removeClass("offset-xl-1 col-md-2");
-        $('#accountMenu').addClass("col-md-3 pr-6");
+        item.removeClass("offset-xl-1 col-xs-4 col-sm-4 col-md-3 col-lg-2 col-xl-2");
+        item.addClass("col-xs-4 col-sm-4 col-md-3 col-lg-3 col-md-3 pr-col-6");
+        console.log("[2]: ", item);
       }
     });
   }

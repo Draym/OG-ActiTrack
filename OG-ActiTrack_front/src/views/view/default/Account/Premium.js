@@ -6,15 +6,49 @@ import CBlockText from "../../../components/CBlockText/CBlockText";
 import CBlockBullet from "../../../components/CBlockText/CBlockBullet";
 import CPopInfo from "../../../components/CPopup/CPopInfo";
 import UserSession from "../../../../utils/storage/UserSession";
+import CTableData from "../../../components/CTable/CTableData";
+import {ApiEndpoint} from "../../../../utils/api/ApiEndpoint";
+import TSessionTransform from "../../../../utils/TSessionTransform";
 
 class Premium extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      user: UserSession.getSession().user
-    }
+      user: UserSession.getSession().user,
+      loadingTable: false,
+      errorTable: undefined,
+      dataColumns: [
+        {dataField: 'pseudo', text: 'Pseudo', sort: true},
+        {dataField: 'profileId', text: 'Profile Identifier', sort: true},
+      ]
+    };
+    this.isLoadingTable = this.isLoadingTable.bind(this);
   }
 
+
+  /**
+   * TABLE
+   **/
+  formatTableData(flatData) {
+    let data = [];
+    for (let i in flatData) {
+      let profileInfo = TSessionTransform.getInfoFromProfileId(flatData[i].friendProfileIdentifier);
+      data.push({
+        id: flatData[i].friendId,
+        pseudo: profileInfo.pseudo,
+        profileId: flatData[i].friendProfileIdentifier,
+      });
+    }
+    return data;
+  }
+
+  isLoadingTable(value, error) {
+    console.log("loading table:", value)
+    this.setState({
+      loadingTable: value,
+      errorTable: error
+    });
+  }
   render() {
     let drawPremiumDashboard = function () {
       return (
@@ -23,7 +57,13 @@ class Premium extends Component {
             <Card>
               <CardHeader>Premium Dashboard</CardHeader>
               <CardBody>
-
+                <CTableData key={this.state.reload} hasSearch hasPagination
+                            dataColumns={this.state.dataColumns} formatData={this.formatTableData}
+                            formatter={(row) => {
+                              return row.pseudo
+                            }}
+                            endpoint={ApiEndpoint.USER_Payment_GetAll} loadOnStart={true} loading={this.isLoadingTable}
+                            advertEmpty="There is no donation associated to your account."/>
               </CardBody>
             </Card>
           </Col>
