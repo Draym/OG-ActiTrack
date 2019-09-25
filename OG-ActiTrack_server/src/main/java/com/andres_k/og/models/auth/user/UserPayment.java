@@ -13,13 +13,11 @@ public class UserPayment {
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    @NotNull
     @Column(name = "user_id")
     private Long userId;
     @NotNull
     @Column(name = "payment_gross")
     private Long paymentGross;
-    @NotNull
     @Column(name = "payment_fee")
     private Long paymentFee;
     @NotNull
@@ -28,22 +26,16 @@ public class UserPayment {
     @NotNull
     @Column(name = "payment_status")
     private Long paymentStatus;
-    @NotNull
     @Column(name = "currency")
     private String currency;
-    @NotNull
     @Column(name = "message_id")
     private String messageId;
-    @NotNull
     @Column(name = "message")
     private String message;
-    @NotNull
-    @Column(name = "from")
-    private String from;
-    @NotNull
+    @Column(name = "from_name")
+    private String fromName;
     @Column(name = "type")
     private String type;
-    @NotNull
     @Column(name = "url")
     private String url;
 
@@ -51,7 +43,7 @@ public class UserPayment {
         this.message = handler.message;
         this.messageId = handler.message_id;
         this.type = handler.type;
-        this.from = handler.from_name;
+        this.fromName = handler.from_name;
         this.url = handler.url;
         this.paymentGross = Long.parseLong(handler.amount);
         this.paymentDate = LocalDateTime.parse(handler.timestamp);
@@ -146,11 +138,11 @@ public class UserPayment {
         this.url = url;
     }
 
-    public String getFrom() {
-        return from;
+    public String getFromName() {
+        return fromName;
     }
 
-    public void setFrom(String from) {
-        this.from = from;
+    public void setFromName(String fromName) {
+        this.fromName = fromName;
     }
 }

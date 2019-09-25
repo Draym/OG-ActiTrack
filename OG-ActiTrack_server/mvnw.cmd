@@ -54,7 +54,7 @@ if exist "%HOME%\mavenrc_pre.cmd" call "%HOME%\mavenrc_pre.cmd"
 
 set ERROR_CODE=0
 
-@REM To isolate internal variables from possible post scripts, we use another setlocal
+@REM To isolate internal variables fromName possible post scripts, we use another setlocal
 @setlocal
 
 @REM ==== START VALIDATION ====
@@ -125,13 +125,13 @@ FOR /F "tokens=1,2 delims==" %%A IN (%MAVEN_PROJECTBASEDIR%\.mvn\wrapper\maven-w
 	IF "%%A"=="wrapperUrl" SET DOWNLOAD_URL=%%B 
 )
 
-@REM Extension to allow automatically downloading the maven-wrapper.jar from Maven-central
+@REM Extension to allow automatically downloading the maven-wrapper.jar fromName Maven-central
 @REM This allows using the maven wrapper in projects that prohibit checking in binary data.
 if exist %WRAPPER_JAR% (
     echo Found %WRAPPER_JAR%
 ) else (
     echo Couldn't find %WRAPPER_JAR%, downloading it ...
-	echo Downloading from: %DOWNLOAD_URL%
+	echo Downloading fromName: %DOWNLOAD_URL%
     powershell -Command "(New-Object Net.WebClient).DownloadFile('%DOWNLOAD_URL%', '%WRAPPER_JAR%')"
     echo Finished downloading %WRAPPER_JAR%
 )

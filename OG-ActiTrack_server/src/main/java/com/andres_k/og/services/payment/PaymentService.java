@@ -38,4 +38,8 @@ public class PaymentService {
     public List<UserPayment> getAll() {
         return this.userPaymentRepository.findAll();
     }
+
+    public List<UserPayment> getAllByUserId(Long userId) {
+        return this.userPaymentRepository.findAllByUserId(userId);
+    }
 }
