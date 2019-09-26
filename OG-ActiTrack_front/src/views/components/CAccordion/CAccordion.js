@@ -25,12 +25,13 @@ class CAccordion extends Component {
     let data = this.state;
     if (!this.props.multiple) {
       for (let it in data) {
-        if (it !== key) {
+        if (Number.parseInt(it) !== key) {
+          console.log("set to false");
           data[it] = false;
         }
       }
     }
-    data[key] = data[key] != null && data[key] !== undefined ? !data[key] : true;
+    data[key] = (data[key] == null || data[key] === undefined ? true : !data[key]);
     this.setState(data);
   }
 

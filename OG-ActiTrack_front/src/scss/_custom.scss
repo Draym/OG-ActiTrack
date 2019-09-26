@@ -299,6 +299,29 @@ header > #mmenu-toggle-icon {
 }
 
 /**
+** IMAGE
+ */
+
+.img-xl {
+  height: 150px;
+}
+.img-lg {
+  height: 100px;
+}
+.img-md {
+  height: 70px;
+}
+.img-sm {
+  height: 40px;
+}
+.img-xs {
+  height: 20px;
+}
+.img-xxs {
+  height: 13px;
+}
+
+/**
 ** CARD
  */
 
@@ -499,7 +522,9 @@ input.not-editable, input.not-editable:focus {
 /**
 * FONT
  */
-
+.txt-light {
+  color: rgba(169, 169, 239, 0.81);
+}
 .code-highlight {
   color: #3974df;
 }

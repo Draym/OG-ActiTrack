@@ -30,7 +30,6 @@ class CBlockBullet extends Component {
   render() {
     const {className} = this.props;
     const {color, align, fontSize} = this.state;
-    console.log("children: ", this.props.children);
     return (
       <ul>
         {React.Children.map(this.props.children, (child, i) => {

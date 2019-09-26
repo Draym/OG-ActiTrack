@@ -15,7 +15,7 @@ class AuthHeader extends Component {
         <AppSidebarToggler className="d-lg-none" display="md" mobile/>
         <AppNavbarBrand
           href="/"
-          full={{src: Library.logo, width: 200, height: 50, alt: 'OG-Tracker Logo'}}
+          full={{src: Library.logo.src, width: 200, height: 50, alt: Library.logo.alt}}
         />
         <CLanguageCtrl className="float-right"/>
       </React.Fragment>

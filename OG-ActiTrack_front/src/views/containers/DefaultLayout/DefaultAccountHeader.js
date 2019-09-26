@@ -8,6 +8,7 @@ import { withTranslation } from 'react-i18next';
 import {RoutesEndpoint} from "../../../utils/RoutesEndpoint";
 import PremiumStar from "../../components/Widgets/reusable/PremiumStar";
 import {Library} from "../../../utils/storage/Library";
+import CImg from "../../components/CImage/CImg";
 
 const propTypes = {
   children: PropTypes.node,
@@ -76,7 +77,7 @@ class DefaultAccountHeader extends Component {
       <Nav className="ml-auto" navbar>
         <AppHeaderDropdown direction="down">
           <DropdownToggle nav>
-            <img src={Library.userIcon} className="img-avatar" alt={"wigmo.main@gmail.com"}/>
+            <CImg data={Library.userIcon} className="img-avatar"/>
           </DropdownToggle>
           {getProfileDropDown()}
         </AppHeaderDropdown>

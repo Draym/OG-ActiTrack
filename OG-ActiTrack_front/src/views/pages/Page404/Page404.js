@@ -6,6 +6,7 @@ import {AppFooter, AppHeader} from "@coreui/react";
 
 import CBlockTitle from "../../components/CBlockTitle/CBlockTitle";
 import {Library} from "../../../utils/storage/Library";
+import CImg from "../../components/CImage/CImg";
 
 class Page404 extends Component {
   loading = () => <div className="animated fadeIn pt-1 text-center">Loading...</div>;
@@ -32,7 +33,7 @@ class Page404 extends Component {
                 <Row className="justify-content-center">
                   <Col md="6">
                     <div className="clearfix">
-                      <img src={Library.errorImg} alt={imageNotFound()} className="img-center"/>
+                      <CImg src={Library.errorImg.src} alt={imageNotFound()} className="img-center"/>
                     </div>
                     {/*
                     <InputGroup className="input-prepend">

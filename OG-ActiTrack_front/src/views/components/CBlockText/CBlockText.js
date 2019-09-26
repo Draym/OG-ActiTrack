@@ -11,7 +11,6 @@ const propTypes = {
 };
 
 const defaultProps = {
-  muted: false,
   className: "",
   fontSize: "1",
   align: "left"
@@ -28,13 +27,11 @@ class CBlockText extends Component {
   }
 
   render() {
-    const {className, text} = this.props;
+    const {className, text, children} = this.props;
     const {color, align, fontSize} = this.state;
-    if (!this.props.text)
-      return null;
     return (
       <p className={[className, align, color].join(" ")}
-      style={{'fontSize': fontSize}}>{text}</p>
+      style={{'fontSize': fontSize}}>{text ? text : children}</p>
     );
   }
 }

@@ -36,7 +36,9 @@ class AccountMenu extends Component {
   }
 
   getStateFromHistory(location) {
-    return location.slice(9);
+    let path = location.slice(9);
+    if (path.length === 0)
+      return "profile";
     /*
     ** USED WHEN USER WAS IN PATH
     let nextDelim = path.indexOf("/");

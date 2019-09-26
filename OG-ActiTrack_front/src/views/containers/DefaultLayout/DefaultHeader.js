@@ -5,6 +5,7 @@ import {AppNavbarBrand, AppSidebarToggler} from '@coreui/react';
 import DefaultAccountHeader from "./DefaultAccountHeader";
 import $ from 'jquery';
 import {Library} from "../../../utils/storage/Library";
+import {RoutesEndpoint} from "../../../utils/RoutesEndpoint";
 
 const propTypes = {
   children: PropTypes.node,
@@ -13,19 +14,32 @@ const propTypes = {
 const defaultProps = {};
 
 class DefaultHeader extends Component {
+  constructor(props) {
+    super(props);
+    this.onLogoClick = this.onLogoClick.bind(this);
+  }
+
   componentDidMount() {
     $('.navbar-toggler').on('click', function () {
-      let item =  $('#accountMenu');
-      if ($('.sidebar').css('marginLeft') === "0px") {
+      let item = $('#accountMenu');
+      if ($('body').hasClass("sidebar-lg-show")) {
         item.removeClass("col-xs-4 col-sm-4 col-md-3 col-lg-3 col-md-3 pr-col-6");
         item.addClass("offset-xl-1 col-xs-4 col-sm-4 col-md-3 col-lg-2 col-xl-2");
-        console.log("[1]: ", item);
       } else {
         item.removeClass("offset-xl-1 col-xs-4 col-sm-4 col-md-3 col-lg-2 col-xl-2");
         item.addClass("col-xs-4 col-sm-4 col-md-3 col-lg-3 col-md-3 pr-col-6");
-        console.log("[2]: ", item);
       }
     });
+  }
+
+  onLogoClick(e) {
+    console.log(e);
+    e.preventDefault();
+    let body = $('body');
+    if (!body.hasClass("sidebar-lg-show")) {
+      body.addClass("sidebar-lg-show");
+    }
+    this.props.history.push(RoutesEndpoint.HOME);
   }
 
   render() {
@@ -33,8 +47,8 @@ class DefaultHeader extends Component {
       <React.Fragment>
         <AppSidebarToggler className="d-lg-none" display="md" mobile/>
         <AppNavbarBrand
-          href="/"
-          full={{src: Library.logo, width: 200, height: 50, alt: 'OG-Tracker Logo'}}
+          onClick={this.onLogoClick}
+          full={{src: Library.logo.src, width: 200, height: 50, alt: Library.logo.alt}}
         />
         <AppSidebarToggler id="menu-toggle-icon" className="d-md-down-none" display="lg"/>
         <DefaultAccountHeader {...this.props}/>
