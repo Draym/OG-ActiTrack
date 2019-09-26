@@ -52,7 +52,6 @@ class FriendList extends Component {
   }
 
   onAddFriend() {
-    console.log("add: ", this.state.inputFriendId);
     this.isLoadingInput(true);
     const data = TSessionTransform.getInfoFromProfileId(this.state.inputFriendId);
     if (!data) {
@@ -91,7 +90,6 @@ class FriendList extends Component {
   }
 
   isLoadingTable(value, error) {
-    console.log("loading table:", value)
     this.setState({
       loadingTable: value,
       errorTable: error
@@ -99,7 +97,6 @@ class FriendList extends Component {
   }
 
   onDeleteFriend(row, rowIndex, callback) {
-    console.log("DELETE: ", row);
     this.isLoadingTable(true);
     HttpUtils.DELETE(process.env.REACT_APP_SERVER_URL, ApiEndpoint.FRIEND_Delete, TSessionTransform.getInfoFromProfileId(row.profileId), function () {
       this.isLoadingTable(false);

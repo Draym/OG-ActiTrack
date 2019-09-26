@@ -36,12 +36,15 @@ class AccountMenu extends Component {
   }
 
   getStateFromHistory(location) {
-    let path = location.slice(9);
+    return location.slice(9);
+    /*
+    ** USED WHEN USER WAS IN PATH
     let nextDelim = path.indexOf("/");
+    console.log(nextDelim)
     if (nextDelim < 0)
       return "profile";
     else
-      return path.slice(nextDelim + 1);
+      return path.slice(nextDelim + 1);*/
   }
 
   goProfile(e) {

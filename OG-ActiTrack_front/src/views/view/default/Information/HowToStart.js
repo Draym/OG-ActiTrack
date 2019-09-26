@@ -6,7 +6,6 @@ class HowToStart extends Component {
     super(props);
     this.state = {
     };
-    this.success = this.success.bind(this);
   }
 
   render() {
