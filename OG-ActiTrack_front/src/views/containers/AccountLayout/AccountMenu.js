@@ -46,42 +46,42 @@ class AccountMenu extends Component {
 
   goProfile(e) {
     e.preventDefault();
-    this.props.history.push(RoutesEndpoint.ACCOUNT_Profile.replace(":pseudo", UserSession.getUserField('pseudo')));
+    this.props.history.push(RoutesEndpoint.ACCOUNT_Profile);
   }
 
   goDashboardSettings(e) {
     e.preventDefault();
-    this.props.history.push(RoutesEndpoint.ACCOUNT_DashboardSettings.replace(":pseudo", UserSession.getUserField('pseudo')));
+    this.props.history.push(RoutesEndpoint.ACCOUNT_DashboardSettings);
   }
 
   goPremium(e) {
     e.preventDefault();
-    this.props.history.push(RoutesEndpoint.ACCOUNT_Premium.replace(":pseudo", UserSession.getUserField('pseudo')));
+    this.props.history.push(RoutesEndpoint.ACCOUNT_Premium);
   }
 
   goSecurity(e) {
     e.preventDefault();
-    this.props.history.push(RoutesEndpoint.ACCOUNT_Security.replace(":pseudo", UserSession.getUserField('pseudo')));
+    this.props.history.push(RoutesEndpoint.ACCOUNT_Security);
   }
 
   goContact(e) {
     e.preventDefault();
-    this.props.history.push(RoutesEndpoint.ACCOUNT_Contact.replace(":pseudo", UserSession.getUserField('pseudo')));
+    this.props.history.push(RoutesEndpoint.ACCOUNT_Contact);
   }
 
   goFriendList(e) {
     e.preventDefault();
-    this.props.history.push(RoutesEndpoint.ACCOUNT_FriendList.replace(":pseudo", UserSession.getUserField('pseudo')));
+    this.props.history.push(RoutesEndpoint.ACCOUNT_FriendList);
   }
 
   goGroupManagement(e) {
     e.preventDefault();
-    this.props.history.push(RoutesEndpoint.ACCOUNT_GroupManagement.replace(":pseudo", UserSession.getUserField('pseudo')));
+    this.props.history.push(RoutesEndpoint.ACCOUNT_GroupManagement);
   }
 
   goBugReport(e) {
     e.preventDefault();
-    this.props.history.push(RoutesEndpoint.ACCOUNT_BugReport.replace(":pseudo", UserSession.getUserField('pseudo')));
+    this.props.history.push(RoutesEndpoint.ACCOUNT_BugReport);
   }
 
   render() {

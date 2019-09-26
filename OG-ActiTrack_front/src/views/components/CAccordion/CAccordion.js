@@ -17,8 +17,7 @@ const defaultProps = {
 class CAccordion extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-    };
+    this.state = {};
     this.onClick = this.onClick.bind(this);
   }
 
@@ -42,7 +41,7 @@ class CAccordion extends Component {
         {children.map((child, key) => {
           return (
             <div key={key}>
-              {React.cloneElement(child, {opened:this.state[key], onClick: this.onClick, index: key})}
+              {React.cloneElement(child, {opened: this.state[key], onClick: this.onClick, index: key, color: color})}
             </div>
           )
         })}

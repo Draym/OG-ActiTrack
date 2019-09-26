@@ -7,6 +7,7 @@ import UserSession from "../../../utils/storage/UserSession";
 import { withTranslation } from 'react-i18next';
 import {RoutesEndpoint} from "../../../utils/RoutesEndpoint";
 import PremiumStar from "../../components/Widgets/reusable/PremiumStar";
+import {Library} from "../../../utils/storage/Library";
 
 const propTypes = {
   children: PropTypes.node,
@@ -36,17 +37,17 @@ class DefaultAccountHeader extends Component {
   }
   goProfile(e) {
     e.preventDefault();
-    this.props.history.push(RoutesEndpoint.ACCOUNT_Profile.replace(":pseudo", UserSession.getUserField('pseudo')));
+    this.props.history.push(RoutesEndpoint.ACCOUNT_Profile);
   }
 
   goPremium(e) {
     e.preventDefault();
-    this.props.history.push(RoutesEndpoint.ACCOUNT_Premium.replace(":pseudo", UserSession.getUserField('pseudo')));
+    this.props.history.push(RoutesEndpoint.ACCOUNT_Premium);
   }
 
   goSettings(e) {
     e.preventDefault();
-    this.props.history.push(RoutesEndpoint.ACCOUNT_Security.replace(":pseudo", UserSession.getUserField('pseudo')));
+    this.props.history.push(RoutesEndpoint.ACCOUNT_Security);
   }
 
   render() {
@@ -75,7 +76,7 @@ class DefaultAccountHeader extends Component {
       <Nav className="ml-auto" navbar>
         <AppHeaderDropdown direction="down">
           <DropdownToggle nav>
-            <img src={'../../assets/img/avatars/user_icon.png'} className="img-avatar" alt={"wigmo.main@gmail.com"}/>
+            <img src={Library.userIcon} className="img-avatar" alt={"wigmo.main@gmail.com"}/>
           </DropdownToggle>
           {getProfileDropDown()}
         </AppHeaderDropdown>

@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
 
 import {AppNavbarBrand, AppSidebarToggler} from '@coreui/react';
-import logo from '../../../assets/img/brand/logo.png'
 import CLanguageCtrl from "../../components/CLanguageCtrl";
+import {Library} from "../../../utils/storage/Library";
 
 
 class AuthHeader extends Component {
@@ -15,7 +15,7 @@ class AuthHeader extends Component {
         <AppSidebarToggler className="d-lg-none" display="md" mobile/>
         <AppNavbarBrand
           href="/"
-          full={{src: logo, width: 200, height: 50, alt: 'OG-Tracker Logo'}}
+          full={{src: Library.logo, width: 200, height: 50, alt: 'OG-Tracker Logo'}}
         />
         <CLanguageCtrl className="float-right"/>
       </React.Fragment>

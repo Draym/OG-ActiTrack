@@ -6,7 +6,6 @@ import {Card, Button, CardHeader, CardBody, Collapse} from "reactstrap/es";
 const propTypes = {
   index: PropTypes.number,
   title: PropTypes.string,
-  text: PropTypes.string,
   opened: PropTypes.bool,
   onClick: PropTypes.func
 };
@@ -29,7 +28,7 @@ class CAccordionItem extends Component {
   }
 
   render() {
-    const {title, text, index, opened} = this.props;
+    const {title, children, index, opened} = this.props;
     if (TString.isNull(title))
       return null;
     return (
@@ -47,7 +46,7 @@ class CAccordionItem extends Component {
         </CardHeader>
         <Collapse isOpen={opened} id={"collapse" + index} aria-labelledby={"heading" + index}>
           <CardBody>
-            {text}
+            {children}
           </CardBody>
         </Collapse>
       </Card>

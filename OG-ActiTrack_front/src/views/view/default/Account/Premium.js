@@ -87,12 +87,12 @@ class Premium extends Component {
                   <CBlockBullet color="muted">
                     <div value="A premium access for EVER 🚀"/>
                     <div value="Access to activity data from lower contributors 🤖">
-                      <CPopInfo title={"🤖 Activity data"}
+                      <CPopInfo className="ml-sm-1 ml-md-3 mr-sm-2 mr-md-3" title={"🤖 Activity data"}
                                 body={"The data collected by lower contributors are included with the one you collect in-game."}
                                 id="activityInfo"/>
                     </div>
                     <div value="Data protection against lower contributors 🛡️">
-                      <CPopInfo title={"🛡️ Data protection"}
+                      <CPopInfo className="ml-sm-1 ml-md-3 mr-sm-2 mr-md-3" title={"🛡️ Data protection"}
                                 body={"Lower contributors don't have access to the data you collect in-game."}
                                 id="protectionInfo"/>
                     </div>

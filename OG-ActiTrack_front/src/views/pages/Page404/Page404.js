@@ -4,8 +4,8 @@ import AuthHeader from '../../containers/AuthLayout/AuthHeader';
 import AuthFooter from '../../containers/AuthLayout/AuthFooter';
 import {AppFooter, AppHeader} from "@coreui/react";
 
-import errorImg from '../../../assets/img/404.png'
 import CBlockTitle from "../../components/CBlockTitle/CBlockTitle";
+import {Library} from "../../../utils/storage/Library";
 
 class Page404 extends Component {
   loading = () => <div className="animated fadeIn pt-1 text-center">Loading...</div>;
@@ -32,7 +32,7 @@ class Page404 extends Component {
                 <Row className="justify-content-center">
                   <Col md="6">
                     <div className="clearfix">
-                      <img src={errorImg} alt={imageNotFound()} className="img-center"/>
+                      <img src={Library.errorImg} alt={imageNotFound()} className="img-center"/>
                     </div>
                     {/*
                     <InputGroup className="input-prepend">

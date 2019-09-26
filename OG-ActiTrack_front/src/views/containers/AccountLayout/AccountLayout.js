@@ -19,7 +19,7 @@ class AccountLayout extends Component {
       <div className="mt-3">
         <Suspense fallback={this.loading()}>
           <Row>
-            <Col id="accountMenu" xs={4} sm={4} md={3} lg={2} xl={2}>
+            <Col id="accountMenu" xs={4} sm={4} md={3} lg={2} xl={{span:2, offset: 1}}>
               <AccountMenu/>
             </Col>
             <Col id="accountContent" xs={8} sm={8} md={9} lg={9} xl={9}>

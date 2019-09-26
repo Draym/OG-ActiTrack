@@ -49,6 +49,10 @@ body {
   //border-bottom: none;
 }
 
+.accordion > div > .card > .card-header {
+  padding-bottom: 0.75rem !important;
+}
+
 .accordion > div:not(:first-child) > .card {
   border-top: none;
   border-radius: 0;
@@ -61,6 +65,7 @@ body {
 .accordion > div > .card:not(.accordion-item_open) > .card-header {
   border-bottom: none;
 }
+
 .accordion > div:first-child > .card {
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
@@ -79,8 +84,12 @@ body {
 .accordion-grey > div > .card > .card-header {
   background-color: #e4e5e6 !important
 }
+
 .accordion-light > div > .card > .card-header {
-  background-color: rgba(250, 251, 252, 0.81) !important
+  background-color: rgba(253, 253, 253, 1) !important;
+}
+.accordion-light > div > .card > .card-header > button {
+  color: #49515a;
 }
 /**
 ** NAV
@@ -129,33 +138,6 @@ header > #mmenu-toggle-icon {
 .sidebar .nav-link.active {
   color: #fff;
   background: #535e67;
-}
-
-/**
-** COL
- */
-.margin-off {
-  margin-left: 0 !important;
-  margin-right: 0 !important;
-}
-
-.padding-off {
-  padding-left: 0 !important;
-  padding-right: 0 !important;
-}
-
-.ml-6 {
-  margin-left: 2.5rem;
-}
-
-.pr-6 {
-  padding-right: 2.5rem;
-}
-
-@media (min-width: 1200px) {
-  .pr-col-6 {
-    padding-right: 2.5rem;
-  }
 }
 
 /**
@@ -543,6 +525,45 @@ input.not-editable, input.not-editable:focus {
  */
 .margin-bot-l5 {
   margin-bottom: -5px !important;
+}
+
+.margin-off {
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+}
+
+.ml-6 {
+  margin-left: 3rem;
+}
+
+.mb-6 {
+  margin-bottom: 3rem;
+}
+
+.mt-6 {
+  margin-top: 3rem;
+}
+.mt-7 {
+  margin-top: 5rem;
+}
+
+/**
+** PADDING
+ */
+
+.pr-6 {
+  padding-right: 2.5rem;
+}
+
+@media (min-width: 1200px) {
+  .pr-col-6 {
+    padding-right: 2.5rem;
+  }
+}
+
+.padding-off {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
 }
 
 /**

@@ -39,7 +39,7 @@ class CBlockBullet extends Component {
               <li className={[className, align, color].join(" ")}
                   style={{'fontSize': fontSize}}>
                 <Row>
-                  <Col className="pr-0">
+                  <Col className="pr-0" style={{display: "flex"}}>
                     <span>{child.props.value}</span>
                     {child.props.children}
                   </Col>
