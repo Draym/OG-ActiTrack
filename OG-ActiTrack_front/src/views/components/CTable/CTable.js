@@ -24,12 +24,16 @@ const propTypes = {
   // controls
   addBtnTitle: PropTypes.string,
   onAddBtn: PropTypes.func,
+  onDetailBtn: PropTypes.func,
+  onLaunchBtn: PropTypes.func,
   onEditBtn: PropTypes.func,
   onDeleteBtn: PropTypes.func,
-  onSelectedBtn: PropTypes.func, // remember selected rows
-  onSelectedBtnRestricted: PropTypes.bool, // non automatic tick change, receive callback to execute if change in onSelectedBtn parameter
-  onSelectedBtnInactive: PropTypes.bool, // button disabled
-  onSelect: PropTypes.func, // when click on row, current focus
+  colControlsTitle: PropTypes.string,
+  onSelectionBtn: PropTypes.func, // remember selected rows
+  colSelectionTitle: PropTypes.string, //title of the selection column
+  onSelectionBtnRestricted: PropTypes.bool, // non automatic tick change, receive callback to execute if change in onSelectionBtn parameter
+  onSelectionBtnInactive: PropTypes.bool, // button disabled
+  onSelectRow: PropTypes.func, // when click on row, current focus
   multipleSelect: PropTypes.bool,
   confirmDelete: PropTypes.bool,
   //style
@@ -57,12 +61,16 @@ const defaultProps = {
   // controls
   addBtnTitle: 'New value',
   onAddBtn: undefined,
+  onLaunchBtn: undefined,
+  onDetailBtn: undefined,
   onEditBtn: undefined,
   onDeleteBtn: undefined,
-  onSelectedBtn: undefined,
-  onSelectedBtnRestricted: false,
-  onSelectedBtnInactive: false,
-  onSelect: undefined,
+  colControlsTitle: '',
+  onSelectionBtn: undefined,
+  colSelectionTitle: '',
+  onSelectionBtnRestricted: false,
+  onSelectionBtnInactive: false,
+  onSelectRow: undefined,
   multipleSelect: false,
   confirmDelete: false,
   //style
@@ -89,54 +97,60 @@ class CTable extends CComponent {
     };
     this.onDeleteBtn = this.onDeleteBtn.bind(this);
     this.onEditBtn = this.onEditBtn.bind(this);
-    this.onSelectedBtn = this.onSelectedBtn.bind(this);
+    this.onSelectionBtn = this.onSelectionBtn.bind(this);
 
-    if (this.props.onSelect) {
+    if (this.props.onSelectRow) {
       console.log("Add clickable");
       this.state.classes = "table-row-clickable";
     }
+    this.state.dataColumns = [...this.props.dataColumns];
     // create controls column
-    if (this.props.onDeleteBtn || this.props.onEditBtn) {
-      this.state.dataColumns = [...this.props.dataColumns];
+    if (this.props.onDeleteBtn || this.props.onEditBtn || this.props.onLaunchBtn || this.props.onDetailBtn) {
+      let width = 60;
+      if (this.props.onDeleteBtn) width += 25;
+      if (this.props.onEditBtn) width += 25;
+      if (this.props.onLaunchBtn) width += 25;
+      if (this.props.onDetailBtn) width += 25;
       this.state.dataColumns.push({
-        dataField: 'actions',
-        text: '',
+        dataField: 'controls',
+        text: this.props.colControlsTitle,
         isDummyField: true,
         csvExport: false,
         formatter: (cell, row, rowIndex) => <CTableControls id={row.id} row={row} rowIndex={rowIndex}
                                                             confirmDelete={this.props.confirmDelete}
                                                             formatter={this.state.formatter}
-                                                            onEdit={this.props.onEditBtn ? this.onEditBtn : null}
-                                                            onDelete={this.props.onDeleteBtn ? this.onDeleteBtn : null}/>,
-        headerAttrs: {width: (this.props.onDeleteBtn && this.props.onEditBtn ? 90 : 60), className: "table-ctrl-head"},
-        attrs: {width: (this.props.onDeleteBtn && this.props.onEditBtn ? 90 : 60), className: "table-ctrl-body"}
+                                                            onLaunch={this.props.onLaunchBtn}
+                                                            onDetail={this.props.onDetailBtn}
+                                                            onEdit={this.props.onEditBtn}
+                                                            onDelete={this.props.onDeleteBtn}/>,
+        headerAttrs: this.props.colControlsTitle ? {width: width} : {width: width, className: "table-ctrl-head"},
+        attrs: {className: "table-ctrl-body"}
       });
     }
     // create selection column
-    if (this.props.onSelectedBtn) {
-      this.state.dataColumns = [...this.props.dataColumns];
+    if (this.props.onSelectionBtn) {
       this.state.dataColumns.push({
         dataField: 'actions',
-        text: '',
+        text: this.props.colSelectionTitle,
         isDummyField: true,
         csvExport: false,
         formatter: (cell, row, rowIndex) => <CTableSelection id={row.id} row={row} rowIndex={rowIndex}
-                                                             restricted={this.props.onSelectedBtnRestricted}
-                                                             inactive={this.props.onSelectedBtnInactive}
-                                                             onSelect={this.props.onSelectedBtn ? this.onSelectedBtn : null}/>,
-        headerAttrs: {width: 60, className: "table-ctrl-head"},
-        attrs: {width: 60, className: "table-ctrl-select"}
+                                                             restricted={this.props.onSelectionBtnRestricted}
+                                                             inactive={this.props.onSelectionBtnInactive}
+                                                             onSelectRow={this.props.onSelectionBtn ? this.onSelectionBtn : null}/>,
+        headerAttrs: this.props.colSelectionTitle ? {width: 100} : {width: 60, className: "table-ctrl-head"},
+        attrs: {className: "table-ctrl-select"}
       });
     }
     // Attach select action to the table
-    if (this.props.onSelect && typeof this.props.onSelect === "function") {
+    if (this.props.onSelectRow && typeof this.props.onSelectRow === "function") {
       this.state.selectRow = {
         mode: (this.props.multipleSelect ? 'checkbox' : 'radio'),
         classes: 'table-row-focus',
         hideSelectColumn: true,
         clickToSelect: true,
         onSelect: (row, isSelect, rowIndex, e) => {
-          this.props.onSelect(row, isSelect, rowIndex, e);
+          this.props.onSelectRow(row, isSelect, rowIndex, e);
         }
       };
     }
@@ -150,12 +164,12 @@ class CTable extends CComponent {
     this.setState({data: rows, key: JSON.stringify(row)});
   }
 
-  onSelectedBtn(row, rowIndex, selected, successCb) {
-    if (this.props.onSelectedBtn) {
+  onSelectionBtn(row, rowIndex, selected, successCb) {
+    if (this.props.onSelectionBtn) {
       row.isSelected = selected;
       let rows = this.state.data;
       rows[rowIndex] = row;
-      this.props.onSelectedBtn(rows, row, rowIndex, selected, function () {
+      this.props.onSelectionBtn(rows, row, rowIndex, selected, function () {
         this.setState({data: rows});
         if (successCb)
           successCb();
@@ -187,7 +201,7 @@ class CTable extends CComponent {
                                           onClick={this.props.onAddBtn}>{this.props.addBtnTitle}</Button>}
           <BootstrapTable keyField={this.props.tableKey}
                           classes={this.state.classes}
-                          columns={this.state.dataColumns ? this.state.dataColumns : this.props.dataColumns}
+                          columns={this.state.dataColumns}
                           {...this.props}
                           {...this.state}/>
         </div>
@@ -207,7 +221,8 @@ class CTable extends CComponent {
     return (
       <div>
         {this.state.data && this.state.data.length > 0 && drawTable()}
-        {this.props.advertEmpty && (!this.state.data || this.state.data.length === 0) && <CBlockTitle text={this.props.advertEmpty}/>}
+        {this.props.advertEmpty && (!this.state.data || this.state.data.length === 0) &&
+        <CBlockTitle text={this.props.advertEmpty}/>}
       </div>
     )
   }

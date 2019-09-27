@@ -4,10 +4,11 @@ import {Button} from "reactstrap";
 import PropTypes from 'prop-types';
 
 const propTypes = {
-  onSelect: PropTypes.func,
+  onSelectRow: PropTypes.func,
   row: PropTypes.object,
   rowIndex: PropTypes.number,
-  inactive: PropTypes.bool
+  inactive: PropTypes.bool,
+  restricted: PropTypes.bool
 };
 const defaultProps ={
   inactive: false
@@ -24,9 +25,14 @@ class CTableSelection extends Component {
 
   onClick() {
     const selected = !this.state.isSelected;
-    this.props.onSelect(this.props.row, this.props.rowIndex, selected, function() {
+    if (!this.props.restricted) {
       this.setState({isSelected: selected});
-    }.bind(this));
+      this.props.onSelectRow(this.props.row, this.props.rowIndex, selected);
+    } else {
+      this.props.onSelectRow(this.props.row, this.props.rowIndex, selected, function () {
+        this.setState({isSelected: selected});
+      }.bind(this));
+    }
   }
 
   render() {
@@ -34,7 +40,7 @@ class CTableSelection extends Component {
       <Button
         className={"pop-btn pop-btn-left table-btn-select " + (this.state.isSelected ? "table-btn-select-active" : "table-btn-select-inactive")}
         disabled={this.props.inactive} onClick={this.onClick}>
-        {this.state.isSelected && <i className="icon-check font-md"/>}
+        {this.state.isSelected && <i className="icon-check font-1x2"/>}
       </Button>
     )
   }
