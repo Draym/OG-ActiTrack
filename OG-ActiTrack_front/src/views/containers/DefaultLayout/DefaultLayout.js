@@ -64,7 +64,7 @@ class DefaultLayout extends Component {
                         render={props => (
                           (!route.restricted || AuthUtils.isAuthorized(route.restricted) ?
                             <route.component {...props} /> :
-                            <Redirect to={{pathname: '/auth/login', state: {from: props.location}}}/>)
+                            <Redirect to={{pathname: '/404', state: {from: props.location}}}/>)
                         )}/>
                     ) : (null);
                   })}
