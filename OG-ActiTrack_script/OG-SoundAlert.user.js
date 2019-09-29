@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name        OG-SoundAlert
-// @description Create sound alert on Ogame when an attacke/spy is detected.
+// @description Create sound alert and fire web notification on Ogame when an attacke/spy is detected.
 // @include     *.ogame*gameforge.com/game/index.php*
 // @author      Draym
 // @copyright   2019, Draym (draymlab.fr)

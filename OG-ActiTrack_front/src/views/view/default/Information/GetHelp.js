@@ -9,18 +9,13 @@ import CImg from "../../../components/CImage/CImg";
 import CTextLight from "../../../components/CBlockText/CTextLight";
 import TSessionTransform from "../../../../utils/TSessionTransform";
 import UserSession from "../../../../utils/storage/UserSession";
-import CBlockBullet from "../../../components/CBlockText/CBlockBullet";
+import CBulletList from "../../../components/CBulletList/CBulletList";
+import CBulletItem from "../../../components/CBulletList/CBulletItem";
 
 class GetHelp extends Component {
   constructor(props) {
     super(props);
     this.state = {};
-    this.goTo = this.goTo.bind(this);
-  }
-
-  goTo(e, route) {
-    e.preventDefault();
-    this.props.history.push(route);
   }
 
   render() {
@@ -38,24 +33,30 @@ class GetHelp extends Component {
             <Row>
               <Col xs={12} sm={12} md={12} lg={6} xl={6}>
                 <CAccordion color="light">
-                  <CAccordionItem title={"How to use OG-Tracker ?"}>
-                    <span>haha</span>
+                  <CAccordionItem title={"What is OG-Tracker & how to use ?"}>
+                    <p>OG-Tracker is a tool which manage Ogame data you collected and create different reports.</p>
+                    <p>OG-Tracker has been designed at first to avoid putting player activity logs in a spreadsheet. To
+                      do so it collect player activities and create activity prediction in order to help its creator to
+                      HoF players ✌️.</p>
+                    <p>OG-Tracker has now grow and became freely available to everyone. It's core feature has expanded
+                      and will keep so.</p>
+                    <p>Click there to <CLink goTo={RoutesEndpoint.HOWTOSTART}>check how to start
+                      to use OG-Tracker</CLink></p>
                   </CAccordionItem>
                   <CAccordionItem title={"Where is my profile ?"}>
                     <p>The profile icon is designed by <CImg className="m-1 img-sm" data={Library.userIcon}/> that you
                       can find at the top right of the
                       screen.</p>
-                    <p>You can go to your profile by <CLink
-                      onClick={(e) => this.goTo(e, RoutesEndpoint.ACCOUNT_Profile)}>clicking
+                    <p>You can go to your profile by <CLink goTo={RoutesEndpoint.ACCOUNT_Profile}>clicking
                       here</CLink></p>
                   </CAccordionItem>
                   <CAccordionItem title={"How to change my password ?"}>
-                    <p>You can change your password in the Security panel of your Profile: <CLink
-                      onClick={(e) => this.goTo(e, RoutesEndpoint.ACCOUNT_Security)}>change my password</CLink></p>
+                    <p>You can change your password in the Security panel of your Profile:
+                      <CLink goTo={RoutesEndpoint.ACCOUNT_Security}>change my password</CLink></p>
                   </CAccordionItem>
                   <CAccordionItem title={"How to add a friend ?"}>
                     <p>You can add a friend in the Friend List panel of your Profile: <CLink
-                      onClick={(e) => this.goTo(e, RoutesEndpoint.ACCOUNT_FriendList)}>add
+                      goTo={RoutesEndpoint.ACCOUNT_FriendList}>add
                       a friend</CLink></p>
                     <p>You need to enter your friend Profile Identifier in requested field.</p>
                     <p>The Profile Identifier can be found on the Friend List view.</p>
@@ -63,22 +64,21 @@ class GetHelp extends Component {
                   </CAccordionItem>
                   <CAccordionItem title={"How to contact us ?"}>
                     <p>The contact panel is available through your Profile menu.</p>
-                    <p>Please use the following form to contact us: <CLink
-                      onClick={(e) => this.goTo(e, RoutesEndpoint.ACCOUNT_Contact)}>contact us 📧</CLink></p>
+                    <p>Please use the following form to contact us <CLink goTo={RoutesEndpoint.ACCOUNT_Contact}>contact us 📧</CLink></p>
                   </CAccordionItem>
                   <CAccordionItem title={"How to report a bug ?"}>
                     <p>The report bug panel is available through your Profile menu.</p>
-                    <p>Please use the following form to report a bug: <CLink
-                      onClick={(e) => this.goTo(e, RoutesEndpoint.ACCOUNT_BugReport)}>report a bug 🐛</CLink></p>
+                    <p>Please use the following form to report a bug <CLink
+                      goTo={RoutesEndpoint.ACCOUNT_BugReport}>report a bug 🐛</CLink></p>
                   </CAccordionItem>
                 </CAccordion>
               </Col>
               <Col xs={12} sm={12} md={12} lg={6} xl={6}>
                 <CAccordion color="light">
                   <CAccordionItem title={"What is the premium access ?"}>
-                    <p>A premium access is a thankful gift after a
-                      <CLink onClick={(e) => this.goTo(e, RoutesEndpoint.ACCOUNT_Premium)}> donation <CImg
-                        className="img-xxs" data={Library.kofiLogo}/> </CLink></p>
+                    <p>A premium access is a thankful gift after a <CLink
+                      goTo={RoutesEndpoint.ACCOUNT_Premium}> donation <CImg
+                      className="img-xxs" data={Library.kofiLogo}/> </CLink></p>
                     <p>All the functionality of OG-Tracker are free and publicity free. The tools is based on personal
                       use and all the report you can create is base on the data you collected.</p>
                     <p><CTextLight>The premium access</CTextLight> only offer a way to use data that <CTextLight>you did
@@ -92,16 +92,16 @@ class GetHelp extends Component {
                       className="code-highlight font-lg">{TSessionTransform.getProfileId(UserSession.getSession())}</span>
                     </p>
                   </CAccordionItem>
-                  <CAccordionItem title={"How does my friend list impact me ?"}>
-                    <p>Once you have a friend or more in your <CLink
-                      onClick={(e) => this.goTo(e, RoutesEndpoint.ACCOUNT_FriendList)}>Friend List</CLink>, their data
+                  <CAccordionItem shift title={"How does my friend list impact me ?"}>
+                    <p>Once you have a friend or more in your <CLink goTo={RoutesEndpoint.ACCOUNT_FriendList}>Friend
+                      List</CLink>, their data
                       will be added to yours.</p>
                     <p>This means that your future reports will take in account your data and your friends data. More
                       active friend you have, more data you will have, better your reports will be 🔥</p>
                   </CAccordionItem>
                   <CAccordionItem title={"How OG-Tracker retrieve data ?"}>
-                    <p>OG-Tracker is using a custom script that you have installed on your browser : <CLink
-                      onClick={(e) => this.goTo(e, RoutesEndpoint.HOWTOSTART)}>Installation Guide</CLink></p>
+                    <p>OG-Tracker is using a custom script that you have installed on your browser <CLink
+                      goTo={RoutesEndpoint.HOWTOSTART}>Installation Guide</CLink></p>
                     <p>🤖 It reads the web page content when you are playing Ogame and send it to our servers. All the
                       data you collect are associated to your own account</p>
                     <p>⚠ Be sure to have login properly your account with the browser script (new menu in Ogame
@@ -112,16 +112,16 @@ class GetHelp extends Component {
                       Ogame. It is our duty to be fully transparent with you with the information we retrieve.</p>
                     <p>OG-Tracker doesn't even collect your own planet activity & position when you use the Ogame galaxy
                       page, only the activity of other players are collected. 🔎</p>
-                    <p>Please <CLink onClick={(e) => this.goTo(e, RoutesEndpoint.ACCOUNT_Contact)}>contact us</CLink> to
+                    <p>Please <CLink goTo={RoutesEndpoint.ACCOUNT_Contact}>contact us</CLink> to
                       have more information.</p>
                   </CAccordionItem>
                   <CAccordionItem title={"What data OG-Tracker are using ?"}>
                     <p>OG-Tracker is collecting and using the following data :</p>
-                    <CBlockBullet>
-                      <div value="Galaxy page: planet/moon position, player name, activity on planet/moon"/>
-                      <div value="Message page: spy reports"/>
-                      <div value="Ranking page: rank of players"/>
-                    </CBlockBullet>
+                    <CBulletList>
+                      <CBulletItem>Galaxy page: planet/moon position, player name, activity on planet/moon</CBulletItem>
+                      <CBulletItem>Message page: spy reports</CBulletItem>
+                      <CBulletItem>Ranking page: rank of players</CBulletItem>
+                    </CBulletList>
                   </CAccordionItem>
                 </CAccordion>
               </Col>

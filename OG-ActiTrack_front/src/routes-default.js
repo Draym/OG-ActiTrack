@@ -16,7 +16,7 @@ const SpyReport = React.lazy(() => import('./views/view/default/DataAnalysis/Spy
 const routes = [
   { path: RoutesEndpoint.HOME, exact: true, name: 'Home', component: Home, restricted: EAuthRole.NONE },
   { path: RoutesEndpoint.HOWTOSTART, exact: true, name: 'How to Start', component: HowToStart, restricted: EAuthRole.NONE },
-  { path: RoutesEndpoint.DASHBOARD, exact: true, name: 'Dashboard', component: Dashboard, restricted: EAuthRole.BASIC },
+  { path: RoutesEndpoint.DASHBOARD, exact: true, name: 'Dashboard', component: Dashboard, restricted: EAuthRole.ADMIN },
   { path: RoutesEndpoint.PLAYER_Activity, exact: true, name: 'Player Activity', component: PlayerActivity, restricted: EAuthRole.BASIC },
   { path: RoutesEndpoint.PLAYER_Galaxy, exact: true, name: 'Galaxy Activity', component: GalaxyActivity, restricted: EAuthRole.BASIC },
   { path: RoutesEndpoint.GETHELP, exact: true, name: 'Get Help', component: GetHelp, restricted: EAuthRole.BASIC },

@@ -29,18 +29,6 @@ body {
   background-color: rgba(233, 234, 235, 0.7);
 }
 
-.text-muted {
-  color: #73818f !important
-}
-
-.text-secondary {
-  color: #636466 !important
-}
-
-.text-light {
-  color: #b8b8b8 !important
-}
-
 /**
 ** ACCORDION
  */
@@ -139,7 +127,9 @@ header > #mmenu-toggle-icon {
   color: #fff;
   background: #535e67;
 }
-
+.navbar-brand:hover {
+ cursor: pointer;
+}
 /**
 ** TABLE
  */
@@ -522,8 +512,21 @@ input.not-editable, input.not-editable:focus {
 /**
 * FONT
  */
+
+.text-muted {
+  color: #6b7987 !important
+}
+
+.text-secondary {
+  color: #555555 !important
+}
+
+.text-light {
+  color: #b8b8b8 !important
+}
+
 .txt-light {
-  color: rgba(169, 169, 239, 0.81);
+  color: rgba(42, 239, 131, 0.94);
 }
 .code-highlight {
   color: #3974df;

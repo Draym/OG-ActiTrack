@@ -6,7 +6,9 @@ const propTypes = {
   className: PropTypes.string,
   data: PropTypes.object,
   src: PropTypes.string,
-  alt: PropTypes.string
+  alt: PropTypes.string,
+  width: PropTypes.number,
+  height: PropTypes.number
 };
 
 const defaultProps = {};
@@ -14,15 +16,15 @@ const defaultProps = {};
 class CImg extends Component {
 
   render() {
-    const {className, onClick, data, src, alt} = this.props;
+    const {className, onClick, data, src, alt, width, height} = this.props;
     if (data) {
       return (
-        <img onClick={onClick} alt={data.alt} src={data.src} className={className}/>
+        <img onClick={onClick} alt={data.alt} src={data.src} width={width} height={height} className={className}/>
       );
 
     } else {
       return (
-        <img onClick={onClick} alt={alt} src={src} className={className}/>
+        <img onClick={onClick} alt={alt} src={src} width={width} height={height} className={className}/>
       );
 
     }

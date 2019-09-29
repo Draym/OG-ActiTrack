@@ -3,12 +3,13 @@ import {Card, CardBody, CardHeader, Col, Row, Table} from 'reactstrap';
 
 import BtnKofiSupport from "../../../components/Widgets/buttons/BtnKofiSupport";
 import CBlockText from "../../../components/CBlockText/CBlockText";
-import CBlockBullet from "../../../components/CBlockText/CBlockBullet";
+import CBulletList from "../../../components/CBulletList/CBulletList";
 import CPopInfo from "../../../components/CPopup/CPopInfo";
 import UserSession from "../../../../utils/storage/UserSession";
 import CTableData from "../../../components/CTable/CTableData";
 import {ApiEndpoint} from "../../../../utils/api/ApiEndpoint";
 import TSessionTransform from "../../../../utils/TSessionTransform";
+import CBulletItem from "../../../components/CBulletList/CBulletItem";
 
 class Premium extends Component {
   constructor(props) {
@@ -78,27 +79,28 @@ class Premium extends Component {
               <CardHeader>Support OG-Tracker</CardHeader>
               <CardBody>
                 <BtnKofiSupport title/>
-                <div className="mt-5">
+                <div className="mt-5 ml-md-4">
                   <CBlockText color="secondary"
                               text={`OG-Tracker is a free tool and this will never change. All the functionality are available freely.
                               In order to thanks the supporters, a Premium membership have been created.
                               It opens the access to our data, allowing you to use much more data than the one you collect personally on Ogame.`}/>
                   <CBlockText color="secondary" text={"As a big thanks gift:"}/>
-                  <CBlockBullet color="muted">
-                    <div value="A premium access for EVER 🚀"/>
-                    <div value="Access to activity data from lower contributors 🤖">
+                  <CBulletList color="muted">
+                    <CBulletItem>A premium access for EVER 🚀</CBulletItem>
+                    <CBulletItem>
+                      Access to activity data from lower contributors 🤖
                       <CPopInfo className="ml-sm-1 ml-md-3 mr-sm-2 mr-md-3" title={"🤖 Activity data"}
                                 body={"The data collected by lower contributors are included with the one you collect in-game."}
                                 id="activityInfo"/>
-                    </div>
-                    <div value="Data protection against lower contributors 🛡️">
+                    </CBulletItem>
+                    <CBulletItem>Data protection against lower contributors 🛡️
                       <CPopInfo className="ml-sm-1 ml-md-3 mr-sm-2 mr-md-3" title={"🛡️ Data protection"}
                                 body={"Lower contributors don't have access to the data you collect in-game."}
                                 id="protectionInfo"/>
-                    </div>
-                    <div value="Monthly reports"/>
-                    <div value="More coming soon.."/>
-                  </CBlockBullet>
+                    </CBulletItem>
+                    <CBulletItem>Monthly reports</CBulletItem>
+                    <CBulletItem>More coming soon..</CBulletItem>
+                  </CBulletList>
                   <CBlockText className="mt-4" color="secondary"
                               text={"Please add your profile email in the field 'Your name' in Ko-Fi message, so your account will be updated automatically."}/>
                 </div>

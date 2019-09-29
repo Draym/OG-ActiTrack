@@ -17,7 +17,7 @@ const defaultProps = {
   align: "left"
 };
 
-class CBlockBullet extends Component {
+class CBulletList extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -32,14 +32,15 @@ class CBlockBullet extends Component {
     const {color, align, fontSize} = this.state;
     return (
       <ul>
-        {React.Children.map(this.props.children, (child, i) => {
+        {React.Children.map(this.props.children, child => {
+          if (child.type.name !== 'CBulletItem')
+            throw new TypeError('CBulletList can only contains CBulletItem child');
           return (
             <div>
               <li className={[className, align, color].join(" ")}
-                  style={{'fontSize': fontSize}}>
+                  style={{'fontSize': fontSize, 'marginLeft': ((child.props.level - 1) * 2) + 'rem', 'listStyleType': child.props.level > 1 ? 'circle' : ''}}>
                 <Row>
-                  <Col className="pr-0" style={{display: "flex"}}>
-                    <span>{child.props.value}</span>
+                  <Col className={"pr-0 " + child.props.className ? child.props.className : ""} style={{display: "flex"}}>
                     {child.props.children}
                   </Col>
                 </Row>
@@ -52,7 +53,7 @@ class CBlockBullet extends Component {
   }
 }
 
-CBlockBullet.defaultProps = defaultProps;
-CBlockBullet.propTypes = propTypes;
+CBulletList.defaultProps = defaultProps;
+CBulletList.propTypes = propTypes;
 
-export default CBlockBullet;
+export default CBulletList;

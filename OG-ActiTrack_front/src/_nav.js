@@ -7,10 +7,10 @@ export default {
           name: 'Dashboard',
           url: RoutesEndpoint.DASHBOARD,
           icon: 'icon-speedometer',
-          /*badge: {
+          badge: {
             variant: 'info',
-            text: 'NEW',
-          },*/
+            text: 'SOON',
+          },
         },
         {
           title: true,
