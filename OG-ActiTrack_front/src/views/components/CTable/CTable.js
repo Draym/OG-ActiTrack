@@ -121,8 +121,8 @@ class CTable extends CComponent {
                                                             formatter={this.state.formatter}
                                                             onLaunch={this.props.onLaunchBtn}
                                                             onDetail={this.props.onDetailBtn}
-                                                            onEdit={this.props.onEditBtn}
-                                                            onDelete={this.props.onDeleteBtn}/>,
+                                                            onEdit={this.onEditBtn}
+                                                            onDelete={this.onDeleteBtn}/>,
         headerAttrs: this.props.colControlsTitle ? {width: width} : {width: width, className: "table-ctrl-head"},
         attrs: {className: "table-ctrl-body"}
       });
