@@ -598,8 +598,10 @@ input.not-editable, input.not-editable:focus {
 ** POPOVER
  */
 .pop-btn:hover {
-  cursor: pointer;
+  cursor: pointer !important;
   color: #63c2de !important;
+  border-radius: 0.3em !important;
+  background-color: rgba(210, 233, 249, 0.29) !important;
 }
 
 .pop-btn {
@@ -722,4 +724,29 @@ input.not-editable, input.not-editable:focus {
 
 .parameter-bloc {
   padding-top: 15px !important;
+}
+
+.parameter-bottom {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  padding-right: inherit;
+  padding-bottom: inherit;
+}
+
+/**
+** MARKDOWN
+ */
+
+.markdown-bot {
+  padding-left: 1rem;
+  border-bottom: 1px solid #d0d1d4;
+  padding-bottom: 0.5em;
+  margin-bottom: 1.5em;
+}
+
+.markdown-bot-small {
+  padding-left: 0.5rem;
+  border-bottom: 1px solid #d0d1d4;
+  margin-bottom: 0.5em;
 }

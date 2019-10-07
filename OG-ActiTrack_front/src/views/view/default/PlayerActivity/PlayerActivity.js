@@ -21,7 +21,7 @@ import {EDatePicker} from "../../../components/CDatePicker/EDatePicker";
 import CPopInfo from "../../../components/CPopup/CPopInfo";
 import CBoolInput from "../../../components/CBoolInput";
 import PlayerActivityChart from "./widgets/PlayerActivityChart";
-import SelectServerInput from "../../../components/Widgets/inputs/select/SelectServerInput";
+import SelectServerInput from "../../../components/Widgets/inputs/select/selectData/SelectServerInput";
 import SearchPlayerInput from "../../../components/Widgets/inputs/search/SearchPlayerInput";
 import {ApiEndpoint} from "../../../../utils/api/ApiEndpoint";
 import CButtonLoading from "../../../components/CButton/CButtonLoading";
@@ -206,7 +206,7 @@ class PlayerActivity extends Component {
               <Col xs={5} sm={5} md={5} lg={5} xl={5}>
                 <span className="btn-label">Use friend data:</span>
               </Col>
-              <Col xs={2} sm={2} md={2} lg={4} xl={4}>
+              <Col xs={4} sm={4} md={4} lg={4} xl={4}>
                 <CBoolInput onChange={this.handleFriendDataChange} value={this.state.friendData}/>
               </Col>
               <Col xs={2} sm={2} md={2} lg={2} xl={2}>
@@ -218,7 +218,7 @@ class PlayerActivity extends Component {
               <Col className="padding-off" xs={5} sm={5} md={5} lg={5} xl={5}>
                 <PremiumStar className="ml-2 mr-2"/><span>Use global data:</span>
               </Col>
-              <Col xs={2} sm={2} md={2} lg={4} xl={4}>
+              <Col xs={4} sm={4} md={4} lg={4} xl={4}>
                 <CBoolInput onChange={this.handleGlobalDataChange} value={this.state.globalData}
                             disabled={!UserSession.isPremium()}/>
               </Col>
@@ -254,14 +254,8 @@ class PlayerActivity extends Component {
                 </Col>
               </Row>
               {this.state.dateTypeSelected !== EDatePicker.All &&
-              <Row className="parameter-bloc">
-                <Col xs={12} sm={12} md={12} lg={5} xl={5} className="pt-1 mb-2">
-                  <span>Select the Date:</span>
-                </Col>
-                <Col xs={12} sm={12} md={12} lg={7} xl={7}>
-                  <CDatePicker handleDayChange={this.handleDayChange} dateTypeSelected={this.state.dateTypeSelected}/>
-                </Col>
-              </Row>
+              <CDatePicker className="parameter-bloc pt-1 mb-2" title="Select the Date:" handleDayChange={this.handleDayChange}
+                           dateTypeSelected={this.state.dateTypeSelected}/>
               }
               <Row className="parameter-bloc">
                 <Col>

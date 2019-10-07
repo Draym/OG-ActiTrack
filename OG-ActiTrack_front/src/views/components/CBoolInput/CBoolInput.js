@@ -5,6 +5,7 @@ import i18next from 'i18next';
 import PropTypes from 'prop-types';
 
 const propTypes = {
+  onChange: PropTypes.func,
   value: PropTypes.bool,
   disabled: PropTypes.bool
 };
@@ -29,7 +30,7 @@ class CBoolInput extends Component {
     this.setState({
       selected: value
     });
-    this.props.handleChange(value);
+    this.props.onChange(value);
   }
 
   render() {

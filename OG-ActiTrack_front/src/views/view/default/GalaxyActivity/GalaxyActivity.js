@@ -5,7 +5,7 @@ import CSlider from "../../../components/CSlider";
 import GalaxyActivityChart from "./widgets/GalaxyActivityChart";
 import HttpUtils from "../../../../utils/api/HttpUtils";
 import {ApiEndpoint} from "../../../../utils/api/ApiEndpoint";
-import SelectServerInput from "../../../components/Widgets/inputs/select/SelectServerInput";
+import SelectServerInput from "../../../components/Widgets/inputs/select/selectData/SelectServerInput";
 import CPopInfo from "../../../components/CPopup/CPopInfo";
 import {EDatePicker} from "../../../components/CDatePicker/EDatePicker";
 import CButtonLoading from "../../../components/CButton/CButtonLoading";
@@ -193,7 +193,7 @@ class GalaxyActivity extends Component {
               <Col xs={5} sm={5} md={5} lg={5} xl={5}>
                 <span className="btn-label">Use friend data:</span>
               </Col>
-              <Col xs={2} sm={2} md={2} lg={4} xl={4}>
+              <Col xs={4} sm={4} md={4} lg={4} xl={4}>
                 <CBoolInput onChange={this.handleFriendDataChange} value={this.state.friendData}/>
               </Col>
               <Col xs={2} sm={2} md={2} lg={2} xl={2}>
@@ -205,7 +205,7 @@ class GalaxyActivity extends Component {
               <Col xs={5} sm={5} md={5} lg={5} xl={5}>
                 <PremiumStar className="ml-2 mr-2"/><span>Use global data:</span>
               </Col>
-              <Col xs={2} sm={2} md={2} lg={4} xl={4}>
+              <Col xs={4} sm={4} md={4} lg={4} xl={4}>
                 <CBoolInput onChange={this.handleGlobalDataChange} value={this.state.globalData}
                             disabled={!UserSession.isPremium()}/>
               </Col>
@@ -231,14 +231,8 @@ class GalaxyActivity extends Component {
               </div>
             </CardHeader>
             <CardBody className="margin-bot-l5">
-              <Row>
-                <Col xs={12} sm={12} md={12} lg={5} xl={5}>
-                  <span>Select the Date:</span>
-                </Col>
-                <Col xs={12} sm={12} md={12} lg={7} xl={7}>
-                  <CDatePicker onChange={this.handleDayChange} dateTypeSelected={EDatePicker.DayInputPicker}/>
-                </Col>
-              </Row>
+              <CDatePicker title="Select the Date:" onChange={this.handleDayChange}
+                           dateTypeSelected={EDatePicker.DayInputPicker}/>
               <Row className="parameter-bloc">
                 <Col>
                   <CButtonLoading color="primary"
