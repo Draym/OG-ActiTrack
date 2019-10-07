@@ -53,11 +53,14 @@ let HttpUtils = function () {
       LoginRedirect();
     }
     response.text().then(function (text) {
+      let data;
       try {
-        triggerResultCallback(JSON.parse(text), response, cbSuccess, cbError);
+        data = JSON.parse(text);
       } catch (err) {
-        triggerResultCallback(text, response, cbSuccess, cbError);
+        console.log("[ERR] Json fail.");
+        data = text;
       }
+      triggerResultCallback(data, response, cbSuccess, cbError);
     });
   }
 

@@ -121,8 +121,8 @@ class CTable extends CComponent {
                                                             formatter={this.state.formatter}
                                                             onLaunch={this.props.onLaunchBtn}
                                                             onDetail={this.props.onDetailBtn}
-                                                            onEdit={this.onEditBtn}
-                                                            onDelete={this.onDeleteBtn}/>,
+                                                            onEdit={this.props.onEditBtn ? this.onEditBtn : undefined}
+                                                            onDelete={this.props.onDeleteBtn ? this.onDeleteBtn : undefined}/>,
         headerAttrs: this.props.colControlsTitle ? {width: width} : {width: width, className: "table-ctrl-head"},
         attrs: {className: "table-ctrl-body"}
       });
@@ -220,7 +220,7 @@ class CTable extends CComponent {
     }.bind(this);
     return (
       <div>
-        {this.state.data && this.state.data.length > 0 && drawTable()}
+        {((this.state.data && this.state.data.length > 0) || this.props.onAddBtn) && drawTable()}
         {this.props.advertEmpty && (!this.state.data || this.state.data.length === 0) &&
         <CBlockTitle text={this.props.advertEmpty}/>}
       </div>
