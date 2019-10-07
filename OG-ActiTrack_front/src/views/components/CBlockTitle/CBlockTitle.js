@@ -6,13 +6,13 @@ const propTypes = {
   className: PropTypes.string,
   muted: PropTypes.bool,
   text: PropTypes.string,
-  head: PropTypes.bool,
+  small: PropTypes.bool,
   font: PropTypes.string,
   center: PropTypes.string
 };
 
 const defaultProps = {
-  head: false,
+  small: false,
   muted: true,
   className: "",
   align: "left"
@@ -26,12 +26,12 @@ class CBlockTitle extends Component {
   }
 
   render() {
-    const {className, head, muted, text, align} = this.props;
+    const {className, small, muted, text, align} = this.props;
     const {font} = this.state;
     if (!this.props.text)
       return null;
     return (
-      <p className={[className, (head ? "title-small" : ""), (muted ? "text-muted" : ""), "align-" + align].join(" ")}
+      <p className={[className, (small ? "title-small" : ""), (muted ? "text-muted" : ""), "align-" + align].join(" ")}
       style={{'fontSize': font}}>{text}</p>
     );
   }

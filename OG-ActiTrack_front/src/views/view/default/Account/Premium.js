@@ -108,7 +108,7 @@ class Premium extends Component {
             </Card>
           </Col>
         </Row>
-        {this.state.user.premium && drawPremiumDashboard()}
+        {UserSession.isPremium() && drawPremiumDashboard()}
       </div>
     )
   }

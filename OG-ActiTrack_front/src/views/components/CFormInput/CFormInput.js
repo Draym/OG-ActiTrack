@@ -4,7 +4,9 @@ import {
   InputGroup,
   InputGroupAddon,
   InputGroupText,
-  FormFeedback
+  FormFeedback,
+  Row,
+  Col
 } from 'reactstrap';
 import TString from "../../../utils/TString";
 import AsyncSelect from 'react-select/async';
@@ -20,6 +22,8 @@ const propTypes = {
   placeHolder: PropTypes.string,
   autoComplete: PropTypes.object,
   value: PropTypes.any,
+  inline: PropTypes.bool,
+  muted: PropTypes.bool,
   col: PropTypes.number,
   disabled: PropTypes.bool,
   editable: PropTypes.bool,
@@ -68,7 +72,7 @@ class CFormInput extends Component {
   }
 
   render() {
-    const {title, gui, type, placeHolder, autoComplete, value, onClick, success, error, onVerify, hackReload, disabled, col, className, editable} = this.props;
+    const {title, gui, type, placeHolder, autoComplete, value, inline, muted, onClick, success, error, onVerify, hackReload, disabled, col, className, editable} = this.props;
 
     let renderIconBorder = function (data, type) {
       return (
@@ -160,14 +164,20 @@ class CFormInput extends Component {
 
     return (
       <COptionalCol col={col} className={className}>
-        <CBlockTitle text={title} head/>
-        <InputGroup className="mt-1 mb-1" >
-          {renderInputHead(gui)}
-          {render()}
-          {renderInputBack(gui)}
-          {renderVerify(onVerify, success, error)}
-          {error && <FormFeedback>{error}</FormFeedback>}
-        </InputGroup>
+        <Row>
+          <Col className={inline ? "pr-0 mt-2" : ""} md={inline ? 5 : 12}>
+            <CBlockTitle text={title} small muted={muted}/>
+          </Col>
+          <Col className={inline ? "pl-0" : ""} md={inline ? 7 : 12}>
+            <InputGroup>
+              {renderInputHead(gui)}
+              {render()}
+              {renderInputBack(gui)}
+              {renderVerify(onVerify, success, error)}
+              {error && <FormFeedback>{error}</FormFeedback>}
+            </InputGroup>
+          </Col>
+        </Row>
       </COptionalCol>
     );
   }

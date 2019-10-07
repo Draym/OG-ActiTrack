@@ -132,7 +132,7 @@ class FriendList extends Component {
               <CardBody>
                 <Row>
                   <Col xs={12} sm={12} md={12} lg={10} xl={6}>
-                    <CBlockTitle text={"Add a friend:"} head/>
+                    <CBlockTitle text={"Add a friend:"} small/>
                     <InputGroup>
                       <Input type="text" invalid={!!this.state.errorInput}
                              placeholder="type your friend profile's Identifier"

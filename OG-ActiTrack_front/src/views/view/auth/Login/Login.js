@@ -4,7 +4,6 @@ import {
   Button,
   Card,
   CardBody,
-  CardGroup,
   Col,
   Container,
   Form,
@@ -23,6 +22,7 @@ import '../custom.css';
 import './login.css';
 import TEncoder from "../../../../utils/TEncoder";
 import CBlockTitle from "../../../components/CBlockTitle/CBlockTitle";
+import CCardGroup from "../../../components/CCardGroup/CCardGroup";
 
 class Login extends Component {
   constructor(props) {
@@ -100,7 +100,7 @@ class Login extends Component {
         <Container style={{'marginTop': 7 + 'em'}}>
           <Row className="justify-content-center">
             <Col md="8">
-              <CardGroup>
+              <CCardGroup>
                 <Card className="p-4">
                   <CardBody className="p-2">
                     <Form>
@@ -140,7 +140,7 @@ class Login extends Component {
                     </div>
                   </CardBody>
                 </Card>
-              </CardGroup>
+              </CCardGroup>
             </Col>
           </Row>
         </Container>

@@ -1,5 +1,6 @@
 import i18next from 'i18next';
 import {RoutesEndpoint} from "./utils/RoutesEndpoint";
+import EAuthRole from "./utils/auth/EAuthRole";
 
 export default {
       items: [
@@ -11,6 +12,7 @@ export default {
             variant: 'info',
             text: 'SOON',
           },
+          restricted: EAuthRole.BASIC
         },
         {
           title: true,
@@ -25,11 +27,13 @@ export default {
           name: i18next.t('nav.activity.player.title', 'Player Activity'),
           url: RoutesEndpoint.PLAYER_Activity,
           icon: 'icon-chart',
+          restricted: EAuthRole.BASIC
         },
         {
           name: i18next.t('nav.activity.galaxy.title', 'Global Activity'),
           url: RoutesEndpoint.PLAYER_Galaxy,
           icon: 'icon-globe',
+          restricted: EAuthRole.BASIC
         },
         {
           title: true,
@@ -48,7 +52,8 @@ export default {
             variant: 'info',
             text: 'SOON',
           },
-          class: 'disabled'
+          class: 'disabled',
+          restricted: EAuthRole.BASIC
         },
         {
           name: i18next.t('nav.data.military.title', 'Military'),
@@ -58,12 +63,14 @@ export default {
             variant: 'info',
             text: 'SOON',
           },
-          class: 'disabled'
+          class: 'disabled',
+          restricted: EAuthRole.BASIC
         },
         {
           name: i18next.t('nav.data.spy.title', 'Spy Reports'),
           url: RoutesEndpoint.DATA_Spy,
           icon: 'fa fa-eye',
+          restricted: EAuthRole.BASIC
         },
         {
           title: true,
@@ -78,11 +85,13 @@ export default {
           name: i18next.t('nav.info.howto.title', 'How to start'),
           url: RoutesEndpoint.HOWTOSTART,
           icon: 'icon-wrench',
+          restricted: EAuthRole.NONE
         },
         {
           name: i18next.t('nav.info.help.title', 'Get Help'),
           url: RoutesEndpoint.GETHELP,
           icon: 'icon-question',
+          restricted: EAuthRole.BASIC
         }
       ]
 }

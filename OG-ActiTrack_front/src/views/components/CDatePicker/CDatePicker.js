@@ -49,7 +49,7 @@ class CDatePicker extends Component {
     }.bind(this);
     return (
       <div>
-        <CBlockTitle text={this.props.title} head/>
+        <CBlockTitle text={this.props.title} small/>
         {drawDateSelection()}
       </div>
     );

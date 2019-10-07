@@ -207,7 +207,7 @@ class GalaxyActivity extends Component {
               </Col>
               <Col xs={2} sm={2} md={2} lg={4} xl={4}>
                 <CBoolInput onChange={this.handleGlobalDataChange} value={this.state.globalData}
-                            disabled={!UserSession.getSession() || UserSession.getSession().premium}/>
+                            disabled={!UserSession.isPremium()}/>
               </Col>
               <Col xs={2} sm={2} md={2} lg={2} xl={2}>
                 <CPopInfo className="btn-label card-header-action btn" id="premiumInfo" position="bottom"

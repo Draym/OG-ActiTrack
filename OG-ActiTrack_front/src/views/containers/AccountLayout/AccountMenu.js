@@ -15,7 +15,7 @@ class AccountMenu extends Component {
     super(props);
     this.state = {
       selected: this.getStateFromHistory(this.props.history.location.pathname),
-      isPremium: UserSession.getUserField("premium")
+      isPremium: UserSession.isPremium()
     };
     this.goPremium = this.goPremium.bind(this);
     this.goDashboardSettings = this.goDashboardSettings.bind(this);
