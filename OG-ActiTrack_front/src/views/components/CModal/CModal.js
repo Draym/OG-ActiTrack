@@ -65,6 +65,7 @@ class CModal extends CComponent {
     };
     this.handleModalPrev = this.handleModalPrev.bind(this);
     this.handleModalNext = this.handleModalNext.bind(this);
+    this.handleModalClose = this.handleModalClose.bind(this);
   }
 
   handleModalPrev() {
@@ -85,9 +86,17 @@ class CModal extends CComponent {
       this.props.handleModalNext(step);
   }
 
+  handleModalClose() {
+    this.setState({
+      step: 1
+    });
+    if (this.props.handleModalClose)
+      this.props.handleModalClose();
+  }
+
   render() {
-    const {modalOn, handleModalClose, handleModalSubmit, isLoading, isSubmitReady, header, close, submitTitle, prevTitle, nextTitle, closeTitle, centered, size, finalStep, children} = this.props;
-    const {handleModalPrev, handleModalNext} = this;
+    const {modalOn, handleModalSubmit, isLoading, isSubmitReady, header, close, submitTitle, prevTitle, nextTitle, closeTitle, centered, size, finalStep, children} = this.props;
+    const {handleModalPrev, handleModalNext, handleModalClose} = this;
     const {step} = this.state;
     let printSubmitStep = function () {
       if (step >= finalStep) {
@@ -95,7 +104,7 @@ class CModal extends CComponent {
           <CButtonLoading color="primary"
                           onClick={handleModalSubmit}
                           loading={isLoading}
-                          disabled={isSubmitReady}
+                          disabled={!isSubmitReady}
                           className="float-right"
                           text={submitTitle}
                           loadingText="Loading.."/>
@@ -105,7 +114,7 @@ class CModal extends CComponent {
           <CButtonLoading color="primary"
                           onClick={handleModalNext}
                           loading={isLoading}
-                          disabled={isSubmitReady}
+                          disabled={!isSubmitReady}
                           className="float-right"
                           text={nextTitle}
                           loadingText="Loading.."/>
