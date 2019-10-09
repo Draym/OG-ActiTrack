@@ -13,6 +13,13 @@ class TString {
       return data.substring(index + key.length + 1);
     }
   }
+  static contains(value, target, sensitive = false) {
+    if (sensitive) {
+      return value.indexOf(target) >= 0;
+    } else {
+      return value.toLowerCase().indexOf(target.toLowerCase()) >= 0;
+    }
+  }
 }
 
 export default TString;

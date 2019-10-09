@@ -459,6 +459,10 @@ input.not-editable, input.not-editable:focus {
   z-index: 2 !important;
 }
 
+textarea {
+  min-height: 40px;
+}
+
 /**
 ** TITLE
  */
@@ -511,6 +515,21 @@ input.not-editable, input.not-editable:focus {
 .btn-kofi:hover {
   cursor: pointer;
   color: red;
+}
+
+.btn-label {
+  display: flex !important;
+  margin-top: 5px !important;
+}
+
+.btn-label:before {
+  display: flex !important;
+  margin-top: 5px !important;
+}
+
+.btn-label:after {
+  display: flex !important;
+  margin-top: 5px !important;
 }
 
 /**
@@ -703,27 +722,20 @@ input.not-editable, input.not-editable:focus {
 }
 
 /**
+** DISPLAY
+ */
+
+.display-flex {
+  display: flex;
+}
+
+/**
 ** GENERAL
  */
 
 .box-delim {
   padding-top: 1.3rem;
   margin-bottom: 0.5rem;
-}
-
-.btn-label {
-  display: flex !important;
-  margin-top: 5px !important;
-}
-
-.btn-label:before {
-  display: flex !important;
-  margin-top: 5px !important;
-}
-
-.btn-label:after {
-  display: flex !important;
-  margin-top: 5px !important;
 }
 
 .parameter-bloc {
