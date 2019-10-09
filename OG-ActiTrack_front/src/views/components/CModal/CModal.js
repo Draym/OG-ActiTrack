@@ -58,10 +58,37 @@ const defaultProps = {
 };
 
 class CModal extends CComponent {
+  constructor(props) {
+    super(props);
+    this.state = {
+      step: props.step
+    };
+    this.handleModalPrev = this.handleModalPrev.bind(this);
+    this.handleModalNext = this.handleModalNext.bind(this);
+  }
+
+  handleModalPrev() {
+    const step = this.state.step === 0 ? this.state.step : this.state.step - 1;
+    this.setState({
+      step: step
+    });
+    if (this.props.handleModalPrev)
+      this.props.handleModalPrev(step);
+  }
+
+  handleModalNext() {
+    const step = this.state.step < this.state.finalStep ? this.state.step : this.state.step + 1;
+    this.setState({
+      step: step
+    });
+    if (this.props.handleModalNext)
+      this.props.handleModalNext(step);
+  }
 
   render() {
-    const {modalOn, handleModalClose, handleModalPrev, handleModalNext, handleModalSubmit, isLoading, isSubmitReady, header, close, submitTitle, prevTitle, nextTitle, closeTitle, centered, size, step, finalStep} = this.props;
-
+    const {modalOn, handleModalClose, handleModalSubmit, isLoading, isSubmitReady, header, close, submitTitle, prevTitle, nextTitle, closeTitle, centered, size, finalStep, children} = this.props;
+    const {handleModalPrev, handleModalNext} = this;
+    const {step} = this.state;
     let printSubmitStep = function () {
       if (step >= finalStep) {
         return (
@@ -97,6 +124,7 @@ class CModal extends CComponent {
         );
       }
     };
+    console.log("Step: ", step, children);
     return (
       <Modal isOpen={modalOn} toggle={handleModalClose} centered={centered} size={size}>
         {header &&
@@ -104,7 +132,15 @@ class CModal extends CComponent {
           {header}
         </ModalHeader>}
         <ModalBody>
-          {this.props.children}
+          {React.Children.map(children, child => {
+            if (child.type.name !== "CModalStep") {
+              throw new TypeError("CModal can only contains CModalStep child");
+            }
+            if (child.props.step === step) {
+              return child;
+            }
+          })
+          }
         </ModalBody>
         <ModalFooter>
           {close &&

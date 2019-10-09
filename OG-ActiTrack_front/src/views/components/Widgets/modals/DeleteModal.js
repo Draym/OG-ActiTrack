@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import CTitle from "../../CTitle";
 import CComponent from "../../CComponent";
 import CModal from "../../CModal";
+import CModalStep from "../../CModal/CModalStep";
 
 const propTypes = {
   // modal controls
@@ -32,7 +33,9 @@ class DeleteModal extends CComponent {
   render() {
     return (
       <CModal {...this.props} {...this.state}>
-        <CTitle title={this.state.title}/>
+        <CModalStep step={1}>
+          <CTitle title={this.state.title}/>
+        </CModalStep>
       </CModal>
     )
   }

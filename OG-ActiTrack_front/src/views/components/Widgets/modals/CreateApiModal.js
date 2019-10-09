@@ -29,11 +29,8 @@ class CreateApiModal extends CComponent {
       modalOn: false,
       hasChange: false,
       isLoading: false,
-      errorLoading: undefined,
-      step: props.step
+      errorLoading: undefined
     };
-    this.handleModalNext = this.handleModalNext.bind(this);
-    this.handleModalPrev = this.handleModalPrev.bind(this);
     this.handleModalSubmit = this.handleModalSubmit.bind(this);
     this.handleModalClose = this.handleModalClose.bind(this);
     if (!(typeof this.formatData === "function")
@@ -68,28 +65,21 @@ class CreateApiModal extends CComponent {
     }.bind(this));
   }
 
-  handleModalPrev() {
-    this.setState({
-      step: this.state.step - 1
-    })
-  }
-
-  handleModalNext() {
-    this.setState({
-      step: this.state.step + 1
-    })
-  }
-
   handleModalClose() {
     this.setState({modalOn: false, userName: '', userLogin: '', userRole: undefined});
     if (this.props.handleModalClose)
       this.props.handleModalClose();
   }
 
+  getStep() {
+    if (this.refs.modal)
+      return this.refs.modal.state.step;
+    return 1;
+  }
+
   render() {
     return (
-      <CModal {...this.props} modalOn={this.state.modalOn} size={"lg"} centered step={this.state.step}
-              handleModalNext={this.handleModalNext} handleModalPrev={this.handleModalPrev}
+      <CModal {...this.props} ref="modal" modalOn={this.state.modalOn} size={"lg"} centered
               handleModalSubmit={this.handleModalSubmit} handleModalClose={this.handleModalClose}
               isSubmitReady={!this.isApiParametersValid() || !this.state.hasChange} isLoading={this.state.isLoading}>
         {this.renderForm()}
