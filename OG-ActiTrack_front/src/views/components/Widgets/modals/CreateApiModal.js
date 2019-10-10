@@ -78,10 +78,11 @@ class CreateApiModal extends CComponent {
   }
 
   render() {
+    const {modalOn, hasChange, isLoading} = this.state;
     return (
-      <CModal {...this.props} ref="modal" modalOn={this.state.modalOn} size={"lg"} centered
+      <CModal {...this.props} ref="modal" modalOn={modalOn} size={"lg"} centered
               handleModalSubmit={this.handleModalSubmit} handleModalClose={this.handleModalClose}
-              isSubmitReady={this.isApiParametersValid() && this.state.hasChange} isLoading={this.state.isLoading}>
+              isSubmitReady={this.isApiParametersValid() && hasChange} isLoading={isLoading}>
         {this.renderForm()}
       </CModal>
     )

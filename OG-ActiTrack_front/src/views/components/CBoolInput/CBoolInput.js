@@ -7,12 +7,16 @@ import PropTypes from 'prop-types';
 const propTypes = {
   onChange: PropTypes.func,
   value: PropTypes.bool,
-  disabled: PropTypes.bool
+  disabled: PropTypes.bool,
+  yes: PropTypes.string,
+  no: PropTypes.string
 };
 
 const defaultProps = {
   value: false,
-  disabled: false
+  disabled: false,
+  yes: i18next.t("vocabulary.yes"),
+  no: i18next.t("vocabulary.no")
 };
 
 class CBoolInput extends Component {
@@ -34,13 +38,15 @@ class CBoolInput extends Component {
   }
 
   render() {
+    const {disabled, yes, no} = this.props;
+    const {selected} = this.state;
     return (
       <ButtonToolbar>
         <ButtonGroup className="mr-3">
           <Button color="outline-secondary" onClick={() => this.toggle(true)}
-                  active={this.state.selected === true} disabled={this.props.disabled}>{i18next.t("vocabulary.yes")}</Button>
+                  active={selected === true} disabled={disabled}>{yes}</Button>
           <Button color="outline-danger" onClick={() => this.toggle(false)}
-                  active={this.state.selected === false} disabled={this.props.disabled}>{i18next.t("vocabulary.no")}</Button>
+                  active={selected === false} disabled={disabled}>{no}</Button>
         </ButtonGroup>
       </ButtonToolbar>
     );

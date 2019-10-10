@@ -26,13 +26,13 @@ class CBlockTitle extends Component {
   }
 
   render() {
-    const {className, small, muted, text, align} = this.props;
+    const {className, small, muted, text, align, children} = this.props;
     const {font} = this.state;
     if (!this.props.text)
       return null;
     return (
       <p className={[className, (small ? "title-small" : ""), (muted ? "text-muted" : ""), "align-" + align].join(" ")}
-      style={{'fontSize': font}}>{text}</p>
+      style={{'fontSize': font}}>{text}{children}</p>
     );
   }
 }

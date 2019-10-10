@@ -13,8 +13,6 @@ const propTypes = {
   handleModalNext: PropTypes.func,
   handleModalSubmit: PropTypes.func,
   // submit
-  isSubmitReady: PropTypes.bool,
-  isLoading: PropTypes.bool,
   submitTitle: PropTypes.string,
   // close
   close: PropTypes.bool,
@@ -39,8 +37,6 @@ const defaultProps = {
   handleModalNext: undefined,
   handleModalSubmit: undefined,
   // submit
-  isSubmitReady: true,
-  isLoading: false,
   submitTitle: "Submit",
   // close
   close: false,
@@ -68,6 +64,12 @@ class CModal extends CComponent {
     this.handleModalClose = this.handleModalClose.bind(this);
   }
 
+  componentWillUpdate(nextProps, nextState, nextContext) {
+    if (nextProps.modalOn && !this.props.modalOn) {
+      this.state.step = 1;
+    }
+  }
+
   handleModalPrev() {
     const step = this.state.step === 0 ? this.state.step : this.state.step - 1;
     this.setState({
@@ -87,17 +89,25 @@ class CModal extends CComponent {
   }
 
   handleModalClose() {
-    this.setState({
-      step: 1
-    });
     if (this.props.handleModalClose)
       this.props.handleModalClose();
   }
 
   render() {
-    const {modalOn, handleModalSubmit, isLoading, isSubmitReady, header, close, submitTitle, prevTitle, nextTitle, closeTitle, centered, size, finalStep, children} = this.props;
+    const {modalOn, handleModalSubmit, header, close, submitTitle, prevTitle, nextTitle, closeTitle, centered, size, finalStep, children} = this.props;
     const {handleModalPrev, handleModalNext, handleModalClose} = this;
     const {step} = this.state;
+    let currentChild = React.Children.map(children, child => {
+      if (child.type.name !== "CModalStep") {
+        throw new TypeError("CModal can only contains CModalStep child");
+      }
+      if (child.props.step === step) {
+        return child;
+      }
+    });
+    currentChild = currentChild.length > 0 ? currentChild[0] : null;
+    let isSubmitReady = currentChild ? currentChild.props.isReady : false;
+    let isLoading = currentChild ? currentChild.props.isLoading : false;
     let printSubmitStep = function () {
       if (step >= finalStep) {
         return (
@@ -133,7 +143,6 @@ class CModal extends CComponent {
         );
       }
     };
-    console.log("Step: ", step, children);
     return (
       <Modal isOpen={modalOn} toggle={handleModalClose} centered={centered} size={size}>
         {header &&
@@ -141,15 +150,7 @@ class CModal extends CComponent {
           {header}
         </ModalHeader>}
         <ModalBody>
-          {React.Children.map(children, child => {
-            if (child.type.name !== "CModalStep") {
-              throw new TypeError("CModal can only contains CModalStep child");
-            }
-            if (child.props.step === step) {
-              return child;
-            }
-          })
-          }
+          {currentChild}
         </ModalBody>
         <ModalFooter>
           {close &&

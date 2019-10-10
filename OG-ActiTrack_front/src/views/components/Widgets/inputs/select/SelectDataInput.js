@@ -20,7 +20,8 @@ const propTypes = {
   placeHolder: PropTypes.string,
   className: PropTypes.string,
   inline: PropTypes.bool,
-  muted: PropTypes.bool
+  muted: PropTypes.bool,
+  disabled: PropTypes.bool
 };
 
 const defaultProps = {
@@ -116,7 +117,7 @@ class SelectDataInput extends CComponent {
   };
 
   render() {
-    const {className, inline, muted, gui, title, placeHolder} = this.props;
+    const {className, inline, muted, disabled, gui, title, placeHolder} = this.props;
     const {selected, errorValue, apiParameter, values} = this.state;
 
     return (
@@ -126,6 +127,7 @@ class SelectDataInput extends CComponent {
                     title={title}
                     inline={inline}
                     muted={muted}
+                    disabled={disabled}
                     placeHolder={placeHolder}
                     value={selected} error={errorValue}
                     hackReload={JSON.stringify(apiParameter)}
