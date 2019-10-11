@@ -16,8 +16,12 @@ import PropTypes from 'prop-types';
 const propTypes = {
   className: PropTypes.string,
   dateTypeSelected: PropTypes.number,
-  handleDayChange: PropTypes.func,
 
+  // picker
+  handleDayChange: PropTypes.func,
+  allowFuture: PropTypes.bool,
+
+  // picker style
   title: PropTypes.string,
   titleXS: PropTypes.number,
   titleSM: PropTypes.number,
@@ -27,6 +31,7 @@ const propTypes = {
 };
 
 const defaultProps = {
+  allowFuture: true,
   dateTypeSelected: 1,
   titleXS: 12,
   titleSM: 12,
@@ -37,26 +42,26 @@ const defaultProps = {
 
 class CDatePicker extends Component {
   render() {
-    const {dateTypeSelected, title, className, handleDayChange, titleXS, titleSM, titleMD, titleLG, titleXL} = this.props;
+    const {dateTypeSelected, title, className, handleDayChange, allowFuture, titleXS, titleSM, titleMD, titleLG, titleXL} = this.props;
     let drawDateSelection = function () {
       if (dateTypeSelected === EDatePicker.DayPicker) {
-        return (<CDayPicker handleDayChange={handleDayChange}/>);
+        return (<CDayPicker handleDayChange={handleDayChange} allowFuture={allowFuture}/>);
       } else if (dateTypeSelected === EDatePicker.WeekPicker) {
-        return (<CWeekPicker handleDayChange={handleDayChange}/>);
+        return (<CWeekPicker handleDayChange={handleDayChange} allowFuture={allowFuture}/>);
       } else if (dateTypeSelected === EDatePicker.DayInputPicker) {
-        return (<CDayInputPicker handleDayChange={handleDayChange}/>);
+        return (<CDayInputPicker handleDayChange={handleDayChange} allowFuture={allowFuture}/>);
       } else if (dateTypeSelected === EDatePicker.WeekInputPicker) {
-        return (<CWeekInputPicker handleDayChange={handleDayChange}/>);
+        return (<CWeekInputPicker handleDayChange={handleDayChange} allowFuture={allowFuture}/>);
       } else if (dateTypeSelected === EDatePicker.DayRangePicker) {
-        return (<CDayRangePicker handleDayChange={handleDayChange}/>);
+        return (<CDayRangePicker handleDayChange={handleDayChange} allowFuture={allowFuture}/>);
       } else if (dateTypeSelected === EDatePicker.DayRangeInputPicker) {
-        return (<CDayRangeInputPicker handleDayChange={handleDayChange}/>);
+        return (<CDayRangeInputPicker handleDayChange={handleDayChange} allowFuture={allowFuture}/>);
       } else if (dateTypeSelected === EDatePicker.MonthInputPicker) {
-        return (<CMonthInputPicker handleDayChange={handleDayChange}/>);
+        return (<CMonthInputPicker handleDayChange={handleDayChange} allowFuture={allowFuture}/>);
       } else if (dateTypeSelected === EDatePicker.QuarterInputPicker) {
-        return (<CQuarterInputPicker handleDayChange={handleDayChange}/>);
+        return (<CQuarterInputPicker handleDayChange={handleDayChange} allowFuture={allowFuture}/>);
       } else if (dateTypeSelected === EDatePicker.YearInputPicker) {
-        return (<CYearInputPicker handleDayChange={handleDayChange}/>);
+        return (<CYearInputPicker handleDayChange={handleDayChange} allowFuture={allowFuture}/>);
       }
     }.bind(this);
 
@@ -66,7 +71,9 @@ class CDatePicker extends Component {
           <Col xs={titleXS} sm={titleSM} md={titleMD} lg={titleLG} xl={titleXL}>
             <span>{title}</span>
           </Col>
-          <Col xs={titleXS === 12 ? 12 : 12 - titleXS} sm={titleSM === 12 ? 12 : 12 - titleSM} md={titleMD === 12 ? 12 : 12 - titleMD} lg={titleLG === 12 ? 12 : 12 - titleLG} xl={titleXL === 12 ? 12 : 12 - titleXL}>
+          <Col xs={titleXS === 12 ? 12 : 12 - titleXS} sm={titleSM === 12 ? 12 : 12 - titleSM}
+               md={titleMD === 12 ? 12 : 12 - titleMD} lg={titleLG === 12 ? 12 : 12 - titleLG}
+               xl={titleXL === 12 ? 12 : 12 - titleXL}>
             {drawDateSelection()}
           </Col>
         </Row>

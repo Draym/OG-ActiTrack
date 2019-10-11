@@ -8,8 +8,10 @@ import 'moment/locale/en-gb';
 import PropTypes from 'prop-types';
 
 const propTypes = {
-  handleDayChange: PropTypes.func
+  handleDayChange: PropTypes.func,
+  allowFuture: PropTypes.bool
 };
+
 class CDayInputPicker extends Component {
   constructor(props) {
     super(props);
@@ -28,19 +30,20 @@ class CDayInputPicker extends Component {
 
 
   render() {
-    const { selectedDays} = this.state;
+    const {allowFuture} = this.props;
+    const {selectedDays} = this.state;
     return (
-        <DayPickerInput
-          value={selectedDays}
-          inputProps={{readOnly: true}}
-          onDayChange={this.handleDayChange}
-          dayPickerProps={{
-            locale: "eng",
-            localeUtils: MomentLocaleUtils,
-            selectedDays: selectedDays,
-            disabledDays:{ after: new Date() }
-          }}
-        />
+      <DayPickerInput
+        value={selectedDays}
+        inputProps={{readOnly: true}}
+        onDayChange={this.handleDayChange}
+        dayPickerProps={{
+          locale: "eng",
+          localeUtils: MomentLocaleUtils,
+          selectedDays: selectedDays,
+          disabledDays: allowFuture ? null : {after: new Date()}
+        }}
+      />
     );
   }
 }

@@ -8,7 +8,8 @@ import 'moment/locale/en-gb';
 import PropTypes from 'prop-types';
 
 const propTypes = {
-  handleDayChange: PropTypes.func
+  handleDayChange: PropTypes.func,
+  allowFuture: PropTypes.bool
 };
 class CDayPicker extends Component {
   constructor(props) {
@@ -20,7 +21,6 @@ class CDayPicker extends Component {
   }
 
   handleDayChange(day, {selected}) {
-    console.log("haha");
     this.setState({
       selectedDays: [selected ? undefined : day]
     });
@@ -28,6 +28,7 @@ class CDayPicker extends Component {
   };
 
   render() {
+    const {allowFuture} = this.props;
     return (
       <DayPicker
         locale="eng"
@@ -35,7 +36,7 @@ class CDayPicker extends Component {
         localeUtils={MomentLocaleUtils}
         selectedDays={this.state.selectedDays}
         onDayClick={this.handleDayChange}
-        disabledDays={{after: new Date()}}
+        disabledDays={allowFuture ? null : {after: new Date()}}
       />
     );
   }

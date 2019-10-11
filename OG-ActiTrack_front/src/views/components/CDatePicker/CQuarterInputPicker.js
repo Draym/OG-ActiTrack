@@ -3,11 +3,12 @@ import DateUtils from "../../../utils/DateUtils";
 import moment from "moment";
 import CPopup from "../CPopup/CPopup";
 import PropTypes from 'prop-types';
-import CDayPicker from "./CDayPicker";
 
 const propTypes = {
-  handleDayChange: PropTypes.func
+  handleDayChange: PropTypes.func,
+  allowFuture: PropTypes.bool
 };
+
 class CQuarterInputPicker extends CPopup {
   constructor(props) {
     super(props);
@@ -61,6 +62,7 @@ class CQuarterInputPicker extends CPopup {
   }
 
   render() {
+    const {allowFuture} = this.props;
     const {year, maxYear, uiQuarters, selectedYear, selectedQuarter, selectedText} = this.state;
     return (
       <div>
@@ -97,7 +99,7 @@ class CQuarterInputPicker extends CPopup {
                       <div key={i} className="react-datepicker__month-wrapper">
                         {array.map((quarter, i) => (
                           <div key={i}
-                               className={"react-datepicker__quarter-text" + (year !== maxYear || moment().month() >= quarter.key * 3 ? '' : ' disabled') + (selectedYear === year && selectedQuarter === quarter.key ? ' selected' : '')}
+                               className={"react-datepicker__quarter-text" + (!allowFuture && (year === maxYear && moment().month() < quarter.key * 3) ? " disabled" : '') + (selectedYear === year && selectedQuarter === quarter.key ? ' selected' : '')}
                                onClick={() => this.handleChange(quarter.key)}>
                             <h5>{quarter.title}</h5>
                             <small>{quarter.month}</small>

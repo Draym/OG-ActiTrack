@@ -10,8 +10,10 @@ import 'moment/locale/en-gb';
 import PropTypes from 'prop-types';
 
 const propTypes = {
-  handleDayChange: PropTypes.func
+  handleDayChange: PropTypes.func,
+  allowFuture: PropTypes.bool
 };
+
 class CWeekInputPicker extends Component {
   constructor(props) {
     super(props);
@@ -49,8 +51,8 @@ class CWeekInputPicker extends Component {
   };
 
   render() {
+    const {allowFuture} = this.props;
     const {hoverRange, selectedDays, selectedDay} = this.state;
-
     const daysAreSelected = selectedDays.length > 0;
 
     const modifiers = {
@@ -65,29 +67,21 @@ class CWeekInputPicker extends Component {
       selectedRangeEnd: daysAreSelected && selectedDays[6],
       sunday: day => day.getDay() === 0
     };
-
-    let drawDateSelection = function () {
-      return (
-        <DayPickerInput
-          value={selectedDay}
-          inputProps={{readOnly: true}}
-          onDayChange={this.handleDayChange}
-          dayPickerProps={{
-            locale: "eng",
-            localeUtils: MomentLocaleUtils,
-            selectedDays: selectedDays,
-            modifiers: modifiers,
-            onDayMouseEnter: this.handleDayEnter,
-            onDayMouseLeave: this.handleDayLeave,
-            disabledDays:{ after: new Date() }
-          }}
-        />
-      );
-    }.bind(this);
     return (
-      <div>
-        {drawDateSelection()}
-      </div>
+      <DayPickerInput
+        value={selectedDay}
+        inputProps={{readOnly: true}}
+        onDayChange={this.handleDayChange}
+        dayPickerProps={{
+          locale: "eng",
+          localeUtils: MomentLocaleUtils,
+          selectedDays: selectedDays,
+          modifiers: modifiers,
+          onDayMouseEnter: this.handleDayEnter,
+          onDayMouseLeave: this.handleDayLeave,
+          disabledDays: allowFuture ? null : {after: new Date()}
+        }}
+      />
     );
   }
 }
