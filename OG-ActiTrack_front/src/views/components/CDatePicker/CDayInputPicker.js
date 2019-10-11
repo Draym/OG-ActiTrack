@@ -9,6 +9,7 @@ import PropTypes from 'prop-types';
 
 const propTypes = {
   handleDayChange: PropTypes.func,
+  allowPast: PropTypes.bool,
   allowFuture: PropTypes.bool
 };
 
@@ -30,7 +31,7 @@ class CDayInputPicker extends Component {
 
 
   render() {
-    const {allowFuture} = this.props;
+    const {allowPast, allowFuture} = this.props;
     const {selectedDays} = this.state;
     return (
       <DayPickerInput
@@ -41,7 +42,7 @@ class CDayInputPicker extends Component {
           locale: "eng",
           localeUtils: MomentLocaleUtils,
           selectedDays: selectedDays,
-          disabledDays: allowFuture ? null : {after: new Date()}
+          disabledDays: {before: allowPast ? null : new Date(), after: allowFuture ? null : new Date()}
         }}
       />
     );

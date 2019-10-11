@@ -19,6 +19,7 @@ const propTypes = {
 
   // picker
   handleDayChange: PropTypes.func,
+  allowPast: PropTypes.bool,
   allowFuture: PropTypes.bool,
 
   // picker style
@@ -31,6 +32,7 @@ const propTypes = {
 };
 
 const defaultProps = {
+  allowPast: true,
   allowFuture: true,
   dateTypeSelected: 1,
   titleXS: 12,
@@ -42,26 +44,26 @@ const defaultProps = {
 
 class CDatePicker extends Component {
   render() {
-    const {dateTypeSelected, title, className, handleDayChange, allowFuture, titleXS, titleSM, titleMD, titleLG, titleXL} = this.props;
+    const {dateTypeSelected, title, className, handleDayChange, allowPast, allowFuture, titleXS, titleSM, titleMD, titleLG, titleXL} = this.props;
     let drawDateSelection = function () {
       if (dateTypeSelected === EDatePicker.DayPicker) {
-        return (<CDayPicker handleDayChange={handleDayChange} allowFuture={allowFuture}/>);
+        return (<CDayPicker handleDayChange={handleDayChange} allowPast={allowPast} allowFuture={allowFuture}/>);
       } else if (dateTypeSelected === EDatePicker.WeekPicker) {
-        return (<CWeekPicker handleDayChange={handleDayChange} allowFuture={allowFuture}/>);
+        return (<CWeekPicker handleDayChange={handleDayChange} allowPast={allowPast} allowFuture={allowFuture}/>);
       } else if (dateTypeSelected === EDatePicker.DayInputPicker) {
-        return (<CDayInputPicker handleDayChange={handleDayChange} allowFuture={allowFuture}/>);
+        return (<CDayInputPicker handleDayChange={handleDayChange} allowPast={allowPast} allowFuture={allowFuture}/>);
       } else if (dateTypeSelected === EDatePicker.WeekInputPicker) {
-        return (<CWeekInputPicker handleDayChange={handleDayChange} allowFuture={allowFuture}/>);
+        return (<CWeekInputPicker handleDayChange={handleDayChange} allowPast={allowPast} allowFuture={allowFuture}/>);
       } else if (dateTypeSelected === EDatePicker.DayRangePicker) {
-        return (<CDayRangePicker handleDayChange={handleDayChange} allowFuture={allowFuture}/>);
+        return (<CDayRangePicker handleDayChange={handleDayChange} allowPast={allowPast} allowFuture={allowFuture}/>);
       } else if (dateTypeSelected === EDatePicker.DayRangeInputPicker) {
-        return (<CDayRangeInputPicker handleDayChange={handleDayChange} allowFuture={allowFuture}/>);
+        return (<CDayRangeInputPicker handleDayChange={handleDayChange} allowPast={allowPast} allowFuture={allowFuture}/>);
       } else if (dateTypeSelected === EDatePicker.MonthInputPicker) {
-        return (<CMonthInputPicker handleDayChange={handleDayChange} allowFuture={allowFuture}/>);
+        return (<CMonthInputPicker handleDayChange={handleDayChange} allowPast={allowPast} allowFuture={allowFuture}/>);
       } else if (dateTypeSelected === EDatePicker.QuarterInputPicker) {
-        return (<CQuarterInputPicker handleDayChange={handleDayChange} allowFuture={allowFuture}/>);
+        return (<CQuarterInputPicker handleDayChange={handleDayChange} allowPast={allowPast} allowFuture={allowFuture}/>);
       } else if (dateTypeSelected === EDatePicker.YearInputPicker) {
-        return (<CYearInputPicker handleDayChange={handleDayChange} allowFuture={allowFuture}/>);
+        return (<CYearInputPicker handleDayChange={handleDayChange} allowPast={allowPast} allowFuture={allowFuture}/>);
       }
     }.bind(this);
 

@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 
 const propTypes = {
   handleDayChange: PropTypes.func,
+  allowPast: PropTypes.bool,
   allowFuture: PropTypes.bool
 };
 
@@ -14,7 +15,7 @@ class CYearInputPicker extends CPopup {
     super(props);
     let now = moment().year();
     this.initState({
-      maxYear: now,
+      currentYear: now,
 
       selectedYear: undefined,
 
@@ -49,18 +50,20 @@ class CYearInputPicker extends CPopup {
   };
 
   previousYear() {
+    if (!this.props.allowPast && (this.state.uiMiddleYear - 9) < this.state.currentYear)
+      return;
     this.setState(this.getVisibleYears(this.state.uiMiddleYear - 9));
   }
 
   nextYear() {
-    if (this.state.uiMiddleYear + 9 > this.state.maxYear)
+    if (!this.props.allowFuture && (this.state.uiMiddleYear + 9) > this.state.currentYear)
       return;
     this.setState(this.getVisibleYears(this.state.uiMiddleYear + 9));
   }
 
   render() {
-    const {allowFuture} = this.props;
-    const {selectedYear, maxYear, uiYears, uiMiddleYear} = this.state;
+    const {allowPast, allowFuture} = this.props;
+    const {selectedYear, currentYear, uiYears, uiMiddleYear} = this.state;
     return (
       <div>
         <div className="react-datepicker-wrapper">
@@ -81,10 +84,10 @@ class CYearInputPicker extends CPopup {
                }}>
             <div className="react-datepicker__triangle"/>
             <button type="button"
-                    className="react-datepicker__navigation react-datepicker__navigation--previous"
+                    className={"react-datepicker__navigation react-datepicker__navigation--previous" + (!allowPast && uiMiddleYear < currentYear ? ' disabled' : '')}
                     onClick={this.previousYear}/>
             <button type="button"
-                    className={"react-datepicker__navigation react-datepicker__navigation--next" + (uiMiddleYear === maxYear ? ' disabled' : '')}
+                    className={"react-datepicker__navigation react-datepicker__navigation--next" + (!allowFuture && uiMiddleYear === currentYear ? ' disabled' : '')}
                     onClick={this.nextYear}/>
             <div className="react-datepicker__year-container">
               <div className="react-datepicker__header react-datepicker-year-header"/>
@@ -96,7 +99,7 @@ class CYearInputPicker extends CPopup {
                       <div key={i} className="react-datepicker__month-wrapper">
                         {array.map((year, i) => (
                           <div key={i}
-                               className={"react-datepicker__year-text" + (!allowFuture && year > maxYear ? " disabled" : '') + (this.state.selectedYear === year ? " selected" : '')}
+                               className={"react-datepicker__year-text" + (!allowPast && year < currentYear ? " disabled" : '') + (!allowFuture && year > currentYear ? " disabled" : '') + (this.state.selectedYear === year ? " selected" : '')}
                                onClick={() => this.handleChange(year)}>
                             {year}
                           </div>))}

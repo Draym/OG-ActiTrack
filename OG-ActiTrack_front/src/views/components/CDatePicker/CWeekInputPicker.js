@@ -11,6 +11,7 @@ import PropTypes from 'prop-types';
 
 const propTypes = {
   handleDayChange: PropTypes.func,
+  allowPast: PropTypes.bool,
   allowFuture: PropTypes.bool
 };
 
@@ -51,7 +52,7 @@ class CWeekInputPicker extends Component {
   };
 
   render() {
-    const {allowFuture} = this.props;
+    const {allowPast, allowFuture} = this.props;
     const {hoverRange, selectedDays, selectedDay} = this.state;
     const daysAreSelected = selectedDays.length > 0;
 
@@ -79,7 +80,7 @@ class CWeekInputPicker extends Component {
           modifiers: modifiers,
           onDayMouseEnter: this.handleDayEnter,
           onDayMouseLeave: this.handleDayLeave,
-          disabledDays: allowFuture ? null : {after: new Date()}
+          disabledDays: {before: allowPast ? null : new Date(), after: allowFuture ? null : new Date()}
         }}
       />
     );

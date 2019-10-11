@@ -5,10 +5,10 @@ import DatePicker from "react-datepicker/es";
 import "react-datepicker/dist/react-datepicker.css";
 import DateUtils from "../../../utils/DateUtils";
 import PropTypes from 'prop-types';
-import DayPicker from "react-day-picker";
 
 const propTypes = {
   handleDayChange: PropTypes.func,
+  allowPast: PropTypes.bool,
   allowFuture: PropTypes.bool
 };
 
@@ -32,15 +32,15 @@ class CDayPicker extends Component {
 
 
   render() {
-    const {allowFuture} = this.props;
+    const {allowPast, allowFuture} = this.props;
     return (
       <DatePicker
-        maxDate={new Date()}
+        minDate={allowPast ? null : new Date()}
+        maxDate={allowFuture ? null : new Date()}
         selected={this.state.selected}
         onChange={this.handleChange}
         dateFormat="MM/yyyy"
         showMonthYearPicker
-        disabledDays={allowFuture ? null : {after: new Date()}}
       />
     );
   }
