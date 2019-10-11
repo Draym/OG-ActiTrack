@@ -18,11 +18,13 @@ const propTypes = {
   iconLeft: PropTypes.bool,
   iconHead: PropTypes.bool,
   iconInline: PropTypes.bool,
-  // optional
+  // style
   color: PropTypes.string, // bootstrap code color (primary, info ...) or custom
   invert: PropTypes.bool,
   sliderValue: PropTypes.number,
-  link: PropTypes.string
+  link: PropTypes.string,
+  bodyClass: PropTypes.string,
+  cardClass: PropTypes.string
 };
 
 
@@ -51,7 +53,7 @@ class CSticker extends Component {
   }
 
   render() {
-    const {className, cssModule, title, body, subline, footer, icon, iconLeft, iconHead, iconInline, color, invert, sliderValue, link, ...attributes} = this.props;
+    const {bodyClass, cardClass, cssModule, title, body, subline, footer, icon, iconLeft, iconHead, iconInline, color, invert, sliderValue, link, ...attributes} = this.props;
 
     const iconRight = !iconLeft;
     const progress = {style: '', color: color, value: sliderValue};
@@ -82,8 +84,8 @@ class CSticker extends Component {
       card.style += ' text-white';
       card.bgColor = 'bg-' + color;
     }
-    const cardClass = card.bgColor;
-    const bodyClass = mapToCssModules(classNames(className, card.style, padding.card), cssModule);
+    const finalCardClass = mapToCssModules(classNames(cardClass,card.bgColor));
+    const finalBodyClass = mapToCssModules(classNames(bodyClass, card.style, padding.card), cssModule);
     progress.style = classNames('progress-xs mt-3 mb-0', progress.style);
 
     const drawBlockIcon = function (icon) {
@@ -107,7 +109,8 @@ class CSticker extends Component {
         return (
           <CardFooter className="px-3 py-2">
             <a className="font-weight-bold font-xs btn-block text-muted" {...footer.link}> {legend.text}
-              < i className="fa fa-angle-right float-right font-lg"/></a>
+              <i className="fa fa-angle-right float-right font-lg"/>
+            </a>
           </CardFooter>
         );
       }
@@ -124,8 +127,8 @@ class CSticker extends Component {
       }
     };
     return (
-      <Card className={cardClass}>
-        <CardBody className={bodyClass} {...attributes}>
+      <Card className={finalCardClass}>
+        <CardBody className={finalBodyClass} {...attributes}>
           <Row>
             <Col className="pb-2">
               {drawBlockIcon(card.icon)}

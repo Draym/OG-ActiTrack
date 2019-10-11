@@ -22,6 +22,9 @@ const defaultProps = {
 class CTableData extends CTable {
   constructor(props) {
     super(props);
+    this.initState({
+      isUnmount: false
+    });
     this.initializeData = this.initializeData.bind(this);
     this.loadDataAndInitialize = this.loadDataAndInitialize.bind(this);
     this.isLoading = this.isLoading.bind(this);
@@ -33,6 +36,10 @@ class CTableData extends CTable {
     }
     if (this.props.loadOnStart)
       this.loadDataAndInitialize();
+  }
+
+  componentWillUnmount() {
+    this.state.isUnmount = true;
   }
 
   isLoading(value, error) {
@@ -53,6 +60,9 @@ class CTableData extends CTable {
     this.isLoading(true);
     this.state.data = [];
     HttpUtils.GET(process.env.REACT_APP_SERVER_URL, this.props.endpoint, this.props.parameters, function (data) {
+      if (this.state.isUnmount) {
+        return;
+      }
       if (data) {
         this.initializeData(data);
       } else {

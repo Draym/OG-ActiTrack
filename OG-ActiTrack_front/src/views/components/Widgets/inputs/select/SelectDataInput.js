@@ -39,6 +39,7 @@ class SelectDataInput extends CComponent {
       selected: props.selected,
       errorValue: '',
       apiParameter: props.apiParameter,
+      isUnmount: false
     };
     this.handleValueChange = this.handleValueChange.bind(this);
     this.loadValueOptions = this.loadValueOptions.bind(this);
@@ -65,6 +66,10 @@ class SelectDataInput extends CComponent {
     return true;
   }
 
+  componentWillUnmount() {
+    this.state.isUnmount = true;
+  }
+
   generateValueOptions(callback) {
     if (!this.isApiParameterValid()) {
       console.log("[SelectDataInput]: The API parameters are incorrect.");
@@ -73,6 +78,9 @@ class SelectDataInput extends CComponent {
     }
     const {server, endpoint} = this.props;
     HttpUtils.GET(server, endpoint, this.state.apiParameter, function (data) {
+      if (this.state.isUnmount) {
+        return;
+      }
       if (data) {
         let formattedData = this.formatDataForSelection(data);
         if (this.props.nullable) {

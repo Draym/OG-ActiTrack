@@ -531,14 +531,25 @@ textarea {
   display: flex !important;
   margin-top: 5px !important;
 }
+/*
+** SIZE
+ */
+
+.sx-full {
+  width: 100%;
+}
+
+.sx-md {
+  width: 50%;
+}
+
+.sx-sm {
+  width: 33%;
+}
 
 /**
 * FONT
  */
-
-.full {
-  width: 100%;
-}
 
 .text-muted {
   color: #6b7987 !important

@@ -32,6 +32,7 @@ class SearchDataInput extends CComponent {
       selected: undefined,
       errorValue: '',
       apiParameter: props.apiParameter,
+      isUnmount: false
     };
     this.handleValueChange = this.handleValueChange.bind(this);
     this.loadValueOptions = this.loadValueOptions.bind(this);
@@ -57,6 +58,10 @@ class SearchDataInput extends CComponent {
     return true;
   }
 
+  componentWillUnmount() {
+    this.state.isUnmount = true;
+  }
+
   generateValueOptions(value, callback) {
     if (!value || !callback)
       return;
@@ -69,6 +74,9 @@ class SearchDataInput extends CComponent {
     let parameters = this.state.apiParameter;
     parameters[this.searchKey()] = value;
     HttpUtils.GET(server, endpoint, parameters, function (data) {
+      if (this.state.isUnmount) {
+        return;
+      }
       if (data) {
         if (callback)
           callback([{value: data, label: value}]);

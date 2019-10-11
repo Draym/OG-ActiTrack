@@ -1,8 +1,6 @@
 import React from 'react';
-
-import HttpUtils from "../../../../../utils/api/HttpUtils";
-import CFormInput from "../../../CFormInput";
-import CComponent from "../../../CComponent";
+import CFormInput from "../../CFormInput";
+import CComponent from "../../CComponent";
 import PropTypes from 'prop-types';
 
 const propTypes = {

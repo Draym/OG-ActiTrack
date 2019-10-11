@@ -29,7 +29,8 @@ class CreateApiModal extends CComponent {
       modalOn: false,
       hasChange: false,
       isLoading: false,
-      errorLoading: undefined
+      errorLoading: undefined,
+      isUnmount: false
     };
     this.handleModalSubmit = this.handleModalSubmit.bind(this);
     this.handleModalClose = this.handleModalClose.bind(this);
@@ -48,6 +49,10 @@ class CreateApiModal extends CComponent {
     this.state.modalOn = nextProps.modalOn;
   }
 
+  componentWillUnmount() {
+    this.state.isUnmount = true;
+  }
+
   /*
    * MODAL
    ***/
@@ -56,6 +61,9 @@ class CreateApiModal extends CComponent {
     console.log("props: ", this.props);
     this.setState({isLoading: true, hasChange: false});
     HttpUtils.POST(process.env.REACT_APP_SERVER_URL, this.props.endpoint, data, function () {
+      if (this.state.isUnmount) {
+        return;
+      }
       if (this.props.handleModalSubmit)
         this.props.handleModalSubmit(data);
       this.setState({isLoading: false, modalOn: false});
