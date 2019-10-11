@@ -103,6 +103,13 @@ class DateUtils {
         : "from " + moment(start).format("DD MMM YYYY") + " to " + moment(end).format("DD MMM YYYY"));
     }
   }
+
+  static toISO(date) {
+    if (date) {
+      return new Date(date).toISOString();
+    }
+    return new Date().toISOString();
+  }
 }
 
 export default DateUtils;

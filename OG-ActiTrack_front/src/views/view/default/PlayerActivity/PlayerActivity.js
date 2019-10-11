@@ -27,6 +27,7 @@ import {ApiEndpoint} from "../../../../utils/api/ApiEndpoint";
 import CButtonLoading from "../../../components/CButton/CButtonLoading";
 import DateTypeSelector from "../../../components/Widgets/selector/DateTypeSelector";
 import PremiumStar from "../../../components/Widgets/reusable/PremiumStar";
+import DateUtils from "../../../../utils/DateUtils";
 
 class PlayerActivity extends Component {
   constructor(props) {
@@ -69,8 +70,8 @@ class PlayerActivity extends Component {
     let parameters = {
       server: this.state.server,
       playerId: this.state.player.id,
-      start: new Date(this.state.dateRange.first).toISOString().split("T")[0] + "T00:00:00.000",
-      end: new Date(this.state.dateRange.last).toISOString().split("T")[0] + "T00:00:00.000"
+      start: DateUtils.toISO(this.state.dateRange.first).split("T")[0] + "T00:00:00.000",
+      end: DateUtils.toISO(this.state.dateRange.last).split("T")[0] + "T00:00:00.000"
     };
     if (this.state.friendData === true) {
       return {
