@@ -18,9 +18,14 @@ class CTableSelection extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      isSelected: this.props.row.isSelected
+      isSelected: this.props.row.isSelected,
+      isUnmount: false
     };
     this.onClick = this.onClick.bind(this);
+  }
+
+  componentWillUnmount() {
+    this.state.isUnmount = true;
   }
 
   onClick() {
@@ -30,7 +35,9 @@ class CTableSelection extends Component {
       this.props.onSelectRow(this.props.row, this.props.rowIndex, selected);
     } else {
       this.props.onSelectRow(this.props.row, this.props.rowIndex, selected, function () {
-        this.setState({isSelected: selected});
+        if (!this.state.isUnmount) {
+          this.setState({isSelected: selected});
+        }
       }.bind(this));
     }
   }
@@ -40,7 +47,7 @@ class CTableSelection extends Component {
       <Button
         className={"pop-btn pop-btn-left table-btn-select " + (this.state.isSelected ? "table-btn-select-active" : "table-btn-select-inactive")}
         disabled={this.props.inactive} onClick={this.onClick}>
-        {this.state.isSelected && <i className="icon-check font-1x2"/>}
+        {this.state.isSelected && <i className="icon-check font-md"/>}
       </Button>
     )
   }
