@@ -69,7 +69,7 @@ class CYearInputPicker extends CPopup {
         <div className="react-datepicker-wrapper">
           <div className="react-datepicker__input-container">
             <input id="yearInputPicker" type="text" value={selectedYear ? selectedYear : ""}
-                   onChange={this.changeDisabled} onClick={this.handleClick}
+                   onChange={this.changeDisabled} onClick={this.handleClick} placeholder="yyyy"
                    ref={node => {
                      this.state.parentNode = node;
                    }}/>
@@ -84,10 +84,10 @@ class CYearInputPicker extends CPopup {
                }}>
             <div className="react-datepicker__triangle"/>
             <button type="button"
-                    className={"react-datepicker__navigation react-datepicker__navigation--previous" + (!allowPast && uiMiddleYear < currentYear ? ' disabled' : '')}
+                    className={"react-datepicker__navigation react-datepicker__navigation--previous" + (!allowPast && uiMiddleYear <= currentYear ? ' hidden' : '')}
                     onClick={this.previousYear}/>
             <button type="button"
-                    className={"react-datepicker__navigation react-datepicker__navigation--next" + (!allowFuture && uiMiddleYear === currentYear ? ' disabled' : '')}
+                    className={"react-datepicker__navigation react-datepicker__navigation--next" + (!allowFuture && uiMiddleYear === currentYear ? ' hidden' : '')}
                     onClick={this.nextYear}/>
             <div className="react-datepicker__year-container">
               <div className="react-datepicker__header react-datepicker-year-header"/>

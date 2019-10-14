@@ -76,9 +76,11 @@ body {
 .accordion-light > div > .card > .card-header {
   background-color: rgba(253, 253, 253, 1) !important;
 }
+
 .accordion-light > div > .card > .card-header > button {
   color: #49515a;
 }
+
 /**
 ** NAV
  */
@@ -127,9 +129,11 @@ header > #mmenu-toggle-icon {
   color: #fff;
   background: #535e67;
 }
+
 .navbar-brand:hover {
- cursor: pointer;
+  cursor: pointer;
 }
+
 /**
 ** TABLE
  */
@@ -288,6 +292,31 @@ header > #mmenu-toggle-icon {
   width: 100%;
 }
 
+.rc-time-picker-input {
+  border: 1px solid #a8bb8b !important;
+  width: 90px !important;
+  height: 25px !important;
+}
+
+.rc-time-picker-panel-select {
+  overflow-y: hidden !important;
+}
+
+.rc-time-picker-panel-select:hover {
+  overflow-y: auto !important;
+}
+
+.DateTimePicker > .rc-time-picker > .rc-time-picker-input {
+  border-left: none !important;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.DateTimePicker > .DayPickerInput > input {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
 /**
 ** IMAGE
  */
@@ -295,18 +324,23 @@ header > #mmenu-toggle-icon {
 .img-xl {
   height: 150px;
 }
+
 .img-lg {
   height: 100px;
 }
+
 .img-md {
   height: 70px;
 }
+
 .img-sm {
   height: 40px;
 }
+
 .img-xs {
   height: 20px;
 }
+
 .img-xxs {
   height: 13px;
 }
@@ -531,6 +565,7 @@ textarea {
   display: flex !important;
   margin-top: 5px !important;
 }
+
 /*
 ** SIZE
  */
@@ -566,6 +601,7 @@ textarea {
 .txt-light {
   color: rgba(42, 239, 131, 0.94);
 }
+
 .code-highlight {
   color: #3974df;
 }
@@ -609,6 +645,7 @@ textarea {
 .mt-6 {
   margin-top: 3rem;
 }
+
 .mt-7 {
   margin-top: 5rem;
 }

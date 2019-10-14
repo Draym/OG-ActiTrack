@@ -40,6 +40,7 @@ class CDayPicker extends Component {
         selected={this.state.selected}
         onChange={this.handleChange}
         dateFormat="MM/yyyy"
+        placeholderText="MM/yyyy"
         showMonthYearPicker
       />
     );
