@@ -29,6 +29,7 @@ const propTypes = {
 
   // picker style
   title: PropTypes.string,
+  titleClass: PropTypes.string,
   titleXS: PropTypes.number,
   titleSM: PropTypes.number,
   titleMD: PropTypes.number,
@@ -99,7 +100,7 @@ class CDatePicker extends Component {
   render() {
     const {onTimeChange, onDateChange} = this;
     const {time} = this.state;
-    const {dateTypeSelected, title, className, allowPast, allowFuture, timePicker, titleXS, titleSM, titleMD, titleLG, titleXL} = this.props;
+    const {dateTypeSelected, title, titleClass, className, allowPast, allowFuture, timePicker, titleXS, titleSM, titleMD, titleLG, titleXL} = this.props;
     let drawWithTimePicker = function (component) {
       return (
         <div className="DateTimePicker">
@@ -146,7 +147,7 @@ class CDatePicker extends Component {
     if (title) {
       return (
         <Row className={className}>
-          <Col xs={titleXS} sm={titleSM} md={titleMD} lg={titleLG} xl={titleXL}>
+          <Col className={titleClass} xs={titleXS} sm={titleSM} md={titleMD} lg={titleLG} xl={titleXL}>
             <span>{title}</span>
           </Col>
           <Col xs={titleXS === 12 ? 12 : 12 - titleXS} sm={titleSM === 12 ? 12 : 12 - titleSM}

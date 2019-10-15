@@ -4,15 +4,14 @@ import {
   InputGroup,
   InputGroupAddon,
   InputGroupText,
-  FormFeedback,
-  Row,
-  Col
+  FormFeedback
 } from 'reactstrap';
 import TString from "../../../utils/TString";
 import AsyncSelect from 'react-select/async';
-import COptionalCol from "../COptionalCol";
 import PropTypes from 'prop-types';
 import CBlockTitle from "../CBlockTitle/CBlockTitle";
+import {Row, Col} from "reactstrap/es";
+import COptionalCol from "../COptionalCol";
 
 const propTypes = {
   // style
@@ -40,6 +39,7 @@ const propTypes = {
 
 const defaultProps = {
   editable: true,
+  inline: false
 };
 
 class CFormInput extends Component {
@@ -56,7 +56,6 @@ class CFormInput extends Component {
   };
 
   onChange(event) {
-    console.log("EDITABLE: ", this.props.editable);
     if (!this.props.editable) {
       event.preventDefault();
       return;
@@ -72,8 +71,7 @@ class CFormInput extends Component {
   }
 
   render() {
-    const {title, gui, type, placeHolder, autoComplete, value, inline, muted, onClick, success, error, onVerify, hackReload, disabled, col, className, editable} = this.props;
-
+    const {title, gui, inline, muted, type, placeHolder, autoComplete, value, onClick, success, error, onVerify, hackReload, disabled, col, className, editable} = this.props;
     let renderIconBorder = function (data, type) {
       return (
         <InputGroupAddon addonType={type}>
@@ -110,6 +108,7 @@ class CFormInput extends Component {
         return renderTextBorder(gui.backText, "append");
       }
     };
+
     let renderVerify = function () {
       if (onVerify) {
         return (
@@ -117,7 +116,7 @@ class CFormInput extends Component {
             <InputGroupText className={"input-verification " + (TString.isNull(error) ? "" : "input-error")}>
               <button type="button" className="form-control input-addon" onClick={onVerify}>
                 <i
-                  className={(TString.isNull(error) ? (!success ? "icon-arrow-right-circle" : "icon-check") : "icon-close") + " icons font-md"}
+                  className={(TString.isNull(error) ? (!success ? "icon-arrow-right-circle" : "icon-check") : "icon-close") + " icons font-1x2"}
                   style={{color: "grey"}}/>
               </button>
             </InputGroupText>
@@ -129,18 +128,17 @@ class CFormInput extends Component {
     let render = function () {
       if (!autoComplete) {
         return (
-          <Input className={(!editable?"not-editable": "")} type={type} invalid={!!error}
+          <Input className={(!editable ? "not-editable" : "")} type={type} invalid={!!error}
                  placeholder={placeHolder} autoComplete={autoComplete}
-                 value={value}
-                 onChange={this.onChange}
+                 value={value} onChange={this.onChange}
                  disabled={disabled} onClick={onClick}/>
         );
       } else {
         return (
           <AsyncSelect key={hackReload}
-                       className={"input-fill input-addon" + (!editable?"not-editable": "")}
+                       className={"input-fill input-addon" + (!editable ? "not-editable" : "")}
                        cacheOptions
-                       defaultInputValue={value}
+                       defaultValue={value}
                        loadOptions={this.loadOptions}
                        defaultOptions
                        disabled={disabled}
@@ -161,7 +159,6 @@ class CFormInput extends Component {
         );
       }
     }.bind(this);
-
     return (
       <COptionalCol col={col} className={className}>
         <Row>

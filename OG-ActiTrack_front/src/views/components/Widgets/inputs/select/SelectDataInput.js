@@ -1,49 +1,35 @@
 import React from 'react';
-
 import HttpUtils from "../../../../../utils/api/HttpUtils";
-import CFormInput from "../../../CFormInput";
-import CComponent from "../../../CComponent";
 import PropTypes from 'prop-types';
+import SelectInput from "./SelectInput";
+import moment from "moment";
 
 const propTypes = {
   // mandatory
   server: PropTypes.string,
   endpoint: PropTypes.string,
-  //controls
-  onChange: PropTypes.func,
   // data
   nullable: PropTypes.bool,
-  selected: PropTypes.string,
   apiParameter: PropTypes.object,
-  // style
-  title: PropTypes.string,
-  placeHolder: PropTypes.string,
-  className: PropTypes.string,
-  inline: PropTypes.bool,
-  muted: PropTypes.bool,
-  disabled: PropTypes.bool
+  // selectInput
+  ...SelectInput.propTypes
 };
 
 const defaultProps = {
-  selected: '',
-  inline: false,
   nullable: false,
-  apiParameter: {}
+  apiParameter: {},
+  ...SelectInput.defaultProps
 };
 
-class SelectDataInput extends CComponent {
+class SelectDataInput extends SelectInput {
   constructor(props) {
     super(props);
-    this.state = {
-      values: undefined,
-      selected: props.selected,
-      errorValue: '',
+    this.initState({
       apiParameter: props.apiParameter,
       isUnmount: false
-    };
-    this.handleValueChange = this.handleValueChange.bind(this);
-    this.loadValueOptions = this.loadValueOptions.bind(this);
+    });
     this.generateValueOptions = this.generateValueOptions.bind(this);
+    this.loadValueOptions = this.loadValueOptions.bind(this);
     if (!(typeof this.formatDataForSelection === "function")
       || !(typeof this.isApiParameterValid === "function")) {
       throw new TypeError("Must override methods.");
@@ -60,7 +46,8 @@ class SelectDataInput extends CComponent {
       for (let key in nextProps.apiParameter) {
         this.state.apiParameter[key] = nextProps.apiParameter[key];
       }
-      this.state.selected = '';
+      this.state.reload =  moment().format('HH:mm:ss');
+      this.state.selected = undefined;
       this.state.values = undefined;
     }
     return true;
@@ -86,7 +73,8 @@ class SelectDataInput extends CComponent {
         if (this.props.nullable) {
           formattedData.unshift({label: "", value: null});
         }
-        this.setState({values: formattedData, selected: formattedData.length === 1 ? formattedData[0].label : ''});
+        this.setDefaultSelection(formattedData);
+        this.setState({values: formattedData, selected: formattedData.length === 1 ? formattedData[0] : undefined});
         if (callback)
           callback(formattedData);
       } else {
@@ -114,43 +102,9 @@ class SelectDataInput extends CComponent {
       ));
     }
   }
-
-  handleValueChange = selectedOption => {
-    if (selectedOption === Object(selectedOption)) {
-      this.setState({
-        selected: selectedOption.label, errorValue: ''
-      });
-      this.props.onChange(selectedOption);
-    }
-  };
-
-  render() {
-    const {className, inline, muted, disabled, gui, title, placeHolder} = this.props;
-    const {selected, errorValue, apiParameter, values} = this.state;
-
-    return (
-      <div className={className}>
-        <CFormInput className="input-body" gui={gui}
-                    type="text"
-                    title={title}
-                    inline={inline}
-                    muted={muted}
-                    disabled={disabled}
-                    placeHolder={placeHolder}
-                    value={selected} error={errorValue}
-                    hackReload={JSON.stringify(apiParameter)}
-                    autoComplete={{
-                      options: values,
-                      handleSelectChange: this.handleValueChange,
-                      handleInputChange: this.handleValueChange,
-                      loadOptions: this.loadValueOptions
-                    }}/>
-      </div>
-    );
-  }
 }
 
-SelectDataInput.defaultProps = defaultProps;
 SelectDataInput.propTypes = propTypes;
+SelectDataInput.defaultProps = defaultProps;
 
 export default SelectDataInput;
