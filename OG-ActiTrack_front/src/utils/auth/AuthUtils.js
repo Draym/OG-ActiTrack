@@ -21,6 +21,7 @@ let AuthUtils = function () {
   function navAuthorized(navigation) {
     let navItems = [];
     let role = EAuthRole.NONE;
+    console.log(navigation, UserSession.getSession())
     if (UserSession.hasSession()) {
       role = UserSession.getUserField('role').value;
     }

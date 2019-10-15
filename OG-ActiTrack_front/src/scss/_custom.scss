@@ -566,8 +566,11 @@ textarea {
 .btn-image {
   display: flex;
   position: relative;
-  border-radius: 8px;
   overflow: hidden;
+}
+
+.btn-image-radius {
+  border-radius: 8px;
 }
 
 .btn-image:hover .color-overlay {
