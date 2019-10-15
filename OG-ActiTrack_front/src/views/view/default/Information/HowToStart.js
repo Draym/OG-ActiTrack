@@ -33,9 +33,9 @@ class HowToStart extends Component {
                 <h4>1) Create an account on OG-Tracker website</h4>
                 <CBulletList color="secondary">
                   <CBulletItem>If you already create an account: go to the
-                    <CLink className="ml-sm-1 ml-md-1" goTo={RoutesEndpoint.AUTH_Login}>Login page</CLink></CBulletItem>
+                    <CLink shift goTo={RoutesEndpoint.AUTH_Login}>Login page</CLink></CBulletItem>
                   <CBulletItem>Else click there to
-                    <CLink className="ml-sm-1 ml-md-1" goTo={RoutesEndpoint.AUTH_Register}>Create an Account</CLink>
+                    <CLink shift goTo={RoutesEndpoint.AUTH_Register}>Create an Account</CLink>
                   </CBulletItem>
                 </CBulletList>
               </Col>

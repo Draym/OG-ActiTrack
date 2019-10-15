@@ -6,10 +6,12 @@ const propTypes = {
   className: PropTypes.string,
   goTo: PropTypes.string,
   shift: PropTypes.bool,
-  external: PropTypes.bool
+  external: PropTypes.bool,
+  button: PropTypes.bool
 };
 
 const defaultProps = {
+  button: false,
   shift: false,
   external: false
 };
@@ -31,9 +33,9 @@ class CLink extends Component {
   }
 
   render() {
-    const {children, className, shift} = this.props;
+    const {children, className, button, shift} = this.props;
     return (
-      <a href="#0" className={className + (shift ? " ml-sm-1 ml-md-1" : "")} onClick={this.goTo}>{children}</a>
+      <a href="#0" className={[className, shift ? " ml-sm-1 ml-md-1" : "", button ? " btn-link" : ""].join(" ")} onClick={this.goTo}>{children}</a>
     );
   }
 }

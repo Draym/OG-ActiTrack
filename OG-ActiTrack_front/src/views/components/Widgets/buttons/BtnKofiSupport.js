@@ -24,7 +24,7 @@ class BtnKofiSupport extends Component {
     return (
       <div>
         {title && <CBlockTitle text={"If you wish to support OG-Tracker, you can do so by inviting me for a coffee 😊"}
-                               align={"center"} font="1x2"/>}
+                               position={"center"} font="1x2"/>}
         <CButtonImg img={Library.kofiButton.src} imgAlt={Library.kofiButton.alt} width={width} center={center}
                     onClick={() => {
                       window.open("https://ko-fi.com/ogtracker", "_blank")
