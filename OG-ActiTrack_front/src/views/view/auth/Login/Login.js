@@ -23,6 +23,7 @@ import './login.css';
 import TEncoder from "../../../../utils/TEncoder";
 import CBlockTitle from "../../../components/CBlockTitle/CBlockTitle";
 import CCardGroup from "../../../components/CCardGroup/CCardGroup";
+import CLink from "../../../components/CLink/CLink";
 
 class Login extends Component {
   constructor(props) {
@@ -37,9 +38,7 @@ class Login extends Component {
       },
       redirect: TEncoder.b64ToString(TString.extractUrlParam("redirect", this.props.location.search))
     };
-    console.log("redirect: ", this.state.redirect, this.props);
     this.triggerLogin = this.triggerLogin.bind(this);
-    this.triggerForgotPassword = this.triggerForgotPassword.bind(this);
     this.handleEmailChange = this.handleEmailChange.bind(this);
     this.handlePasswordChange = this.handlePasswordChange.bind(this);
   }
@@ -81,10 +80,6 @@ class Login extends Component {
     }.bind(this));
   }
 
-  triggerForgotPassword() {
-    this.props.history.push(RoutesEndpoint.AUTH_ForgetPassword);
-  }
-
   handleEmailChange(event) {
     this.setState({email: event.target.value, errorEmail: ''});
   }
@@ -116,13 +111,12 @@ class Login extends Component {
                         <Col xs="6">
                           <CButtonLoading color="primary" onClick={this.triggerLogin}
                                           loading={this.state.loading.login}
-                                          className="px-5 m-2 mx-4"
+                                          className="px-5 m-2"
                                           text="Login"
                                           loadingText="Logging"/>
                         </Col>
-                        <Col xs="6" className="text-right">
-                          <Button color="link" className="px-0" onClick={this.triggerForgotPassword}>Forgot
-                            password?</Button>
+                        <Col xs="6" className="text-right m-auto">
+                          <CLink goTo={RoutesEndpoint.AUTH_ForgetPassword}>Forgot password?</CLink>
                         </Col>
                       </Row>
                     </Form>

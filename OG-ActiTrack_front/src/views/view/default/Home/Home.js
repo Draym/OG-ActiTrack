@@ -39,18 +39,18 @@ class Home extends Component {
             <CBlockText text="With its all-in-one solution, automatic data collection and it's dedicated statistics pages, Ogame data become easily readable"/>
             <CBulletList>
               <CBulletItem>Automatic Script collection</CBulletItem>
-              <CBulletItem>Easy to use functionality & forms</CBulletItem>
+              <CBulletItem>Easy to use functionality</CBulletItem>
               <CBulletItem>Group up with friends</CBulletItem>
               <CBulletItem>Get activity & galaxy charts</CBulletItem>
+              <CBulletItem>Track your Spy & Fight reports</CBulletItem>
               <CBulletItem>Data available for each universe</CBulletItem>
-              <CBulletItem>Export your data for third party tools</CBulletItem>
             </CBulletList>
           </Col>
         </Row>
         <Row className="mt-4">
           <Col>
             <CBlockText position="center" fontSize="1x5">
-              <span>It is easy to get started! </span> <CLink shift goTo={RoutesEndpoint.HOWTOSTART}>How to start guide will guide you</CLink>
+              <span>It's easy to get started! </span> <CLink shift goTo={RoutesEndpoint.HOWTOSTART}>How to start guide will guide you</CLink>
             </CBlockText>
           </Col>
         </Row>

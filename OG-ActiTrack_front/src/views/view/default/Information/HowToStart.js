@@ -19,7 +19,7 @@ class HowToStart extends Component {
       <div className="animated fadeIn">
         <Card>
           <CardBody className="ml-md-5">
-            <h2>Welcome to OG-Tracker</h2>
+            <h2>OG-Tracker Guide</h2>
             <Row>
               <Col>
                 <CBlockText color="muted">

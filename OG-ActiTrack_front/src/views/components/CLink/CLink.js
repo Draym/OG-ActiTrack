@@ -19,7 +19,6 @@ const defaultProps = {
 class CLink extends Component {
   constructor(props) {
     super(props);
-    console.log("clink", props)
     this.goTo = this.goTo.bind(this);
   }
 
