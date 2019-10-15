@@ -100,7 +100,6 @@ class CTable extends CComponent {
     this.onSelectionBtn = this.onSelectionBtn.bind(this);
 
     if (this.props.onSelectRow) {
-      console.log("Add clickable");
       this.state.classes = "table-row-clickable";
     }
     this.state.dataColumns = [...this.props.dataColumns];
@@ -124,7 +123,12 @@ class CTable extends CComponent {
                                                             onEdit={this.props.onEditBtn ? this.onEditBtn : undefined}
                                                             onDelete={this.props.onDeleteBtn ? this.onDeleteBtn : undefined}/>,
         headerAttrs: this.props.colControlsTitle ? {width: width} : {width: width, className: "table-ctrl-head"},
-        attrs: {className: "table-ctrl-body"}
+        attrs: {className: "table-ctrl-body not-clickable"},
+        events: {
+          onClick: (e, column, columnIndex, row, rowIndex) => {
+            e.stopPropagation();
+          }
+        }
       });
     }
     // create selection column
@@ -139,7 +143,12 @@ class CTable extends CComponent {
                                                              inactive={this.props.onSelectionBtnInactive}
                                                              onSelectRow={this.props.onSelectionBtn ? this.onSelectionBtn : null}/>,
         headerAttrs: this.props.colSelectionTitle ? {width: 100} : {width: 60, className: "table-ctrl-head"},
-        attrs: {className: "table-ctrl-select"}
+        attrs: {className: "table-ctrl-select not-clickable"},
+        events: {
+          onClick: (e, column, columnIndex, row, rowIndex) => {
+            e.stopPropagation();
+          }
+        }
       });
     }
     // Attach select action to the table
@@ -222,7 +231,7 @@ class CTable extends CComponent {
       <div>
         {((this.state.data && this.state.data.length > 0) || this.props.onAddBtn) && drawTable()}
         {this.props.advertEmpty && (!this.state.data || this.state.data.length === 0) &&
-        <CBlockTitle text={this.props.advertEmpty}/>}
+        <CBlockTitle muted text={this.props.advertEmpty}/>}
       </div>
     )
   }
