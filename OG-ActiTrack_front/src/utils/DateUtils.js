@@ -110,6 +110,13 @@ class DateUtils {
     }
     return new Date().toISOString();
   }
+
+  static formatTableDate(date) {
+    if (!date) {
+      return;
+    }
+    return moment(date).format('DD/MM/YYYY hh:mm');
+  }
 }
 
 export default DateUtils;
