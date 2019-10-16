@@ -68,7 +68,7 @@ class CYearInputPicker extends CPopup {
       <div>
         <div className="react-datepicker-wrapper">
           <div className="react-datepicker__input-container">
-            <input id="yearInputPicker" type="text" value={selectedYear ? selectedYear : ""}
+            <input type="text" value={selectedYear ? selectedYear : ""}
                    onChange={this.changeDisabled} onClick={this.handleClick} placeholder="yyyy"
                    ref={node => {
                      this.state.parentNode = node;

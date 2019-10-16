@@ -71,7 +71,7 @@ class CQuarterInputPicker extends CPopup {
       <div>
         <div className="react-datepicker-wrapper">
           <div className="react-datepicker__input-container">
-            <input id="yearInputPicker" type="text" value={selectedText} onChange={this.changeDisabled}
+            <input type="text" value={selectedText} onChange={this.changeDisabled}
                    onClick={this.handleClick} placeholder="quarter x of yyyy"
                    ref={node => {
                      this.state.parentNode = node;

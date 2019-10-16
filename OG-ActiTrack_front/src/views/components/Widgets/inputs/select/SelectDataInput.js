@@ -1,5 +1,6 @@
 import React from 'react';
 import HttpUtils from "../../../../../utils/api/HttpUtils";
+import TObject from "../../../../../utils/TObject";
 import PropTypes from 'prop-types';
 import SelectInput from "./SelectInput";
 import moment from "moment";
@@ -40,15 +41,15 @@ class SelectDataInput extends SelectInput {
   }
 
   componentWillUpdate(nextProps, nextState) {
-    if (nextProps.apiParameter) {
+    if (nextProps.apiParameter && TObject.hasChange(this.state.apiParameter, nextProps.apiParameter)) {
       if (!this.state.apiParameter)
         this.state.apiParameter = {};
       for (let key in nextProps.apiParameter) {
         this.state.apiParameter[key] = nextProps.apiParameter[key];
       }
-      this.state.reload =  moment().format('HH:mm:ss');
       this.state.selected = undefined;
       this.state.values = undefined;
+      this.state.reload =  moment().format('HH:mm:ss');
     }
     return true;
   }
