@@ -99,8 +99,11 @@ class DateUtils {
     if (isYear) {
       return "for " + moment(start).year();
     } else {
-      return (moment(start).day() === moment(end).day() ? "at " + moment(start).format("DD MMM YYYY")
-        : "from " + moment(start).format("DD MMM YYYY") + " to " + moment(end).format("DD MMM YYYY"));
+      if (moment(start).format("DD/MM/YYYY") === moment(end).format("DD/MM/YYYY")) {
+        return "at " + moment(start).format("DD MMM YYYY");
+      } else {
+        return "from " + moment(start).format("DD MMM YYYY") + " to " + moment(end).format("DD MMM YYYY");
+      }
     }
   }
 
