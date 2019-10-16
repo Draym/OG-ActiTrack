@@ -229,8 +229,8 @@ class CTable extends CComponent {
     }.bind(this);
     return (
       <div>
-        {((this.state.data && this.state.data.length > 0) || this.props.onAddBtn) && drawTable()}
-        {this.props.advertEmpty && (!this.state.data || this.state.data.length === 0) &&
+        {((this.state.data && this.state.data.length > 0) || (this.props.data && this.props.data.length > 0) || this.props.onAddBtn) && drawTable()}
+        {this.props.advertEmpty && (!this.state.data || this.state.data.length === 0) && (!this.props.data || this.props.data.length === 0) &&
         <CBlockTitle muted text={this.props.advertEmpty}/>}
       </div>
     )
