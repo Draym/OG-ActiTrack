@@ -102,11 +102,11 @@ class CSticker extends Component {
       let iconClass;
       if (iconHead) {
         elemClass = '';
-        iconClass = classNames(icon, iconColor, `bg-${color}`, padding.icon, 'font-2xl', iconRight ? "float-right ml-3" : "float-left mr-3");
+        iconClass = classNames(icon, `text-${iconColor}`, `bg-${color}`, padding.icon, 'font-2xl', iconRight ? "float-right ml-3" : "float-left mr-3");
       } else {
         const position = (iconRight ? (iconInline ? "float-right" : "text-right") : (iconInline ? "float-left" : "text-left"));
         elemClass = classNames("h1 text-muted mb-2", position);
-        iconClass = classNames(icon, iconColor);
+        iconClass = classNames(icon, `text-${iconColor}`);
       }
       return (<div className={elemClass}>
         <i className={iconClass}/>
