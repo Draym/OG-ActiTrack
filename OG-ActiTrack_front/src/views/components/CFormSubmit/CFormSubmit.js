@@ -112,7 +112,7 @@ class CFormSubmit extends Component {
           <Row>
             <Col md={this.props.col ? this.props.col : 12}>
               {React.Children.map(this.props.children, (child, i) => {
-                return (<Row className={i > 0 ? "parameter-bloc" : ""}>
+                return (<Row className={i > 0 ? "parameter-bloc" : ""} key={i}>
                   <Col>
                     {React.cloneElement(child, {
                       onChange: this.handleInputChange,

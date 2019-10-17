@@ -556,7 +556,7 @@ textarea {
   border-radius: 4px;
 }
 
-.btn-link:hover{
+.btn-link:hover {
   background-color: rgb(249, 249, 249);
   border-color: #b9b9b9;
   color: #20bbeb;
@@ -722,14 +722,6 @@ textarea {
   margin-bottom: 5rem;
 }
 
-.mt-7 {
-  margin-top: 5rem;
-}
-
-.mt-7 {
-  margin-top: 5rem;
-}
-
 .mt-15 {
   margin-top: 15rem;
 }
@@ -744,8 +736,40 @@ textarea {
 ** PADDING
  */
 
+.pl-6 {
+  padding-left: 4rem;
+}
+
 .pr-6 {
-  padding-right: 2.5rem;
+  padding-right: 4rem;
+}
+
+.pb-6 {
+  padding-bottom: 4rem;
+}
+
+.pt-6 {
+  padding-top: 4rem;
+}
+
+.pt-7 {
+  padding-top: 5rem;
+}
+
+.pl-7 {
+  padding-right: 5rem;
+}
+
+.pr-7 {
+  padding-left: 5rem;
+}
+
+.pb-7 {
+  padding-bottom: 5rem;
+}
+
+.pt-15 {
+  padding-top: 15rem;
 }
 
 @media (min-width: 1200px) {
@@ -912,4 +936,48 @@ textarea {
   padding-left: 0.5rem;
   border-bottom: 1px solid #d0d1d4;
   margin-bottom: 0.5em;
+}
+
+/*
+** POSITION
+ */
+
+.fixed-ab-bottom {
+  bottom: 0;
+  position: absolute;
+}
+
+/*
+** PROGRESS BAR
+ */
+.progress-bar-ctn {
+  width: 100%;
+  display: flex;
+}
+
+.progress-bar {
+  border-top-left-radius: 2px;
+  border-bottom-left-radius: 2px;
+}
+
+.progress-bar-empty {
+  border-top-right-radius: 2px;
+  border-bottom-right-radius: 2px;
+}
+
+.progress-bar-empty-border {
+  border: 1px solid rgba(107, 35, 31, 0.26);
+  border-left: none;
+}
+
+.progress-xs {
+  height: 4px
+}
+
+.progress-md {
+  height: 8px
+}
+
+.progress-xl {
+  height: 12px
 }
