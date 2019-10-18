@@ -27,6 +27,16 @@ const DefaultFooter = React.lazy(() => import('./DefaultFooter'));
 const DefaultHeader = React.lazy(() => import('./DefaultHeader'));
 
 class DefaultLayout extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      navs: AuthUtils.navAuthorized(navigation)
+    }
+  }
+
+  componentWillUpdate(prevProps, prevState, snapshot) {
+    this.state.navs = AuthUtils.navAuthorized(navigation);
+  }
 
   loading = () => <div className="animated fadeIn pt-1 text-center">Loading...</div>;
 
@@ -44,7 +54,7 @@ class DefaultLayout extends Component {
             <AppSidebarHeader/>
             <AppSidebarForm/>
             <Suspense>
-              <AppSidebarNav navConfig={AuthUtils.navAuthorized(navigation)} {...this.props} router={router}/>
+              <AppSidebarNav navConfig={this.state.navs} {...this.props} router={router}/>
             </Suspense>
             <CLanguageCtrl/>
             <AppSidebarFooter/>
