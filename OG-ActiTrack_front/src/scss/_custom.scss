@@ -610,6 +610,42 @@ textarea {
   margin-top: 5px !important;
 }
 
+.btn-group-ctn {
+  width: 100%;
+}
+
+button.btn-group-item {
+  margin-left: -1px;
+  margin-bottom: 3px;
+  border-radius: 0;
+}
+
+button.btn-group-item:first-child {
+  border-top-left-radius: 0.25rem;
+  border-bottom-left-radius: 0.25rem;
+}
+
+button.btn-group-item:last-child {
+  border-top-right-radius: 0.25rem;
+  border-bottom-right-radius: 0.25rem;
+}
+
+.btn-group-item {
+  width: auto;
+}
+
+@media (min-width: 1620px) {
+  .btn-group-item {
+    min-width: 17%;
+  }
+}
+
+@media (min-width: 1700px) {
+  .btn-group-item {
+    min-width: 18%;
+  }
+}
+
 /*
 ** SIZE
  */

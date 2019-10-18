@@ -1,60 +1,30 @@
 import React, {Component} from 'react';
-import {ButtonToolbar, Button} from 'reactstrap';
 import {EDatePicker} from "../../CDatePicker/EDatePicker";
 import PropTypes from "prop-types";
+import CButtonGroup from "../../CButton/CButtonGroup";
+import CButtonGroupItem from "../../CButton/CButtonGroupItem";
 
 const propTypes = {
-  default: PropTypes.number, // default value
+  defaultBtn: PropTypes.number, // default value
   full: PropTypes.bool, // all types
-  onChange: PropTypes.func
+  onClick: PropTypes.func
 };
 const defaultProps = {
-  default: EDatePicker.DayInputPicker,
+  defaultBtn: EDatePicker.DayInputPicker,
   full: false
 };
 
 class DateTypeSelector extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      dateTypeSelected: this.props.default
-    };
-    this.onDateTypeBtnClick = this.onDateTypeBtnClick.bind(this);
-  }
-
-  onDateTypeBtnClick(radioSelected) {
-    this.setState({
-      dateTypeSelected: radioSelected
-    });
-    this.props.onChange(radioSelected);
-  }
-
   render() {
-
+    const {full, defaultBtn, onClick} = this.props;
     return (
-      <ButtonToolbar aria-label="Toolbar to select the date type">
-        <div className="btn-db-ctn" aria-label="First group">
-          <Button className="btn-dp-width" color="outline-primary"
-                  onClick={() => this.onDateTypeBtnClick(EDatePicker.DayInputPicker)}
-                  active={this.state.dateTypeSelected === EDatePicker.DayInputPicker}>Day</Button>
-          <Button className="btn-dp-width" color="outline-primary"
-                  onClick={() => this.onDateTypeBtnClick(EDatePicker.WeekInputPicker)}
-                  active={this.state.dateTypeSelected === EDatePicker.WeekInputPicker}>Week</Button>
-          <Button className="btn-dp-width" color="outline-primary"
-                  onClick={() => this.onDateTypeBtnClick(EDatePicker.MonthInputPicker)}
-                  active={this.state.dateTypeSelected === EDatePicker.MonthInputPicker}>Month</Button>
-          {this.props.full &&
-          <Button className="btn-dp-width" color="outline-primary"
-                  onClick={() => this.onDateTypeBtnClick(EDatePicker.QuarterInputPicker)}
-                  active={this.state.dateTypeSelected === EDatePicker.QuarterInputPicker}>Quarter</Button>
-          }
-          {this.props.full &&
-          <Button className="btn-dp-width" color="outline-primary"
-                  onClick={() => this.onDateTypeBtnClick(EDatePicker.YearInputPicker)}
-                  active={this.state.dateTypeSelected === EDatePicker.YearInputPicker}>Year</Button>
-          }
-        </div>
-      </ButtonToolbar>
+      <CButtonGroup defaultBtn={defaultBtn} onClick={onClick}>
+        <CButtonGroupItem id={EDatePicker.DayInputPicker} value={EDatePicker.DayInputPicker} text={"Day"}/>
+        <CButtonGroupItem id={EDatePicker.WeekInputPicker} value={EDatePicker.WeekInputPicker} text={"Week"}/>
+        <CButtonGroupItem id={EDatePicker.MonthInputPicker} value={EDatePicker.MonthInputPicker} text={"Month"}/>
+        {full && <CButtonGroupItem id={EDatePicker.QuarterInputPicker} value={EDatePicker.QuarterInputPicker} text={"Quarter"}/>}
+        {full && <CButtonGroupItem id={EDatePicker.YearInputPicker} value={EDatePicker.YearInputPicker} text={"Year"}/>}
+      </CButtonGroup>
     );
   }
 }

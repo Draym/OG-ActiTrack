@@ -251,7 +251,7 @@ class PlayerActivity extends Component {
                   <span className="btn-label">Select the Range:</span>
                 </Col>
                 <Col xs={12} sm={12} md={12} lg={7} xl={7}>
-                  <DateTypeSelector onChange={this.onDateTypeBtnClick} default={this.state.dateTypeSelected}/>
+                  <DateTypeSelector onClick={this.onDateTypeBtnClick} defaultBtn={this.state.dateTypeSelected}/>
                 </Col>
               </Row>
               {this.state.dateTypeSelected !== EDatePicker.All &&
