@@ -7,6 +7,7 @@ const propTypes = {
   //controls
   onChange: PropTypes.func,
   // data
+  error: PropTypes.string,
   defaultValue: PropTypes.string,
   // style
   title: PropTypes.string,
@@ -18,6 +19,7 @@ const propTypes = {
 };
 
 const defaultProps = {
+  error: '',
   defaultValue: '',
   inline: false,
   disabled: false
@@ -29,7 +31,7 @@ class SelectInput extends CComponent {
     this.state = {
       values: [],
       selected: props.defaultValue ? {label: props.defaultValue} : undefined,
-      errorValue: '',
+      errorText: props.error,
       reload: undefined
     };
     this.handleValueChange = this.handleValueChange.bind(this);
@@ -37,6 +39,13 @@ class SelectInput extends CComponent {
 
     if (!(typeof this.loadValueOptions === "function")) {
       throw new TypeError("Must override loadValueOptions method");
+    }
+  }
+
+  componentWillUpdate(nextProps, nextState, nextContext) {
+    console.log("next: " , nextProps);
+    if (this.props.errorText !== nextProps.error) {
+      this.state.errorText = nextProps.error;
     }
   }
 
@@ -58,7 +67,7 @@ class SelectInput extends CComponent {
   handleValueChange = selectedOption => {
     if (selectedOption === Object(selectedOption)) {
       this.setState({
-        selected: selectedOption, errorValue: ''
+        selected: selectedOption, errorText: ''
       });
       this.props.onChange(selectedOption);
     }
@@ -66,8 +75,7 @@ class SelectInput extends CComponent {
 
   render() {
     const {className, inline, muted, gui, disabled, title, placeHolder} = this.props;
-    const {selected, errorValue, reload, values} = this.state;
-
+    const {selected, errorText, reload, values} = this.state;
     return (
       <div className={className}>
         <CFormInput className="input-body" gui={gui}
@@ -77,7 +85,7 @@ class SelectInput extends CComponent {
                     muted={muted}
                     disabled={disabled}
                     placeHolder={placeHolder}
-                    value={selected} error={errorValue}
+                    value={selected} error={errorText}
                     hackReload={reload}
                     autoComplete={{
                       options: values,

@@ -61,7 +61,7 @@ class SelectDataInput extends SelectInput {
   generateValueOptions(callback) {
     if (!this.isApiParameterValid()) {
       console.log("[SelectDataInput]: The API parameters are incorrect.");
-      this.setState({errorValue: "The API parameters are incorrect."});
+      this.setState({errorText: "The API parameters are incorrect."});
       return;
     }
     const {server, endpoint} = this.props;
@@ -80,12 +80,12 @@ class SelectDataInput extends SelectInput {
           callback(formattedData);
       } else {
         this.setState({
-          errorPlayer: "There is no selected registered."
+          errorText: "There is no selected registered."
         });
       }
     }.bind(this), function (errorStatus, error) {
       this.setState({
-        errorPlayer: error,
+        errorText: error,
       });
     }.bind(this));
   }

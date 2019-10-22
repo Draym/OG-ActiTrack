@@ -478,6 +478,10 @@ button.btn-dp-width.btn-outline-primary:last-child {
 ** INPUT
  */
 
+.input-fill ~ .invalid-feedback {
+  display: block;
+}
+
 .input-group {
   margin-bottom: 0.5rem;
 }
