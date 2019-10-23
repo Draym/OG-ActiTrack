@@ -9,9 +9,8 @@ import {
 import TString from "../../../utils/TString";
 import AsyncSelect from 'react-select/async';
 import PropTypes from 'prop-types';
-import CBlockTitle from "../CBlockTitle/CBlockTitle";
-import {Row, Col} from "reactstrap/es";
 import COptionalCol from "../COptionalCol";
+import COptionalTitle from "../COptionalTitle";
 
 const propTypes = {
   // style
@@ -161,20 +160,15 @@ class CFormInput extends Component {
     }.bind(this);
     return (
       <COptionalCol col={col} className={className}>
-        <Row>
-          <Col className={inline ? "pr-0 mt-2" : ""} md={inline ? 5 : 12}>
-            <CBlockTitle text={title} small muted={muted}/>
-          </Col>
-          <Col className={inline ? "pl-0" : ""} md={inline ? 7 : 12}>
-            <InputGroup>
-              {renderInputHead(gui)}
-              {render()}
-              {renderInputBack(gui)}
-              {renderVerify(onVerify, success, error)}
-              {error && <FormFeedback>{error}</FormFeedback>}
-            </InputGroup>
-          </Col>
-        </Row>
+        <COptionalTitle inline={inline} title={title} muted={muted}>
+          <InputGroup>
+            {renderInputHead(gui)}
+            {render()}
+            {renderInputBack(gui)}
+            {renderVerify(onVerify, success, error)}
+            {error && <FormFeedback>{error}</FormFeedback>}
+          </InputGroup>
+        </COptionalTitle>
       </COptionalCol>
     );
   }

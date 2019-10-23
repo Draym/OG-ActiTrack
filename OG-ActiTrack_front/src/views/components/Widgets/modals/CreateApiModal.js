@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import CComponent from "../../CComponent";
 import CModal from "../../CModal";
 import HttpUtils from "../../../../utils/api/HttpUtils";
+import CBlocError from "../../CBlocError";
 
 const propTypes = {
   step: PropTypes.number,
@@ -29,11 +30,12 @@ class CreateApiModal extends CComponent {
       modalOn: false,
       hasChange: false,
       isLoading: false,
-      errorLoading: undefined,
+      errorSubmit: undefined,
       isUnmount: false
     };
     this.handleModalSubmit = this.handleModalSubmit.bind(this);
     this.handleModalClose = this.handleModalClose.bind(this);
+    this.printError = this.printError.bind(this);
     if (!(typeof this.formatData === "function")
       || !(typeof this.renderForm === "function")
       || !(typeof this.resetData === "function")
@@ -58,7 +60,6 @@ class CreateApiModal extends CComponent {
    ***/
   handleModalSubmit() {
     const data = this.formatData();
-    console.log("props: ", this.props);
     this.setState({isLoading: true, hasChange: false});
     HttpUtils.POST(process.env.REACT_APP_SERVER_URL, this.props.endpoint, data, function () {
       if (this.state.isUnmount) {
@@ -69,12 +70,12 @@ class CreateApiModal extends CComponent {
       this.setState({isLoading: false, modalOn: false});
       this.resetData();
     }.bind(this), function (errorStatus, error) {
-      this.setState({isLoading: false, errorLoading: error});
+      this.setState({isLoading: false, errorSubmit: error});
     }.bind(this));
   }
 
   handleModalClose() {
-    this.setState({modalOn: false, userName: '', userLogin: '', userRole: undefined});
+    this.setState({modalOn: false});
     if (this.props.handleModalClose)
       this.props.handleModalClose();
   }
@@ -85,12 +86,15 @@ class CreateApiModal extends CComponent {
     return 1;
   }
 
+  printError(){
+    return <CBlocError className={"mt-2"} error={this.state.errorSubmit}/>;
+  }
+
   render() {
-    const {modalOn, hasChange, isLoading} = this.state;
+   const {modalOn, errorSubmit} = this.state;
     return (
       <CModal {...this.props} ref="modal" modalOn={modalOn} size={"lg"} centered
-              handleModalSubmit={this.handleModalSubmit} handleModalClose={this.handleModalClose}
-              isSubmitReady={this.isApiParametersValid() && hasChange} isLoading={isLoading}>
+              handleModalSubmit={this.handleModalSubmit} handleModalClose={this.handleModalClose}>
         {this.renderForm()}
       </CModal>
     )

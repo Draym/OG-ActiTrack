@@ -528,6 +528,34 @@ textarea {
   min-height: 40px;
 }
 
+div.input-light.input-group {
+  margin-bottom: 0 !important;
+}
+
+div.input-light > .input-addon:first-child div {
+  border: none;
+}
+
+div.input-light > .input-addon:first-child div:hover {
+  cursor: pointer;
+}
+
+.input-xs {
+  width: 75px;
+}
+
+.input-md {
+  width: 190px;
+}
+
+.input-lg {
+  width: 300px;
+}
+
+.input-xl {
+  width: 400px;
+}
+
 /**
 ** TITLE
  */
