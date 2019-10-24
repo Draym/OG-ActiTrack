@@ -94,12 +94,12 @@ class SelectDataInput extends SelectInput {
     if (!this.state.values || this.state.values.length === 0 || !inputValue) {
       this.generateValueOptions(function (suggestions) {
         callback(suggestions.filter(i =>
-          i.label.toLowerCase().includes(inputValue.toLowerCase())
+          i.label ? i.label.toLowerCase().includes(inputValue.toLowerCase()) : false
         ));
       });
     } else {
       callback(this.state.values.filter(i =>
-        i.label.toLowerCase().includes(inputValue.toLowerCase())
+        i.label ? i.label.toLowerCase().includes(inputValue.toLowerCase()) : false
       ));
     }
   }

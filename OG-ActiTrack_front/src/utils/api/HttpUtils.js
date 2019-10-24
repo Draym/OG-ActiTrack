@@ -36,11 +36,12 @@ let HttpUtils = function () {
   function handleHttpResultRedirect(response) {
     console.log("Try Redirect to ", response.url);
     let url = response.url;
+    const path = process.env.REACT_APP_API;
 
     /** ONLY REDIRECT ON LOGIN **/
-    if (url.indexOf("/api/login") >= 0 && url.indexOf("?logout") === -1) {
-      console.log("Redirect done to ", url.replace("/api", "/auth"));
-      window.location.href = url.replace("/api", "/auth");
+    if (url.indexOf(path + "/login") >= 0 && url.indexOf("?logout") === -1) {
+      window.location.href = url.replace(path, "/auth");
+      console.log("Redirect done to ", window.location.href);
     }
   }
 

@@ -22,7 +22,7 @@ class SelectValueInput extends SelectInput {
 
   loadValueOptions(inputValue, callback) {
     callback(this.state.values.filter(i =>
-      i.label.toLowerCase().includes(inputValue.toLowerCase())
+      i.label ? i.label.toLowerCase().includes(inputValue.toLowerCase()) : false
     ));
   }
 }

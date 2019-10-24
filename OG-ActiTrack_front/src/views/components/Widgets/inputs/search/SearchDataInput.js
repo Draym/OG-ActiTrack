@@ -104,7 +104,7 @@ class SearchDataInput extends CComponent {
       this.generateValueOptions(inputValue, function (suggestions) {
         console.log("Suggestions: ", suggestions);
         callback(suggestions.filter(i =>
-          i.label.toLowerCase().includes(inputValue.toLowerCase())
+          i.label ? i.label.toLowerCase().includes(inputValue.toLowerCase()) : false
         ));
       });
     } else {
