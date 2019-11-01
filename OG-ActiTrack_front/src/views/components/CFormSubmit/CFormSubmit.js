@@ -11,9 +11,12 @@ import CBlocError from "../CBlocError";
 import CBlocSuccess from "../CBlocSuccess";
 import PropTypes from 'prop-types';
 import CBlockTitle from "../CBlockTitle/CBlockTitle";
+import THttp from "../../../utils/api/THttp";
 
 const propTypes = {
+  server: PropTypes.string,
   endpoint: PropTypes.string,
+  method: PropTypes.string,
   verification: PropTypes.func,
   success: PropTypes.func,
   requirements: PropTypes.array,
@@ -23,7 +26,10 @@ const propTypes = {
   submitType: PropTypes.string,
   submitTitle: PropTypes.string
 };
-const defaultProps = {};
+const defaultProps = {
+  server: process.env.REACT_APP_SERVER_URL,
+  method: "PUT"
+};
 
 class CFormSubmit extends Component {
 
@@ -49,7 +55,7 @@ class CFormSubmit extends Component {
   }
 
   submit() {
-    if (!this.props.verification(this.state)) {
+    if (this.props.verification && !this.props.verification(this.state)) {
       this.setState({
         error: "The form is invalid.",
         success: null
@@ -57,7 +63,7 @@ class CFormSubmit extends Component {
       return;
     }
     this.setState({loading: true});
-    HttpUtils.PUT(process.env.REACT_APP_SERVER_URL, this.props.endpoint, this.state.data, function (data) {
+    THttp.getMethod(this.props.method)(this.props.server, this.props.endpoint, this.state.data, function (data) {
       this.setState({
         error: (!data ? "There is no data on server for that request." : null),
         success: (data ? "Your data have been updated successfully." : null),
