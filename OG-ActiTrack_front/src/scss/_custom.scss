@@ -1,7 +1,4 @@
 // Here you can add other styles
-.breadcrumb {
-  margin-bottom: 0.60rem !important;
-}
 
 .img-center {
   display: block;
@@ -1048,4 +1045,23 @@ button.btn-group-item:last-child {
 
 .progress-xl {
   height: 12px
+}
+
+/**
+** DROPDOWN
+ */
+.profileDropdown {
+  position: absolute;
+  will-change: transform;
+  transform: translate3d(-127px, 42px, 0px) !important;
+}
+
+/*
+** BREADCRUMB
+ */
+.breadcrumb {
+  margin-bottom: 0.60rem !important;
+}
+ol.breadcrumb:empty {
+  display: none;
 }
