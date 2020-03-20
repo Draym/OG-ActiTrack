@@ -11,7 +11,7 @@ class DefaultFooter extends Component {
   render() {
     return (
       <React.Fragment>
-        <span className="ml-auto"><a href="http://draymlab.fr" target="draymlab.fr">OG-ActiTrack</a> &copy; 2019 draymlab</span>
+        <span className="ml-auto"><a href="http://draymlab.fr" target="draymlab.fr">DraymLab </a> &copy; 2019 OG-ActiTrack</span>
       </React.Fragment>
     );
   }

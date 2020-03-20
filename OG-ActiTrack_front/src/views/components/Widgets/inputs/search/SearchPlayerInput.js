@@ -6,7 +6,7 @@ const propTypes = {
 };
 
 const defaultProps = {
-  server: process.env.REACT_APP_SERVER_URL,
+  server: null,
   endpoint: ApiEndpoint.SERVER_PlayerExist,
   title: 'Enter a pseudo :',
   placeHolder: "Enter the exact pseudo",

@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import TLogs from "../../../utils/TLogs";
 
 const propTypes = {
   className: PropTypes.string,
@@ -17,7 +18,7 @@ const defaultProps = {
 class CLink extends Component {
   constructor(props) {
     super(props);
-    console.log("clink", props)
+    TLogs.p("clink", props);
     this.goTo = this.goTo.bind(this);
   }
 

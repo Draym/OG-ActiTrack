@@ -7,6 +7,7 @@ import "./CLanguageCtrl.css";
 
 import i18next from 'i18next';
 import * as moment from "moment";
+import TLogs from "../../../utils/TLogs";
 
 
 const gbIconLang = function(language) {
@@ -22,13 +23,13 @@ class CLanguageCtrl extends Component {
 
     this.toggle = this.toggle.bind(this);
     this.changeLanguage = this.changeLanguage.bind(this);
-    console.log("init: ", i18next.language);
+    TLogs.p("init: ", i18next.language);
     this.state = {
       dropdownOpen: false,
       language: (i18next.language ? i18next.language.toUpperCase() : i18next.language),
       flag: 'flag-icon-' + gbIconLang(i18next.language)
     };
-    console.log(this.state)
+    TLogs.p(this.state);
   }
   toggle() {
     this.setState({
@@ -37,7 +38,7 @@ class CLanguageCtrl extends Component {
   }
 
   changeLanguage(language) {
-    console.log("change to ", language);
+    TLogs.p("change to ", language);
     i18next.changeLanguage(language).then(function(){
       moment.locale(language);
     });

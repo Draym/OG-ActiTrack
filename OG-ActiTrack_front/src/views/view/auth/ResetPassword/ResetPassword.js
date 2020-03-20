@@ -17,6 +17,7 @@ import '../custom.css';
 import './resetPassword.css';
 import {ApiEndpoint} from "../../../../utils/api/ApiEndpoint";
 import {RoutesEndpoint} from "../../../../utils/RoutesEndpoint";
+import TLogs from "../../../../utils/TLogs";
 
 const override = css`
     display: block;
@@ -62,7 +63,7 @@ class ResetPassword extends Component {
     let data = {
       token: this.state.resetToken
     };
-    HttpUtils.GET(process.env.REACT_APP_SERVER_URL, ApiEndpoint.AUTH_CheckResetPasswordToken, data, function (data) {
+    HttpUtils.GET(null, ApiEndpoint.AUTH_CheckResetPasswordToken, data, function (data) {
       setTimeout(function () {
         this.setState({
           isTokenValid: true,
@@ -70,7 +71,7 @@ class ResetPassword extends Component {
         });
       }.bind(this), 1000)
     }.bind(this), function (errorStatus, error) {
-      console.log(error);
+      TLogs.p(error);
       this.setState({
         isTokenValid: false,
         loading: false,
@@ -81,7 +82,7 @@ class ResetPassword extends Component {
 
   triggerResetPassword(event) {
     event.preventDefault();
-    console.log("Register", this.state);
+    TLogs.p("Reset Password", this.state);
     if (TString.isNull(this.state.password)) {
       this.setState({
         errorPassword: 'Please enter a password.'
@@ -94,12 +95,11 @@ class ResetPassword extends Component {
       });
       return;
     }
-    console.log("fetch");
     let auth = {
       'resetToken': this.state.resetToken,
       'password': this.state.password
     };
-    HttpUtils.POST(process.env.REACT_APP_SERVER_URL, ApiEndpoint.AUTH_ResetPassword, auth, function (data) {
+    HttpUtils.POST(null, ApiEndpoint.AUTH_ResetPassword, auth, function (data) {
       if (data) {
         this.setState({isJobDone: true});
       }

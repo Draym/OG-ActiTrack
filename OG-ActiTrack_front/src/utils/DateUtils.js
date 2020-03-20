@@ -1,5 +1,6 @@
 import moment from "moment";
 import {EDateType} from "../views/components/CDatePicker/EDateType";
+import TLogs from "./TLogs";
 
 class DateUtils {
   static getTypeInRange(dateType, start, end) {
@@ -91,7 +92,7 @@ class DateUtils {
   }
 
   static getDay(date) {
-    console.log("date: ", date);
+    TLogs.p("date: ", date);
     return (date.getDay() || 7) - 1;
   }
 

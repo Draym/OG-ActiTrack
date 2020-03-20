@@ -10,6 +10,7 @@ import PropTypes from 'prop-types';
 import Button from "reactstrap/es/Button";
 import CTableSelection from "./controls/CTableSelection";
 import CBlockTitle from "../CBlockTitle/CBlockTitle";
+import TLogs from "../../../utils/TLogs";
 
 const propTypes = {
   // search
@@ -100,7 +101,7 @@ class CTable extends CComponent {
     this.onSelectionBtn = this.onSelectionBtn.bind(this);
 
     if (this.props.onSelectRow) {
-      console.log("Add clickable");
+      TLogs.p("Add clickable");
       this.state.classes = "table-row-clickable";
     }
     this.state.dataColumns = [...this.props.dataColumns];

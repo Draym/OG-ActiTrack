@@ -4,6 +4,7 @@ import HttpUtils from "../../../../../utils/api/HttpUtils";
 import CFormInput from "../../../CFormInput";
 import CComponent from "../../../CComponent";
 import PropTypes from 'prop-types';
+import TLogs from "../../../../../utils/TLogs";
 
 const propTypes = {
   // mandatory
@@ -41,8 +42,8 @@ class SearchDataInput extends CComponent {
       || !(typeof this.searchKey === "function")) {
       throw new TypeError("Must override methods.");
     }
-    if (!props.server || !props.endpoint) {
-      throw new TypeError("Must provide server & endpoint in getAPIUrls().");
+    if (!props.endpoint) {
+      throw new TypeError("Must an endpoint in getAPIUrls().");
     }
   }
 
@@ -61,7 +62,7 @@ class SearchDataInput extends CComponent {
     if (!value || !callback)
       return;
     if (!this.isApiParameterValid()) {
-      console.log("[SelectDataInput]: The API parameters are incorrect.");
+      TLogs.p("[SelectDataInput]: The API parameters are incorrect.");
       this.setState({errorValue: "The API parameters are incorrect."});
       return;
     }
@@ -94,7 +95,7 @@ class SearchDataInput extends CComponent {
   loadValueOptions(inputValue, callback) {
     if (inputValue.length > 2) {
       this.generateValueOptions(inputValue, function (suggestions) {
-        console.log("Suggestions: ", suggestions);
+        TLogs.p("Suggestions: ", suggestions);
         callback(suggestions.filter(i =>
           i.label.toLowerCase().includes(inputValue.toLowerCase())
         ));

@@ -18,6 +18,7 @@ import {ApiEndpoint} from "../../../../utils/api/ApiEndpoint";
 import HttpUtils from "../../../../utils/api/HttpUtils";
 import moment from "moment";
 import CBlockTitle from "../../../components/CBlockTitle/CBlockTitle";
+import TLogs from "../../../../utils/TLogs";
 
 class FriendList extends Component {
   constructor(props) {
@@ -36,7 +37,6 @@ class FriendList extends Component {
         {dataField: 'profileId', text: 'Profile Identifier', sort: true},
       ]
     };
-    console.log(this.state);
     this.isLoadingInput = this.isLoadingInput.bind(this);
     this.isLoadingTable = this.isLoadingTable.bind(this);
     this.onAddFriend = this.onAddFriend.bind(this);
@@ -57,7 +57,7 @@ class FriendList extends Component {
     if (!data) {
       this.isLoadingInput(false, "The profile identifier is incorrect.");
     }
-    HttpUtils.POST(process.env.REACT_APP_SERVER_URL, ApiEndpoint.FRIEND_Add, data, function () {
+    HttpUtils.POST(null, ApiEndpoint.FRIEND_Add, data, function () {
       this.setState({reload: moment().format('HH:mm:ss')});
       this.isLoadingInput(false);
     }.bind(this), function (errorStatus, error) {
@@ -66,7 +66,7 @@ class FriendList extends Component {
   }
 
   isLoadingInput(value, error) {
-    console.log("loadingInput:", value)
+    TLogs.p("loadingInput:", value);
     this.setState({
       loadingInput: value,
       errorInput: error
@@ -98,7 +98,7 @@ class FriendList extends Component {
 
   onDeleteFriend(row, rowIndex, callback) {
     this.isLoadingTable(true);
-    HttpUtils.DELETE(process.env.REACT_APP_SERVER_URL, ApiEndpoint.FRIEND_Delete, TSessionTransform.getInfoFromProfileId(row.profileId), function () {
+    HttpUtils.DELETE(null, ApiEndpoint.FRIEND_Delete, TSessionTransform.getInfoFromProfileId(row.profileId), function () {
       this.isLoadingTable(false);
       callback();
     }.bind(this), function (errorStatus, error) {

@@ -7,6 +7,7 @@ import ChartCreator from "../../../../../utils/chart/ChartCreator";
 import ChartUtils from "../../../../../utils/chart/ChartUtils";
 import moment from "moment";
 import CBlockTitle from "../../../../components/CBlockTitle/CBlockTitle";
+import TLogs from "../../../../../utils/TLogs";
 
 class PlayerActivityChart extends Component {
   constructor(props) {
@@ -65,7 +66,7 @@ class PlayerActivityChart extends Component {
           );
         } else {
           let dataResults = ChartCreator.GeneratePlayerActivityPerWeekSplit(this.props.data, this.props.isUnique ? 15 : 5, ["Has activity", "No activity"]);
-          console.log("dataResults: ", dataResults);
+          TLogs.p("dataResults: ", dataResults);
           return (
             <div className="chart-wrapper" style={{height: (dataResults.length * 150) + 'px', marginTop: 40 + 'px'}}>
               {

@@ -4,6 +4,7 @@ import HttpUtils from "../../../../../utils/api/HttpUtils";
 import CFormInput from "../../../CFormInput";
 import CComponent from "../../../CComponent";
 import PropTypes from 'prop-types';
+import TLogs from "../../../../../utils/TLogs";
 
 const propTypes = {
   // mandatory
@@ -41,8 +42,8 @@ class SelectDataInput extends CComponent {
       || !(typeof this.isApiParameterValid === "function")) {
       throw new TypeError("Must override method");
     }
-    if (!props.server || !props.endpoint) {
-      throw new TypeError("Must provide server & endpoint in getAPIUrls()");
+    if (!props.endpoint) {
+      throw new TypeError("Must provide an endpoint in getAPIUrls()");
     }
   }
 
@@ -59,7 +60,7 @@ class SelectDataInput extends CComponent {
 
   generateValueOptions(callback) {
     if (!this.isApiParameterValid()) {
-      console.log("[SelectDataInput]: The API parameters are incorrect.");
+      TLogs.p("[SelectDataInput]: The API parameters are incorrect.");
       this.setState({errorValue: "The API parameters are incorrect."});
       return;
     }
@@ -108,7 +109,7 @@ class SelectDataInput extends CComponent {
   render() {
     const {className, gui, title, placeHolder} = this.props;
 
-    console.log("Selected: ", this.state.selected);
+    TLogs.p("Selected: ", this.state.selected);
     return (
       <div className={className}>
         <CFormInput className="input-body" gui={gui}

@@ -23,6 +23,7 @@ import '../custom.css';
 import './login.css';
 import TEncoder from "../../../../utils/TEncoder";
 import CBlockTitle from "../../../components/CBlockTitle/CBlockTitle";
+import TLogs from "../../../../utils/TLogs";
 
 class Login extends Component {
   constructor(props) {
@@ -37,7 +38,7 @@ class Login extends Component {
       },
       redirect: TEncoder.b64ToString(TString.extractUrlParam("redirect", this.props.location.search))
     };
-    console.log("redirect: ", this.state.redirect, this.props);
+    TLogs.p("redirect: ", this.state.redirect, this.props);
     this.triggerLogin = this.triggerLogin.bind(this);
     this.triggerForgotPassword = this.triggerForgotPassword.bind(this);
     this.handleEmailChange = this.handleEmailChange.bind(this);
@@ -50,7 +51,7 @@ class Login extends Component {
   triggerLogin(event) {
     event.preventDefault();
     this.setState({loading: {login: true}});
-    console.log("Login", this.state);
+    TLogs.p("Login", this.state);
     if (TString.isNull(this.state.password) || TString.isNull(this.state.email)) {
       this.setState({
         errorEmail: (TString.isNull(this.state.email) ? 'Please enter an email.' : ''),
@@ -59,20 +60,19 @@ class Login extends Component {
       });
       return;
     }
-    console.log("fetch");
     let auth = {
       'email': this.state.email,
       'password': this.state.password,
       'origin': 'OG-ActiTrack_front'
     };
-    HttpUtils.POST(process.env.REACT_APP_SERVER_URL, ApiEndpoint.AUTH_Login, auth, function (data) {
+    HttpUtils.POST(null, ApiEndpoint.AUTH_Login, auth, function (data) {
       this.setState({loading: {login: false}});
       if (data) {
         UserSession.storeSession(data);
         this.props.history.push(this.state.redirect ? this.state.redirect : RoutesEndpoint.HOME);
       }
     }.bind(this), function (errorStatus, error) {
-      console.log(error);
+      TLogs.p(error);
       this.setState({
         errorEmail: (error.indexOf("password") === -1 ? error : ''),
         errorPassword: (error.indexOf("password") !== -1 ? error : ''),

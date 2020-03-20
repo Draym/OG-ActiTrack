@@ -1,27 +1,46 @@
 import UserSession from "../storage/UserSession";
 import EAuthRole from "./EAuthRole";
+import TLogs from "../TLogs";
 
 let AuthUtils = function () {
-  function isAuthorized(role) {
-    if (role === EAuthRole.NONE)
+  function hasAuthorization(role, required) {
+    if (!required || required === EAuthRole.NONE)
       return true;
+    if (role === EAuthRole.NONE)
+      return false;
+    return role <= required;
+  }
+
+  function isAuthorized(required) {
+    let role = EAuthRole.NONE;
     if (UserSession.hasSession()) {
-      if (role === EAuthRole.BASIC) {
-        return true;
-      }
-      else if (role === EAuthRole.PREMIUM) {
-        return UserSession.getSession().user.premium;
-      }
-      else if (role === EAuthRole.ADMIN) {
-        return UserSession.getSession().user.role.name === 'ADMIN_ROLE';
+      role = UserSession.getUserField('role').value;
+    }
+    TLogs.p("IS AUTHORIZED? ", role, required);
+    return hasAuthorization(role, required);
+  }
+
+  function navAuthorized(navigation) {
+    let navItems = [];
+    let role = EAuthRole.NONE;
+    if (UserSession.hasSession()) {
+      role = UserSession.getUserField('role').value;
+    }
+    for (let i = 0; i < navigation.items.length; ++i) {
+      if (hasAuthorization(role, navigation.items[i].restricted)) {
+        navItems.push(navigation.items[i]);
       }
     }
-    return false;
+    navigation.items = navItems;
+    return navigation;
   }
 
   return {
-    isAuthorized: function (role) {
-      return isAuthorized(role);
+    isAuthorized: function (required) {
+      return isAuthorized(required);
+    },
+    navAuthorized: function (navigation) {
+      return navAuthorized(navigation);
     }
   }
 };

@@ -27,6 +27,7 @@ import {ApiEndpoint} from "../../../../utils/api/ApiEndpoint";
 import CButtonLoading from "../../../components/CButton/CButtonLoading";
 import DateTypeSelector from "../../../components/Widgets/selector/DateTypeSelector";
 import PremiumStar from "../../../components/Widgets/reusable/PremiumStar";
+import TLogs from "../../../../utils/TLogs";
 
 class PlayerActivity extends Component {
   constructor(props) {
@@ -65,7 +66,7 @@ class PlayerActivity extends Component {
   }
 
   generateApiEndpointForChart() {
-    console.log("Generate chart for ", this.state.player);
+    TLogs.p("Generate chart for ", this.state.player);
     let parameters = {
       server: this.state.server,
       playerId: this.state.player.id,
@@ -94,7 +95,7 @@ class PlayerActivity extends Component {
     this.setState({loading: {loadChart: true}});
     let callParameters = this.generateApiEndpointForChart();
 
-    HttpUtils.GET(process.env.REACT_APP_SERVER_URL, callParameters.endpoint, callParameters.parameters, function (data) {
+    HttpUtils.GET(null, callParameters.endpoint, callParameters.parameters, function (data) {
       if (data) {
         this.setState({
           activityLogs: data,
@@ -109,7 +110,7 @@ class PlayerActivity extends Component {
         });
       }
     }.bind(this), function (errorStatus, error) {
-      console.log(error);
+      TLogs.p(error);
       this.setState({
         errorPlayer: error,
         loading: {loadChart: false}

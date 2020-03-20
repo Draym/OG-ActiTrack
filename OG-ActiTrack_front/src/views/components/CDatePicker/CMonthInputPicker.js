@@ -6,6 +6,7 @@ import DatePicker from "react-datepicker/es";
 import "react-datepicker/dist/react-datepicker.css";
 import DateUtils from "../../../utils/DateUtils";
 import PropTypes from 'prop-types';
+import TLogs from "../../../utils/TLogs";
 
 const propTypes = {
   handleDayChange: PropTypes.func
@@ -21,7 +22,7 @@ class CDayPicker extends Component {
 
   handleChange(day) {
     const range = DateUtils.getMonthRange(day);
-    console.log(range);
+    TLogs.p(range);
     this.setState({
       selected: day
     });

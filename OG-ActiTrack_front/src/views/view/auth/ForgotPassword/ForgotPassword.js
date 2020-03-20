@@ -17,6 +17,7 @@ import './forgotPassword.css';
 import {ApiEndpoint} from "../../../../utils/api/ApiEndpoint";
 import {RoutesEndpoint} from "../../../../utils/RoutesEndpoint";
 import CBlockTitle from "../../../components/CBlockTitle/CBlockTitle";
+import TLogs from "../../../../utils/TLogs";
 
 class ForgotPassword extends Component {
   constructor(props) {
@@ -37,7 +38,7 @@ class ForgotPassword extends Component {
 
   triggerForgotPassword(event) {
     event.preventDefault();
-    console.log("Forgot", this.state);
+    TLogs.p("Forgot", this.state);
     if (TString.isNull(this.state.email)) {
       this.setState({
         errorEmail: 'Please enter an email.'
@@ -47,12 +48,12 @@ class ForgotPassword extends Component {
     let data = {
       'email': this.state.email
     };
-    HttpUtils.GET(process.env.REACT_APP_SERVER_URL, ApiEndpoint.AUTH_ForgotPassword, data, function (data) {
+    HttpUtils.GET(null, ApiEndpoint.AUTH_ForgotPassword, data, function (data) {
       if (data) {
         this.setState({jobIsDone: true})
       }
     }.bind(this), function (errorStatus, error) {
-      console.log(error);
+      TLogs.p(error);
       this.setState({
         errorMessage: error
       });

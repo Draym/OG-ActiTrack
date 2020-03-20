@@ -11,6 +11,7 @@ import CBlocError from "../CBlocError";
 import CBlocSuccess from "../CBlocSuccess";
 import PropTypes from 'prop-types';
 import CBlockTitle from "../CBlockTitle/CBlockTitle";
+import TLogs from "../../../utils/TLogs";
 
 const propTypes = {
   endpoint: PropTypes.string,
@@ -57,7 +58,7 @@ class CFormSubmit extends Component {
       return;
     }
     this.setState({loading: true});
-    HttpUtils.PUT(process.env.REACT_APP_SERVER_URL, this.props.endpoint, this.state.data, function (data) {
+    HttpUtils.PUT(null, this.props.endpoint, this.state.data, function (data) {
       this.setState({
         error: (!data ? "There is no data on server for that request." : null),
         success: (data ? "Your data have been updated successfully." : null),
@@ -66,7 +67,7 @@ class CFormSubmit extends Component {
       if (data && this.props.success && typeof this.props.success === "function")
         this.props.success(data);
     }.bind(this), function (errorStatus, error) {
-      console.log(error);
+      TLogs.p(error);
       this.setState({
         error: error,
         success: null,

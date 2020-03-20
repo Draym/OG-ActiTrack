@@ -3,6 +3,7 @@ import TString from "../TString";
 import ChartIntervalCreator from "./ChartIntervalCreator";
 import DateUtils from "../DateUtils";
 import MathUtils from "../MathUtils";
+import TLogs from "../TLogs";
 
 const brandPrimary = getStyle('--primary');
 const brandSuccess = getStyle('--success');
@@ -25,16 +26,16 @@ let ChartCreator = function () {
     if (override) {
       for (let i = 0; i < result[index].length; ++i) {
         if (result[index][i].position === position) {
-          console.log("duplicate found: ", result[index][i]);
+          TLogs.p("duplicate found: ", result[index][i]);
           if (activity) {
             result[index][i].activity = activity;
-            console.log("activity changed");
+            TLogs.p("activity changed");
           }
           return;
         }
       }
     }
-    console.log("activity pushed");
+    TLogs.p("activity pushed");
     result[index].push({
       activity: activity,
       position: position
@@ -47,14 +48,14 @@ let ChartCreator = function () {
       let index = 0;
       if (data[i].activity !== "0") {
         index = (((DateUtils.getDay(new Date(data[i].creationDate)) * 24) + new Date(data[i].creationDate).getHours()) / interval >> 0);
-        console.log("index1: ", index);
+        TLogs.p("index1: ", index);
         addActivityLog(result, index, false, data[i].position, false);
       }
       if (!TString.isNull(data[i].activity)) {
         let dt = new Date(data[i].creationDate);
         dt.setMinutes(dt.getMinutes() - data[i].activity);
         index = (((DateUtils.getDay(dt) * 24) + dt.getHours()) / interval >> 0);
-        console.log("index2: ", index);
+        TLogs.p("index2: ", index);
         addActivityLog(result, index, true, data[i].position, false);
       }
     }
@@ -67,14 +68,14 @@ let ChartCreator = function () {
       let index = 0;
       if (data[i].activity !== "0") {
         index = (((new Date(data[i].creationDate).getHours() * 60) + new Date(data[i].creationDate).getMinutes()) / interval >> 0);
-        console.log("index1: ", index);
+        TLogs.p("index1: ", index);
         addActivityLog(result, index, false, data[i].position);
       }
       if (!TString.isNull(data[i].activity)) {
         let dt = new Date(data[i].creationDate);
         dt.setMinutes(dt.getMinutes() - data[i].activity);
         index = (((dt.getHours() * 60) + dt.getMinutes()) / interval >> 0);
-        console.log("index2: ", index);
+        TLogs.p("index2: ", index);
         addActivityLog(result, index, true, data[i].position);
       }
     }
@@ -87,11 +88,11 @@ let ChartCreator = function () {
     let activity = generateArray(labels.length);
     let absence = generateArray(labels.length);
 
-    console.log("data: ", data);
+    TLogs.p("data: ", data);
 
     let logs = preBuildPlayerDataPerDay(data, interval);
 
-    console.log("Logs: ", logs);
+    TLogs.p("Logs: ", logs);
     for (let i in logs) {
       for (let i2 = 0; i2 < logs[i].length; ++i2) {
         if (logs[i][i2].activity) {
@@ -172,11 +173,11 @@ let ChartCreator = function () {
   function createChartPerWeek(data, interval, labelNames) {
     let labels = ChartIntervalCreator.CreateIntervalForWeek(interval);
     let result = generateArray(labels.length);
-    console.log("data: ", data, labels);
+    TLogs.p("data: ", data, labels);
 
     let logs = preBuildPlayerDataPerWeek(data, interval);
 
-    console.log("Logs: ", logs);
+    TLogs.p("Logs: ", logs);
     for (let i in logs) {
       let activity = 0;
       let absence = 0;

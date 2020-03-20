@@ -6,7 +6,7 @@ const propTypes = {
 };
 
 const defaultProps = {
-  server: process.env.REACT_APP_SERVER_URL,
+  server: null,
   endpoint: ApiEndpoint.SERVER_Available,
   title: 'Select the desired Ogame server :',
   placeHolder: "Select a server",

@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
+import TLogs from "../../../utils/TLogs";
 
 const propTypes = {
   independent: PropTypes.bool,
@@ -26,7 +27,7 @@ class CAccordion extends Component {
     if (!this.props.multiple) {
       for (let it in data) {
         if (Number.parseInt(it) !== key) {
-          console.log("set to false");
+          TLogs.p("set to false");
           data[it] = false;
         }
       }

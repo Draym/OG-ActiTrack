@@ -15,6 +15,7 @@ import UserSession from "../../../../utils/storage/UserSession";
 import "react-vis/dist/style.css";
 import CBoolInput from "../../../components/CBoolInput";
 import PremiumStar from "../../../components/Widgets/reusable/PremiumStar";
+import TLogs from "../../../../utils/TLogs";
 
 
 class GalaxyActivity extends Component {
@@ -75,7 +76,7 @@ class GalaxyActivity extends Component {
   formatChartData(flatData) {
     let result = ChartCreator.preBuildPlayerDataPerDay(flatData, 14);
 
-    console.log("1:", result);
+    TLogs.p("1:", result);
     for (let i in result) {
       for (let i2 = 0; i2 < result[i].length; ++i2) {
         if (!result[i][i2].activity) {
@@ -87,7 +88,7 @@ class GalaxyActivity extends Component {
         result[i][i2].y = Number(result[i][i2].position.split(/[:;]/)[0]);
       }
     }
-    console.log("2:", result);
+    TLogs.p("2:", result);
     return result;
   }
 
@@ -95,7 +96,7 @@ class GalaxyActivity extends Component {
     this.setState({loading: {loadChart: true}});
     let callParameters = this.generateApiEndpointForChart();
 
-    HttpUtils.GET(process.env.REACT_APP_SERVER_URL, callParameters.endpoint, callParameters.parameters, function (data) {
+    HttpUtils.GET(null, callParameters.endpoint, callParameters.parameters, function (data) {
       if (data) {
         let formattedData = this.formatChartData(data);
         this.setState({
@@ -112,7 +113,7 @@ class GalaxyActivity extends Component {
         });
       }
     }.bind(this), function (errorStatus, error) {
-      console.log(error);
+      TLogs.p(error);
       this.setState({
         errorServer: error,
         loading: {loadChart: false}
@@ -121,7 +122,7 @@ class GalaxyActivity extends Component {
   }
 
   onDateSliderChange(value) {
-    console.log("slider: ", value);
+    TLogs.p("slider: ", value);
     this.setState({
       sliderValue: value,
       currentSliderDate: this.getCurrentSliderDate(value),
@@ -168,7 +169,7 @@ class GalaxyActivity extends Component {
     let fullTime = sliderValue * 14;
     let hour = (fullTime / 60 >> 0);
     let minutes = (fullTime % 60 >> 0);
-    console.log("time: ", hour + "h" + minutes);
+    TLogs.p("time: ", hour + "h" + minutes);
     return hour + "h" + (minutes < 10 ? "0" + minutes : minutes);
   }
 

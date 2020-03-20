@@ -6,6 +6,7 @@ import MomentLocaleUtils from 'react-day-picker/moment';
 import 'moment/locale/fr';
 import 'moment/locale/en-gb';
 import PropTypes from 'prop-types';
+import TLogs from "../../../utils/TLogs";
 
 const propTypes = {
   handleDayChange: PropTypes.func
@@ -20,7 +21,7 @@ class CDayPicker extends Component {
   }
 
   handleDayChange(day, {selected}) {
-    console.log("haha");
+    TLogs.p("haha");
     this.setState({
       selectedDays: [selected ? undefined : day]
     });

@@ -7,6 +7,7 @@ import BootstrapTable from 'react-bootstrap-table-next';
 import 'react-bootstrap-table2-paginator/dist/react-bootstrap-table2-paginator.min.css';
 import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css';
 import Button from "reactstrap/es/Button";
+import TLogs from "../../../../utils/TLogs";
 
 class CTablePagination extends Component {
   constructor(props) {
@@ -27,7 +28,7 @@ class CTablePagination extends Component {
 
   render() {
     const {data, dataColumns, tableKey, bordered, selectRow, bootstrap4, countPerPage, countRight, onAddBtn, addBtnTitle, classes} = this.props;
-    console.log("Props: ", this.props);
+    TLogs.p("Props: ", this.props);
     return (
       <PaginationProvider
         pagination={paginationFactory(this.state.paginationOption)}

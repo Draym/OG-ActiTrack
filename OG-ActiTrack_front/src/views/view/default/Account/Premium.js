@@ -10,6 +10,7 @@ import CTableData from "../../../components/CTable/CTableData";
 import {ApiEndpoint} from "../../../../utils/api/ApiEndpoint";
 import TSessionTransform from "../../../../utils/TSessionTransform";
 import CBulletItem from "../../../components/CBulletList/CBulletItem";
+import TLogs from "../../../../utils/TLogs";
 
 class Premium extends Component {
   constructor(props) {
@@ -44,7 +45,7 @@ class Premium extends Component {
   }
 
   isLoadingTable(value, error) {
-    console.log("loading table:", value)
+    TLogs.p("loading table:", value);
     this.setState({
       loadingTable: value,
       errorTable: error

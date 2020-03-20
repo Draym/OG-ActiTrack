@@ -25,10 +25,10 @@ class CSlider extends Component {
     this.state = {
       sliderValue: (this.props.value ? this.props.value : 0),
     };
-    this.onDateSliderChange = this.onDateSliderChange.bind(this);
+    this.onSliderValueChange = this.onSliderValueChange.bind(this);
   };
 
-  onDateSliderChange(event) {
+  onSliderValueChange(event) {
     this.setState({
       sliderValue: event.target.value
     });
@@ -51,7 +51,7 @@ class CSlider extends Component {
         {printLabels("top")}
         <input id={this.props.id} type="range" className="custom-range"
                style={this.props.width ? {width: this.props.width + "px"} : null}
-               onChange={this.onDateSliderChange} value={this.state.sliderValue}
+               onChange={this.onSliderValueChange} value={this.state.sliderValue}
                data-for={this.props.id + "-tip"} data-tip/>
         {printLabels("bottom")}
         <ReactTooltip id={this.props.id + "-tip"} getContent={() => this.props.sliderTipText}/>

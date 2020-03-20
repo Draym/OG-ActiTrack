@@ -33,7 +33,6 @@ class DefaultHeader extends Component {
   }
 
   onLogoClick(e) {
-    console.log(e);
     e.preventDefault();
     let body = $('body');
     if (!body.hasClass("sidebar-lg-show")) {

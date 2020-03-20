@@ -15,6 +15,7 @@ import '../custom.css';
 import './validateAccount.css';
 import {ApiEndpoint} from "../../../../utils/api/ApiEndpoint";
 import {RoutesEndpoint} from "../../../../utils/RoutesEndpoint";
+import TLogs from "../../../../utils/TLogs";
 
 const override = css`
     display: block;
@@ -54,8 +55,8 @@ class ValidateAccount extends Component {
     let data = {
       identifier: this.state.verificationLink
     };
-    console.log("VerifyLink:", data);
-    HttpUtils.GET(process.env.REACT_APP_SERVER_URL, ApiEndpoint.AUTH_Validate, data, function (data) {
+    TLogs.p("ValidateAccount:", data);
+    HttpUtils.GET(null, ApiEndpoint.AUTH_Validate, data, function (data) {
       setTimeout(function () {
         this.setState({
           isLinkValid: data === true,
@@ -63,7 +64,7 @@ class ValidateAccount extends Component {
         });
       }.bind(this), 1000)
     }.bind(this), function (errorStatus, error) {
-      console.log(error);
+      TLogs.p(error);
       this.setState({
         isLinkValid: false,
         loading: false,

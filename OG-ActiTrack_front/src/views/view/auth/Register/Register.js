@@ -18,6 +18,7 @@ import {ApiEndpoint} from "../../../../utils/api/ApiEndpoint";
 import CButtonLoading from "../../../components/CButton/CButtonLoading";
 import {RoutesEndpoint} from "../../../../utils/RoutesEndpoint";
 import CBlockTitle from "../../../components/CBlockTitle/CBlockTitle";
+import TLogs from "../../../../utils/TLogs";
 
 class Register extends Component {
   constructor(props) {
@@ -50,7 +51,7 @@ class Register extends Component {
   triggerRegister(event) {
     event.preventDefault();
     this.setState({loading: {registerAccount: true}});
-    console.log("Register", this.state);
+    TLogs.p("Register", this.state);
     if (TString.isNull(this.state.password) || TString.isNull(this.state.email) || TString.isNull(this.state.username)) {
       this.setState({
         errorEmail: (TString.isNull(this.state.email) ? 'Please enter an email.' : ''),
@@ -67,13 +68,12 @@ class Register extends Component {
       });
       return;
     }
-    console.log("fetch");
     let auth = {
       'email': this.state.email,
       'pseudo': this.state.username,
       'password': this.state.password
     };
-    HttpUtils.POST(process.env.REACT_APP_SERVER_URL, ApiEndpoint.AUTH_Register, auth, function (data) {
+    HttpUtils.POST(null, ApiEndpoint.AUTH_Register, auth, function (data) {
       if (data) {
         this.setState({
           jobIsDone: true,

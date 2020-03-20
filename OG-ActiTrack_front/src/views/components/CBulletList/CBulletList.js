@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {Col, Row} from "reactstrap";
 
 import PropTypes from 'prop-types';
+import TLogs from "../../../utils/TLogs";
 
 const propTypes = {
   className: PropTypes.string,
@@ -33,6 +34,7 @@ class CBulletList extends Component {
     return (
       <ul>
         {React.Children.map(this.props.children, child => {
+          TLogs.p("Child type:", child.type.name);
           if (child.type.name !== 'CBulletItem')
             throw new TypeError('CBulletList can only contains CBulletItem child');
           return (

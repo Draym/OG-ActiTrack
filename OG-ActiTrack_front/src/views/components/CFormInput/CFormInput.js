@@ -11,6 +11,7 @@ import AsyncSelect from 'react-select/async';
 import COptionalCol from "../COptionalCol";
 import PropTypes from 'prop-types';
 import CBlockTitle from "../CBlockTitle/CBlockTitle";
+import TLogs from "../../../utils/TLogs";
 
 const propTypes = {
   // style
@@ -52,7 +53,7 @@ class CFormInput extends Component {
   };
 
   onChange(event) {
-    console.log("EDITABLE: ", this.props.editable);
+    TLogs.p("EDITABLE: ", this.props.editable);
     if (!this.props.editable) {
       event.preventDefault();
       return;

@@ -51,8 +51,7 @@ class CTableData extends CTable {
 
   loadDataAndInitialize() {
     this.isLoading(true);
-    this.state.data = [];
-    HttpUtils.GET(process.env.REACT_APP_SERVER_URL, this.props.endpoint, this.props.parameters, function (data) {
+    HttpUtils.GET(null, this.props.endpoint, this.props.parameters, function (data) {
       if (data) {
         this.initializeData(data);
       } else {

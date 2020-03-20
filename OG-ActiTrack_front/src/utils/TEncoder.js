@@ -1,3 +1,5 @@
+import TLogs from "./TLogs";
+
 class TEncoder {
   static stringToB64(data) {
     return window.btoa(unescape(encodeURIComponent(data)));
@@ -7,7 +9,7 @@ class TEncoder {
     try {
       return decodeURIComponent(escape(window.atob(data)));
     } catch (e) {
-      console.log("TEncoder: decode failed.");
+      TLogs.p("TEncoder: decode failed.");
       return undefined;
     }
   }
