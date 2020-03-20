@@ -6,4 +6,4 @@ Currently on testing env. The readme will be updated after deployment.
 
 
 
-Should be online on 20/03/2020 :rocket:
+Should be online on 25/03/2020 :rocket:
