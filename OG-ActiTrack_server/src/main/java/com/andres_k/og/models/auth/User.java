@@ -1,7 +1,6 @@
 package com.andres_k.og.models.auth;
 
 import com.andres_k.og.utils.managers.PasswordManager;
-import com.andres_k.og.utils.tools.THashString;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;

@@ -5,14 +5,12 @@ import com.andres_k.og.dao.message.ContactMessageRepository;
 import com.andres_k.og.models.auth.Token;
 import com.andres_k.og.models.item.message.BugReportMessage;
 import com.andres_k.og.models.item.message.ContactMessage;
-import com.andres_k.og.services.auth.UserService;
 import com.andres_k.og.utils.managers.EmailManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.mail.MessagingException;
 import java.io.IOException;
-import java.time.LocalDateTime;
 
 @Service
 public class MessageService {

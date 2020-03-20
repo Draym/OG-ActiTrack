@@ -20,7 +20,7 @@ import javax.mail.MessagingException;
 import javax.persistence.EntityNotFoundException;
 import java.io.IOException;
 
-@CrossOrigin(origins = "*", allowedHeaders = "*")
+
 @Controller
 @RequestMapping("/auth")
 public class AuthController {

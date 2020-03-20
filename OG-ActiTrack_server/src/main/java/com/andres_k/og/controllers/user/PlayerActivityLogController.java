@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDateTime;
 import java.util.List;
 
-@CrossOrigin(origins = "*", allowedHeaders = "*")
 @Controller
 @RequestMapping("/activity")
 public class PlayerActivityLogController {
