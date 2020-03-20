@@ -9,6 +9,7 @@ import {RoutesEndpoint} from "../../../utils/RoutesEndpoint";
 import PremiumStar from "../../components/Widgets/reusable/PremiumStar";
 import {Library} from "../../../utils/storage/Library";
 import CImg from "../../components/CImage/CImg";
+import BtnKofiSupport from "../../components/Widgets/buttons/BtnKofiSupport";
 
 const propTypes = {
   children: PropTypes.node,
@@ -75,6 +76,7 @@ class DefaultAccountHeader extends Component {
     }.bind(this);
     return (
       <Nav className="ml-auto" navbar>
+        <BtnKofiSupport className="mr-2" width={30} button={Library.kofiLogo} radius={false}/>
         <AppHeaderDropdown direction="down">
           <DropdownToggle nav>
             <CImg data={Library.userIcon} className="img-avatar"/>

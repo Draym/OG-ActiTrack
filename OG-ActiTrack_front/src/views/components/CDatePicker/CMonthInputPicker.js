@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-
 import 'moment/locale/fr';
 import 'moment/locale/en-gb';
 import DatePicker from "react-datepicker/es";
@@ -9,8 +8,11 @@ import PropTypes from 'prop-types';
 import TLogs from "../../../utils/TLogs";
 
 const propTypes = {
-  handleDayChange: PropTypes.func
+  handleDayChange: PropTypes.func,
+  allowPast: PropTypes.bool,
+  allowFuture: PropTypes.bool
 };
+
 class CDayPicker extends Component {
   constructor(props) {
     super(props);
@@ -26,17 +28,20 @@ class CDayPicker extends Component {
     this.setState({
       selected: day
     });
-    this.props.handleDayChange({first: range.from, last:range.to});
+    this.props.handleDayChange({first: range.from, last: range.to});
   };
 
 
   render() {
+    const {allowPast, allowFuture} = this.props;
     return (
       <DatePicker
-        maxDate={new Date()}
+        minDate={allowPast ? null : new Date()}
+        maxDate={allowFuture ? null : new Date()}
         selected={this.state.selected}
         onChange={this.handleChange}
         dateFormat="MM/yyyy"
+        placeholderText="MM/yyyy"
         showMonthYearPicker
       />
     );

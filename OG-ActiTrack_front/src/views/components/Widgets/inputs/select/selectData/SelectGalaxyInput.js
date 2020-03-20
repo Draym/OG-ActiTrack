@@ -1,5 +1,5 @@
-import SelectDataInput from "./SelectDataInput";
-import {ApiEndpoint} from "../../../../../utils/api/ApiEndpoint";
+import SelectDataInput from "../SelectDataInput";
+import {ApiEndpoint} from "../../../../../../utils/api/ApiEndpoint";
 
 const propTypes = {
   ...SelectDataInput.propTypes

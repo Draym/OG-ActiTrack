@@ -1,6 +1,7 @@
 import kofiButton from '../../assets/img/kofisupport.png';
 import errorImg from '../../assets/img/404.png';
 import logo from '../../assets/img/logo/logo.png';
+import logoIcon from '../../assets/img/logo/logo_icon.png';
 import kofiLogo from '../../assets/img/logo/kofi_logo.png';
 import userIcon from '../../assets/img/brand/user_icon.png';
 import ogtrackerBtn from '../../assets/img/ogtracker_btn.png';
@@ -10,6 +11,7 @@ export const Library = {
   kofiLogo: {src: kofiLogo, alt:"Ko-Fi"},
   errorImg: {src: errorImg, alt:"Error Img"},
   logo: {src: logo, alt:"OG-Tracker logo"},
+  logoIcon: {src: logoIcon, alt:"OG-Tracker logoIcon"},
   userIcon: {src: userIcon, alt:"UserIcon"},
   ogtrackerBtn: {src: ogtrackerBtn, alt:"OG-Tracker Btn"}
 };

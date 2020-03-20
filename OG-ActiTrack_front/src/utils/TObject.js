@@ -14,6 +14,15 @@ class TObject {
     }
     return state;
   }
+
+  static hasChange(obj1, obj2) {
+    for (let index in obj1) {
+      if (obj2.hasOwnProperty(index) && obj1[index] !== obj2[index]){
+        return true;
+      }
+    }
+    return false;
+  }
 }
 
 export default TObject;

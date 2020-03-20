@@ -9,8 +9,11 @@ import 'moment/locale/en-gb';
 import PropTypes from 'prop-types';
 
 const propTypes = {
-  handleDayChange: PropTypes.func
+  handleDayChange: PropTypes.func,
+  allowPast: PropTypes.bool,
+  allowFuture: PropTypes.bool
 };
+
 class CWeekPicker extends Component {
   constructor(props) {
     super(props);
@@ -49,9 +52,10 @@ class CWeekPicker extends Component {
       selectedDays: days,
     });
   };
-  render() {
-    const { hoverRange, selectedDays } = this.state;
 
+  render() {
+    const {allowPast, allowFuture} = this.props;
+    const {hoverRange, selectedDays} = this.state;
     const daysAreSelected = selectedDays.length > 0;
 
     const modifiers = {
@@ -66,28 +70,21 @@ class CWeekPicker extends Component {
       selectedRangeEnd: daysAreSelected && selectedDays[6],
     };
 
-    let drawDateSelection = function () {
-        return (
-          <DayPicker
-            firstDayOfWeek={1}
-            locale="eng"
-            localeUtils={MomentLocaleUtils}
-            selectedDays={selectedDays}
-            showWeekNumbers
-            showOutsideDays
-            modifiers={modifiers}
-            onDayClick={this.handleDayChange}
-            onDayMouseEnter={this.handleDayEnter}
-            onDayMouseLeave={this.handleDayLeave}
-            onWeekClick={this.handleWeekClick}
-            disabledDays={{after: new Date()}}
-          />
-        );
-    }.bind(this);
     return (
-      <div>
-        {drawDateSelection()}
-      </div>
+      <DayPicker
+        firstDayOfWeek={1}
+        locale="eng"
+        localeUtils={MomentLocaleUtils}
+        selectedDays={selectedDays}
+        showWeekNumbers
+        showOutsideDays
+        modifiers={modifiers}
+        onDayClick={this.handleDayChange}
+        onDayMouseEnter={this.handleDayEnter}
+        onDayMouseLeave={this.handleDayLeave}
+        onWeekClick={this.handleWeekClick}
+        disabledDays={{before: allowPast ? null : new Date(), after: allowFuture ? null : new Date()}}
+      />
     );
   }
 }

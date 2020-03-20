@@ -7,13 +7,13 @@ const propTypes = {
   text: PropTypes.string,
   color: PropTypes.string,
   fontSize: PropTypes.string,
-  center: PropTypes.string
+  position: PropTypes.string
 };
 
 const defaultProps = {
   className: "",
   fontSize: "1",
-  align: "left"
+  position: "left"
 };
 
 class CBlockText extends Component {
@@ -22,15 +22,15 @@ class CBlockText extends Component {
     this.state = {
       color: props.color ? "text-" + props.color : "",
       fontSize: props.fontSize.replace("x", ".") + "rem",
-      align: "align-" + props.align
+      position: "align-" + props.position
     };
   }
 
   render() {
     const {className, text, children} = this.props;
-    const {color, align, fontSize} = this.state;
+    const {color, position, fontSize} = this.state;
     return (
-      <p className={[className, align, color].join(" ")}
+      <p className={[className, position, color].join(" ")}
       style={{'fontSize': fontSize}}>{text ? text : children}</p>
     );
   }

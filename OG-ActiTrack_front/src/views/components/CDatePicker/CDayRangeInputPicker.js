@@ -6,11 +6,13 @@ import 'moment/locale/en-gb';
 import moment from "moment";
 import './datepicker.css'
 import PropTypes from 'prop-types';
-import CDayPicker from "./CDayPicker";
 
 const propTypes = {
-  handleDayChange: PropTypes.func
+  handleDayChange: PropTypes.func,
+  allowPast: PropTypes.bool,
+  allowFuture: PropTypes.bool
 };
+
 class CDayRangeInputPicker extends Component {
   constructor(props) {
     super(props);
@@ -43,6 +45,7 @@ class CDayRangeInputPicker extends Component {
   }
 
   render() {
+    const {allowPast, allowFuture} = this.props;
     const {from, to} = this.state;
     const modifiers = {start: from, end: to};
     return (
@@ -54,7 +57,7 @@ class CDayRangeInputPicker extends Component {
           format="LL"
           dayPickerProps={{
             selectedDays: [from, {from, to}],
-            disabledDays: {after: to},
+            disabledDays: {before: allowPast ? null : new Date(), after: to ? to : allowFuture ? null : new Date()},
             toMonth: to,
             modifiers,
             numberOfMonths: 2,
@@ -62,7 +65,8 @@ class CDayRangeInputPicker extends Component {
           }}
           onDayChange={this.handleFromChange}
         />{' '}
-        <div className="carddash">—</div>{' '}
+        <div className="carddash">—</div>
+        {' '}
         <span className="InputFromTo-to">
           <DayPickerInput
             ref={el => (this.to = el)}
@@ -72,7 +76,7 @@ class CDayRangeInputPicker extends Component {
             format="LL"
             dayPickerProps={{
               selectedDays: [from, {from, to}],
-              disabledDays: {before: from},
+              disabledDays: {before: from ? from : allowPast ? null : new Date(), after: allowFuture ? null : new Date()},
               modifiers,
               month: from,
               fromMonth: from,

@@ -51,6 +51,7 @@ class Premium extends Component {
       errorTable: error
     });
   }
+
   render() {
     let drawPremiumDashboard = function () {
       return (
@@ -82,8 +83,9 @@ class Premium extends Component {
                 <BtnKofiSupport title/>
                 <div className="mt-5 ml-md-4">
                   <CBlockText color="secondary"
-                              text={`OG-Tracker is a free tool and this will never change. All the functionality are available freely.
-                              In order to thanks the supporters, a Premium membership have been created.
+                              text={`OG-Tracker is a free of charge with no advertisement. All the functionality are available freely and this will never change. 
+                              Your donations support the cost of the server & domain name.`}/>
+                  <CBlockText color="secondary" text={`In order to thanks the supporters, a Premium membership have been created.
                               It opens the access to our data, allowing you to use much more data than the one you collect personally on Ogame.`}/>
                   <CBlockText color="secondary" text={"As a big thanks gift:"}/>
                   <CBulletList color="muted">
@@ -99,7 +101,6 @@ class Premium extends Component {
                                 body={"Lower contributors don't have access to the data you collect in-game."}
                                 id="protectionInfo"/>
                     </CBulletItem>
-                    <CBulletItem>Monthly reports</CBulletItem>
                     <CBulletItem>More coming soon..</CBulletItem>
                   </CBulletList>
                   <CBlockText className="mt-4" color="secondary"
@@ -109,7 +110,7 @@ class Premium extends Component {
             </Card>
           </Col>
         </Row>
-        {this.state.user.premium && drawPremiumDashboard()}
+        {UserSession.isPremium() && drawPremiumDashboard()}
       </div>
     )
   }

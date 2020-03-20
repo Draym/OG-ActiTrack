@@ -16,7 +16,7 @@ class Page404 extends Component {
       <div>
         <h1 className="float-left display-3 mr-4">404</h1>
         <h4 className="pt-3">Oops! You're lost.</h4>
-        <CBlockTitle className="float-left" text={"The page you are looking for was not found."}/>
+        <CBlockTitle position="left" text={"The page you are looking for was not found."}/>
       </div>;
 
     return (

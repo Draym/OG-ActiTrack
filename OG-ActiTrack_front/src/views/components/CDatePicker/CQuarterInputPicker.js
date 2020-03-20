@@ -3,17 +3,19 @@ import DateUtils from "../../../utils/DateUtils";
 import moment from "moment";
 import CPopup from "../CPopup/CPopup";
 import PropTypes from 'prop-types';
-import CDayPicker from "./CDayPicker";
 
 const propTypes = {
-  handleDayChange: PropTypes.func
+  handleDayChange: PropTypes.func,
+  allowPast: PropTypes.bool,
+  allowFuture: PropTypes.bool
 };
+
 class CQuarterInputPicker extends CPopup {
   constructor(props) {
     super(props);
     const now = moment().year();
     this.initState({
-      maxYear: now,
+      currentYear: now,
       year: now,
 
       selectedYear: undefined,
@@ -51,23 +53,26 @@ class CQuarterInputPicker extends CPopup {
   };
 
   previousYear() {
+    if (!this.props.allowPast && this.state.year <= this.state.currentYear)
+      return;
     this.setState({year: this.state.year - 1});
   }
 
   nextYear() {
-    if (this.state.year === this.state.maxYear)
+    if (!this.props.allowFuture && this.state.year === this.state.currentYear)
       return;
     this.setState({year: this.state.year + 1});
   }
 
   render() {
-    const {year, maxYear, uiQuarters, selectedYear, selectedQuarter, selectedText} = this.state;
+    const {allowPast, allowFuture} = this.props;
+    const {year, currentYear, uiQuarters, selectedYear, selectedQuarter, selectedText} = this.state;
     return (
       <div>
         <div className="react-datepicker-wrapper">
           <div className="react-datepicker__input-container">
-            <input id="yearInputPicker" type="text" value={selectedText} onChange={this.changeDisabled}
-                   onClick={this.handleClick}
+            <input type="text" value={selectedText} onChange={this.changeDisabled}
+                   onClick={this.handleClick} placeholder="quarter x of yyyy"
                    ref={node => {
                      this.state.parentNode = node;
                    }}/>
@@ -82,10 +87,10 @@ class CQuarterInputPicker extends CPopup {
                }}>
             <div className="react-datepicker__triangle"/>
             <button type="button"
-                    className="react-datepicker__navigation react-datepicker__navigation--previous"
+                    className={"react-datepicker__navigation react-datepicker__navigation--previous" + (!allowPast && year <= currentYear ? ' hidden' : '')}
                     onClick={this.previousYear}/>
             <button type="button"
-                    className={"react-datepicker__navigation react-datepicker__navigation--next" + (year === maxYear ? ' disabled' : '')}
+                    className={"react-datepicker__navigation react-datepicker__navigation--next" + (!allowFuture && year === currentYear ? ' hidden' : '')}
                     onClick={this.nextYear}/>
             <div className="react-datepicker__month-container">
               <div className="react-datepicker__header react-datepicker-year-header">{year}</div>
@@ -97,7 +102,7 @@ class CQuarterInputPicker extends CPopup {
                       <div key={i} className="react-datepicker__month-wrapper">
                         {array.map((quarter, i) => (
                           <div key={i}
-                               className={"react-datepicker__quarter-text" + (year !== maxYear || moment().month() >= quarter.key * 3 ? '' : ' disabled') + (selectedYear === year && selectedQuarter === quarter.key ? ' selected' : '')}
+                               className={"react-datepicker__quarter-text" + (!allowPast && (year <= currentYear && moment().month() > quarter.key * 3) ? " disabled" : '') + (!allowFuture && (year === currentYear && moment().month() < quarter.key * 3) ? " disabled" : '') + (selectedYear === year && selectedQuarter === quarter.key ? ' selected' : '')}
                                onClick={() => this.handleChange(quarter.key)}>
                             <h5>{quarter.title}</h5>
                             <small>{quarter.month}</small>

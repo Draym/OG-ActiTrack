@@ -1,15 +1,19 @@
 import React, {Component} from 'react';
+import PropTypes from 'prop-types';
 
 const propTypes = {
+  small: PropTypes.bool
 };
 
 const defaultProps = {
+  small: false
 };
 
 class CardBlockTitle extends Component {
   render() {
+    const {small} = this.props;
     return (
-      <h4 className="markdown-bot">{this.props.children}</h4>
+      <div className={"markdown-bot" + (small ? "-small" : "")}>{this.props.children}</div>
     );
   }
 }

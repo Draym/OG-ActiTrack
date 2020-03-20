@@ -8,14 +8,13 @@ const propTypes = {
   className: PropTypes.string,
   color: PropTypes.string,
   fontSize: PropTypes.string,
-  center: PropTypes.string
+  center: PropTypes.bool
 };
 
 const defaultProps = {
   muted: false,
   className: "",
-  fontSize: "1",
-  align: "left"
+  fontSize: "1"
 };
 
 class CBulletList extends Component {
@@ -23,23 +22,22 @@ class CBulletList extends Component {
     super(props);
     this.state = {
       color: props.color ? "text-" + props.color : "",
-      fontSize: props.fontSize ? props.fontSize.replace("x", ".") + "rem" : "",
-      align: "align-" + props.align
+      fontSize: props.fontSize ? props.fontSize.replace("x", ".") + "rem" : ""
     };
   }
 
   render() {
-    const {className} = this.props;
-    const {color, align, fontSize} = this.state;
+    const {className, center} = this.props;
+    const {color, fontSize} = this.state;
     return (
-      <ul>
+      <ul className={center ? "ul-center" : ""}>
         {React.Children.map(this.props.children, child => {
           TLogs.p("Child type:", child.type.name);
           if (child.type.name !== 'CBulletItem')
             throw new TypeError('CBulletList can only contains CBulletItem child');
           return (
             <div>
-              <li className={[className, align, color].join(" ")}
+              <li className={[className, color].join(" ")}
                   style={{'fontSize': fontSize, 'marginLeft': ((child.props.level - 1) * 2) + 'rem', 'listStyleType': child.props.level > 1 ? 'circle' : ''}}>
                 <Row>
                   <Col className={"pr-0 " + child.props.className ? child.props.className : ""} style={{display: "flex"}}>

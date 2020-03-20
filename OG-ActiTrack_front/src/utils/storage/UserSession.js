@@ -1,4 +1,5 @@
 import LoginRedirect from "../auth/LoginRedirect";
+import EAuthRole from "../auth/EAuthRole";
 
 class UserSession {
   static sessionKey() {
@@ -34,6 +35,14 @@ class UserSession {
       return session.user['' + field];
     }
     return null;
+  }
+
+  static isPremium() {
+    try {
+      return EAuthRole.PREMIUM === this.getUserField("role").name
+    } catch (e) {
+      return false;
+    }
   }
 
   static clearSession() {

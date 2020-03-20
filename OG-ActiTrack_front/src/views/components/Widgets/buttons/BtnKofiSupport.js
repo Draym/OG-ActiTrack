@@ -7,25 +7,31 @@ import {Library} from "../../../../utils/storage/Library";
 
 const propTypes = {
   width: PropTypes.number,
+  className: PropTypes.string,
   center: PropTypes.bool,
-  title: PropTypes.bool
+  title: PropTypes.bool,
+  radius: PropTypes.bool,
+  button: PropTypes.object
 };
 
 const defaultProps = {
   width: 225,
   center: true,
-  title: false
+  title: false,
+  radius: true,
+  button: Library.kofiButton
 };
 
 class BtnKofiSupport extends Component {
 
   render() {
-    const {width, center, title} = this.props;
+    const {width, center, title, className, radius, button} = this.props;
     return (
       <div>
         {title && <CBlockTitle text={"If you wish to support OG-Tracker, you can do so by inviting me for a coffee 😊"}
-                               align={"center"} font="1x2"/>}
-        <CButtonImg img={Library.kofiButton.src} imgAlt={Library.kofiButton.alt} width={width} center={center}
+                               position={"center"} font="1x2"/>}
+        <CButtonImg className={className} img={button.src} imgAlt={button.alt} width={width} center={center}
+                    radius={radius}
                     onClick={() => {
                       window.open("https://ko-fi.com/ogtracker", "_blank")
                     }}/>

@@ -1,28 +1,33 @@
 import React, {Component} from 'react';
 import {Col, Row} from "reactstrap/es";
-import {InputGroup} from "reactstrap";
+import PropTypes from 'prop-types';
+
+const propTypes = {
+  col: PropTypes.number,
+  className: PropTypes.string
+};
+
+const defaultProps = {};
 
 class COptionalCol extends Component {
 
   render() {
-    return (
-      <div className={(this.props.className ? this.props.className : "")}>
-        {
-          this.props.col ? (
-            <Row>
-              <Col md={this.props.col}>
-                {this.props.children}
-              </Col>
-            </Row>
-          ) : (
-            <div>
-              {this.props.children}
-            </div>
-          )
-        }
-      </div>
-    );
+    const {col, className, children} = this.props;
+    if (col) {
+      return (
+        <Row className={(className ? className : "")}>
+          <Col md={col}>
+            {children}
+          </Col>
+        </Row>
+      );
+    } else {
+      return React.cloneElement(children, {className: className});
+    }
   }
 }
+
+COptionalCol.defaultProps = defaultProps;
+COptionalCol.propTypes = propTypes;
 
 export default COptionalCol;
