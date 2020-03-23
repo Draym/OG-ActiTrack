@@ -3,9 +3,10 @@ package com.andres_k.og.models.enums;
 import com.andres_k.og.models.auth.Role;
 
 public enum ERoles {
-    USER("USER_ROLE", 0),
-    DEV("DEV_ROLE", 1),
-    ADMIN("ADMIN_ROLE", 2);
+    NONE("NONE", 0),
+    ADMIN("ADMIN", 1),
+    PREMIUM("PREMIUM", 2),
+    USER("USER", 3);
 
     ;
     private String value;
