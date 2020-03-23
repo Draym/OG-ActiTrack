@@ -142,9 +142,6 @@ public class AuthController {
         } catch (EntityNotFoundException ex) {
             Console.log("[Auth/forgot-password]: " + ex.toString());
             return new ResponseEntity<>(ex.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
-        } catch (IOException | MessagingException ex) {
-            Console.log("[Auth/forgot-password]: " + ex.toString());
-            return new ResponseEntity<>(ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }

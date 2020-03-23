@@ -33,6 +33,7 @@ class SelectServerInput extends SelectDataInput {
   }
 }
 
+SelectServerInput.propTypes = propTypes;
 SelectServerInput.defaultProps = defaultProps;
 
 export default SelectServerInput;

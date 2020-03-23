@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {ButtonToolbar} from "reactstrap";
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
-import CButtonGroupItem from "./CButtonGroupItem";
+import TChildControl from "../../../utils/TChildControl";
 
 const propTypes = {
   className: PropTypes.string,
@@ -37,8 +37,7 @@ class CButtonGroup extends Component {
     return (
       <ButtonToolbar className={classNames("btn-group-ctn", className)}>
           {React.Children.map(children, child => {
-            if (child.type.name !== 'CButtonGroupItem')
-              throw new TypeError('CBulletList can only contains CBulletItem child');
+            TChildControl.validate(child, "CBulletList", "CButtonGroupItem");
             return React.cloneElement(child, {isActive: child.props.id === selected, onClick: this.onBtnClick, color: color});
           })}
       </ButtonToolbar>

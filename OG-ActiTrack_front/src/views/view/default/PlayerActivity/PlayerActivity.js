@@ -6,7 +6,7 @@ import {
   Card,
   CardBody,
   CardHeader,
-  Col, InputGroup,
+  Col,
   Row
 } from 'reactstrap';
 import HttpUtils from "../../../../utils/api/HttpUtils";
@@ -21,7 +21,7 @@ import {EDatePicker} from "../../../components/CDatePicker/EDatePicker";
 import CPopInfo from "../../../components/CPopup/CPopInfo";
 import CBoolInput from "../../../components/CBoolInput";
 import PlayerActivityChart from "./widgets/PlayerActivityChart";
-import SelectServerInput from "../../../components/Widgets/inputs/select/SelectServerInput";
+import SelectServerInput from "../../../components/Widgets/inputs/select/selectData/SelectServerInput";
 import SearchPlayerInput from "../../../components/Widgets/inputs/search/SearchPlayerInput";
 import {ApiEndpoint} from "../../../../utils/api/ApiEndpoint";
 import CButtonLoading from "../../../components/CButton/CButtonLoading";

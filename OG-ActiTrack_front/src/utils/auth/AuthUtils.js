@@ -14,7 +14,7 @@ let AuthUtils = function () {
   function isAuthorized(required) {
     let role = EAuthRole.NONE;
     if (UserSession.hasSession()) {
-      role = UserSession.getUserField('role').value;
+      role = UserSession.getUserField('role').level;
     }
     TLogs.p("IS AUTHORIZED? ", role, required);
     return hasAuthorization(role, required);
@@ -24,7 +24,7 @@ let AuthUtils = function () {
     let navItems = [];
     let role = EAuthRole.NONE;
     if (UserSession.hasSession()) {
-      role = UserSession.getUserField('role').value;
+      role = UserSession.getUserField('role').level;
     }
     for (let i = 0; i < navigation.items.length; ++i) {
       if (hasAuthorization(role, navigation.items[i].restricted)) {

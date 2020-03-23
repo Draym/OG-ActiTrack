@@ -94,7 +94,7 @@ class Login extends Component {
   }
 
   render() {
-    const {t, i18n} = this.props;
+    const {t} = this.props;
     return (
       <div className="flex-row align-items-center">
         <Container style={{'marginTop': 7 + 'em'}}>

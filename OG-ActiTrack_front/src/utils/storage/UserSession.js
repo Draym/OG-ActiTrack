@@ -1,5 +1,6 @@
 import LoginRedirect from "../auth/LoginRedirect";
 import EAuthRole from "../auth/EAuthRole";
+import TLogs from "../TLogs";
 
 class UserSession {
   static sessionKey() {
@@ -31,6 +32,7 @@ class UserSession {
     if (!field)
       return null;
     let session = this.getSession();
+    TLogs.p("Session:", session);
     if (session.user != null) {
       return session.user['' + field];
     }

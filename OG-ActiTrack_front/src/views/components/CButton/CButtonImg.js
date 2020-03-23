@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 
 const propTypes = {
   text: PropTypes.string,
-  className: PropTypes.className,
+  className: PropTypes.string,
   img: PropTypes.string,
   imgAlt: PropTypes.string,
   onClick: PropTypes.func,
@@ -17,7 +17,8 @@ const propTypes = {
 const defaultProps = {
   radius: false,
   text: undefined,
-  center: false
+  center: false,
+  className: ""
 };
 
 class CButtonImg extends Component {

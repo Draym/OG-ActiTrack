@@ -2,6 +2,7 @@ import React from 'react';
 import CFormInput from "../../../CFormInput";
 import CComponent from "../../../CComponent";
 import PropTypes from 'prop-types';
+import TLogs from "../../../../../utils/TLogs";
 
 const propTypes = {
   //controls
@@ -43,7 +44,7 @@ class SelectInput extends CComponent {
   }
 
   componentWillUpdate(nextProps, nextState, nextContext) {
-    console.log("next: " , nextProps);
+    TLogs.p("next: " , nextProps);
     if (this.props.errorText !== nextProps.error) {
       this.state.errorText = nextProps.error;
     }

@@ -6,7 +6,7 @@ const propTypes = {
   className: PropTypes.string,
   data: PropTypes.object,
   src: PropTypes.string,
-  alt: PropTypes.string,
+  alt: PropTypes.any,
   width: PropTypes.number,
   height: PropTypes.number
 };

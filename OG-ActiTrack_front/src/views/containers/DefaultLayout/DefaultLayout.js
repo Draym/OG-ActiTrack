@@ -20,8 +20,7 @@ import routes from '../../../routes-default';
 import CLanguageCtrl from "../../components/CLanguageCtrl";
 import {RoutesEndpoint} from "../../../utils/RoutesEndpoint";
 import AuthUtils from "../../../utils/auth/AuthUtils";
-
-import { withTranslation } from 'react-i18next';
+import TLogs from "../../../utils/TLogs";
 
 const DefaultFooter = React.lazy(() => import('./DefaultFooter'));
 const DefaultHeader = React.lazy(() => import('./DefaultHeader'));
@@ -32,6 +31,7 @@ class DefaultLayout extends Component {
     this.state = {
       navs: AuthUtils.navAuthorized(navigation)
     };
+    TLogs.p("NAV Available: ", this.state.navs);
   }
   UNSAFE_componentWillUpdate(prevProps, prevState, snapshot) {
     this.state.navs = AuthUtils.navAuthorized(navigation);

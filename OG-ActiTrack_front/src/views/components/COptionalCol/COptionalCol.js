@@ -7,7 +7,10 @@ const propTypes = {
   className: PropTypes.string
 };
 
-const defaultProps = {};
+const defaultProps = {
+  col: 12,
+  className: ""
+};
 
 class COptionalCol extends Component {
 
@@ -15,7 +18,7 @@ class COptionalCol extends Component {
     const {col, className, children} = this.props;
     if (col) {
       return (
-        <Row className={(className ? className : "")}>
+        <Row className={className}>
           <Col md={col}>
             {children}
           </Col>

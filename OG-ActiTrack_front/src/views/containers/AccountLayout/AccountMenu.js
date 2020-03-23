@@ -90,7 +90,7 @@ class AccountMenu extends Component {
   }
 
   render() {
-    const {t, i18n} = this.props;
+    const {t} = this.props;
     return (
       <div>
         <ListGroup>
@@ -103,7 +103,8 @@ class AccountMenu extends Component {
                          action>{t('label.accountMenu.dashboardSettings')} <Badge
             color="primary">SOON</Badge></ListGroupItem>
           <ListGroupItem active={this.state.selected === 'premium'} tag="button" onClick={this.goPremium}
-                         action>{this.state.isPremium && <PremiumStar/>} {t('label.accountMenu.premium')}</ListGroupItem>
+                         action>{this.state.isPremium &&
+          <PremiumStar/>} {t('label.accountMenu.premium')}</ListGroupItem>
         </ListGroup>
         <ListGroup>
           <ListGroupItem className="header">{t('label.accountMenu.sectionSocial')}</ListGroupItem>

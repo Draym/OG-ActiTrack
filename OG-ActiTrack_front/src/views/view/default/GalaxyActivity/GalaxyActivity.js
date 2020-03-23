@@ -5,7 +5,7 @@ import CSlider from "../../../components/CSlider";
 import GalaxyActivityChart from "./widgets/GalaxyActivityChart";
 import HttpUtils from "../../../../utils/api/HttpUtils";
 import {ApiEndpoint} from "../../../../utils/api/ApiEndpoint";
-import SelectServerInput from "../../../components/Widgets/inputs/select/SelectServerInput";
+import SelectServerInput from "../../../components/Widgets/inputs/select/selectData/SelectServerInput";
 import CPopInfo from "../../../components/CPopup/CPopInfo";
 import {EDatePicker} from "../../../components/CDatePicker/EDatePicker";
 import CButtonLoading from "../../../components/CButton/CButtonLoading";

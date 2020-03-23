@@ -84,7 +84,7 @@ class ForgotPassword extends Component {
                   verification email</Button>
               </Form>
             </CardBody>
-            <CBlocError value={this.state.errorMessage}/>
+            <CBlocError error={this.state.errorMessage}/>
           </Card>
         );
       } else {

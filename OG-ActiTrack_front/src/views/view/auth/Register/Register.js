@@ -138,7 +138,7 @@ class Register extends Component {
                                 loadingText="Creating your account"/>
               </Form>
             </CardBody>
-            <CBlocError value={this.state.errorMessage}/>
+            <CBlocError error={this.state.errorMessage}/>
           </Card>
         );
       } else {

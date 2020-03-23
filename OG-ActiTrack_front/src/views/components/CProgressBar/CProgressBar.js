@@ -26,10 +26,6 @@ const defaultProps = {
 };
 
 class CProgressBar extends Component {
-  constructor(props) {
-    super(props);
-  }
-
   render() {
     const {className, title, value, max, drawValue, animated, striped, size, color, emptyColor} = this.props;
     const percent = (value / max) * 100;

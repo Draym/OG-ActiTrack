@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Card, CardBody, CardHeader, Col, Row, Table} from 'reactstrap';
+import {Card, CardBody, CardHeader, Col, Row} from 'reactstrap';
 
 import BtnKofiSupport from "../../../components/Widgets/buttons/BtnKofiSupport";
 import CBlockText from "../../../components/CBlockText/CBlockText";
@@ -83,7 +83,7 @@ class Premium extends Component {
                 <BtnKofiSupport title/>
                 <div className="mt-5 ml-md-4">
                   <CBlockText color="secondary"
-                              text={`OG-Tracker is a free of charge with no advertisement. All the functionality are available freely and this will never change. 
+                              text={`OG-Tracker is a free of charge with no advertisement. All the functionality are available freely and this will never change.
                               Your donations support the cost of the server & domain name.`}/>
                   <CBlockText color="secondary" text={`In order to thanks the supporters, a Premium membership have been created.
                               It opens the access to our data, allowing you to use much more data than the one you collect personally on Ogame.`}/>

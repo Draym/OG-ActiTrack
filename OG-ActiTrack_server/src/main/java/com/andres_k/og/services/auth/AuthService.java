@@ -6,7 +6,7 @@ import com.andres_k.og.dao.auth.PasswordSecurityLinkRepository;
 import com.andres_k.og.models.auth.link.UserActivationLink;
 import com.andres_k.og.models.http.ResetPasswordHandler;
 import com.andres_k.og.models.http.TokenResponse;
-import com.andres_k.og.utils.managers.EmailManager;
+import com.andres_k.og.services.EmailClient;
 import com.andres_k.og.utils.managers.PasswordManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,13 +20,15 @@ public class AuthService {
     private final PasswordSecurityLinkService passwordSecurityLinkService;
     private final TokenService tokenService;
     private final UserActivationLinkService userActivationLinkService;
+    private final EmailClient emailClient;
 
     @Autowired
-    public AuthService(UserService userService, UserActivationLinkService userActivationLinkService, PasswordSecurityLinkRepository passwordSecurityLinkRepository, PasswordSecurityLinkService passwordSecurityLinkService, TokenService tokenService) {
+    public AuthService(UserService userService, UserActivationLinkService userActivationLinkService, PasswordSecurityLinkRepository passwordSecurityLinkRepository, PasswordSecurityLinkService passwordSecurityLinkService, TokenService tokenService, EmailClient emailClient) {
         this.userService = userService;
         this.passwordSecurityLinkService = passwordSecurityLinkService;
         this.userActivationLinkService = userActivationLinkService;
         this.tokenService = tokenService;
+        this.emailClient = emailClient;
     }
 
     public User login(String email, String password) throws SecurityException, InternalError {
@@ -65,7 +67,7 @@ public class AuthService {
     }
 
 
-    public void resetPassword(ResetPasswordHandler password) throws Exception {
+    public void resetPassword(ResetPasswordHandler password) {
         PasswordSecurityLink passwordSecurityLink = this.passwordSecurityLinkService.getByIdentifier(password.getResetToken());
 
         this.userService.resetUserPassword(passwordSecurityLink.getUserId(), password);
@@ -74,10 +76,10 @@ public class AuthService {
         this.passwordSecurityLinkService.update(passwordSecurityLink);
     }
 
-    public void forgetPassword(String email) throws IOException, MessagingException {
+    public void forgetPassword(String email) {
         User user = this.userService.getUserByEmail(email);
 
         PasswordSecurityLink psl = this.passwordSecurityLinkService.create(user.getId());
-        EmailManager.get().sendPasswordForget(user, psl.getIdentifier());
+        this.emailClient.sendPasswordForget(user, psl.getIdentifier());
     }
 }

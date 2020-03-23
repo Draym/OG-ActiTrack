@@ -12,7 +12,7 @@ export default {
         variant: 'info',
         text: 'SOON',
       },
-      restricted: EAuthRole.BASIC
+      restricted: EAuthRole.USER
     },
     {
       title: true,
@@ -22,19 +22,19 @@ export default {
         attributes: {}        // optional valid JS object with JS API naming ex: { className: "my-class", style: { fontFamily: "Verdana" }, id: "my-id"}
       },
       class: '',             // optional class names space delimited list for title item ex: "text-center"
-      restricted: EAuthRole.BASIC
+      restricted: EAuthRole.USER
     },
     {
       name: i18next.t('nav.activity.player.title', 'Player Activity'),
       url: RoutesEndpoint.PLAYER_Activity,
       icon: 'icon-chart',
-      restricted: EAuthRole.BASIC
+      restricted: EAuthRole.USER
     },
     {
       name: i18next.t('nav.activity.galaxy.title', 'Global Activity'),
       url: RoutesEndpoint.PLAYER_Galaxy,
       icon: 'icon-globe',
-      restricted: EAuthRole.BASIC
+      restricted: EAuthRole.USER
     },
     {
       title: true,
@@ -44,7 +44,7 @@ export default {
         attributes: {}
       },
       class: '',
-      restricted: EAuthRole.BASIC
+      restricted: EAuthRole.USER
     },
     {
       name: i18next.t('nav.data.colonial.title', 'Colonial'),
@@ -55,7 +55,7 @@ export default {
         text: 'SOON',
       },
       class: 'disabled',
-      restricted: EAuthRole.BASIC
+      restricted: EAuthRole.USER
     },
     {
       name: i18next.t('nav.data.military.title', 'Military'),
@@ -66,13 +66,13 @@ export default {
         text: 'SOON',
       },
       class: 'disabled',
-      restricted: EAuthRole.BASIC
+      restricted: EAuthRole.USER
     },
     {
       name: i18next.t('nav.data.spy.title', 'Spy Reports'),
       url: RoutesEndpoint.DATA_Spy,
       icon: 'fa fa-eye',
-      restricted: EAuthRole.BASIC
+      restricted: EAuthRole.USER
     },
     {
       title: true,
@@ -92,7 +92,7 @@ export default {
       name: i18next.t('nav.info.help.title', 'Get Help'),
       url: RoutesEndpoint.GETHELP,
       icon: 'icon-question',
-      restricted: EAuthRole.BASIC
+      restricted: EAuthRole.USER
     }
   ]
 }

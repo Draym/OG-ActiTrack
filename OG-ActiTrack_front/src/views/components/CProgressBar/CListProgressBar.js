@@ -13,10 +13,6 @@ const defaultProps = {
 };
 
 class CListProgressBar extends Component {
-  constructor(props) {
-    super(props);
-  }
-
   render() {
     const {className, inlineTitle, children} = this.props;
 

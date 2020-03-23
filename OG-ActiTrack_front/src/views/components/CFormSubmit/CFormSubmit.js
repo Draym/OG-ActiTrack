@@ -12,6 +12,7 @@ import CBlocSuccess from "../CBlocSuccess";
 import PropTypes from 'prop-types';
 import CBlockTitle from "../CBlockTitle/CBlockTitle";
 import TLogs from "../../../utils/TLogs";
+import THttp from "../../../utils/api/THttp";
 
 const propTypes = {
   endpoint: PropTypes.string,
@@ -22,9 +23,16 @@ const propTypes = {
   desc: PropTypes.string,
   col: PropTypes.number,
   submitType: PropTypes.string,
-  submitTitle: PropTypes.string
+  submitTitle: PropTypes.string,
+  httpMethod: PropTypes.string,
+  resErrorMsg: PropTypes.string,
+  resSuccessMsg: PropTypes.string
 };
-const defaultProps = {};
+const defaultProps = {
+  httpMethod: "PUT",
+  resErrorMsg: "There is no data on server for that request.",
+  resSuccessMsg: "Your data have been updated successfully."
+};
 
 class CFormSubmit extends Component {
 
@@ -50,18 +58,26 @@ class CFormSubmit extends Component {
   }
 
   submit() {
-    if (!this.props.verification(this.state)) {
+    if (this.props.verification && !this.props.verification(this.state)) {
       this.setState({
         error: "The form is invalid.",
         success: null
       });
       return;
     }
-    this.setState({loading: true});
-    HttpUtils.PUT(null, this.props.endpoint, this.state.data, function (data) {
+    let httpMethod = THttp.getMethod(this.props.httpMethod);
+    if (!httpMethod) {
       this.setState({
-        error: (!data ? "There is no data on server for that request." : null),
-        success: (data ? "Your data have been updated successfully." : null),
+        error: "Wrong Http method",
+        success: null
+      });
+    }
+    this.setState({loading: true});
+
+    httpMethod(null, this.props.endpoint, this.state.data, function (data) {
+      this.setState({
+        error: (!data ? this.props.resErrorMsg : null),
+        success: (data ? this.props.resSuccessMsg : null),
         loading: false
       });
       if (data && this.props.success && typeof this.props.success === "function")
@@ -125,7 +141,7 @@ class CFormSubmit extends Component {
               })}
             </Col>
           </Row>
-          <CBlocError value={this.state.error} className="mt-2"/>
+          <CBlocError error={this.state.error} className="mt-2"/>
           <CBlocSuccess value={this.state.success} className="mt-2"/>
           <Row className="parameter-bloc">
             <Col>

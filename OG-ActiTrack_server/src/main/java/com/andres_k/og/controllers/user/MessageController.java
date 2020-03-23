@@ -14,13 +14,16 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
-@RequestMapping(value="/message")
+@RequestMapping(value = "/message")
 public class MessageController {
+    private final MessageService messageService;
+    private final TokenService tokenService;
 
     @Autowired
-    private MessageService messageService;
-    @Autowired
-    private TokenService tokenService;
+    public MessageController(MessageService messageService, TokenService tokenService) {
+        this.messageService = messageService;
+        this.tokenService = tokenService;
+    }
 
     @Restricted
     @RequestMapping(value = "/user/contact", method = RequestMethod.POST)

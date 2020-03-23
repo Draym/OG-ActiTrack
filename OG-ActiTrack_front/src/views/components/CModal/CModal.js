@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import {Button, Modal, ModalBody, ModalFooter, ModalHeader} from "reactstrap";
 import CComponent from "../CComponent";
 import CButtonLoading from "../CButton/CButtonLoading";
+import TChildControl from "../../../utils/TChildControl";
 
 const propTypes = {
   // mandatory
@@ -98,9 +99,7 @@ class CModal extends CComponent {
     const {handleModalPrev, handleModalNext, handleModalClose} = this;
     const {step} = this.state;
     let currentChild = React.Children.map(children, child => {
-      if (child.type.name !== "CModalStep") {
-        throw new TypeError("CModal can only contains CModalStep child");
-      }
+      TChildControl.validate(child, "CModal", "CModalStep");
       if (child.props.step === step) {
         return child;
       }

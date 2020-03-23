@@ -16,10 +16,6 @@ const defaultProps = {
 };
 
 class CBlocSuccess extends Component {
-  constructor(props) {
-    super(props);
-  }
-
   render() {
     const {value, className} = this.props;
     if (TString.isNull(value))

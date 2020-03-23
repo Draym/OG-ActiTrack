@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Card, CardBody, CardHeader, Col, Row, Table} from 'reactstrap';
+import {Col, Row} from 'reactstrap';
 import BtnKofiSupport from "../../../components/Widgets/buttons/BtnKofiSupport";
 import CBlockTitle from "../../../components/CBlockTitle/CBlockTitle";
 import CBlockText from "../../../components/CBlockText/CBlockText";

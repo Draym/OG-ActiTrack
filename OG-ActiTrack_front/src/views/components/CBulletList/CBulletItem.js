@@ -1,6 +1,4 @@
 import React, {Component} from 'react';
-import {Col, Row} from "reactstrap";
-
 import PropTypes from 'prop-types';
 
 const propTypes = {

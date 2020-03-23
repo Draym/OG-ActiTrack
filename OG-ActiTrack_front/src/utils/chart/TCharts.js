@@ -1,3 +1,5 @@
+import TLogs from "../TLogs";
+
 export default class TCharts {
   static filterSameValueData(data) {
     let value = undefined;
@@ -49,7 +51,7 @@ export default class TCharts {
     }
     // SORT DATA MODEL
     dataModel.sort(sort);
-    console.log("New DataModel: ", dataModel);
+    TLogs.p("New DataModel: ", dataModel);
     // UPDATE DATASETS
     for (let i in datasets) {
       let tmpData = datasets[i].data;
@@ -71,7 +73,7 @@ export default class TCharts {
         }
       }
     }
-    console.log("New DataSets: ", datasets);
+    TLogs.p("New DataSets: ", datasets);
     return datasets;
   }
 

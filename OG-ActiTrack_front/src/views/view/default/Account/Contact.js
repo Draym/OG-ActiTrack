@@ -26,8 +26,10 @@ class Contact extends Component {
         <Row>
           <Col xs={12} sm={12} md={12} lg={12} xl={8}>
             <CFormSubmit endpoint={ApiEndpoint.USER_Contact} requirements={['email', 'subject', 'message']}
-                         success={this.success}
-                         title="Contact us" submitTitle="Send message" col={12}>
+                         success={this.success} verification={this.verification} httpMethod="POST"
+                         title="Contact us" submitTitle="Send message" col={12}
+                         resSuccessMsg="Your message has been sent."
+                         resErrorMsg="Our mail server has encounter a problem, you can contact us directly on contact@draymlab.fr.">
               <CBlockTitle
                 text="Feel free to contact me and ask any question using the following form. I will reply to your questions as soon as possible."
                 small/>

@@ -37,4 +37,4 @@ HELP.md
 ### DEV & PROD properties ###
 /src/main/resources/application-dev.properties
 /src/main/resources/application-prod.properties
-/src/main/resources/smtp.properties
+/src/main/resources/api.properties

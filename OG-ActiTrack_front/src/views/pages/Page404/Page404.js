@@ -1,5 +1,5 @@
 import React, {Component, Suspense} from 'react';
-import {CardTitle, Col, Container, Row} from 'reactstrap';
+import {Col, Container, Row} from 'reactstrap';
 import AuthHeader from '../../containers/AuthLayout/AuthHeader';
 import AuthFooter from '../../containers/AuthLayout/AuthFooter';
 import {AppFooter, AppHeader} from "@coreui/react";

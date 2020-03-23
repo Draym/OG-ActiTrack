@@ -17,10 +17,6 @@ const defaultProps = {
 };
 
 class CBlocError extends Component {
-  constructor(props) {
-    super(props);
-  }
-
   render() {
     const {error, errorTitle, className} = this.props;
     if (TString.isNull(error))

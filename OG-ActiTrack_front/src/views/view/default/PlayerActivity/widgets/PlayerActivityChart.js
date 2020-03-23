@@ -10,9 +10,6 @@ import CBlockTitle from "../../../../components/CBlockTitle/CBlockTitle";
 import TLogs from "../../../../../utils/TLogs";
 
 class PlayerActivityChart extends Component {
-  constructor(props) {
-    super(props);
-  }
 
   shouldComponentUpdate(nextProps, nextState) {
     if (nextProps.isGroup !== this.props.isGroup)

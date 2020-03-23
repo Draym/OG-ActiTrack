@@ -6,9 +6,6 @@ import {Library} from "../../../utils/storage/Library";
 
 
 class AuthHeader extends Component {
-  constructor(props) {
-    super(props);
-  }
   render() {
     return (
       <React.Fragment>

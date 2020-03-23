@@ -88,7 +88,6 @@ class CDatePicker extends Component {
   }
 
   onTimeChange(value) {
-    console.log(value);
     this.setState({
       time: value
     });
@@ -101,6 +100,7 @@ class CDatePicker extends Component {
     const {onTimeChange, onDateChange} = this;
     const {time} = this.state;
     const {dateTypeSelected, title, titleClass, className, allowPast, allowFuture, timePicker, titleXS, titleSM, titleMD, titleLG, titleXL} = this.props;
+
     let drawWithTimePicker = function (component) {
       return (
         <div className="DateTimePicker">
@@ -117,6 +117,7 @@ class CDatePicker extends Component {
         </div>
       )
     };
+
     let drawDateSelection = function () {
       if (dateTypeSelected === EDatePicker.DayPicker) {
         const component = <CDayPicker handleDayChange={onDateChange} allowPast={allowPast} allowFuture={allowFuture}/>;
@@ -142,7 +143,7 @@ class CDatePicker extends Component {
       } else if (dateTypeSelected === EDatePicker.YearInputPicker) {
         return (<CYearInputPicker handleDayChange={onDateChange} allowPast={allowPast} allowFuture={allowFuture}/>);
       }
-    }.bind(this);
+    };
 
     if (title) {
       return (
