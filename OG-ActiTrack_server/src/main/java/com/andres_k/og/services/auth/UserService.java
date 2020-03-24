@@ -33,7 +33,7 @@ public class UserService {
         this.userActivationLinkService = userActivationLinkService;
     }
 
-    public User createUser(RegisterHandler auth) throws InternalError, SecurityException, IOException, MessagingException {
+    public User createUser(RegisterHandler auth) throws InternalError, Exception {
         if (this.userRepository.existsUserByEmail(auth.getEmail()))
             throw new SecurityException("The email '" + auth.getEmail() + "' is already used.");
         else if (this.userRepository.existsUserByPseudo(auth.getPseudo()))
@@ -53,7 +53,17 @@ public class UserService {
             user.setRole(role);
 
             User newUser = this.userRepository.save(user);
-            this.userActivationLinkService.sendVerificationUserEmail(newUser);
+            Boolean result;
+            try {
+               result = this.userActivationLinkService.sendVerificationUserEmail(newUser);
+            } catch (Exception error) {
+                result = false;
+            }
+            if (!result) {
+                newUser.setRole(null);
+                this.userRepository.delete(newUser);
+                throw new Exception("Error sending the verification email, your account has not been created.");
+            }
             return newUser;
         }
     }

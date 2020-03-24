@@ -25,16 +25,19 @@ public class UserActivationLinkService {
         this.userActivationLinkRepository = userActivationLinkRepository;
     }
 
-    public void sendVerificationUserEmail(User user) throws IOException, MessagingException {
+    public Boolean sendVerificationUserEmail(User user) {
         // createToken UserActivationLink
         UserActivationLink userActivationLink = new UserActivationLink();
         userActivationLink.setDate(new Date());
         userActivationLink.setUserId(user.getId());
         userActivationLink.setIdentifier(TRandomString.get().generate());
-        this.userActivationLinkRepository.save(userActivationLink);
 
         // send verification email
-        this.emailClient.sendVerification(user, userActivationLink.getIdentifier());
+        Boolean result = this.emailClient.sendVerification(user, userActivationLink.getIdentifier());
+        if (result) {
+            this.userActivationLinkRepository.save(userActivationLink);
+        }
+        return result;
     }
 
     public void deleteAllByUserId(Long id) {

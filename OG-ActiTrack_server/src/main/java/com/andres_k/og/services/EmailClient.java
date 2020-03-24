@@ -52,7 +52,7 @@ public class EmailClient {
         body.append("</a>");
     }
 
-    public void sendVerification(User user, String verification) {
+    public Boolean sendVerification(User user, String verification) {
         String subject = "Verification email for " + this.appName;
         String verificationLink = this.urlVerification + verification;
 
@@ -65,10 +65,10 @@ public class EmailClient {
         body.append("Please click on this link in order to validate your account:");
         this.addVerificationLink(body, verificationLink);
         this.addFooter(body);
-        this.send(user.getPseudo(), user.getEmail(), subject, body.toString());
+        return this.send(user.getPseudo(), user.getEmail(), subject, body.toString());
     }
 
-    public void sendPasswordForget(User user, String verification) {
+    public Boolean sendPasswordForget(User user, String verification) {
         String subject = "Password reset for " + this.appName;
         String verificationLink = this.urlForgotPassword + verification;
 
@@ -84,7 +84,7 @@ public class EmailClient {
         body.append("If the request has not been made by yourself, do not worry, your password has not been compromise.");
         this.addFooter(body);
 
-        this.send(user.getPseudo(), user.getEmail(), subject, body.toString());
+        return this.send(user.getPseudo(), user.getEmail(), subject, body.toString());
     }
 
     public Boolean send(String name, String email, String subject, String body) {
