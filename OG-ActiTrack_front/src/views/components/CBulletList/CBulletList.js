@@ -32,7 +32,9 @@ class CBulletList extends Component {
     return (
       <ul className={center ? "ul-center" : ""}>
         {React.Children.map(this.props.children, child => {
-          TChildControl.validate(child, "CBulletList", "CBulletItem");
+          if (!TChildControl.validate(child, "CBulletList", "CBulletItem")) {
+            return null;
+          }
           return (
             <div>
               <li className={[className, color].join(" ")}

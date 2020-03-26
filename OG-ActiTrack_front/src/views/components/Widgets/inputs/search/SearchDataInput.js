@@ -89,8 +89,7 @@ class SearchDataInput extends CComponent {
     }.bind(this), function (errorStatus, error) {
       if (errorStatus === 404) {
         // Suggestions
-        let data = JSON.parse(error);
-        let suggestions = this.formatDataForSuggestions(data);
+        let suggestions = this.formatDataForSuggestions(error);
         callback(suggestions);
       } else {
         this.setState({
@@ -101,13 +100,18 @@ class SearchDataInput extends CComponent {
   }
 
   loadValueOptions(inputValue, callback) {
-    if (inputValue.length > 2) {
-      this.generateValueOptions(inputValue, function (suggestions) {
-        TLogs.p("Suggestions: ", suggestions);
-        callback(suggestions.filter(i =>
-          i.label ? i.label.toLowerCase().includes(inputValue.toLowerCase()) : false
-        ));
-      });
+    if (inputValue.length > 1) {
+      if (this.timeout) {
+        window.clearTimeout(this.timeout);
+      }
+      this.timeout = window.setTimeout(() => {
+        this.generateValueOptions(inputValue, function (suggestions) {
+          TLogs.p("Suggestions: ", suggestions);
+          callback(suggestions.filter(i =>
+            i.label ? i.label.toLowerCase().includes(inputValue.toLowerCase()) : false
+          ));
+        });
+      }, 400);
     } else {
       callback([]);
     }

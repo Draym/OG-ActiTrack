@@ -37,7 +37,9 @@ class CButtonGroup extends Component {
     return (
       <ButtonToolbar className={classNames("btn-group-ctn", className)}>
           {React.Children.map(children, child => {
-            TChildControl.validate(child, "CBulletList", "CButtonGroupItem");
+            if (!TChildControl.validate(child, "CButtonGroup", "CButtonGroupItem")) {
+              return null;
+            }
             return React.cloneElement(child, {isActive: child.props.id === selected, onClick: this.onBtnClick, color: color});
           })}
       </ButtonToolbar>

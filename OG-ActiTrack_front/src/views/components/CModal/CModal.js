@@ -99,7 +99,9 @@ class CModal extends CComponent {
     const {handleModalPrev, handleModalNext, handleModalClose} = this;
     const {step} = this.state;
     let currentChild = React.Children.map(children, child => {
-      TChildControl.validate(child, "CModal", "CModalStep");
+      if (!TChildControl.validate(child, "CModal", "CModalStep")) {
+        return null;
+      }
       if (child.props.step === step) {
         return child;
       }
