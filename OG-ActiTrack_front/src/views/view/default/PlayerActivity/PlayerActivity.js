@@ -66,7 +66,7 @@ class PlayerActivity extends Component {
   }
 
   generateApiEndpointForChart() {
-    TLogs.p("Generate chart for ", this.state.player);
+    TLogs.p("Generate chart for ", this.state.player, this.state);
     let parameters = {
       server: this.state.server,
       playerId: this.state.player.id,
@@ -251,7 +251,7 @@ class PlayerActivity extends Component {
                   <span className="btn-label">Select the Range:</span>
                 </Col>
                 <Col xs={12} sm={12} md={12} lg={7} xl={7}>
-                  <DateTypeSelector onChange={this.onDateTypeBtnClick} default={this.state.dateTypeSelected}/>
+                  <DateTypeSelector onClick={this.onDateTypeBtnClick} default={this.state.dateTypeSelected}/>
                 </Col>
               </Row>
               {this.state.dateTypeSelected !== EDatePicker.All &&
