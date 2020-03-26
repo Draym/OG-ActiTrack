@@ -12,6 +12,7 @@ class DateUtils {
       return DateUtils.getWeeksInRange(start, end);
     }
   }
+
   static getInRange(startDate, endDate, format, type) {
     let dateArray = [];
     let currentDate = moment(startDate);
@@ -23,12 +24,14 @@ class DateUtils {
     return dateArray;
   }
 
-  static getWeeksInRange(startDate, endDate){
+  static getWeeksInRange(startDate, endDate) {
     return this.getInRange(startDate, endDate, 'YYYY-MM-DD HH:mm:ss', 'week');
   }
-  static getHoursInRange(startDate, endDate){
+
+  static getHoursInRange(startDate, endDate) {
     return this.getInRange(startDate, endDate, 'YYYY-MM-DD HH:mm:ss', 'hour');
   }
+
   static getDaysInRange(startDate, endDate) {
     return this.getInRange(startDate, endDate, 'YYYY-MM-DD HH:mm:ss', 'day');
   }
@@ -62,6 +65,10 @@ class DateUtils {
 
   static getHourRange(date) {
     return this.getDateRange('hour', date);
+  }
+
+  static getDayRange(date) {
+    return this.getDateRange('day', date);
   }
 
   static getWeekRange(date) {

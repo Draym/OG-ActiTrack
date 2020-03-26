@@ -132,7 +132,7 @@ class CFormSubmit extends Component {
                 return (<Row className={i > 0 ? "parameter-bloc" : ""}>
                   <Col>
                     {React.cloneElement(child, {
-                      onChange: this.handleInputChange,
+                      [child.props.onChangeFunc ? child.props.onChangeFunc : "onChange"]: this.handleInputChange,
                       value: child.props.dataKey ? this.state.data[child.props.dataKey] : child.props.defaultValue,
                       editable: !!child.props.dataKey
                     })}

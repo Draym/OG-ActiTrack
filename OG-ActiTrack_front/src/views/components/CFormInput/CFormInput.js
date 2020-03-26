@@ -37,6 +37,7 @@ const propTypes = {
 
 const defaultProps = {
   editable: true,
+  value: ""
 };
 
 class CFormInput extends Component {

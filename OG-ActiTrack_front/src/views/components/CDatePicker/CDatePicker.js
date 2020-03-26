@@ -22,7 +22,7 @@ const propTypes = {
   dateTypeSelected: PropTypes.number,
 
   // picker
-  handleDayChange: PropTypes.func,
+  onChange: PropTypes.func,
   allowPast: PropTypes.bool,
   allowFuture: PropTypes.bool,
   timePicker: PropTypes.bool,
@@ -75,8 +75,8 @@ class CDatePicker extends Component {
       date.last.setMinutes(time.minute());
       date.last.setSeconds(time.second());
     }
-    if (this.props.handleDayChange) {
-      this.props.handleDayChange(date);
+    if (this.props.onChange) {
+      this.props.onChange(date);
     }
   }
 

@@ -7,6 +7,7 @@ import 'moment/locale/fr';
 import 'moment/locale/en-gb';
 import PropTypes from 'prop-types';
 import TLogs from "../../../utils/TLogs";
+import DateUtils from "../../../utils/DateUtils";
 
 const propTypes = {
   handleDayChange: PropTypes.func
@@ -21,11 +22,12 @@ class CDayPicker extends Component {
   }
 
   handleDayChange(day, {selected}) {
-    TLogs.p("haha");
+    let selectedDay = selected ? undefined : day;
     this.setState({
-      selectedDays: [selected ? undefined : day]
+      selectedDays: [selectedDay]
     });
-    this.props.handleDayChange({first: selected ? undefined : day});
+    let range = DateUtils.getDayRange(selectedDay);
+    this.props.handleDayChange({first: range.from, last: range.to});
   };
 
   render() {

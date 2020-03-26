@@ -174,6 +174,7 @@ class GalaxyActivity extends Component {
   }
 
   isParametersValid() {
+    console.log("date:", this.state.dateRange)
     return (this.state.server && (this.state.dateTypeSelected === EDatePicker.All || this.state.dateRange.first));
   }
 
