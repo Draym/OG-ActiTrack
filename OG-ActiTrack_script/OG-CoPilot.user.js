@@ -5,14 +5,14 @@
 // @author      Draym
 // @copyright   2019, Draym (draymlab.fr)
 // @license     MIT
-// @version     1.0.0.1
+// @version     1.2.0.0
 // @updateURL https://openuserjs.org/meta/Draym/OG-CoPilot.meta.js
 // @downloadURL https://openuserjs.org/install/Draym/OG-CoPilot.user.js
 // @grant          GM_getValue
 // @grant          GM_setValue
 // @grant          GM_addStyle
 // ==/UserScript==
-
+/* global fleetDispatcher*/
 // ==OpenUserJS==
 // @author Draym
 // ==/OpenUserJS==
@@ -35,28 +35,20 @@
     const key_raidAlert = `${currentUni}_raidAlertActivated`
     const key_autoExpedition = `${currentUni}_autoExpeditionActivated`
 
-    const menu_fleet = {
-        transporterSmall : ".transporterSmall",
-        transporterLarge: ".transporterLarge",
-        explorer:".explorer",
-        cruiser: ".cruiser",
-        spy:".espionageProbe",
-        battleship:".battleship"
-    }
-
     const menu_btn = {
         home: 'a[href$="page=ingame&component=overview"]:first',
         fleet: 'a[href$="page=ingame&component=fleetdispatch"]:first',
         fleet_continue: '#continueToFleet2',
-        fleet_send: '#sendFleet'
+        fleet_send: '#sendFleet',
+        mission_exploration: "#missionButton15"
     }
 
     console.log(currentUni)
 
     let _refreshTimer = null
     let _nextRefresh = null
-    const _wait = 2
-    const _wait_long = 5
+    const _wait = 3
+    const _wait_long = 7
     const _refreshTime = Math.floor(Math.random() * configTime) + 1;
 
     const $ = unsafeWindow.$;
@@ -193,6 +185,57 @@
     }
 
     /* **************************************************************/
+    /* ********************** FLEET *********************************/
+    /* **************************************************************/
+    const menu_fleet = {
+        transporterSmall : ".transporterSmall",
+        transporterLarge: ".transporterLarge",
+        explorer:".explorer",
+        cruiser: ".cruiser",
+        spy:".espionageProbe",
+        battleship:".battleship"
+    }
+
+    const fleet_id = {
+        transporterSmall : 202,
+        transporterLarge: 203,
+        cruiser: 206,
+        battleship:208,
+        spy:210,
+        bomber: 211,
+        interceptor:215,
+        explorer: 219,
+    }
+
+    const fleet = {
+        pickShip: (shipID, amount) => {
+            fleetDispatcher.shipsOnPlanet.forEach((ship => {
+                if (ship.id == shipID) {
+                    if (amount > ship.number) amount = ship.number;
+                    fleetDispatcher.selectShip(shipID, amount);
+                    fleetDispatcher.refresh()
+                }
+            }))
+            return amount
+        },
+        setTargetPos: (x, y, z) => {
+            fleetDispatcher.targetPlanet.type = 1;
+            if (x != null) {
+                fleetDispatcher.targetPlanet.galaxy = x;
+            }
+            if (y != null) {
+                fleetDispatcher.targetPlanet.system = y;
+            }
+            if (z != null) {
+                fleetDispatcher.targetPlanet.position = z;
+            }
+            fleetDispatcher.refreshTarget();
+            fleetDispatcher.updateTarget();
+            fleetDispatcher.refresh();
+        }
+    }
+
+    /* **************************************************************/
     /* ********************** SCRIPT ********************************/
     /* **************************************************************/
 
@@ -246,10 +289,6 @@
         next(callbacks);
     }
 
-    function addFleet(fleet, value) {
-        fillInput(`${fleet} > input`, value);
-    }
-
     function setExpePosition() {
         let keyVal = 49
         $("#position").trigger ( {
@@ -286,17 +325,12 @@
                         const sendPt = pt / available;
                         const sendGt = gt / available;
 
-                        function _useOGInfinityExpe(cb) {
-                            $(".ogl-prefab.ogl-gtexpe").click();
-                            nextSlow(_wait, cb);
-                        }
-
                         function _setupFleet(cb) {
-                            addFleet(menu_fleet.transporterSmall, Math.round(sendPt));
-                            addFleet(menu_fleet.transporterLarge, Math.round(sendGt));
-                            addFleet(menu_fleet.explorer, 1);
-                            addFleet(menu_fleet.battleship, 1);
-                            addFleet(menu_fleet.spy, 1);
+                            fleet.pickShip(fleet_id.transporterSmall, Math.round(sendPt));
+                            fleet.pickShip(fleet_id.transporterLarge, Math.round(sendGt));
+                            fleet.pickShip(fleet_id.explorer, 1);
+                            fleet.pickShip(fleet_id.spy, 1);
+                            fleet.pickShip(fleet_id.bomber, 1);
                             log(`expedition send ${sendPt}pt and ${sendGt}gt`)
                             nextSlow(_wait, cb);
                         }
@@ -304,6 +338,16 @@
                         function _nextFleet(cb) {
                             $(menu_btn.fleet_continue).click()
                             nextSlow(_wait_long, cb);
+                        }
+
+                        function _setPosition(cb){
+                            fleet.setTargetPos(null, null, 16);
+                            nextSlow(_wait_long, cb)
+                        }
+
+                        function _selectMission(cb){
+                            $(menu_btn.mission_exploration).click()
+                            nextSlow(_wait_long, cb)
                         }
 
                         function _launchFleet(cb) {
@@ -315,8 +359,7 @@
                             clickOn(menu_btn.home)
                             nextSlow(_wait_long, cb);
                         }
-
-                        const scripts = [_useOGInfinityExpe, _setupFleet, _nextFleet, _launchFleet, _repeat, ...callbacks];
+                        const scripts = [_setupFleet, _nextFleet, _setPosition, _selectMission, _launchFleet, _repeat, ...callbacks];
 
                         return nextSlow(_wait_long, scripts);
                     }
