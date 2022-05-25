@@ -468,7 +468,7 @@
                     let maxGT = Math.max(minGT, calcNeededShips({fret: 203, resources: maxTotal}));
 
                     log(`expeditions ${current}/${total}`)
-                    log(`available fleet ${availablePT}pt and ${availableGT}gt`)
+                    log(`available fleet ${availablePT}pt[${maxPT}] and ${availableGT}gt[${maxGT}]`)
                     const availableSlot = total - current
                     if (availableSlot > 0 && (availablePT != 0 || availableGT != 0)) {
                         const possiblePT = availablePT / availableSlot;
@@ -476,7 +476,7 @@
 
                         const sendGT = Math.min(possibleGT, maxGT);
                         let sendPT = 0;
-                        if (sendGT != maxGT) {
+                        if (sendGT < maxGT) {
                             sendPT = Math.min(possiblePT, maxPT - (sendGT * 5))
                         }
 
