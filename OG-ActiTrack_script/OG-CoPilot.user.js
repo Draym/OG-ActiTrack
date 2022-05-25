@@ -12,7 +12,7 @@
 // @grant          GM_setValue
 // @grant          GM_addStyle
 // ==/UserScript==
-/* global fleetDispatcher*/
+/* global fleetDispatcher, playerId, LocalizationStrings */
 // ==OpenUserJS==
 // @author Draym
 // ==/OpenUserJS==
@@ -32,8 +32,11 @@
     const alertSound = 'https://assets.mixkit.co/sfx/preview/mixkit-bell-notification-933.mp3';
     const configTime = 3; // something superior to 1. A random will be done between 0 and 'minutes', 5 will be added to it.
 
-    const key_raidAlert = `${currentUni}_raidAlertActivated`
-    const key_autoExpedition = `${currentUni}_autoExpeditionActivated`
+    const gm_keys = {
+        raidAlert: `${currentUni}_raidAlertActivated`,
+        autoExpedition: `${currentUni}_autoExpeditionActivated`,
+        rescue: `${currentUni}_rescueActivated`
+    }
 
     const menu_btn = {
         home: 'a[href$="page=ingame&component=overview"]:first',
@@ -41,6 +44,13 @@
         fleet_continue: '#continueToFleet2',
         fleet_send: '#sendFleet',
         mission_exploration: "#missionButton15"
+    }
+
+    const ogame_class = {
+        PLAYER_CLASS_EXPLORER : 3,
+        PLAYER_CLASS_WARRIOR : 2,
+        PLAYER_CLASS_MINER :1,
+        PLAYER_CLASS_NONE : 0
     }
 
     console.log(currentUni)
@@ -65,6 +75,9 @@
             window.focus();
         }
     };
+
+
+    let player = {}
 
     /* **************************************************************/
     /* ********************* BROWSER ********************************/
@@ -162,26 +175,95 @@
         }
     }
 
+    function removeNumSeparator(str) {
+        return str.replace(new RegExp(`\\${LocalizationStrings["thousandSeperator"]}`, "g"), "")
+    }
+
+    /* **************************************************************/
+    /* ********************** OGAME *********************************/
+    /* **************************************************************/
+
+    const ogameHelper = function () {
+        var requestId = 0;
+
+        function expedition(message) {
+            let rid = requestId++;
+            return new Promise((function (resolve, reject) {
+                var listener = function (evt) {
+                    if (evt.detail.requestId == rid) {
+                        window.removeEventListener("ogi-expedition-rep", listener);
+                        resolve(evt.detail.type)
+                    }
+                };
+                window.addEventListener("ogi-expedition-rep", listener);
+                var payload = {requestId: rid, message: message};
+                window.dispatchEvent(new CustomEvent("ogi-expedition", {detail: payload}))
+            }))
+        }
+
+        function Get(id) {
+            let rid = requestId++;
+            return new Promise((function (resolve, reject) {
+                var listener = function (evt) {
+                    if (evt.detail.requestId == rid) {
+                        window.removeEventListener("ogi-players-rep", listener);
+                        resolve(evt.detail.player)
+                    }
+                };
+                window.addEventListener("ogi-players-rep", listener);
+                var payload = {requestId: rid, id: id};
+                window.dispatchEvent(new CustomEvent("ogi-players", {detail: payload}))
+            }))
+        }
+
+        function filter(name, alliance) {
+            let rid = requestId++;
+            return new Promise((function (resolve, reject) {
+                var listener = function (evt) {
+                    if (evt.detail.requestId == rid) {
+                        window.removeEventListener("ogi-filter-rep", listener);
+                        resolve(evt.detail.players)
+                    }
+                };
+                window.addEventListener("ogi-filter-rep", listener);
+                var payload = {requestId: rid, name: name, alliance: alliance};
+                window.dispatchEvent(new CustomEvent("ogi-filter", {detail: payload}))
+            }))
+        }
+
+        return {getExpeditionType: expedition, getPlayer: Get, filter: filter}
+    }();
+
+
     /* **************************************************************/
     /* ********************** DATA **********************************/
     /* **************************************************************/
 
     function activateRaidAlert(status) {
-        GM_setValue(key_raidAlert, status);
+        GM_setValue(gm_keys.raidAlert, status);
         launch()
     }
 
     function isRaidAlertActivated(){
-        return GM_getValue(key_raidAlert);
+        return GM_getValue(gm_keys.raidAlert);
     }
 
     function activateAutoExpedition(status) {
-        GM_setValue(key_autoExpedition, status);
+        GM_setValue(gm_keys.autoExpedition, status);
         launch()
     }
 
     function isAutoExpeditionActivated(){
-        return GM_getValue(key_autoExpedition);
+        return GM_getValue(gm_keys.autoExpedition);
+    }
+
+    function activateRescue(status) {
+        GM_setValue(gm_keys.rescue, status);
+        launch()
+    }
+
+    function isRescueActivated(){
+        return GM_getValue(gm_keys.rescue);
     }
 
     /* **************************************************************/
@@ -235,10 +317,78 @@
         }
     }
 
-    /* **************************************************************/
-    /* ********************** SCRIPT ********************************/
-    /* **************************************************************/
 
+    function calcNeededShips(options) {
+        options = options || {};
+        let resources = [removeNumSeparator(document.querySelector("#resources_metal").textContent), removeNumSeparator(document.querySelector("#resources_crystal").textContent), removeNumSeparator(document.querySelector("#resources_deuterium").textContent)];
+        resources = resources.reduce(((a, b) => parseInt(a) + parseInt(b)));
+        console.log("ressources:", resources)
+        if (options.resources || options.resources == 0) resources = options.resources;
+        let type = options.fret;
+        let fret;
+        if (type == 202) {
+            fret = 5e3
+        } else if (type == 203) {
+            fret = 25e3
+        } else if (type == 219) {
+            fret = 1e4
+        } else if (type == 210) {
+            fret = 2e4
+        } else if (type == 209) {
+            fret = 0
+        }
+        let total = resources / fret;
+        if (options.moreFret) total *= 107 / 100;
+        return Math.ceil(total)
+    }
+
+    function calcOptiExpedition() {
+        let maxTotal = 0
+        let minPT = 0
+        let minGT = 0
+        if (player.topScore < 1e4) {
+            maxTotal = 4e4;
+            minPT = 273;
+            minGT = 91
+        } else if (player.topScore < 1e5) {
+            maxTotal = 5e5;
+            minPT = 423;
+            minGT = 141
+        } else if (player.topScore < 1e6) {
+            maxTotal = 12e5;
+            minPT = 423;
+            minGT = 191
+        } else if (player.topScore < 5e6) {
+            maxTotal = 18e5;
+            minPT = 423;
+            minGT = 191
+        } else if (player.topScore < 25e6) {
+            maxTotal = 24e5;
+            minPT = 573;
+            minGT = 191
+        } else if (player.topScore < 5e7) {
+            maxTotal = 3e6;
+            minPT = 723;
+            minGT = 241
+        } else if (player.topScore < 75e6) {
+            maxTotal = 36e5;
+            minPT = 873;
+            minGT = 291
+        } else if (player.topScore < 1e8) {
+            maxTotal = 42e5;
+            minPT = 1023;
+            minGT = 341
+        } else {
+            maxTotal = 5e6;
+            minPT = 1223;
+            minGT = 417
+        }
+        return {maxTotal: player.class == ogame_class.PLAYER_CLASS_EXPLORER ? maxTotal * 3 * 5 : maxTotal * 2, minPT:minPT, minGT:minGT}
+    }
+
+    /* **************************************************************/
+    /* ******************* SCRIPT UTILS *****************************/
+    /* **************************************************************/
     function scheduleRefreshPage() {
         if (isAutoExpeditionActivated() || isRaidAlertActivated()) {
             log_info(`Refresh`)
@@ -278,6 +428,10 @@
         }
     }
 
+    /* **************************************************************/
+    /* ********************** SCRIPT ********************************/
+    /* **************************************************************/
+
     function runRaidAlert(callbacks) {
         destroyRefresh();
         if (isRaidAlertActivated()){
@@ -289,19 +443,8 @@
         next(callbacks);
     }
 
-    function setExpePosition() {
-        let keyVal = 49
-        $("#position").trigger ( {
-            type: 'keypress', keyCode: keyVal, which: keyVal, charCode: keyVal
-        } );
-        keyVal = 54
-        $("#position").trigger ( {
-            type: 'keypress', keyCode: keyVal, which: keyVal, charCode: keyVal
-        } );
-        fillInput('#position', '16');
-        const expeBtn = $("#button15")
-        expeBtn.removeClass("off")
-        expeBtn.addClass("on")
+    function rescue(callbacks) {
+        next(callbacks)
     }
 
     function runAutoExpeditions(callbacks) {
@@ -316,22 +459,34 @@
                     const data = expeTotal.text();
                     const current = parseInt(data.slice(data.indexOf('/') - 2, data.indexOf('/')));
                     const total = parseInt(data.slice(data.indexOf('/') + 1, data.indexOf('/') + 3));
-                    const pt = parseInt($(menu_fleet.transporterSmall).text().replace(".", ""));
-                    const gt = parseInt($(menu_fleet.transporterLarge).text().replace(".", ""));
+                    const availablePT = parseInt($(menu_fleet.transporterSmall).text().replace(".", ""));
+                    const availableGT = parseInt($(menu_fleet.transporterLarge).text().replace(".", ""));
+
+                    let {maxTotal, minPT, minGT } = calcOptiExpedition();
+
+                    let maxPT = Math.max(minPT, calcNeededShips({fret: 202, resources: maxTotal}));
+                    let maxGT = Math.max(minGT, calcNeededShips({fret: 203, resources: maxTotal}));
+
                     log(`expeditions ${current}/${total}`)
-                    log(`available fleet ${pt}pt and ${gt}gt`)
-                    const available = total - current
-                    if (available > 0 && (pt != 0 || gt != 0)) {
-                        const sendPt = pt / available;
-                        const sendGt = gt / available;
+                    log(`available fleet ${availablePT}pt and ${availableGT}gt`)
+                    const availableSlot = total - current
+                    if (availableSlot > 0 && (availablePT != 0 || availableGT != 0)) {
+                        const possiblePT = availablePT / availableSlot;
+                        const possibleGT = availableGT / availableSlot;
+
+                        const sendGT = Math.min(possibleGT, maxGT);
+                        let sendPT = 0;
+                        if (sendGT != maxGT) {
+                            sendPT = Math.min(possiblePT, maxPT - (sendGT * 5))
+                        }
 
                         function _setupFleet(cb) {
-                            fleet.pickShip(fleet_id.transporterSmall, Math.round(sendPt));
-                            fleet.pickShip(fleet_id.transporterLarge, Math.round(sendGt));
+                            fleet.pickShip(fleet_id.transporterSmall, Math.round(sendPT));
+                            fleet.pickShip(fleet_id.transporterLarge, Math.round(sendGT));
                             fleet.pickShip(fleet_id.explorer, 1);
                             fleet.pickShip(fleet_id.spy, 1);
-                            fleet.pickShip(fleet_id.bomber, 1);
-                            log(`expedition send ${sendPt}pt and ${sendGt}gt`)
+                            fleet.pickShip(fleet_id.interceptor, 1);
+                            log(`expedition send ${sendPT}pt and ${sendGT}gt`)
                             nextSlow(_wait, cb);
                         }
 
@@ -377,13 +532,26 @@
     /* **************************************************************/
 
     function launch() {
-        destroyRefresh();
-        log_success("ready");
-        browser_allow_notifications();
+        ogameHelper.getPlayer(playerId).then((data => {
+            player = data
 
-        const scripts = [runRaidAlert, runAutoExpeditions, scheduleRefreshPage];
+            if (document.querySelector("#characterclass .explorer")) {
+                player.class = ogame_class.PLAYER_CLASS_EXPLORER
+            } else if (document.querySelector("#characterclass .warrior")) {
+                player.class = ogame_class.PLAYER_CLASS_WARRIOR
+            } else if (document.querySelector("#characterclass .miner")) {
+                player.class = ogame_class.PLAYER_CLASS_MINER
+            } else {
+                player.class = ogame_class.PLAYER_CLASS_NONE
+            }
+            destroyRefresh();
+            log_success("ready");
+            browser_allow_notifications();
 
-        next(scripts);
+            const scripts = [runRaidAlert, rescue, runAutoExpeditions, scheduleRefreshPage];
+
+            next(scripts);
+        }))
     }
 
     /* **************************************************************/
@@ -391,6 +559,7 @@
     /* **************************************************************/
     unsafeWindow.ui_quickActivate = function (cb) {
         activateRaidAlert(cb.checked);
+        activateRescue(cb.checked);
         activateAutoExpedition(cb.checked);
     }
 
@@ -410,7 +579,7 @@
         menu.className += "ui-menu";
         menu.id = 'ui-copilot-menu';
         document.getElementById('menuTable').appendChild(menu);
-        $("#ui-quickAction").prop('checked', isRaidAlertActivated() || isAutoExpeditionActivated());
+        $("#ui-quickAction").prop('checked', isRaidAlertActivated() || isRescueActivated() || isAutoExpeditionActivated());
 
         document.getElementById('ui-drawOption').addEventListener("click", function (event) {
             ui_drawMenu($("#ui-menuOptions").is(":hidden"));
@@ -429,6 +598,10 @@
     unsafeWindow.ui_activateAutoExpedition = function (cb) {
         activateAutoExpedition(cb.checked);
     }
+    unsafeWindow.ui_activateRescue = function (cb) {
+        activateRescue(cb.checked);
+    }
+
 
     function ui_drawMenu(visible) {
         if (!visible) {
@@ -438,6 +611,7 @@
             $("#ui-menuOptions").show();
             $("#ui-raidAlertActive").prop('checked', isRaidAlertActivated());
             $("#ui-expeditionActive").prop('checked', isAutoExpeditionActivated());
+            $("#ui-RescueActive").prop('checked', isRescueActivated());
         }
     }
 
@@ -462,6 +636,16 @@
 </label>
 <a class="menubutton" href="#" accesskey="" target="_self">
 <span class="textlabel" onClick="">Auto Expeditions</span>
+</a>
+</li>
+<li id="ui-rescue">
+<span class="attack_icon">
+<label class="tooltipRight js_hideTipOnMobile ui-switch">
+<input id="ui-rescueActive" type="checkbox" onclick="ui_activateRescue(this);">
+<span class="ui-slider round"></span>
+</label>
+<a class="menubutton" href="#" accesskey="" target="_self">
+<span class="textlabel" onClick="">Save my Ass</span>
 </a>
 </li>
 </ul>
