@@ -30,7 +30,7 @@
     /* ******************** PARAMETERS ******************************/
     /* **************************************************************/
     const alertSound = 'https://assets.mixkit.co/sfx/preview/mixkit-bell-notification-933.mp3';
-    const configTime = 3; // something superior to 1. A random will be done between 0 and 'minutes', 5 will be added to it.
+    const configTime = 5; // something superior to 1. A random will be done between 0 and 'minutes', 5 will be added to it.
 
     const gm_keys = {
         raidAlert: `${currentUni}_raidAlertActivated`,
@@ -270,8 +270,8 @@
     /* ********************** FLEET *********************************/
     /* **************************************************************/
     const menu_fleet = {
-        transporterSmall : ".transporterSmall",
-        transporterLarge: ".transporterLarge",
+        pt : ".transporterSmall",
+        gt: ".transporterLarge",
         explorer:".explorer",
         cruiser: ".cruiser",
         spy:".espionageProbe",
@@ -279,13 +279,21 @@
     }
 
     const fleet_id = {
-        transporterSmall : 202,
-        transporterLarge: 203,
+        pt : 202,
+        gt: 203,
+        cle: 204,
+        clo: 205,
         cruiser: 206,
-        battleship:208,
+        battleship:207,
+        colon: 208,
+        recycler: 209,
         spy:210,
         bomber: 211,
+        sat: 212,
+        destroyer: 213,
+        rip: 214,
         interceptor:215,
+        reaper: 218,
         explorer: 219,
     }
 
@@ -459,8 +467,8 @@
                     const data = expeTotal.text();
                     const current = parseInt(data.slice(data.indexOf('/') - 2, data.indexOf('/')));
                     const total = parseInt(data.slice(data.indexOf('/') + 1, data.indexOf('/') + 3));
-                    const availablePT = parseInt($(menu_fleet.transporterSmall).text().replace(".", ""));
-                    const availableGT = parseInt($(menu_fleet.transporterLarge).text().replace(".", ""));
+                    const availablePT = parseInt($(menu_fleet.pt).text().replace(".", ""));
+                    const availableGT = parseInt($(menu_fleet.gt).text().replace(".", ""));
 
                     let {maxTotal, minPT, minGT } = calcOptiExpedition();
 
@@ -481,11 +489,11 @@
                         }
 
                         function _setupFleet(cb) {
-                            fleet.pickShip(fleet_id.transporterSmall, Math.round(sendPT));
-                            fleet.pickShip(fleet_id.transporterLarge, Math.round(sendGT));
+                            fleet.pickShip(fleet_id.pt, Math.round(sendPT));
+                            fleet.pickShip(fleet_id.gt, Math.round(sendGT));
                             fleet.pickShip(fleet_id.explorer, 1);
                             fleet.pickShip(fleet_id.spy, 1);
-                            fleet.pickShip(fleet_id.interceptor, 1);
+                            fleet.pickShip(fleet_id.cruiser, 1);
                             log(`expedition send ${sendPT}pt and ${sendGT}gt`)
                             nextSlow(_wait, cb);
                         }
