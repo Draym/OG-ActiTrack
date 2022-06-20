@@ -2,10 +2,10 @@
 // @name        OG-CoPilot
 // @description Your ogame co-pilot
 // @include       *.ogame*gameforge.com/game/index.php*
-// @author      Draym
-// @copyright   2019, Draym (draymlab.fr)
+// @author      DraymIncognito
+// @copyright   2019, DraymIncognito (draymlab.fr)
 // @license     MIT
-// @version     1.2.0.0
+// @version     1.2.1.2
 // @updateURL https://openuserjs.org/meta/Draym/OG-CoPilot.meta.js
 // @downloadURL https://openuserjs.org/install/Draym/OG-CoPilot.user.js
 // @grant          GM_getValue
@@ -30,12 +30,16 @@
     /* ******************** PARAMETERS ******************************/
     /* **************************************************************/
     const alertSound = 'https://assets.mixkit.co/sfx/preview/mixkit-bell-notification-933.mp3';
-    const configTime = 5; // something superior to 1. A random will be done between 0 and 'minutes', 5 will be added to it.
+    const configTime = 10; // something superior to 1. A random will be done between 0 and 'minutes', 5 will be added to it.
 
     const gm_keys = {
         raidAlert: `${currentUni}_raidAlertActivated`,
         autoExpedition: `${currentUni}_autoExpeditionActivated`,
-        rescue: `${currentUni}_rescueActivated`
+        rescue: `${currentUni}_rescueActivated`,
+        expeditionOnlyGT: `${currentUni}_expeditionOnlyGT`,
+        expeditionOnlyPT: `${currentUni}_expeditionOnlyPT`,
+        expeditionSwitchSystem: `${currentUni}_expeditionSwitchSystem`,
+        expeditionSystem: `${currentUni}_expeditionSystem`
     }
 
     const menu_btn = {
@@ -57,9 +61,9 @@
 
     let _refreshTimer = null
     let _nextRefresh = null
-    const _wait = 3
-    const _wait_long = 7
-    const _refreshTime = Math.floor(Math.random() * configTime) + 1;
+    const _wait = 2
+    const _wait_long = 3
+    const _refreshTime = Math.floor(Math.random() * 5) + configTime;
 
     const $ = unsafeWindow.$;
     const alertSoundAudio = document.createElement('audio');
@@ -70,7 +74,7 @@
         title: 'Ogame Alert',
         text: 'You are under attack on Ogame',
         timeout: 15000,
-        icon: 'https://is4-ssl.mzstatic.com/image/thumb/Purple91/v4/31/2d/98/312d98f7-b935-69b3-596e-2159d13c0865/mzl.kxpdlefq.png/246x0w.jpg',
+        image: 'https://is4-ssl.mzstatic.com/image/thumb/Purple91/v4/31/2d/98/312d98f7-b935-69b3-596e-2159d13c0865/mzl.kxpdlefq.png/246x0w.jpg',
         onclick: function () {
             window.focus();
         }
@@ -119,8 +123,8 @@
 
     function notifyAlert() {
         browserAudio.resume().then(() => {
-            GM_notification(ui_notificationDetails);
             alertSoundAudio.play();
+            GM_notification(ui_notificationDetails);
             log('Playback resumed successfully');
         });
     }
@@ -245,7 +249,7 @@
     }
 
     function isRaidAlertActivated(){
-        return GM_getValue(gm_keys.raidAlert);
+        return GM_getValue(gm_keys.raidAlert) === true;
     }
 
     function activateAutoExpedition(status) {
@@ -254,7 +258,7 @@
     }
 
     function isAutoExpeditionActivated(){
-        return GM_getValue(gm_keys.autoExpedition);
+        return GM_getValue(gm_keys.autoExpedition) === true;
     }
 
     function activateRescue(status) {
@@ -263,7 +267,49 @@
     }
 
     function isRescueActivated(){
-        return GM_getValue(gm_keys.rescue);
+        return GM_getValue(gm_keys.rescue) === true;
+    }
+
+    function setExpeditionOnlyGT(status) {
+        GM_setValue(gm_keys.expeditionOnlyPT, false);
+        GM_setValue(gm_keys.expeditionOnlyGT, status);
+    }
+
+    function isExpeditionOnlyGT(){
+        return GM_getValue(gm_keys.expeditionOnlyGT) === true;
+    }
+
+    function setExpeditionOnlyPT(status) {
+        GM_setValue(gm_keys.expeditionOnlyGT, false);
+        GM_setValue(gm_keys.expeditionOnlyPT, status);
+    }
+
+    function isExpeditionOnlyPT(){
+        return GM_getValue(gm_keys.expeditionOnlyPT) === true;
+    }
+
+    function setExpeditionSwitchSystem(status) {
+        GM_setValue(gm_keys.expeditionSwitchSystem, status);
+    }
+
+    function isExpeditionSwitchSystem(){
+        return GM_getValue(gm_keys.expeditionSwitchSystem) === true;
+    }
+
+    function setExpeditionSystem(system) {
+        if (isNaN(system)) {
+            GM_setValue(gm_keys.expeditionSystem, null);
+        } else {
+            GM_setValue(gm_keys.expeditionSystem, system);
+        }
+    }
+
+    function getExpeditionSystem(){
+        const value = GM_getValue(gm_keys.expeditionSystem);
+        if (value === undefined || value === null) {
+            return 0;
+        }
+        return value;
     }
 
     /* **************************************************************/
@@ -330,18 +376,17 @@
         options = options || {};
         let resources = [removeNumSeparator(document.querySelector("#resources_metal").textContent), removeNumSeparator(document.querySelector("#resources_crystal").textContent), removeNumSeparator(document.querySelector("#resources_deuterium").textContent)];
         resources = resources.reduce(((a, b) => parseInt(a) + parseInt(b)));
-        console.log("ressources:", resources)
         if (options.resources || options.resources == 0) resources = options.resources;
         let type = options.fret;
         let fret;
         if (type == 202) {
-            fret = 5e3
+            fret = fleetDispatcher.fleetHelper.shipsData[202].baseCargoCapacity
         } else if (type == 203) {
-            fret = 25e3
+            fret = fleetDispatcher.fleetHelper.shipsData[203].baseCargoCapacity
         } else if (type == 219) {
-            fret = 1e4
+            fret = fleetDispatcher.fleetHelper.shipsData[219].baseCargoCapacity
         } else if (type == 210) {
-            fret = 2e4
+            fret = fleetDispatcher.fleetHelper.shipsData[210].baseCargoCapacity
         } else if (type == 209) {
             fret = 0
         }
@@ -467,64 +512,82 @@
                     const data = expeTotal.text();
                     const current = parseInt(data.slice(data.indexOf('/') - 2, data.indexOf('/')));
                     const total = parseInt(data.slice(data.indexOf('/') + 1, data.indexOf('/') + 3));
-                    const availablePT = parseInt($(menu_fleet.pt).text().replace(".", ""));
-                    const availableGT = parseInt($(menu_fleet.gt).text().replace(".", ""));
-
-                    let {maxTotal, minPT, minGT } = calcOptiExpedition();
-
-                    let maxPT = Math.max(minPT, calcNeededShips({fret: 202, resources: maxTotal}));
-                    let maxGT = Math.max(minGT, calcNeededShips({fret: 203, resources: maxTotal}));
-
-                    log(`expeditions ${current}/${total}`)
-                    log(`available fleet ${availablePT}pt[${maxPT}] and ${availableGT}gt[${maxGT}]`)
                     const availableSlot = total - current
-                    if (availableSlot > 0 && (availablePT != 0 || availableGT != 0)) {
-                        const possiblePT = availablePT / availableSlot;
-                        const possibleGT = availableGT / availableSlot;
+                    log(`expeditions ${current}/${total}`)
+                    setExpeditionSystem(getExpeditionSystem() == 0 ? 1 : 0);
+                    if (availableSlot >0) {
+                        const availablePT = parseInt($(menu_fleet.pt).text().replace(".", ""));
+                        const availableGT = parseInt($(menu_fleet.gt).text().replace(".", ""));
 
-                        const sendGT = Math.min(possibleGT, maxGT);
-                        let sendPT = 0;
-                        if (sendGT < maxGT) {
-                            sendPT = Math.min(possiblePT, maxPT - (sendGT * 5))
+                        let {maxTotal, minPT, minGT } = calcOptiExpedition();
+
+                        let maxPT = Math.max(minPT, calcNeededShips({fret: 202, resources: maxTotal}));
+                        let maxGT = Math.max(minGT, calcNeededShips({fret: 203, resources: maxTotal}));
+
+                        log(`available fleet ${availablePT}pt[${maxPT}] and ${availableGT}gt[${maxGT}]`)
+                        if (availablePT != 0 || availableGT != 0) {
+                            const possiblePT = availablePT / availableSlot;
+                            const possibleGT = availableGT / availableSlot;
+                            let sendGT = 0;
+                            let sendPT = 0;
+
+                            if (isExpeditionOnlyPT()) {
+                                sendPT = Math.min(possiblePT, maxPT);
+                            } else if (isExpeditionOnlyGT()) {
+                                sendGT = Math.min(possibleGT, maxGT);
+                            } else {
+                                sendGT = Math.min(possibleGT, maxGT);
+                                if (sendGT < maxGT) {
+                                    sendPT = Math.min(possiblePT, maxPT - (sendGT * 5))
+                                }
+                            }
+
+                            function _setupFleet(cb) {
+                                fleet.pickShip(fleet_id.pt, Math.round(sendPT));
+                                fleet.pickShip(fleet_id.gt, Math.round(sendGT));
+                                fleet.pickShip(fleet_id.explorer, 1);
+                                fleet.pickShip(fleet_id.spy, 1);
+                                fleet.pickShip(fleet_id.reaper, 1);
+                                log(`expedition send ${sendPT}pt and ${sendGT}gt`)
+                                nextSlow(_wait, cb);
+                            }
+
+                            function _nextFleet(cb) {
+                                $(menu_btn.fleet_continue).click()
+                                nextSlow(_wait_long, cb);
+                            }
+
+                            function _setPosition(cb){
+                                if (isExpeditionSwitchSystem()) {
+                                    const current = Number.parseInt($("#system").val());
+                                    console.log(`system: ${current} - ${getExpeditionSystem()} = ${current - getExpeditionSystem()}`)
+                                    fleet.setTargetPos(null, current - getExpeditionSystem(), 16);
+                                } else {
+                                    fleet.setTargetPos(null, null, 16);
+                                }
+                                nextSlow(_wait_long, cb)
+                            }
+
+                            function _selectMission(cb){
+                                $(menu_btn.mission_exploration).click()
+                                nextSlow(_wait, cb)
+                            }
+
+                            function _launchFleet(cb) {
+                                $(menu_btn.fleet_send).click()
+                                nextSlow(_wait_long, cb);
+                            }
+
+                            function _repeat(cb) {
+                                clickOn(menu_btn.home)
+                                nextSlow(_wait_long, cb);
+                            }
+                            const scripts = [_setupFleet, _nextFleet, _setPosition, _selectMission, _launchFleet, _repeat, ...callbacks];
+
+                            return nextSlow(_wait_long, scripts);
                         }
-
-                        function _setupFleet(cb) {
-                            fleet.pickShip(fleet_id.pt, Math.round(sendPT));
-                            fleet.pickShip(fleet_id.gt, Math.round(sendGT));
-                            fleet.pickShip(fleet_id.explorer, 1);
-                            fleet.pickShip(fleet_id.spy, 1);
-                            fleet.pickShip(fleet_id.cruiser, 1);
-                            log(`expedition send ${sendPT}pt and ${sendGT}gt`)
-                            nextSlow(_wait, cb);
-                        }
-
-                        function _nextFleet(cb) {
-                            $(menu_btn.fleet_continue).click()
-                            nextSlow(_wait_long, cb);
-                        }
-
-                        function _setPosition(cb){
-                            fleet.setTargetPos(null, null, 16);
-                            nextSlow(_wait_long, cb)
-                        }
-
-                        function _selectMission(cb){
-                            $(menu_btn.mission_exploration).click()
-                            nextSlow(_wait_long, cb)
-                        }
-
-                        function _launchFleet(cb) {
-                            $(menu_btn.fleet_send).click()
-                            nextSlow(_wait_long, cb);
-                        }
-
-                        function _repeat(cb) {
-                            clickOn(menu_btn.home)
-                            nextSlow(_wait_long, cb);
-                        }
-                        const scripts = [_setupFleet, _nextFleet, _setPosition, _selectMission, _launchFleet, _repeat, ...callbacks];
-
-                        return nextSlow(_wait_long, scripts);
+                    } else {
+                        setExpeditionSystem(getExpeditionSystem() == 0 ? 1 : 0);
                     }
                 } else {
                     log_error("is lost");
@@ -540,9 +603,11 @@
     /* **************************************************************/
 
     function launch() {
+        setExpeditionSwitchSystem(true);
+        setExpeditionOnlyGT(true);
+        console.log(`pt[${isExpeditionOnlyPT()}], gt[${isExpeditionOnlyGT()}], [${isExpeditionSwitchSystem()}]system(${getExpeditionSystem()})`)
         ogameHelper.getPlayer(playerId).then((data => {
             player = data
-
             if (document.querySelector("#characterclass .explorer")) {
                 player.class = ogame_class.PLAYER_CLASS_EXPLORER
             } else if (document.querySelector("#characterclass .warrior")) {
@@ -558,9 +623,135 @@
 
             const scripts = [runRaidAlert, rescue, runAutoExpeditions, scheduleRefreshPage];
 
-            next(scripts);
+            try {
+                next(scripts);
+            } catch (e) {
+                scheduleRefreshPage()
+            }
         }))
     }
+
+    /* **************************************************************/
+    /* ******************* GUI - PANEL ******************************/
+    /* **************************************************************/
+
+    unsafeWindow.ui_activateRaidAlert = function (cb) {
+        activateRaidAlert(cb.checked);
+    }
+    unsafeWindow.ui_activateAutoExpedition = function (cb) {
+        activateAutoExpedition(cb.checked);
+    }
+    unsafeWindow.ui_activateRescue = function (cb) {
+        activateRescue(cb.checked);
+    }
+
+
+    function ui_drawMenu(visible) {
+        if (!visible) {
+            $("#ui-menuOptions").hide();
+        }
+        else {
+            $("#ui-menuOptions").show();
+            $("#ui-raidAlertActive").prop('checked', isRaidAlertActivated());
+            $("#ui-expeditionActive").prop('checked', isAutoExpeditionActivated());
+            $("#ui-RescueActive").prop('checked', isRescueActivated());
+        }
+    }
+
+    function ui_drawMenuDetails(visible, target) {
+        switch (target) {
+            case "raidAlert" :
+                $("#ui-menuDetails-expedition").hide();
+                $("#ui-menuDetails-rescue").hide();
+                break;
+            case "expedition" :
+                $("#ui-menuDetails-raidAlert").hide();
+                $("#ui-menuDetails-rescue").hide();
+                break;
+            case "rescue" :
+                $("#ui-menuDetails-raidAlert").hide();
+                $("#ui-menuDetails-expedition").hide();
+                break;
+        }
+        if (!visible) {
+            $("#ui-menuDetails").hide();
+        }
+        else {
+            $("#ui-menuDetails").show();
+            $("#ui-menuDetails-" + target).show();
+        }
+    }
+
+    $("body").append(`
+<div id="ui-menuDetails" style="display: none;">
+<div id="ui-menuDetails-raidAlert" style="display: none;">
+<h3>RaidAlert Options</h3>
+</div>
+<div id="ui-menuDetails-expedition" style="display: none;">
+<h3>Expedition Options</h3>
+</div>
+<div id="ui-menuDetails-rescue" style="display: none;">
+<h3>Rescue Options</h3>
+</div>
+<br/>
+<button id="ui-closeMenuDetailExpe" type="button">Close</button>
+</div>
+<div id="ui-menuOptions" style="display: none;">
+<ul id="ui-scripts">
+<li id="ui-raidAlert">
+<span class="alert_icon"/>
+<label class="tooltipRight js_hideTipOnMobile ui-switch">
+<input id="ui-raidAlertActive" type="checkbox" onclick="ui_activateRaidAlert(this);">
+<span class="ui-slider round"></span>
+</label>
+<a class="menubutton" id="ui-raidAlert-menu" href="#" accesskey="" target="_self">
+<span class="textlabel">Alert on Raids</span>
+</a>
+</li>
+<li id="ui-runExpedition">
+<span class="expedition_icon">
+<label class="tooltipRight js_hideTipOnMobile ui-switch">
+<input id="ui-expeditionActive" type="checkbox" onclick="ui_activateAutoExpedition(this);">
+<span class="ui-slider round"></span>
+</label>
+<a class="menubutton" id="ui-runExpedition-menu" href="#" accesskey="" target="_self">
+<span class="textlabel" onClick="">Auto Expeditions</span>
+</a>
+</li>
+<li id="ui-rescue">
+<span class="attack_icon">
+<label class="tooltipRight js_hideTipOnMobile ui-switch">
+<input id="ui-rescueActive" type="checkbox" onclick="ui_activateRescue(this);">
+<span class="ui-slider round"></span>
+</label>
+<a class="menubutton" id="ui-rescue-menu" href="#" accesskey="" target="_self">
+<span class="textlabel" onClick="">Save my Ass</span>
+</a>
+</li>
+</ul>
+<br/>
+<button id="ui-closeMenuOptions" type="button">Close</button>
+</div>
+`);
+
+    document.getElementById('ui-raidAlert-menu').addEventListener("click", function (event) {
+        ui_drawMenuDetails($("#ui-menuDetails-raidAlert").is(":hidden"), "raidAlert");
+    }, true);
+    document.getElementById('ui-runExpedition-menu').addEventListener("click", function (event) {
+        ui_drawMenuDetails($("#ui-menuDetails-expedition").is(":hidden"), "expedition");
+    }, true);
+
+    document.getElementById('ui-rescue-menu').addEventListener("click", function (event) {
+        ui_drawMenuDetails($("#ui-menuDetails-rescue").is(":hidden"), "rescue");
+    }, true);
+
+    $("#ui-closeMenuOptions").click(function () {
+        ui_drawMenu(false);
+    });
+
+    $("#ui-closeMenuDetails").click(function () {
+        ui_drawMenuDetails(false);
+    });
 
     /* **************************************************************/
     /* *********************** GUI **********************************/
@@ -595,76 +786,6 @@
 
         launch();
     }
-
-    /* **************************************************************/
-    /* ******************* GUI - PANEL ******************************/
-    /* **************************************************************/
-
-    unsafeWindow.ui_activateRaidAlert = function (cb) {
-        activateRaidAlert(cb.checked);
-    }
-    unsafeWindow.ui_activateAutoExpedition = function (cb) {
-        activateAutoExpedition(cb.checked);
-    }
-    unsafeWindow.ui_activateRescue = function (cb) {
-        activateRescue(cb.checked);
-    }
-
-
-    function ui_drawMenu(visible) {
-        if (!visible) {
-            $("#ui-menuOptions").hide();
-        }
-        else {
-            $("#ui-menuOptions").show();
-            $("#ui-raidAlertActive").prop('checked', isRaidAlertActivated());
-            $("#ui-expeditionActive").prop('checked', isAutoExpeditionActivated());
-            $("#ui-RescueActive").prop('checked', isRescueActivated());
-        }
-    }
-
-    $("body").append(`
-<div id="ui-menuOptions" style="display: none;">
-<ul id="ui-scripts">
-<li id="ui-raidAlert">
-<span class="alert_icon"/>
-<label class="tooltipRight js_hideTipOnMobile ui-switch">
-<input id="ui-raidAlertActive" type="checkbox" onclick="ui_activateRaidAlert(this);">
-<span class="ui-slider round"></span>
-</label>
-<a class="menubutton" href="#" accesskey="" target="_self">
-<span  class="textlabel">Alert on Raids</span>
-</a>
-</li>
-<li id="ui-runExpedition">
-<span class="expedition_icon">
-<label class="tooltipRight js_hideTipOnMobile ui-switch">
-<input id="ui-expeditionActive" type="checkbox" onclick="ui_activateAutoExpedition(this);">
-<span class="ui-slider round"></span>
-</label>
-<a class="menubutton" href="#" accesskey="" target="_self">
-<span class="textlabel" onClick="">Auto Expeditions</span>
-</a>
-</li>
-<li id="ui-rescue">
-<span class="attack_icon">
-<label class="tooltipRight js_hideTipOnMobile ui-switch">
-<input id="ui-rescueActive" type="checkbox" onclick="ui_activateRescue(this);">
-<span class="ui-slider round"></span>
-</label>
-<a class="menubutton" href="#" accesskey="" target="_self">
-<span class="textlabel" onClick="">Save my Ass</span>
-</a>
-</li>
-</ul>
-<br/>
-<button id="ui-closeMenuOptions" type="button">Close</button>
-</div>
-`);
-
-    $("#ui-closeMenuOptions").click(function () {
-        ui_drawMenu(false);
-    });
 
 
     /* **************************************************************/
@@ -753,6 +874,23 @@ border-radius:          1ex;
 z-index:                777;
 }
 #ui-menuOptions button{
+cursor:                 pointer;
+margin:                 1em 1em 0;
+border:                 1px outset buttonface;
+}
+#ui-menuDetails {
+position:               fixed;
+top:                    50%;
+left:                   0;
+width:                  200px;
+height:                 100px;
+padding:                10px;
+background:             rgba(51, 102, 153, 0.9);
+border:                 2px black;
+border-radius:          1ex;
+z-index:                777;
+}
+#ui-menuDetails button{
 cursor:                 pointer;
 margin:                 1em 1em 0;
 border:                 1px outset buttonface;
