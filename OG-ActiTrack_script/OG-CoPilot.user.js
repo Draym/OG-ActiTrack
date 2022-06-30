@@ -61,8 +61,8 @@
 
     let _refreshTimer = null
     let _nextRefresh = null
-    const _wait = 2
-    const _wait_long = 3
+    const _wait = 3
+    const _wait_long = 6
     const _refreshTime = Math.floor(Math.random() * 5) + configTime;
 
     const $ = unsafeWindow.$;
@@ -536,9 +536,9 @@
                             } else if (isExpeditionOnlyGT()) {
                                 sendGT = Math.min(possibleGT, maxGT);
                             } else {
-                                sendGT = Math.min(possibleGT, maxGT);
-                                if (sendGT < maxGT) {
-                                    sendPT = Math.min(possiblePT, maxPT - (sendGT * 5))
+                                sendPT = Math.min(possiblePT, maxPT)
+                                if (sendPT < maxPT) {
+                                    sendGT = Math.min(possibleGT, maxGT - (sendPT / 5))
                                 }
                             }
 
@@ -603,7 +603,7 @@
     /* **************************************************************/
 
     function launch() {
-        setExpeditionSwitchSystem(true);
+        setExpeditionSwitchSystem(false);
         setExpeditionOnlyGT(true);
         console.log(`pt[${isExpeditionOnlyPT()}], gt[${isExpeditionOnlyGT()}], [${isExpeditionSwitchSystem()}]system(${getExpeditionSystem()})`)
         ogameHelper.getPlayer(playerId).then((data => {
